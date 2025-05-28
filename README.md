@@ -4,6 +4,6 @@ A full-featured Mudlet setup for Achaea — includes utility tools, backup autom
 ### Profile File
 
 This repo includes a full Mudlet profile export:
-- **File:** `core.trigger`
+- **File:** `Achaean System`
 - **Type:** XML (Mudlet exported format)
 - You can import it directly into Mudlet.
