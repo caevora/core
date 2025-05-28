@@ -1,3 +1,4 @@
+--CONFIGURATION FILE
 mpackage = [[Achaean System]]
 author = [[Shane Rasmussen (shanesrasmussen@gmail.com)]]
 icon = [[Round_Button_01.png]]
