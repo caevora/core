@@ -1,6 +1,5 @@
 # ✅ Keep the exported profile file
-!Achaean System.xml
-
+!core.xml
 
 # ❌ Ignore JSON data & backups
 /system/libs/*.json

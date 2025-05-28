@@ -25,5 +25,5 @@ Further reading material. e.g. a link to the Mudlet wiki, forums, Github package
 
 * https://wiki.mudlet.org/w/Manual:Best_Practices#Package_and_Module_best_practices
 * [Link 2 might be a webpage](https://example.org)]]
-version = [[V_2.0.38]]
+version = [[V_2.0.44]]
 created = "2025-01-01T11:21:18-08:00"
