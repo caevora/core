@@ -1,6 +1,16 @@
 # ✅ Keep the exported profile file
 !core.xml
 
+# Ignore log files
+gitlog.txt
+
+# Ignore Windows crap
+Thumbs.db
+Desktop.ini
+
+# Ignore your .bat file if auto-generated
+exportGit.bat
+
 # ❌ Ignore JSON data & backups
 /system/libs/*.json
 /system/libs/backup/
