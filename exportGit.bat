@@ -1,9 +1,10 @@
 @echo off
-cd /d "C:\Users\Owner\Documents\Mudlet-Git"
+cd /d "C:\Users\Owner\Documents\Mudlet-Git" 
 set log="C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
 
 echo Copying files... >> %log%
 xcopy /E /Y /I "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System" "C:\Users\Owner\Documents\Mudlet-Git\Achaean System" >> %log% 2>&1
+copy /Y "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System\config.lua" "C:\Users\Owner\Documents\Mudlet-Git\Achaean System\config.lua" >> %log% 2>&1
 
 if exist "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System.xml" (
   copy /Y "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System.xml" "C:\Users\Owner\Documents\Mudlet-Git\Achaean System.xml" >> %log% 2>&1
