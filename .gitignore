@@ -1,30 +1,27 @@
 # ✅ Keep the exported profile file
 !core.xml
 
-# Ignore log files
+# 📝 Ignore Git logs
 gitlog.txt
 
-# Ignore Windows crap
+# 🪟 Ignore Windows system files
 Thumbs.db
 Desktop.ini
 
-# Ignore your .bat file if auto-generated
+# ⚙️ Ignore auto-generated batch files
 exportGit.bat
 
-# ❌ Ignore JSON data & backups
-/system/libs/*.json
-/system/libs/backup/
-/system/libs/archived/
+# 🧹 Ignore JSON data and backups (but keep dkjson.lua)
+Achaean System/system/libs/*.json
+!Achaean System/system/libs/dkjson.lua
+Achaean System/system/libs/backup/
+Achaean System/system/libs/archived/
 
-# ❌ Ignore temporary and generated files
+# 🗃️ Ignore temporary and generated file types
 *.bak
 *.corrupt
 *.zip
 *.tmp
-
-
-# ❌ General ignore for JSON (only as fallback)
-*.json
 
 # ✅ But explicitly ignore JSONs only in system/libs (most important)
 # (Prevents accidental global ignoring if others are tracked elsewhere)
