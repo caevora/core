@@ -1,27 +1,40 @@
 @echo off
 cd /d "C:\Users\Owner\Documents\Mudlet-Git"
-echo Copying files... >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
-xcopy /E /Y /I "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System" "C:\Users\Owner\Documents\Mudlet-Git\Achaean System" >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
-copy /Y "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System.xml" "C:\Users\Owner\Documents\Mudlet-Git\Achaean System.xml" >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
+set log="C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
 
-if not exist .git (
-  echo Initializing git repo... >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
-  "C:\Program Files\Git\mingw64\bin\git.exe" init >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
-  "C:\Program Files\Git\mingw64\bin\git.exe" add -A >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
-  "C:\Program Files\Git\mingw64\bin\git.exe" commit -m "Initial commit" >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
-  "C:\Program Files\Git\mingw64\bin\git.exe" branch -M main >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
-  "C:\Program Files\Git\mingw64\bin\git.exe" remote add origin https://github.com/caevora/core.git >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
+echo Copying files... >> %log%
+xcopy /E /Y /I "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System" "C:\Users\Owner\Documents\Mudlet-Git\Achaean System" >> %log% 2>&1
+
+if exist "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System.xml" (
+  copy /Y "C:\Users\Owner\.config\mudlet\profiles\Caevora\Achaean System.xml" "C:\Users\Owner\Documents\Mudlet-Git\Achaean System.xml" >> %log% 2>&1
+) else (
+  echo Warning: Achaean System.xml not found >> %log%
 )
 
-echo Committing changes... >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
-"C:\Program Files\Git\mingw64\bin\git.exe" add -A >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
-"C:\Program Files\Git\mingw64\bin\git.exe" commit -am "🧩 Auto-backup: Profile snapshot on logout" >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
+if not exist .git (
+  echo Initializing git repo... >> %log%
+  "C:\Program Files\Git\mingw64\bin\git.exe" init >> %log% 2>&1
+  "C:\Program Files\Git\mingw64\bin\git.exe" add -A >> %log% 2>&1
+  "C:\Program Files\Git\mingw64\bin\git.exe" commit -m "Initial commit" >> %log% 2>&1
+  "C:\Program Files\Git\mingw64\bin\git.exe" branch -M main >> %log% 2>&1
+  "C:\Program Files\Git\mingw64\bin\git.exe" remote add origin https://github.com/caevora/core.git >> %log% 2>&1
+)
 
-echo Pulling from origin... >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
-"C:\Program Files\Git\mingw64\bin\git.exe" pull --rebase origin main >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
+echo Committing changes... >> %log%
+"C:\Program Files\Git\mingw64\bin\git.exe" add -A >> %log% 2>&1
+"C:\Program Files\Git\mingw64\bin\git.exe" commit -am "🧩 Auto-backup: Profile snapshot on logout" >> %log% 2>&1 || echo No changes to commit >> %log%
 
-echo Pushing to origin... >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
-"C:\Program Files\Git\mingw64\bin\git.exe" push origin main >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt" 2>&1
+echo Stashing before pull... >> %log%
+"C:\Program Files\Git\mingw64\bin\git.exe" stash push -m "Auto-stash before pull" >> %log% 2>&1
 
-echo Done. >> "C:\Users\Owner\Documents\Mudlet-Git\gitlog.txt"
+echo Pulling from origin... >> %log%
+"C:\Program Files\Git\mingw64\bin\git.exe" pull --rebase origin main >> %log% 2>&1 || echo Pull failed >> %log%
+
+echo Applying stash... >> %log%
+"C:\Program Files\Git\mingw64\bin\git.exe" stash pop >> %log% 2>&1 || echo No stash to apply >> %log%
+
+echo Pushing to origin... >> %log%
+"C:\Program Files\Git\mingw64\bin\git.exe" push origin main >> %log% 2>&1
+
+echo Done. >> %log%
 timeout /t 5
