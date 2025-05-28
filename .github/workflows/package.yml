@@ -1,0 +1,25 @@
+name: Package Mudlet System
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 📦 Zip as .mpackage
+        run: |
+          mkdir -p output
+          zip -r "output/AchaeanSystem.mpackage" "Achaean System"
+
+      - name: 📤 Upload .mpackage artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: AchaeanSystem.mpackage
+          path: output/AchaeanSystem.mpackage
