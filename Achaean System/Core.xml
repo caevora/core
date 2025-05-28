@@ -18853,7 +18853,7 @@ end
 								<integer>1</integer>
 							</regexCodePropertyList>
 						</Trigger>
-						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>Vial count</name>
 							<script>vialcounter = vialcounter + 1
 if vialcounter &gt;= 2 then
@@ -18890,7 +18890,7 @@ end
 								<integer>3</integer>
 							</regexCodePropertyList>
 						</Trigger>
-						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>Refill vials</name>
 							<script>local vials = {"Diamond vial","Amethyst vial","A glass skull vial","Vial"}
 
@@ -48143,26 +48143,10 @@ mmp.echo("All astral nodes have been "..(matches[2]:lower()=="on" and "" or "un"
 					<Alias isActive="yes" isFolder="no">
 						<name>logout</name>
 						<script>expandAlias("elist")
-send("inr all"..cmdsep.."put gold in pack"..cmdsep.."qq"..cmdsep.."wave")
-
-
-   -- 🧷 Export profile XML
-  local exportPath = getMudletHomeDir() .. "/Achaean System/Achaean System.xml"
-  exportProfile(exportPath)
-  cecho(string.format("&lt;cyan&gt;📦 Profile exported to: %s\n", exportPath))
-
-  -- 💾 Trigger Git push
-  exportToGit()</script>
+send("inr all"..cmdsep.."put gold in pack"..cmdsep.."qq"..cmdsep.."wave")</script>
 						<command></command>
 						<packageName></packageName>
 						<regex>^logout$</regex>
-					</Alias>
-					<Alias isActive="yes" isFolder="no">
-						<name>git push</name>
-						<script>exportToGit()</script>
-						<command></command>
-						<packageName></packageName>
-						<regex>^git push$</regex>
 					</Alias>
 					<Alias isActive="yes" isFolder="no">
 						<name>pause</name>
@@ -60499,264 +60483,23 @@ end</script>
 						<name>git</name>
 						<packageName></packageName>
 						<script>function exportToGit()
-  -- Step 1: Increment version
-  if not incrementLocalVersion() then
-    cecho("&lt;red&gt;🚫 Version increment failed. Aborting Git export.\n")
-    return
-  end
+  local systemDir = getMudletHomeDir() .. "/Achaean System"
+  local command = [[
+    cd "]] .. systemDir .. [[" &amp;&amp;
+    git add . &amp;&amp;
+    git commit -m "🧩 Auto-backup: Profile snapshot on logout" &amp;&amp;
+    git push origin main
+  ]]
 
-  -- Step 2: Define paths
-  local sourceDir = [[C:\Users\Owner\.config\mudlet\profiles\Caevora]]
-  local targetDir = [[C:\Users\Owner\Documents\Mudlet-Git]]
-  local gitPath = [["C:\Program Files\Git\mingw64\bin\git.exe"]]
-
-  -- Step 3: Copy profile and system directory
-  local copyCommand = 'xcopy /E /Y /I "' .. sourceDir .. '\\Achaean System" "' .. targetDir .. '\\Achaean System" &amp;&amp; ' ..
-                      'copy /Y "' .. sourceDir .. '\\core.trigger" "' .. targetDir .. '\\Core.xml"'
-
-  -- Step 4: Git commit and push
-  local gitCommand = 'cd /d "' .. targetDir .. '" &amp;&amp; ' ..
-                     gitPath .. ' add . &amp;&amp; ' ..
-                     gitPath .. ' commit -m "🧩 Auto-backup: Profile snapshot on logout" &amp;&amp; ' ..
-                     gitPath .. ' push origin main'
-
-  -- Step 5: Run it all inside a persistent Command Prompt window
-  local fullCommand = 'start cmd /c "' .. copyCommand .. ' &amp;&amp; ' .. gitCommand .. ' &amp; timeout /t 10 "'
-  local result = os.execute(fullCommand)
+  local result = os.execute(command)
 
   if result then
-    cecho("&lt;green&gt;✅ GitHub export complete.\n")
+    cecho("&lt;green&gt;✅ GitHub sync complete.\n")
   else
-    cecho("&lt;red&gt;❌ GitHub push failed. Check credentials or conflicts.\n")
+    cecho("&lt;red&gt;❌ GitHub push failed. Check credentials or repo path.\n")
   end
 end
-
-
-
---function updateFromGit()
-  --local profileName = gmcp.Char.Status.name
-  --local mudletDir = getMudletHomeDir() .. "/profiles/" .. profileName
-
-  --cecho("&lt;yellow&gt;🔃 [SIMULATION] Would pull latest version from GitHub into:\n")
-  --cecho("&lt;blue&gt;📂 " .. mudletDir .. "\\Achaean System\n")
-  --cecho("&lt;green&gt;✅ Simulated Git pull complete. (No files were changed.)\n")
---end
-
-function updateFromGit()
-  local mudletDir = getMudletHomeDir()
-  local targetDir = mudletDir .. "/Achaean System"
-  local backupDir = mudletDir .. "/Achaean System Backup " .. os.date("%Y-%m-%d %H-%M-%S")
-  local tempZip = mudletDir .. "/Achaean System.zip"
-  local tempExtractDir = mudletDir .. "/Achaean System"
-  local zipUrl = "https://github.com/caevora/core/archive/refs/heads/main.zip"
-
-  cecho("&lt;yellow&gt;📥 Downloading latest system from GitHub...\n")
-
-  -- Step 1: Download zip
-  local downloadCmd = string.format(
-    [[powershell -Command "Invoke-WebRequest -Uri '%s' -OutFile '%s'"]],
-    zipUrl, tempZip
-  )
-  if not os.execute(downloadCmd) then
-    cecho("&lt;red&gt;❌ Failed to download system zip.\n")
-    return
-  end
-
-  cecho("&lt;yellow&gt;📦 Extracting system files...\n")
-
-  -- Step 2: Extract zip
-  local extractCmd = string.format(
-    [[powershell -Command "Expand-Archive -LiteralPath '%s' -DestinationPath '%s' -Force"]],
-    tempZip, mudletDir
-  )
-  if not os.execute(extractCmd) then
-    cecho("&lt;red&gt;❌ Failed to extract system files.\n")
-    return
-  end
-
-  -- Step 3: Backup current system
-  if io.open(targetDir, "r") then
-    cecho("&lt;yellow&gt;🗂 Backing up current system to:\n&lt;blue&gt;📁 " .. backupDir .. "\n")
-    local backupCmd = string.format([[xcopy /E /Y /I "%s" "%s"]], targetDir, backupDir)
-    os.execute('cmd /c "' .. backupCmd .. '"')
-  end
-
-  -- Step 4: Copy new system files
-  cecho("&lt;yellow&gt;🔁 Installing new system files...\n")
-  local copyCmd = string.format([[xcopy /E /Y /I "%s\\Achaean System" "%s"]], tempExtractDir, targetDir)
-  os.execute('cmd /c "' .. copyCmd .. '"')
-
-  -- Step 5: Cleanup
-  os.remove(tempZip)
-  os.execute('rmdir /S /Q "' .. tempExtractDir .. '"')
-
-  cecho("&lt;green&gt;✅ Update complete. Your system is now up to date.\n")
-  cecho("&lt;orange&gt;🛑 Mudlet restart recommended to apply changes.\n")
-end
-
-
-
-function getLocalVersion()
-  local versionPath = getMudletHomeDir() .. "/Achaean System/system/config.lua"
-  local version = "unknown"
-
-  for line in io.lines(versionPath) do
-    local v = line:match('version%s*=%s*%[%[(.-)%]%]')
-    if v then
-      version = v
-      break
-    end
-  end
-
-  return version
-end
-
-
-function incrementLocalVersion()
-  local versionPath = getMudletHomeDir() .. "/Achaean System/system/config.lua"
-  local lines = {}
-  local found = false
-
-  for line in io.lines(versionPath) do
-    local prefix, major, minor, patch, suffix = line:match("^(.-)V_(%d+)%.(%d+)%.(%d+)(.-)%]%]")
-    if prefix then
-      major, minor, patch = tonumber(major), tonumber(minor), tonumber(patch)
-      patch = patch + 1
-      local newLine = string.format('%sV_%d.%d.%d%s]]', prefix, major, minor, patch, suffix)
-      table.insert(lines, newLine)
-      found = true
-    else
-      table.insert(lines, line)
-    end
-  end
-
-  if not found then
-    cecho("&lt;red&gt;🚫 Version line not found. Could not update version.\n")
-    return false
-  end
-
-  local f = io.open(versionPath, "w")
-  if not f then
-    cecho("&lt;red&gt;🚫 Failed to write updated version to file.\n")
-    return false
-  end
-
-  for _, l in ipairs(lines) do
-    f:write(l .. "\n")
-  end
-  f:close()
-
-  cecho("&lt;green&gt;🔄 Version incremented and saved.\n")
-  return true
-end
-
-
-
-function getRemoteVersion(callback)
-  local profileName = gmcp.Char and gmcp.Char.Status and gmcp.Char.Status.name or "UNKNOWN"
-  local configPath = getMudletHomeDir() .. "/Achaean System/system/config.lua"
- 
-
-  cecho("&lt;yellow&gt;🔍 Reading version from updated system files...\n")
-
-  local file = io.open(configPath, "r")
-  if not file then
-    cecho("&lt;red&gt;❌ Could not open config.lua at: " .. configPath .. "\n")
-    return
-  end
-
-  for line in file:lines() do
-    local v = line:match('version%s*=%s*%[%[(.-)%]%]')
-    if v then
-      file:close()
-      cecho("&lt;green&gt;✅ Remote version read from updated files: " .. v .. "\n")
-      callback(v)
-      return
-    end
-  end
-
-  file:close()
-  cecho("&lt;red&gt;🚫 Version not found in config.lua\n")
-end
-
-
-function getGitVersion()
-  local url = "https://raw.githubusercontent.com/caevora/core/main/Achaean%20System/system/config.lua"
-  local tempFile = getMudletHomeDir() .. "/remote_config_temp.lua"
-
-  -- Download the remote config.lua using PowerShell
-  local psCommand = string.format([[powershell -Command "Invoke-WebRequest -Uri '%s' -OutFile '%s'" ]], url, tempFile)
-  local result = os.execute(psCommand)
-
-  if not result then
-    cecho("&lt;red&gt;❌ Failed to download config.lua from GitHub.\n")
-    return nil
-  end
-
-  -- Read the version from the downloaded file
-  local file = io.open(tempFile, "r")
-  if not file then
-    cecho("&lt;red&gt;🚫 Could not open downloaded config.lua\n")
-    return nil
-  end
-
-  local version
-  for line in file:lines() do
-    version = line:match('version%s*=%s*%[%[(.-)%]%]')
-    if version then break end
-  end
-
-  file:close()
-  os.remove(tempFile)
-
-  if version then
-    return version
-  else
-    cecho("&lt;red&gt;🚫 Version not found in config.lua\n")
-    return nil
-  end
-end
-
-
-
-function checkForUpdate()
-  local localVersion = getLocalVersion()
-  local gitVersion = getGitVersion()
-
-  getRemoteVersion(function(gitVersion)
-    if isNewerVersion(gitVersion, localVersion) then
-      cecho(string.format("&lt;yellow&gt;🆕 Update available!&lt;reset&gt;\n  Local: &lt;red&gt;%s&lt;reset&gt;\n  Remote: &lt;green&gt;%s&lt;reset&gt;\n", localVersion, gitVersion))
-      cechoLink(
-        "&lt;cyan&gt;[ &lt;white&gt;Click here to update your system&lt;cyan&gt; ]\n",
-        function() updateFromGit() end,
-        "Update the Mudlet system from GitHub",
-        true
-      )
-    else
-      cecho(string.format("&lt;green&gt;✅ You are on the latest version: %s\n", localVersion))
-    end
-  end)
-end
-
-
-
-function isNewerVersion(remote, localVersion)
-  local function parseVersion(v)
-    local major, minor, patch = v:match("V_(%d+)%.(%d+)%.(%d+)")
-    return tonumber(major), tonumber(minor), tonumber(patch)
-  end
-
-  local rMaj, rMin, rPat = parseVersion(remote)
-  local lMaj, lMin, lPat = parseVersion(localVersion)
-
-  if not (rMaj and rMin and rPat and lMaj and lMin and lPat) then
-    return false -- fallback if parsing failed
-  end
-
-  if rMaj ~= lMaj then return rMaj &gt; lMaj end
-  if rMin ~= lMin then return rMin &gt; lMin end
-  return rPat &gt; lPat
-end</script>
+</script>
 						<eventHandlerList />
 					</Script>
 					<Script isActive="yes" isFolder="no">
@@ -62129,9 +61872,9 @@ function initializeFileLoads()
   end
 
   -- Display version info
-  --local versionFile = mudletDir .. "/system/version.lua"
-  --version = fileExists(versionFile) and dofile(versionFile) or "dev"
-  --cecho("&lt;green&gt;System version: " .. version .. "\n")
+  local versionFile = mudletDir .. "/system/version.lua"
+  version = fileExists(versionFile) and dofile(versionFile) or "dev"
+  cecho("&lt;green&gt;System version: " .. version .. "\n")
 end
 
 
@@ -62318,7 +62061,6 @@ function systemLogin()
 	initializeGUIContainers()
   
   	cecho("&lt;green&gt;\nLoading System Settings")
-    --checkForUpdate()
   
 end
 
@@ -62333,7 +62075,6 @@ function systemExit()
   GUI.roomwindow:save()
   GUI.affwindow:save()
   GUI.datawindow:save()
-
 end
 
 --on manual logout.
@@ -62351,7 +62092,13 @@ function systemLogout()
   resetActiveDefenses()
   initializeFileSaves()
   
+   -- 🧷 Export profile XML
+  local exportPath = getMudletHomeDir() .. "/Achaean System/core.xml"
+  exportProfile(exportPath)
+  cecho(string.format("&lt;cyan&gt;📦 Profile exported to: %s\n", exportPath))
 
+  -- 💾 Trigger Git push
+  exportToGit()
   
   
 end

@@ -1,0 +1,49 @@
+# ✅ Keep the exported profile file
+!core.xml
+
+# ❌ Ignore JSON data & backups
+/system/libs/*.json
+/system/libs/backup/
+/system/libs/archived/
+
+# ❌ Ignore temporary and generated files
+*.bak
+*.corrupt
+*.zip
+*.tmp
+
+# ❌ Ignore user-specific Mudlet files
+*.map
+*.profile
+
+# ❌ Compiled Lua outputs
+luac.out
+
+# ❌ luarocks build artifacts
+*.src.rock
+*.tar.gz
+
+# ❌ Common binary and object formats
+*.o
+*.os
+*.ko
+*.obj
+*.elf
+*.lib
+*.a
+*.la
+*.lo
+*.def
+*.exp
+*.dll
+*.so
+*.so.*
+*.dylib
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.pch
+*.gch

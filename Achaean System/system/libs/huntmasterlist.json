@@ -8,13 +8,13 @@
     "the Captain of the Guard":"ignored",
     "Duchess Alorina":"ignored",
     "Gerda":"ignored",
-    "a keen-eyed archer":"ignored",
-    "Jadorno, a cloaked nobleman":"ignored",
     "a stout footsoldier":"ignored",
+    "a huge, writhing serpent":"ignored",
+    "Bertha the troll":"ignored",
     "a bearded cook":"ignored",
     "a shady-looking man":"ignored",
-    "Bertha the troll":"ignored",
-    "a huge, writhing serpent":"ignored"
+    "a keen-eyed archer":"ignored",
+    "Jadorno, a cloaked nobleman":"ignored"
   },
   "the Mhojave Desert":{
     "a giant red scorpion":"ignored",
@@ -33,21 +33,29 @@
     "a grim, ebony vulture":"ignored"
   },
   "the village of Qurnok":{
-    "Ulvna, the witch of Qurnok":"ignored",
+    "a young troll girl":"ignored",
     "Nel'ga, the wife of Ganorg":"ignored",
     "a vicious water moccasin":"ignored",
     "Aldroga, the Dendrologist":"ignored",
     "an enormous anaconda":"ignored",
     "Rurnog, the Herpetologist":"ignored",
     "a Qurnok warrior":"ignored",
-    "a young troll girl":"ignored",
+    "Ulvna, the witch of Qurnok":"ignored",
     "a Qurnok woman":"ignored",
     "a Qurnok guard":"ignored",
     "a mischievous troll boy":"ignored",
     "a huge, ferocious crocodile":"ignored",
     "a large toad":"ignored"
   },
-  "Cyrene":[],
+  "the salt mines of Ulsyndar":{
+    "Anttan, the mess cook":"ignored",
+    "a prison miner":"ignored",
+    "a stocky dwarf foreman":"ignored",
+    "an off-duty prison guard":"ignored",
+    "an Ulsyndar guard":"ignored",
+    "a disgruntled salt miner":"ignored",
+    "Emmith, a sullen blacksmith":"ignored"
+  },
   "the Creville Asylum":{
     "a mutated horkvali inmate":"ignored",
     "Suire, a mauled, narcissistic siren":"ignored",
@@ -64,7 +72,7 @@
     "a sneering psychopathic inmate":"ignored",
     "a shady dealer":"ignored",
     "Darien, the shock therapist":"ignored",
-    "a burly troll dweller":"ignored",
+    "a blind, knife-wielding woman":"ignored",
     "a deranged rajamalan dweller":"ignored",
     "a ravenous troll inmate":"ignored",
     "a maniacal atavian inmate":"ignored",
@@ -72,7 +80,7 @@
     "a blood-spattered jester":"ignored",
     "a crawling Tsol'aa inmate":"ignored",
     "Villinix, the herbalist":"ignored",
-    "a blind, knife-wielding woman":"ignored",
+    "a burly troll dweller":"ignored",
     "a young shaman inmate":"ignored",
     "Ulthor, the coroner":"ignored"
   },
@@ -91,29 +99,29 @@
     "the king ape":"ignored",
     "a ravenous vulture":"ignored",
     "a blackfin shark":"ignored",
-    "a large red kangaroo":"ignored",
+    "a blue-plated sand crab":"ignored",
     "a female ape":"ignored",
     "the Vultubus":"ignored",
-    "a giant sandworm":"ignored",
+    "a large red kangaroo":"ignored",
     "a giant jellyfish":"ignored",
-    "a blue-plated sand crab":"ignored"
+    "a giant sandworm":"ignored"
   },
   "the Northern Vasnari Mountains":{
     "a disgusting goblin":"ignored",
     "a young gryphon":"ignored",
-    "an ice hellion":"ignored",
-    "Malsaur, the brigand chief":"ignored",
     "a rabid grizzly bear":"ignored",
+    "Malsaur, the brigand chief":"ignored",
+    "an ice hellion":"ignored",
     "a magnificent lightning eagle":"ignored",
     "a water leech":"ignored",
     "a fierce brigand":"ignored",
-    "an enormous cave bat":"ignored",
+    "a savage morsuleus":"ignored",
     "a scruffy brigand":"ignored",
     "a masked ogre":"ignored",
-    "a disfigured ram":"ignored",
     "a mother gryphon":"ignored",
+    "a disfigured ram":"ignored",
     "a hulking hobgoblin":"ignored",
-    "a savage morsuleus":"ignored",
+    "an enormous cave bat":"ignored",
     "a bloodthirsty jackdaw":"ignored"
   },
   "Lake Narcisse":{
@@ -138,7 +146,7 @@
     "Xerafel":"ignored",
     "a scholar of Nishnatoba":"ignored",
     "Baliar Blackthorne":"ignored",
-    "Gil, the Quisalis Enforcer":"ignored",
+    "Master Jotbla":"ignored",
     "Westriv Talkar":"ignored",
     "Dalvas Sareish":"ignored",
     "Anasyd":"ignored",
@@ -152,7 +160,7 @@
     "a mage":"ignored",
     "a large wolf":"ignored",
     "a horrifying abomination":"ignored",
-    "Master Jotbla":"ignored",
+    "Gil, the Quisalis Enforcer":"ignored",
     "a Quisalis sentry":"ignored",
     "a Quisalis assassin":"ignored",
     "Varenia, the Venomous":"ignored"
@@ -180,8 +188,12 @@
   "the tunnels beneath Yggdrasil's lowest branches":{
     "an immense thopteran":"ignored"
   },
-  "the sewers of Ashtan":{
-    "a murderous thug":"ignored"
+  "Xhaiden Dale":{
+    "a colossal water strider":"ignored",
+    "a wild caribou":"ignored",
+    "a fierce black crane":"ignored",
+    "a huge swamp crocodile":"ignored",
+    "Veshina":"ignored"
   },
   "Maim's Mansion":{
     "Nanny Scoggs":"ignored",
@@ -193,8 +205,8 @@
     "a lesser air elemental":"ignored"
   },
   "the Dungeon of the Beastlords":{
-    "Bearnath, the Beast Cultist":"ignored",
     "Glash, the three-headed cerberus":"ignored",
+    "Bearnath, the Beast Cultist":"ignored",
     "Inish, the head cultist":"ignored",
     "the Beastlord":"ignored"
   },
@@ -247,22 +259,22 @@
     "Mayor Cotridge":"ignored"
   },
   "the Mirror Caves":{
-    "an aged Sileg":"ignored",
-    "an adult Sileg":"ignored",
-    "a massive jade spider":"ignored",
     "a rockhide basilisk":"ignored",
+    "Firad, the Sileg Chieftain":"ignored",
+    "a massive jade spider":"ignored",
+    "an aged Sileg":"ignored",
     "a rope lichen":"ignored",
     "Girda, Ritualist of the Sileg":"ignored",
-    "Firad, the Sileg Chieftain":"ignored",
+    "an adult Sileg":"ignored",
     "a bioluminescent ooze":"ignored",
-    "a giant quartz beetle":"ignored",
-    "a crystal georith":"ignored",
+    "a juvenile Sileg":"ignored",
+    "a lost spirit":"ignored",
     "a ghost bat":"ignored",
     "a plated fernbeast":"ignored",
     "Mokgrin, the fernbeast herder":"ignored",
     "a malevolent echo":"ignored",
-    "a lost spirit":"ignored",
-    "a juvenile Sileg":"ignored"
+    "a crystal georith":"ignored",
+    "a giant quartz beetle":"ignored"
   },
   "the Village of Qerstead":{
     "a Kelstaad lioness":"ignored"
@@ -272,10 +284,10 @@
   },
   "the Valho Coast":{
     "a mad cultist":"ignored",
-    "Gnomon, the confused":"ignored",
+    "Master Mascon":"ignored",
     "a Penumbran fiend":"ignored",
     "a murkworm":"ignored",
-    "Master Mascon":"ignored"
+    "Gnomon, the confused":"ignored"
   },
   "Mhaldor":[],
   "Riparium":{
@@ -290,18 +302,20 @@
   },
   "the Savannah":{
     "the beast in the crypt":"ignored",
-    "a goblinoid soldier":"ignored",
     "a shifting mass of shadows":"ignored",
+    "a goblinoid soldier":"ignored",
     "a massive, black and white war beetle":"ignored",
     "an enraged ogre destroyer":"ignored"
   },
   "the Coterie of Clouds":{
     "a lesser fire elemental":"ignored"
   },
-  "the Fissure of Echoes":{
-    "a monstrous crystal spider":"ignored",
-    "a demented cannibal":"ignored",
-    "a glacial windviper":"ignored"
+  "Clockwork Isle":{
+    "a suit of guardian armour":"ignored",
+    "a wire-frame man":"ignored",
+    "a drudge goon":"ignored",
+    "an animated porcelain doll":"ignored",
+    "Tick, the clockwork man":"ignored"
   },
   "the Dakhota Hills":{
     "a stitched adder":"ignored",
@@ -326,8 +340,8 @@
     "Dr. Kortoxian":"ignored"
   },
   "the Northern Scrublands":{
-    "a red jackal":"ignored",
     "a scrub fox":"ignored",
+    "a red jackal":"ignored",
     "a water buffalo":"ignored"
   },
   "Eleusis":[],
@@ -352,7 +366,7 @@
     "a wild centaur":"ignored",
     "a large bainligor":"ignored",
     "a centaur colt":"ignored",
-    "an elder centaur priestess":"ignored",
+    "a massive gohlbrorn":"ignored",
     "a massive varkha":"ignored",
     "a school of bloodthirsty piranha":"ignored",
     "a massive swamp python":"ignored",
@@ -360,23 +374,23 @@
     "a silver spider":"ignored",
     "a fungal toad":"ignored",
     "a shaggy water buffalo":"ignored",
-    "a massive gohlbrorn":"ignored"
+    "an elder centaur priestess":"ignored"
   },
   "the Village of Genji":{
-    "a male atavian villager":"ignored",
     "Tinja, the atavian":"ignored",
+    "a male atavian villager":"ignored",
     "a young manticore":"ignored",
     "an atavian warrior":"ignored",
-    "a female atavian villager":"ignored",
     "a huge, ferocious manticore":"ignored",
+    "a female atavian villager":"ignored",
     "a ferocious manticore":"ignored",
     "the queen manticore":"ignored"
   },
   "The Caverns of Dominar":{
-    "a goblin guard":"ignored",
-    "a flaming bat":"ignored",
     "a monstrous construct":"ignored",
-    "a fire abomination":"ignored"
+    "a flaming bat":"ignored",
+    "a fire abomination":"ignored",
+    "a goblin guard":"ignored"
   },
   "the Ashen Blight":{
     "a hulking confrag":"ignored",
@@ -401,16 +415,16 @@
     "a mhun guard":"ignored",
     "a master mhun demolitionist":"ignored",
     "Deban, the mhun barkeep":"ignored",
-    "Commander Kalesh":"ignored",
+    "Guard Captain Darion":"ignored",
     "an elite mhun keeper":"ignored",
     "a mhun bodyguard":"ignored",
-    "a mhun archer":"ignored",
     "a mhun guard trainee":"ignored",
+    "a mhun archer":"ignored",
     "a mhun labourer":"ignored",
-    "a master mhun miner":"ignored",
+    "a mhun conjuror":"ignored",
     "Sir Mertyn, Grand Champion of Moghedu":"ignored",
     "Master Tarrin":"ignored",
-    "a mhun conjuror":"ignored",
+    "a master mhun miner":"ignored",
     "Master Scout Madira":"ignored",
     "the Great Mhunna":"ignored",
     "a mhun knight":"ignored",
@@ -418,7 +432,7 @@
     "Mhunk, an inattentive mhun miner":"ignored",
     "a mhun demolitionist":"ignored",
     "Guard Captain Haedra":"ignored",
-    "Guard Captain Darion":"ignored",
+    "Commander Kalesh":"ignored",
     "Guard Captain Chelak":"ignored"
   },
   "the Southern Zaphar River":{
@@ -429,11 +443,11 @@
     "Gorblatt, the orc chieftain":"ignored",
     "an orc bodyguard":"ignored",
     "an orc soldier":"ignored",
-    "an orc woman":"ignored",
     "Gothmog, the orc witch doctor":"ignored",
+    "an orc woman":"ignored",
     "a diminutive orc servant":"ignored",
-    "Thrakma, the butcher":"ignored",
-    "Grashna, the tanner":"ignored"
+    "Grashna, the tanner":"ignored",
+    "Thrakma, the butcher":"ignored"
   },
   "Suliel Island":{
     "a playful young girl":"ignored",
@@ -457,54 +471,33 @@
     "a large bandit":"ignored",
     "Gontathis, the Master Thief":"ignored"
   },
-  "Annwyn":{
-    "a fairy Knight of Sidhe":"ignored",
-    "a crazed kelpie":"ignored",
-    "Faylinn, Lady of Unsidhe Court":"ignored",
-    "a fairy Lady of Sidhe":"ignored",
-    "a wild kelpie":"ignored",
-    "a Fomori of Unsidhe":"ignored",
-    "a fiendish nightmare":"ignored",
-    "an Unsidhe Banshee":"ignored",
-    "a lake fairy":"ignored",
-    "Balorr, Chieftain of the Fomori":"ignored",
-    "a frenzied bloodworm":"ignored",
-    "Gwyllion, the Swamp Crone":"ignored",
-    "a swamp dweller":"ignored",
-    "a fairy mistress":"ignored"
+  "the ruins of Phereklos":{
+    "a black sea bass":"ignored",
+    "a large bull shark":"ignored",
+    "an abyssal chargefish":"ignored",
+    "a multi-headed water hydra":"ignored",
+    "a blue-spotted stingray":"ignored",
+    "a school of clownfish":"ignored",
+    "a hideous, writhing squid":"ignored",
+    "a bleeding salt-water cod":"ignored"
   },
   "Hashan":[],
-  "Zanzibaar":{
-    "an island man":"ignored",
-    "Djulsan, King of Zanzibaar":"ignored",
-    "a giant tortoise":"ignored",
-    "Semmor, the dhow-maker":"ignored",
-    "a silvery scombra":"ignored",
-    "Fimsirun, a foreign prince":"ignored",
-    "Alsimhinda, Queen of Zanzibaar":"ignored",
-    "a palace servant":"ignored",
-    "Vadoor":"ignored",
-    "Abelsa":"ignored",
-    "Lordan Colse":"ignored",
-    "an island woman":"ignored",
-    "a surly smuggler":"ignored",
-    "Yuskah, the witchdoctor":"ignored",
-    "a red-banded cobra":"ignored",
-    "an elusive shapeshifter":"ignored",
-    "an islander in a dhow":"ignored",
-    "a sleek mongoose":"ignored",
-    "Silana, Siren of the Hoalanatha":"ignored",
-    "a spotted porpoise":"ignored",
-    "a burly dockhand":"ignored",
-    "a sea nettle":"ignored",
-    "a royal guard of Zanzibaar":"ignored",
-    "a ghost crab":"ignored",
-    "Princess Qitala":"ignored",
-    "a bare-chested sailor":"ignored",
-    "a Baarian tiger":"ignored",
-    "a red colobus":"ignored",
-    "Paedri":"ignored",
-    "Makran, an island trader":"ignored"
+  "the Island of Tuar":{
+    "a spotted pernicon":"ignored",
+    "a warty stonefish":"ignored",
+    "a sinuous white salamander":"ignored",
+    "a speckled eel":"ignored",
+    "Tor'Yasir, Headsman of the Tuari":"ignored",
+    "a Nelbennir dart-thrower":"ignored",
+    "a Nelbennir alchemist":"ignored",
+    "a throng of swarming horax":"ignored",
+    "an eight-legged aspis":"ignored",
+    "a Nelbennir scout":"ignored",
+    "Lythlyss, the Nelbennir warder":"ignored",
+    "a mottled green aratha":"ignored",
+    "Kir'Akan, a Tuari warrior":"ignored",
+    "Lin'Elar, a Tuari girl-child":"ignored",
+    "a Nelbennir elder":"ignored"
   },
   "Kunapi Island":{
     "a redfin tuna":"ignored",
@@ -514,15 +507,46 @@
     "a giant sea serpent":"ignored",
     "a feral cat":"ignored"
   },
-  "New Thera":{
-    "Lyaeus, the travelling bard":"ignored"
+  "Ashtan":{
+    "a crow":"ignored"
   },
-  "the Sangre Plains":{
-    "a groundhog":"ignored",
-    "a sheep":"ignored",
-    "a vulture":"ignored",
-    "a rugged buffalo":"ignored",
-    "a smoke-wreathed ictheli":"ignored"
+  "Istarion":{
+    "a watch spider outrider":"ignored",
+    "a watch spider":"ignored",
+    "a priestess of Life":"ignored",
+    "Arafaile, priestess of Life":"ignored",
+    "Sariontari, Queen of Istarion":"ignored",
+    "Maal'ryn Asgarai, Outrider Ascendant":"ignored",
+    "an austere Tsol'dasi":"ignored",
+    "Vargalast Megurun, Revered Counsellor":"ignored",
+    "Santhrar, a young prince":"ignored",
+    "a joyful Tsol'dasi villager":"ignored",
+    "a watch spiderling":"ignored",
+    "Tsui'zhir, Whisper Ascendant":"ignored",
+    "Saldesari Elisanil, Warren Ascendant":"ignored",
+    "a grey-haired Tsol'dasi":"ignored",
+    "Hethern Silwenil, Revered Counsellor":"ignored",
+    "a whisper spider outrider":"ignored",
+    "Dalendra Asgarai, Revered Counsellor":"ignored",
+    "a hooded Tsol'dasi villager":"ignored",
+    "a Tsol'dasi villager":"ignored",
+    "an astrologer":"ignored",
+    "a whisper spiderling":"ignored",
+    "Oraiya Silwenil":"ignored",
+    "a sword spiderling":"ignored",
+    "Sindrastar Nerrinth, the High Counsellor":"ignored",
+    "an extravagantly dressed Tsol'dasi":"ignored",
+    "Cervantha, the Caretaker":"ignored",
+    "Shantuir, Watch Ascendant":"ignored",
+    "Eriador, the Tsol'dasi merchant master":"ignored",
+    "Khurthia, Sword Ascendant":"ignored",
+    "an acolyte of Life":"ignored",
+    "a whisper spider":"ignored",
+    "a knight of the King's Guard":"ignored",
+    "a sword spider":"ignored",
+    "a studious Tsol'dasi":"ignored",
+    "a sword spider outrider":"ignored",
+    "a Tsol'dasi merchant":"ignored"
   },
   "The Alcazar":{
     "Archoura, Captain of the Guard":"ignored",
@@ -566,7 +590,7 @@
   },
   "the Battlesite of Mourning Pass":{
     "Commander Farista Errikale":"ignored",
-    "a battered Ashtani lieutenant":"ignored",
+    "a frightened young squire":"ignored",
     "a dishevelled young squire":"ignored",
     "Commander Malrian Kyra":"ignored",
     "a queen sylphid beetle":"ignored",
@@ -578,7 +602,7 @@
     "an injured knight":"ignored",
     "a lost knight errant":"ignored",
     "a heavily armoured warrior sylphid beetle":"ignored",
-    "a frightened young squire":"ignored"
+    "a battered Ashtani lieutenant":"ignored"
   },
   "the Lost City of Kasmarkin":{
     "a mummified troll guardian":"ignored",
@@ -588,27 +612,29 @@
     "a pale, gaunt spectre":"ignored",
     "an enraged spectre":"ignored"
   },
-  "the Eastern Shore":{
-    "a white-winged sandpiper":"ignored",
-    "a bare-chested pirate":"ignored",
-    "a barnacle encrusted oyster":"ignored",
-    "a king barracuda":"ignored"
+  "the Darkenwood Forest":{
+    "a dark arachnoi man":"ignored",
+    "a midnight stag":"ignored",
+    "a huge pulsating spider":"ignored",
+    "Istishia, the Arachnoi Queen":"ignored",
+    "a dark arachnoi woman":"ignored"
   },
   "the Aalen Forest":{
     "Tu'eras, the Tsol'aa King":"ignored",
-    "a monstrous squid":"ignored",
+    "a hissing, mutated mermaid":"ignored",
     "a vicious, mutated mermaid":"ignored",
     "a forest basilisk":"ignored",
     "a disfigured merman":"ignored",
-    "a hissing, mutated mermaid":"ignored",
-    "Celaabi, the Tsol'aa Queen Mother":"ignored",
-    "a Tsol'aa ranger":"ignored"
+    "a monstrous squid":"ignored",
+    "a Tsol'aa ranger":"ignored",
+    "Celaabi, the Tsol'aa Queen Mother":"ignored"
   },
   "the Rainforest of Shala-Khulia":{
     "a cat-eyed snake":"ignored"
   },
-  "Radak's Hold":{
-    "a Murai assassin":"ignored"
+  "the Northreach Forest":{
+    "an incorporeal shadow":"ignored",
+    "a speckled fawn":"ignored"
   },
   "the valley of Kuthalebak":{
     "Balex, Solarn of Kuthalebak":"ignored",
@@ -616,8 +642,8 @@
     "a chion ooze":"ignored"
   },
   "Sllshya's Maw":{
-    "a lesser water elemental":"ignored",
     "a greater air elemental":"ignored",
+    "a lesser water elemental":"ignored",
     "a lesser air elemental":"ignored"
   },
   "Forest Watch":{
@@ -646,14 +672,14 @@
     "a hydroform fawn":"ignored"
   },
   "the Istar Jungle":{
-    "a blue-crowned ifrit":"ignored",
+    "a foot-pad lizard":"ignored",
     "a flying viper":"ignored",
     "a giant gwaeron":"ignored",
-    "a foot-pad lizard":"ignored",
+    "a bearded pig":"ignored",
     "a monstrous gamling spider":"ignored",
     "an agile kamatlan":"ignored",
     "an armoured boalisk":"ignored",
-    "a bearded pig":"ignored"
+    "a blue-crowned ifrit":"ignored"
   },
   "somewhere in the Notic Ocean":{
     "a whitetip shark":"ignored",
@@ -669,30 +695,27 @@
     "a carnivorous lycopod":"ignored"
   },
   "the Vashnar Mountains":{
-    "a bighorn sheep":"ignored",
     "the wizard Hycanthus":"ignored",
+    "a bighorn sheep":"ignored",
     "a muscular mountain lion":"ignored"
   },
   "the gypsy village Manusha":{
     "Vishengo":"ignored"
   },
   "Colchis":{
-    "a Colchian warrior":"ignored",
+    "Frewynne, the Warrior Chieftess":"ignored",
     "a Colchian warrioress":"ignored",
-    "a cloaked assassin":"ignored",
     "Thorlis, the Warrior Chieftain":"ignored",
+    "a cloaked assassin":"ignored",
     "Siathana, the Healer":"ignored",
     "Vray, a fortress servant":"ignored",
-    "Frewynne, the Warrior Chieftess":"ignored"
+    "a Colchian warrior":"ignored"
   },
   "the River Mnemosyne":{
     "an alligator":"ignored"
   },
-  "the Isle of Delos":{
-    "a shifting mass of shadows":"ignored",
-    "an eight-legged goblin":"ignored",
-    "a fur-covered ogre":"ignored",
-    "a raging goblinoid scarab-rider":"ignored"
+  "Wegava Valley":{
+    "the Mahk":"ignored"
   },
   "Garash's Grief":{
     "a greater earth elemental":"ignored",
@@ -705,25 +728,25 @@
     "Lavarin Pelendur, the Shah":"ignored",
     "a cursed revenant":"ignored",
     "a hunchbacked feyr":"ignored",
-    "Yurasta Tarcalion, the Thaumaturge":"ignored",
     "a menacing gargoyle":"ignored",
+    "Yurasta Tarcalion, the Thaumaturge":"ignored",
     "a revenant tontra":"ignored",
-    "a hideous nel'dorath":"ignored",
+    "a corpulent rilma worm":"ignored",
     "a shimmering gloomwing moth":"ignored",
     "a feral gangrel":"ignored",
-    "a fearsome cave hunter":"ignored",
     "Ramainen Tarcalion, Outrider Ascendant":"ignored",
     "a greyish-green culuma":"ignored",
+    "a fearsome cave hunter":"ignored",
     "a jagged quorin":"ignored",
     "Halatir Pelendur, former Shah of Morindar":"ignored",
-    "a corpulent rilma worm":"ignored"
+    "a hideous nel'dorath":"ignored"
   },
   "the fathomless expanse of the corrupted World Tree":{
     "a huge rat":"ignored",
-    "a greater air elemental":"ignored",
-    "a lesser water elemental":"ignored",
+    "a greater water elemental":"ignored",
     "a lesser air elemental":"ignored",
-    "a greater water elemental":"ignored"
+    "a lesser water elemental":"ignored",
+    "a greater air elemental":"ignored"
   },
   "the Aeraithian Falls":{
     "Elnai, Elder of Aeraithia":"ignored"
@@ -740,72 +763,50 @@
     "Nevon Talkar":"ignored",
     "Dakrol, the Swiftblade":"ignored"
   },
-  "the Shamtota Hills":{
-    "the giant dwarf Tordahl":"ignored"
+  "the Peshwar Delta":{
+    "a barnacle encrusted oyster":"ignored"
   },
   "Manara Burrow":{
     "Ebra, Matriarch of the Mingruk":2,
     "a cowering Mingruk miner":2,
     "an atavian slave":4,
     "a burly Mingruk slave":2,
-    "a Mingruk caregiver":2,
+    "Bissa, a Mingruk waterbearer":2,
     "an arrogant gnoll woman":1,
-    "Hrorknar, the gnoll smith":1,
-    "a water-bearing Mingruk woman":2,
-    "a smirking gnoll slaver":2,
     "Vorluck, Captain of the gnoll guard":1,
-    "a grook slave":"4",
-    "a human slave":4,
-    "Tuomo, an elder Mingruk":2,
+    "a water-bearing Mingruk woman":2,
+    "Hrorknar, the gnoll smith":1,
     "a flail-wielding gnoll sentry":1,
-    "Ala, Lirthak's wife":1,
-    "a sneering gnoll guard":1,
-    "Uhtan, the head farmer":2,
     "Thriel, an angry Mingruk miner":2,
     "Lirthak, Chief of the gnoll":1,
-    "Iofio, a Mingruk cook":"2",
+    "Tuomo, an elder Mingruk":2,
+    "Mawezel, grandson of Ebra":2,
+    "Ala, Lirthak's wife":1,
+    "a sneering gnoll guard":1,
     "a hard-working Mingruk farmer":2,
-    "Glartharg, a gnoll commander":1,
-    "Ograk, a gnoll Sergeant":1,
+    "a grook slave":"4",
+    "a human slave":4,
     "a dirt-covered earthworm":4,
+    "Glartharg, a gnoll commander":1,
+    "Uhtan, the head farmer":2,
+    "Ograk, a gnoll Sergeant":1,
+    "Iofio, a Mingruk cook":"2",
     "a female tsol'aa pleasure slave":4,
     "a vicious gnoll soldier":1,
-    "Mawezel, grandson of Ebra":2,
+    "a Mingruk caregiver":2,
     "Vorlatan, a Mingruk farmer":2,
-    "Bissa, a Mingruk waterbearer":2,
+    "a smirking gnoll slaver":2,
     "an apathetic gnoll sentinel":1
   },
-  "the Vents of Hthrak":{
-    "a dirangi cub":"ignored",
-    "Geltar, Patriarch of the Dirangi":"ignored",
-    "the ozhera matriarch":"ignored",
-    "an ozhera chick":"ignored",
-    "an ozhera minorus":"ignored",
-    "a sleek dirangi":"ignored",
-    "a lean dirangi":"ignored"
+  "the village of Tasur'ke":{
+    "a barnacle encrusted oyster":"ignored",
+    "a man-eating shark":"ignored"
   },
   "Eirenwaar Island":{
     "a black tailed doe":"ignored"
   },
-  "deep below the sea":{
-    "a pale, four-fin ray":"ignored",
-    "a duskfin tuna":"ignored",
-    "an ivory bloomshell turtle":"ignored",
-    "a redfin tuna":"ignored",
-    "a whiskerknot skrei":"ignored",
-    "a sea cucumber":"ignored",
-    "a gigantic sea spider":"ignored",
-    "a spotted fangtooth":"ignored",
-    "a malevolent sea dragon":"ignored",
-    "a hideaway nautilus":"ignored",
-    "a serpentine merrow":"ignored",
-    "a two-headed fish":"ignored",
-    "a peppermint stripefish":"ignored",
-    "a herd of hippocampi":"ignored",
-    "a millstone fish":"ignored",
-    "a giant hatchetfish":"ignored",
-    "a hulking geryas":"ignored",
-    "a coelacanth":"ignored"
+  "the sewers of Ashtan":{
+    "a murderous thug":"ignored"
   },
   "the Southern Vashnar Mountains":{
     "a mountain grizzly":"ignored",
@@ -842,75 +843,6 @@
     "an energetic goblin boy":"ignored",
     "a goblin girl":"ignored"
   },
-  "Xhaiden Dale":{
-    "a colossal water strider":"ignored",
-    "a wild caribou":"ignored",
-    "a fierce black crane":"ignored",
-    "a huge swamp crocodile":"ignored",
-    "Veshina":"ignored"
-  },
-  "the Stone Forest":{
-    "a greater caterpin":"ignored"
-  },
-  "the Isle of Prin":{
-    "a wild pig":"ignored",
-    "a xorani hunter":"ignored",
-    "Bikia":"ignored",
-    "Prui":"ignored",
-    "a xorani temple guard":"ignored",
-    "Chak":"ignored",
-    "Shiraxa":"ignored",
-    "an imposing cockatrice":"ignored",
-    "the Underkeeper":"ignored",
-    "a dark, baleful spectre":"ignored",
-    "a small xorani child":"ignored",
-    "an elderly xoran":"ignored",
-    "a xorani guardian":"ignored",
-    "a xorani priestess":"ignored",
-    "Elder Sef":"ignored",
-    "a dark shroud":"ignored",
-    "Master Hunter Juravi":"ignored",
-    "Urandesea, Guardian of the Oracle":"ignored",
-    "a dark, lithe puma":"ignored"
-  },
-  "the Eastern Wilderness":{
-    "a blue-bottomed switchfly":"ignored",
-    "a king barracuda":"ignored"
-  },
-  "the Azdun Catacombs":{
-    "Underlord Dreyvos":"ignored",
-    "a cursed phantasm":"ignored",
-    "a vicious ghast":"ignored",
-    "Malvoc, the Unholy":"ignored",
-    "a flesh-eating slug":"ignored",
-    "an unravelling mummy":"ignored",
-    "an accursed skeleton":"ignored",
-    "Underlord Seroth":"ignored",
-    "an undead knight":"ignored",
-    "Rhuzios, the Mummy Lord":"ignored",
-    "a decaying lich":"ignored",
-    "a shambling zombie":"ignored",
-    "Ulgase, the lich crone":"ignored"
-  },
-  "Targossas":[],
-  "the Darkenwood Forest":{
-    "a dark arachnoi man":"ignored",
-    "a midnight stag":"ignored",
-    "a huge pulsating spider":"ignored",
-    "Istishia, the Arachnoi Queen":"ignored",
-    "a dark arachnoi woman":"ignored"
-  },
-  "the Mesmerium":{
-    "a dream horror":"ignored"
-  },
-  "the village of Tasur'ke":{
-    "a barnacle encrusted oyster":"ignored",
-    "a man-eating shark":"ignored"
-  },
-  "the Ghezavat Commune":{
-    "a Skullsworn berserker":"ignored",
-    "a bearded Ghezavati man":"ignored"
-  },
   "the Isle of Ageiro":{
     "a tin lizard":"ignored",
     "a copper malagma":"ignored",
@@ -921,9 +853,159 @@
     "a silver malagma":"ignored",
     "a nickel snake":"ignored",
     "a graphite spider":"ignored",
+    "Ferran, an iron malagma":"ignored",
     "a lead beetle":"ignored",
-    "Giacinto, a golden malagma":"ignored",
-    "Ferran, an iron malagma":"ignored"
+    "Giacinto, a golden malagma":"ignored"
+  },
+  "the Stone Forest":{
+    "a greater caterpin":"ignored"
+  },
+  "the Ioje compound":{
+    "a brawny warrior slave":"ignored"
+  },
+  "the Vents of Hthrak":{
+    "a dirangi cub":"ignored",
+    "Geltar, Patriarch of the Dirangi":"ignored",
+    "the ozhera matriarch":"ignored",
+    "an ozhera chick":"ignored",
+    "an ozhera minorus":"ignored",
+    "a sleek dirangi":"ignored",
+    "a lean dirangi":"ignored"
+  },
+  "the Azdun Catacombs":{
+    "Underlord Dreyvos":"ignored",
+    "a cursed phantasm":"ignored",
+    "a vicious ghast":"ignored",
+    "an unravelling mummy":"ignored",
+    "a flesh-eating slug":"ignored",
+    "Malvoc, the Unholy":"ignored",
+    "an accursed skeleton":"ignored",
+    "Underlord Seroth":"ignored",
+    "Rhuzios, the Mummy Lord":"ignored",
+    "an undead knight":"ignored",
+    "a decaying lich":"ignored",
+    "a shambling zombie":"ignored",
+    "Ulgase, the lich crone":"ignored"
+  },
+  "the Isle of Prin":{
+    "a wild pig":"ignored",
+    "a xorani hunter":"ignored",
+    "Bikia":"ignored",
+    "Prui":"ignored",
+    "a xorani temple guard":"ignored",
+    "Chak":"ignored",
+    "Master Hunter Juravi":"ignored",
+    "an imposing cockatrice":"ignored",
+    "the Underkeeper":"ignored",
+    "a small xorani child":"ignored",
+    "a dark, baleful spectre":"ignored",
+    "an elderly xoran":"ignored",
+    "a xorani guardian":"ignored",
+    "a xorani priestess":"ignored",
+    "Elder Sef":"ignored",
+    "a dark shroud":"ignored",
+    "a dark, lithe puma":"ignored",
+    "Urandesea, Guardian of the Oracle":"ignored",
+    "Shiraxa":"ignored"
+  },
+  "the Tower of Falaq'tor":{
+    "a Tsol'dasi guardian":"ignored"
+  },
+  "the Mesmerium":{
+    "a dream horror":"ignored"
+  },
+  "the Eastern Wilderness":{
+    "a blue-bottomed switchfly":"ignored",
+    "a king barracuda":"ignored"
+  },
+  "the Ghezavat Commune":{
+    "a Skullsworn berserker":"ignored",
+    "a bearded Ghezavati man":"ignored"
+  },
+  "the Shamtota Hills":{
+    "the giant dwarf Tordahl":"ignored"
+  },
+  "deep below the sea":{
+    "a pale, four-fin ray":"ignored",
+    "a two-headed fish":"ignored",
+    "an ivory bloomshell turtle":"ignored",
+    "a redfin tuna":"ignored",
+    "a whiskerknot skrei":"ignored",
+    "a sea cucumber":"ignored",
+    "a gigantic sea spider":"ignored",
+    "a spotted fangtooth":"ignored",
+    "a malevolent sea dragon":"ignored",
+    "a hideaway nautilus":"ignored",
+    "a serpentine merrow":"ignored",
+    "a duskfin tuna":"ignored",
+    "a peppermint stripefish":"ignored",
+    "a herd of hippocampi":"ignored",
+    "a millstone fish":"ignored",
+    "a giant hatchetfish":"ignored",
+    "a hulking geryas":"ignored",
+    "a coelacanth":"ignored"
+  },
+  "the Sangre Plains":{
+    "a groundhog":"ignored",
+    "a sheep":"ignored",
+    "a vulture":"ignored",
+    "a rugged buffalo":"ignored",
+    "a smoke-wreathed ictheli":"ignored"
+  },
+  "Cyrene":[],
+  "the Isle of Delos":{
+    "a shifting mass of shadows":"ignored",
+    "an eight-legged goblin":"ignored",
+    "a fur-covered ogre":"ignored",
+    "a raging goblinoid scarab-rider":"ignored"
+  },
+  "Tenwat Prison":{
+    "Alsilan, the condemned":"ignored",
+    "a creaking rust golem":"ignored",
+    "a pair of grasping hands":"ignored",
+    "a crazed prison guard":"ignored",
+    "a pulsing artery":"ignored",
+    "a wall of limbs":"ignored",
+    "a howling blood mastiff":"ignored",
+    "Saunders, the prison warden":"ignored",
+    "a massive crimson orb":"ignored",
+    "Lican, a mad occultist":"ignored",
+    "a screaming head":"ignored",
+    "a berserk prisoner":"ignored"
+  },
+  "Grukai Swamp":{
+    "a putrid green crab":"ignored",
+    "an aggressive dulosi minorus":"ignored",
+    "an energetic red turtle":"ignored",
+    "a multicoloured boa constrictor":"ignored",
+    "a serpentine tssalo":"ignored",
+    "a vicious dulosi majorus":"ignored",
+    "a crocodile":"ignored",
+    "a giant leech":"ignored",
+    "a school of vicious piranha":"ignored",
+    "a sinister glubber":"ignored",
+    "a bunyip":"ignored",
+    "a giant puffball":"ignored",
+    "a tentacled polyp":"ignored",
+    "a transparent cahno":"ignored",
+    "a reedy green buom":"ignored",
+    "a thornback frog":"ignored",
+    "a vicious swarm of acacidic ants":"ignored",
+    "an enormous anaconda":"ignored",
+    "an azure koparfish":"ignored",
+    "a mud urchin":"ignored"
+  },
+  "Targossas":[],
+  "the Daoric Plains":{
+    "a menacing henchman":"ignored",
+    "Khovsgol, the Black":"ignored",
+    "a surly horse thief":"ignored",
+    "a majestic grey elephant":"ignored"
+  },
+  "the Fissure of Echoes":{
+    "a monstrous crystal spider":"ignored",
+    "a demented cannibal":"ignored",
+    "a glacial windviper":"ignored"
   },
   "the Azdun Dungeon":{
     "Xylthus the Outcast":"ignored",
@@ -936,9 +1018,9 @@
     "a revolting ghoul":"ignored",
     "a decaying zombie":"ignored",
     "a hobgoblin warrior":"ignored",
-    "a vampire":"ignored",
-    "Zsarachnor, the Vampire Lord":"ignored",
     "a hill giant":"ignored",
+    "a choke creeper":"ignored",
+    "a vampire":"ignored",
     "a wraith":"ignored",
     "a pale vampiress":"ignored",
     "a mummy":"ignored",
@@ -948,110 +1030,8 @@
     "a goblin zombie":"ignored",
     "a huge pulsating spider":"ignored",
     "a mhun worker":"ignored",
-    "a choke creeper":"ignored",
+    "Zsarachnor, the Vampire Lord":"ignored",
     "Ulgase, the lich crone":"ignored"
-  },
-  "Clockwork Isle":{
-    "a suit of guardian armour":"ignored",
-    "a wire-frame man":"ignored",
-    "a drudge goon":"ignored",
-    "an animated porcelain doll":"ignored",
-    "Tick, the clockwork man":"ignored"
-  },
-  "the salt mines of Ulsyndar":{
-    "Anttan, the mess cook":"ignored",
-    "a prison miner":"ignored",
-    "an off-duty prison guard":"ignored",
-    "a stocky dwarf foreman":"ignored",
-    "an Ulsyndar guard":"ignored",
-    "Emmith, a sullen blacksmith":"ignored",
-    "a disgruntled salt miner":"ignored"
-  },
-  "the Peshwar Delta":{
-    "a barnacle encrusted oyster":"ignored"
-  },
-  "Tenwat Prison":{
-    "Alsilan, the condemned":"ignored",
-    "a berserk prisoner":"ignored",
-    "a pair of grasping hands":"ignored",
-    "a wall of limbs":"ignored",
-    "a pulsing artery":"ignored",
-    "a crazed prison guard":"ignored",
-    "a howling blood mastiff":"ignored",
-    "Saunders, the prison warden":"ignored",
-    "a massive crimson orb":"ignored",
-    "Lican, a mad occultist":"ignored",
-    "a screaming head":"ignored",
-    "a creaking rust golem":"ignored"
-  },
-  "the frozen tundra":{
-    "an ice scarab":"ignored",
-    "Shmeeg, an old wendigo":"ignored",
-    "a massive wendigo":"ignored",
-    "a sabre walrus":"ignored",
-    "an ice bear":"ignored",
-    "a woolly mammoth":"ignored",
-    "a diamond fish":"ignored"
-  },
-  "Istarion":{
-    "a watch spider outrider":"ignored",
-    "a watch spider":"ignored",
-    "a priestess of Life":"ignored",
-    "a sword spider":"ignored",
-    "Sariontari, Queen of Istarion":"ignored",
-    "Maal'ryn Asgarai, Outrider Ascendant":"ignored",
-    "a studious Tsol'dasi":"ignored",
-    "Vargalast Megurun, Revered Counsellor":"ignored",
-    "a Tsol'dasi merchant":"ignored",
-    "a joyful Tsol'dasi villager":"ignored",
-    "a watch spiderling":"ignored",
-    "Tsui'zhir, Whisper Ascendant":"ignored",
-    "Saldesari Elisanil, Warren Ascendant":"ignored",
-    "a grey-haired Tsol'dasi":"ignored",
-    "Hethern Silwenil, Revered Counsellor":"ignored",
-    "a whisper spider outrider":"ignored",
-    "Dalendra Asgarai, Revered Counsellor":"ignored",
-    "a hooded Tsol'dasi villager":"ignored",
-    "a Tsol'dasi villager":"ignored",
-    "an astrologer":"ignored",
-    "a whisper spiderling":"ignored",
-    "Oraiya Silwenil":"ignored",
-    "a sword spiderling":"ignored",
-    "Sindrastar Nerrinth, the High Counsellor":"ignored",
-    "an extravagantly dressed Tsol'dasi":"ignored",
-    "Arafaile, priestess of Life":"ignored",
-    "Shantuir, Watch Ascendant":"ignored",
-    "Eriador, the Tsol'dasi merchant master":"ignored",
-    "Khurthia, Sword Ascendant":"ignored",
-    "an acolyte of Life":"ignored",
-    "a whisper spider":"ignored",
-    "a knight of the King's Guard":"ignored",
-    "Cervantha, the Caretaker":"ignored",
-    "an austere Tsol'dasi":"ignored",
-    "a sword spider outrider":"ignored",
-    "Santhrar, a young prince":"ignored"
-  },
-  "the Daoric Plains":{
-    "a majestic grey elephant":"ignored",
-    "a surly horse thief":"ignored",
-    "Khovsgol, the Black":"ignored",
-    "a menacing henchman":"ignored"
-  },
-  "the Dardanic Grasslands":{
-    "a shaggy buffalo":"ignored",
-    "a woolly barmotez":"ignored",
-    "a savannah grizzly":"ignored"
-  },
-  "Cor Triphyn":{
-    "a colossal, hulking ghoul":"ignored",
-    "a horrendous ghoul":"ignored",
-    "a smoke-wreathed ictheli":"ignored",
-    "a rotting zombie":"ignored",
-    "a clattering skeleton":"ignored",
-    "a luminescent ghost":"ignored",
-    "an intensely bright wisp":"ignored",
-    "an Elite Death Knight":"ignored",
-    "a transparent, glowing wight":"ignored"
   },
   "the Granite Hills":{
     "a female hill giant":"ignored",
@@ -1118,58 +1098,81 @@
   },
   "the fathomless expanse of the World Tree":{
     "a lesser fire elemental":"ignored",
-    "a bulbous banovaettr":"ignored",
-    "a rajamala slaver":"ignored",
+    "a haskrovska vine":"ignored",
     "a spined caterpillar":"ignored",
+    "a huge rat":"ignored",
     "a greater water elemental":"ignored",
     "a greater air elemental":"ignored",
     "a giant honey bee":"ignored",
     "a lesser water elemental":"ignored",
-    "a huge rat":"ignored",
+    "a rajamala slaver":"ignored",
     "a lesser air elemental":"ignored",
-    "a haskrovska vine":"ignored"
+    "a bulbous banovaettr":"ignored"
   },
-  "Wegava Valley":{
-    "the Mahk":"ignored"
+  "the Dardanic Grasslands":{
+    "a shaggy buffalo":"ignored",
+    "a woolly barmotez":"ignored",
+    "a savannah grizzly":"ignored"
   },
-  "the ruins of Phereklos":{
-    "a school of clownfish":"ignored",
-    "a large bull shark":"ignored",
-    "an abyssal chargefish":"ignored",
-    "a bleeding salt-water cod":"ignored",
-    "a blue-spotted stingray":"ignored",
-    "a black sea bass":"ignored",
-    "a hideous, writhing squid":"ignored",
-    "a multi-headed water hydra":"ignored"
+  "Annwyn":{
+    "a fairy mistress":"ignored",
+    "a crazed kelpie":"ignored",
+    "Faylinn, Lady of Unsidhe Court":"ignored",
+    "a fairy Lady of Sidhe":"ignored",
+    "a wild kelpie":"ignored",
+    "a Fomori of Unsidhe":"ignored",
+    "a fiendish nightmare":"ignored",
+    "an Unsidhe Banshee":"ignored",
+    "a lake fairy":"ignored",
+    "Balorr, Chieftain of the Fomori":"ignored",
+    "a frenzied bloodworm":"ignored",
+    "Gwyllion, the Swamp Crone":"ignored",
+    "a swamp dweller":"ignored",
+    "a fairy Knight of Sidhe":"ignored"
   },
-  "the Island of Tuar":{
-    "a spotted pernicon":"ignored",
-    "Tor'Yasir, Headsman of the Tuari":"ignored",
-    "a sinuous white salamander":"ignored",
-    "a speckled eel":"ignored",
-    "a warty stonefish":"ignored",
-    "a throng of swarming horax":"ignored",
-    "a Nelbennir alchemist":"ignored",
-    "a Nelbennir dart-thrower":"ignored",
-    "an eight-legged aspis":"ignored",
-    "a Nelbennir scout":"ignored",
-    "Kir'Akan, a Tuari warrior":"ignored",
-    "a mottled green aratha":"ignored",
-    "Lythlyss, the Nelbennir warder":"ignored",
-    "Lin'Elar, a Tuari girl-child":"ignored",
-    "a Nelbennir elder":"ignored"
+  "Zanzibaar":{
+    "an island man":"ignored",
+    "Djulsan, King of Zanzibaar":"ignored",
+    "a giant tortoise":"ignored",
+    "Semmor, the dhow-maker":"ignored",
+    "a silvery scombra":"ignored",
+    "Fimsirun, a foreign prince":"ignored",
+    "Alsimhinda, Queen of Zanzibaar":"ignored",
+    "a palace servant":"ignored",
+    "Vadoor":"ignored",
+    "Abelsa":"ignored",
+    "Lordan Colse":"ignored",
+    "an island woman":"ignored",
+    "a surly smuggler":"ignored",
+    "Yuskah, the witchdoctor":"ignored",
+    "a red-banded cobra":"ignored",
+    "an elusive shapeshifter":"ignored",
+    "an islander in a dhow":"ignored",
+    "a sleek mongoose":"ignored",
+    "Silana, Siren of the Hoalanatha":"ignored",
+    "a spotted porpoise":"ignored",
+    "a burly dockhand":"ignored",
+    "a sea nettle":"ignored",
+    "a royal guard of Zanzibaar":"ignored",
+    "a ghost crab":"ignored",
+    "Princess Qitala":"ignored",
+    "a bare-chested sailor":"ignored",
+    "a Baarian tiger":"ignored",
+    "a red colobus":"ignored",
+    "Paedri":"ignored",
+    "Makran, an island trader":"ignored"
   },
-  "Ashtan":{
-    "a crow":"ignored"
+  "New Thera":{
+    "Lyaeus, the travelling bard":"ignored"
   },
   "the Ulangi Isles":{
     "a gorgeous pheasant":"ignored",
-    "Balai the Scorned":"ignored",
+    "a feisty badger":"ignored",
     "the King Stag":"ignored",
     "a horkval guard":"ignored",
     "a majestic moose":"ignored",
     "a large buck":"ignored",
-    "a feisty badger":"ignored"
+    "Balai the Scorned":"ignored"
   },
   "the Barony of Dun Valley":{
     "a female orc":"ignored",
@@ -1177,19 +1180,19 @@
     "an ogre knight":"ignored",
     "a large, fat hippo":"ignored",
     "a muscular mountain lion":"ignored",
-    "a giant mud beetle":"ignored",
+    "an orc blacksmith":"ignored",
     "an orc cook":"ignored",
     "a warthog":"ignored",
     "a drunk orc":"ignored",
     "a mist wraith":"ignored",
     "an enormous swamp wyvern":"ignored",
-    "a spinorthos":"ignored",
-    "Xulu, an orc witchdoctor":"ignored",
-    "a greyish green crocodile":"ignored",
+    "an ogre huntress":"ignored",
+    "an orc archer":"ignored",
+    "a plague rat":"ignored",
     "an ogre captain":"ignored",
     "Tap'choa, the orc chieftain":"ignored",
     "a mud crab":"ignored",
-    "a dangerous water snake":"ignored",
+    "a swamp dryad":"ignored",
     "an ogre cook":"ignored",
     "a giant water strider":"ignored",
     "an orc captain":"ignored",
@@ -1197,18 +1200,26 @@
     "a bighorn sheep":"ignored",
     "the Great Bull Elephant":"ignored",
     "an orc soldier":"ignored",
-    "an ogre huntress":"ignored",
-    "an orc archer":"ignored",
-    "a plague rat":"ignored",
+    "a spinorthos":"ignored",
+    "Xulu, an orc witchdoctor":"ignored",
+    "a greyish green crocodile":"ignored",
     "a school of piranha":"ignored",
-    "a swamp dryad":"ignored",
+    "a dangerous water snake":"ignored",
     "an ogre bowman":"ignored",
     "an orc sergeant":"ignored",
-    "an orc blacksmith":"ignored",
+    "a giant mud beetle":"ignored",
     "an ogre sentry":"ignored"
   },
-  "the Tower of Falaq'tor":{
-    "a Tsol'dasi guardian":"ignored"
+  "Cor Triphyn":{
+    "a colossal, hulking ghoul":"ignored",
+    "a horrendous ghoul":"ignored",
+    "a smoke-wreathed ictheli":"ignored",
+    "a transparent, glowing wight":"ignored",
+    "a clattering skeleton":"ignored",
+    "a luminescent ghost":"ignored",
+    "an intensely bright wisp":"ignored",
+    "an Elite Death Knight":"ignored",
+    "a rotting zombie":"ignored"
   },
   "the Ilyrean Caves":{
     "Derin, the sakuwat fisher":"ignored",
@@ -1218,14 +1229,17 @@
     "Merkuwan, the skinner":"ignored",
     "a sakuwat ice warrior":"ignored",
     "Molkuwan, the egg protector":"ignored",
-    "Solkuwan, an apprentice sakuwat hunter":"ignored",
+    "a female sakuwat":"ignored",
     "a sakuwat youngling":"ignored",
     "a sakuwat hunter":"ignored",
     "a large male sakuwat":"ignored",
-    "a female sakuwat":"ignored"
+    "Solkuwan, an apprentice sakuwat hunter":"ignored"
   },
-  "the Ioje compound":{
-    "a brawny warrior slave":"ignored"
+  "the Eastern Shore":{
+    "a white-winged sandpiper":"ignored",
+    "a bare-chested pirate":"ignored",
+    "a barnacle encrusted oyster":"ignored",
+    "a king barracuda":"ignored"
   },
   "the Northern Ithmia":{
     "a black lamassu":"ignored"
@@ -1233,47 +1247,33 @@
   "the Tears of Sarapis":{
     "a whitetip shark":"ignored"
   },
-  "the Northreach Forest":{
-    "an incorporeal shadow":"ignored",
-    "a speckled fawn":"ignored"
+  "Radak's Hold":{
+    "a Murai assassin":"ignored"
   },
-  "Grukai Swamp":{
-    "a putrid green crab":"ignored",
-    "an aggressive dulosi minorus":"ignored",
-    "an energetic red turtle":"ignored",
-    "a multicoloured boa constrictor":"ignored",
-    "a serpentine tssalo":"ignored",
-    "a vicious dulosi majorus":"ignored",
-    "a crocodile":"ignored",
-    "a giant leech":"ignored",
-    "a school of vicious piranha":"ignored",
-    "a sinister glubber":"ignored",
-    "a bunyip":"ignored",
-    "a giant puffball":"ignored",
-    "a tentacled polyp":"ignored",
-    "a transparent cahno":"ignored",
-    "a reedy green buom":"ignored",
-    "a thornback frog":"ignored",
-    "a vicious swarm of acacidic ants":"ignored",
-    "an enormous anaconda":"ignored",
-    "an azure koparfish":"ignored",
-    "a mud urchin":"ignored"
+  "the frozen tundra":{
+    "Shmeeg, an old wendigo":"ignored",
+    "an ice scarab":"ignored",
+    "a massive wendigo":"ignored",
+    "a sabre walrus":"ignored",
+    "an ice bear":"ignored",
+    "a woolly mammoth":"ignored",
+    "a diamond fish":"ignored"
   },
   "Isaia":{
     "an amorak":"ignored",
-    "a snow-white ennelin":"ignored",
     "a giant zelahia":"ignored",
+    "a snow-white ennelin":"ignored",
     "Yiastel Tenye":"ignored",
     "a silvery eel":"ignored",
     "a moenai":"ignored"
   },
   "The Gulf of Nilakantha":{
-    "a gigantic sea spider":"ignored",
+    "a massive jellyfish":"ignored",
     "a redfin tuna":"ignored",
     "a hammerhead shark":"ignored",
     "a whiptail stingray":"ignored",
     "a monstrous septacean":"ignored",
-    "a massive jellyfish":"ignored"
+    "a gigantic sea spider":"ignored"
   },
   "the Village of Tomacula":{
     "Elegnem, shaman of Tomacula":"ignored"
@@ -1288,7 +1288,7 @@
     "Ohmut, the Vertan craftswoman":"ignored",
     "Iayh, a mage of House Feranki":"ignored",
     "Rohase, Captain of the Guard":"ignored",
-    "Damek, Feranki Magelord":"ignored",
+    "Rakwor, the Vertani Barkeep":"ignored",
     "Ayod'nai, Whisperer of the All":"ignored",
     "Ghaser, the Vertani cook":"ignored",
     "Battle Captain Miingruan":"ignored",
@@ -1300,7 +1300,7 @@
     "a drunken Vertani":"ignored",
     "a Vertani guard":"ignored",
     "a House Tsez air mage":"ignored",
-    "Rakwor, the Vertani Barkeep":"ignored",
+    "Damek, Feranki Magelord":"ignored",
     "a massive xabat":"ignored",
     "Dynas, the gour trainer":"ignored"
   }
