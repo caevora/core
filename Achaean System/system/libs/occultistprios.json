@@ -1,7 +1,5 @@
 {
   "freezing":{
-    "name":"freezing",
-    "prompt":"<blue>freezing",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -10,25 +8,25 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":8
+    "priority":8,
+    "name":"freezing",
+    "prompt":"<blue>freezing"
   },
   "coldfate":{
-    "name":"coldfate",
-    "prompt":"<red>coldfate",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"coldfate",
+    "prompt":"<red>coldfate"
   },
   "manaleech":{
-    "name":"manaleech",
-    "prompt":"<blue>manaleech",
     "cures":[{
         "type":"smoke",
         "requires":"smoke",
@@ -54,45 +52,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":4
+    "priority":4,
+    "name":"manaleech",
+    "prompt":"<blue>manaleech"
   },
-  "anorexia":{
-    "name":"anorexia",
-    "prompt":"<red>anorexia",
-    "cures":[{
-        "type":"focus",
-        "requires":"focus",
-        "command":"focus",
-        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
-        "cooldown":"focus",
-        "handle":1
-      },{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply epidermal to body",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":2
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":3
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":4
-      }],
-    "priority":7
-  },
-  "calcifiedskull":{
-    "name":"calcifiedskull",
-    "prompt":"<white>calcifiedskull",
+  "mangledhead":{
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -101,11 +65,24 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":10
+    "priority":10,
+    "name":"mangledhead",
+    "prompt":"<red>H3"
+  },
+  "calcifiedskull":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to head",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":10,
+    "name":"calcifiedskull",
+    "prompt":"<white>calcifiedskull"
   },
   "epilepsy":{
-    "name":"epilepsy",
-    "prompt":"<white>epilepsy",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -138,69 +115,52 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":10
+    "priority":10,
+    "name":"epilepsy",
+    "prompt":"<white>epilepsy"
   },
   "hatred":{
-    "name":"hatred",
-    "prompt":"<red>hatred",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"hatred",
+    "prompt":"<red>hatred"
   },
-  "temperedmelancholic":{
-    "name":"temperedmelancholic",
-    "prompt":"<cyan>(MeH <white>0<cyan>)<white>",
+  "fear":{
     "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr ginger;eat ginger",
-          "alchemical":"outr antimony;eat antimony"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
+        "type":"compose",
+        "requires":"free",
+        "command":"compose",
+        "blockers":["sleeping"],
+        "cooldown":"free",
         "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
       }],
-    "priority":14
+    "priority":1,
+    "name":"fear",
+    "prompt":"<white>fear"
   },
   "internalbleeding":{
-    "name":"internalbleeding",
-    "prompt":"<red>internalbleeding",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"internalbleeding",
+    "prompt":"<red>internalbleeding"
   },
   "weariness":{
-    "name":"weariness",
-    "prompt":"<white>weariness",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -226,458 +186,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":8
+    "priority":8,
+    "name":"weariness",
+    "prompt":"<white>weariness"
   },
-  "loneliness":{
-    "name":"loneliness",
-    "prompt":"<white>loneliness",
-    "cures":[{
-        "type":"focus",
-        "requires":"focus",
-        "command":"focus",
-        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
-        "cooldown":"focus",
-        "handle":1
-      },{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr lobelia;eat lobelia",
-          "alchemical":"outr argentum;eat argentum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":2
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":3
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":11
-  },
-  "degenerate":{
-    "name":"degenerate",
-    "prompt":"<red>degenerate",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "pressure":{
-    "requires":"herb",
-    "priority":15,
-    "prompt":"<white> [prs <white>0]",
-    "cures":[{
-        "type":"herb",
-        "command":{
-          "herbal":"outr bellwort;eat bellwort",
-          "alchemical":"outr cuprum;eat cuprum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      }],
-    "name":"pressure"
-  },
-  "silenced":{
-    "name":"silenced",
-    "prompt":"<red>silenced",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "dizziness":{
-    "name":"dizziness",
-    "prompt":"<white>dizziness",
-    "cures":[{
-        "type":"focus",
-        "requires":"focus",
-        "command":"focus",
-        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
-        "cooldown":"focus",
-        "handle":1
-      },{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr goldenseal;eat goldenseal",
-          "alchemical":"outr plumbum;eat plumbum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":2
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":3
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":4
-      }],
-    "priority":10
-  },
-  "silver":{
-    "name":"silver",
-    "prompt":"<red>silver",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":180,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "blackout":{
-    "name":"blackout",
-    "prompt":"<red>blackout",
-    "cures":[{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "webbed":{
-    "name":"webbed",
-    "prompt":"<red>webbed",
-    "cures":[{
-        "type":"balance",
-        "requires":"balance",
-        "command":"writhe",
-        "blockers":["sleeping"],
-        "cooldown":"writhe",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "mangledrightarm":{
-    "name":"mangledrightarm",
-    "prompt":"<red>RA3",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to arms",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":12
-  },
-  "solarburn":{
-    "name":"solarburn",
-    "prompt":"<red>solarburn",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":5,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "shadowmadness":{
-    "name":"shadowmadness",
-    "prompt":"<white>shadowmadness",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr goldenseal;eat goldenseal",
-          "alchemical":"outr plumbum;eat plumbum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":10
-  },
-  "guilt":{
-    "name":"guilt",
-    "prompt":"<white>guilt",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr lobelia;eat lobelia",
-          "alchemical":"outr argentum;eat argentum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":11
-  },
-  "haemophilia":{
-    "name":"haemophilia",
-    "prompt":"<white>haemophilia",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr ginseng;eat ginseng",
-          "alchemical":"outr ferrum;eat ferrum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":9
-  },
-  "shivering":{
-    "name":"shivering",
-    "prompt":"<white>shivering",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply caloric",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":14
-  },
-  "deteriorate":{
-    "name":"deteriorate",
-    "prompt":"<red>deteriorate",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "temperedsanguine":{
-    "name":"temperedsanguine",
-    "prompt":"<cyan>(SaH <white>0<cyan>)<white>",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr ginger;eat ginger",
-          "alchemical":"outr antimony;eat antimony"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":14
-  },
-  "dissonance":{
-    "name":"dissonance",
-    "prompt":"<white>dissonance",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr goldenseal;eat goldenseal",
-          "alchemical":"outr plumbum;eat plumbum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":10
-  },
-  "laceratedthroat":{
-    "name":"laceratedthroat",
-    "prompt":"<yellow>laceratedthroat",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to head",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":10
-  },
-  "demonstain":{
-    "name":"demonstain",
-    "prompt":"<red>demonstain",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "lapsingconsciousness":{
-    "name":"lapsingconsciousness",
-    "prompt":"<red>lapsingconsciousness",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "addiction":{
-    "name":"addiction",
-    "prompt":"<red>addiction",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr ginseng;eat ginseng",
-          "alchemical":"outr ferrum;eat ferrum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":9
-  },
-  "burning":{
-    "name":"burning",
-    "prompt":"<dark_orange>brn(<white>0<dark_orange>)",
+  "selarnia":{
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -700,11 +213,159 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":20
+    "priority":20,
+    "name":"selarnia",
+    "prompt":"<white>selarnia"
   },
-  "unweavingmind":{
-    "name":"unweavingmind",
-    "prompt":"<white> [unwbdy <white>0]",
+  "degenerate":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"degenerate",
+    "prompt":"<red>degenerate"
+  },
+  "pressure":{
+    "requires":"herb",
+    "priority":15,
+    "prompt":"<white> [prs <white>0]",
+    "cures":[{
+        "type":"herb",
+        "command":{
+          "herbal":"outr bellwort;eat bellwort",
+          "alchemical":"outr cuprum;eat cuprum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      }],
+    "name":"pressure"
+  },
+  "silenced":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"silenced",
+    "prompt":"<red>silenced"
+  },
+  "dizziness":{
+    "cures":[{
+        "type":"focus",
+        "requires":"focus",
+        "command":"focus",
+        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
+        "cooldown":"focus",
+        "handle":1
+      },{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr goldenseal;eat goldenseal",
+          "alchemical":"outr plumbum;eat plumbum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":2
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":3
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":4
+      }],
+    "priority":10,
+    "name":"dizziness",
+    "prompt":"<white>dizziness"
+  },
+  "silver":{
+    "cures":[{
+        "seconds":180,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"silver",
+    "prompt":"<red>silver"
+  },
+  "blackout":{
+    "cures":[{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"blackout",
+    "prompt":"<red>blackout"
+  },
+  "webbed":{
+    "cures":[{
+        "type":"balance",
+        "requires":"balance",
+        "command":"writhe",
+        "blockers":["sleeping"],
+        "cooldown":"writhe",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"webbed",
+    "prompt":"<red>webbed"
+  },
+  "mangledrightarm":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to arms",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":12,
+    "name":"mangledrightarm",
+    "prompt":"<red>RA3"
+  },
+  "solarburn":{
+    "cures":[{
+        "seconds":5,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"solarburn",
+    "prompt":"<red>solarburn"
+  },
+  "shadowmadness":{
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -730,24 +391,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":10
+    "priority":10,
+    "name":"shadowmadness",
+    "prompt":"<white>shadowmadness"
   },
-  "skullfractures":{
-    "name":"skullfractures",
-    "prompt":"<cyan> (sku <white>0<cyan>)<white>",
-    "cures":[{
-        "type":"sip",
-        "requires":"sip",
-        "command":"apply health to head",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"sip",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "masochism":{
-    "name":"masochism",
-    "prompt":"<white>masochism",
+  "guilt":{
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -773,20 +421,20 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":11
+    "priority":11,
+    "name":"guilt",
+    "prompt":"<white>guilt"
   },
-  "disloyalty":{
-    "name":"disloyalty",
-    "prompt":"<white>disloyalty",
+  "haemophilia":{
     "cures":[{
-        "type":"smoke",
-        "requires":"smoke",
+        "type":"herb",
+        "requires":"herb",
         "command":{
-          "herbal":"light valerian;smoke valerian",
-          "alchemical":"light realgar;smoke realgar"
+          "herbal":"outr ginseng;eat ginseng",
+          "alchemical":"outr ferrum;eat ferrum"
         },
-        "blockers":["asthma","sleeping"],
-        "cooldown":"smoke",
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
         "handle":1
       },{
         "type":"tree",
@@ -803,11 +451,246 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":5
+    "priority":9,
+    "name":"haemophilia",
+    "prompt":"<white>haemophilia"
+  },
+  "shivering":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply caloric",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":14,
+    "name":"shivering",
+    "prompt":"<white>shivering"
+  },
+  "waterbonds":{
+    "cures":[{
+        "seconds":15,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"waterbonds",
+    "prompt":"<red>waterbonds"
+  },
+  "temperedsanguine":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ginger;eat ginger",
+          "alchemical":"outr antimony;eat antimony"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":14,
+    "name":"temperedsanguine",
+    "prompt":"<cyan>(SaH <white>0<cyan>)<white>"
+  },
+  "calcifiedtorso":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to body",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":17,
+    "name":"calcifiedtorso",
+    "prompt":"<white>calcifiedtorso"
+  },
+  "laceratedthroat":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to head",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":10,
+    "name":"laceratedthroat",
+    "prompt":"<yellow>laceratedthroat"
+  },
+  "demonstain":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"demonstain",
+    "prompt":"<red>demonstain"
+  },
+  "lapsingconsciousness":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"lapsingconsciousness",
+    "prompt":"<red>lapsingconsciousness"
+  },
+  "kkractlebrand":{
+    "cures":[{
+        "type":"sip",
+        "requires":"sip",
+        "command":"sip health",
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"sip",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"kkractlebrand",
+    "prompt":"<white>kkractlebrand"
+  },
+  "burning":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply mending to body",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":20,
+    "name":"burning",
+    "prompt":"<dark_orange>brn(<white>0<dark_orange>)"
+  },
+  "unweavingmind":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr goldenseal;eat goldenseal",
+          "alchemical":"outr plumbum;eat plumbum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":10,
+    "name":"unweavingmind",
+    "prompt":"<white> [unwbdy <white>0]"
+  },
+  "skullfractures":{
+    "cures":[{
+        "type":"sip",
+        "requires":"sip",
+        "command":"apply health to head",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"sip",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"skullfractures",
+    "prompt":"<cyan> (sku <white>0<cyan>)<white>"
+  },
+  "pinshot":{
+    "cures":[{
+        "seconds":21,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"pinshot",
+    "prompt":"<red>pinshot"
+  },
+  "scalded":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply epidermal to head",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":9,
+    "name":"scalded",
+    "prompt":"<white>scalded"
   },
   "clumsiness":{
-    "name":"clumsiness",
-    "prompt":"<white>clumsiness",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -833,11 +716,11 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":8
+    "priority":8,
+    "name":"clumsiness",
+    "prompt":"<white>clumsiness"
   },
   "darkshade":{
-    "name":"darkshade",
-    "prompt":"<white>darkshade",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -870,11 +753,11 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":9
+    "priority":9,
+    "name":"darkshade",
+    "prompt":"<white>darkshade"
   },
   "aeon":{
-    "name":"aeon",
-    "prompt":"<red>AEON",
     "cures":[{
         "type":"smoke",
         "requires":"smoke",
@@ -900,41 +783,25 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":1
+    "priority":1,
+    "name":"aeon",
+    "prompt":"<red>AEON"
   },
-  "peace":{
-    "name":"peace",
-    "prompt":"<red>peace",
+  "vitiated":{
     "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr bellwort;eat bellwort",
-          "alchemical":"outr cuprum;eat cuprum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
+        "seconds":20,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
         "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
       }],
-    "priority":13
+    "priority":1,
+    "name":"vitiated",
+    "prompt":"<red>vitiated"
   },
   "stupidity":{
-    "name":"stupidity",
-    "prompt":"<white>stupidity",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -967,11 +834,11 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":10
+    "priority":10,
+    "name":"stupidity",
+    "prompt":"<white>stupidity"
   },
   "healthleech":{
-    "name":"healthleech",
-    "prompt":"<green>healthleech",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -997,11 +864,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":8
+    "priority":8,
+    "name":"healthleech",
+    "prompt":"<green>healthleech"
   },
   "agoraphobia":{
-    "name":"agoraphobia",
-    "prompt":"<white>agoraphobia",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -1034,11 +901,11 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":11
+    "priority":11,
+    "name":"agoraphobia",
+    "prompt":"<white>agoraphobia"
   },
   "dementia":{
-    "name":"dementia",
-    "prompt":"<white>dementia",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -1071,11 +938,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":12
+    "priority":12,
+    "name":"dementia",
+    "prompt":"<white>dementia"
   },
   "concussion":{
-    "name":"concussion",
-    "prompt":"<white>concussion",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1084,11 +951,11 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":14
+    "priority":14,
+    "name":"concussion",
+    "prompt":"<white>concussion"
   },
   "tenderskin":{
-    "name":"tenderskin",
-    "prompt":"<white>tenderskin",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -1114,25 +981,25 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":11
+    "priority":11,
+    "name":"tenderskin",
+    "prompt":"<white>tenderskin"
   },
-  "airfisted":{
-    "name":"airfisted",
-    "prompt":"<red>airfisted",
+  "dehydrated":{
     "cures":[{
-        "type":"time",
+        "seconds":0,
         "requires":"time",
-        "seconds":15,
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"dehydrated",
+    "prompt":"<red>dehydrated"
   },
   "mangledleftleg":{
-    "name":"mangledleftleg",
-    "prompt":"<red>LL3",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1141,41 +1008,48 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":11
+    "priority":11,
+    "name":"mangledleftleg",
+    "prompt":"<red>LL3"
   },
-  "lethargy":{
-    "name":"lethargy",
-    "prompt":"<white>lethargy",
+  "claustrophobia":{
     "cures":[{
+        "type":"focus",
+        "requires":"focus",
+        "command":"focus",
+        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
+        "cooldown":"focus",
+        "handle":1
+      },{
         "type":"herb",
         "requires":"herb",
         "command":{
-          "herbal":"outr ginseng;eat ginseng",
-          "alchemical":"outr ferrum;eat ferrum"
+          "herbal":"outr lobelia;eat lobelia",
+          "alchemical":"outr argentum;eat argentum"
         },
         "blockers":["anorexia","sleeping"],
         "cooldown":"herb",
-        "handle":1
+        "handle":2
       },{
         "type":"tree",
         "requires":"tree",
         "command":"touch tree",
         "blockers":["paralysis","sleeping"],
         "cooldown":"tree",
-        "handle":2
+        "handle":3
       },{
         "type":"fool",
         "requires":["fool"],
         "command":"fling fool at me",
         "blockers":["sleeping","paralysis"],
         "cooldown":"fool",
-        "handle":3
+        "handle":4
       }],
-    "priority":9
+    "priority":11,
+    "name":"claustrophobia",
+    "prompt":"<white>claustrophobia"
   },
   "brokenleftarm":{
-    "name":"brokenleftarm",
-    "prompt":"<white>LA1",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1198,11 +1072,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":19
+    "priority":19,
+    "name":"brokenleftarm",
+    "prompt":"<white>LA1"
   },
   "torntendons":{
-    "name":"torntendons",
-    "prompt":"<cyan> (ten <white>0<cyan>)<white>",
     "cures":[{
         "type":"sip",
         "requires":"sip",
@@ -1211,11 +1085,11 @@
         "cooldown":"sip",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"torntendons",
+    "prompt":"<cyan> (ten <white>0<cyan>)<white>"
   },
   "frostbite":{
-    "name":"frostbite",
-    "prompt":"<white>frostbite",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1238,25 +1112,25 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":6
+    "priority":6,
+    "name":"frostbite",
+    "prompt":"<white>frostbite"
   },
   "flamefisted":{
-    "name":"flamefisted",
-    "prompt":"<red>flamefisted",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":15,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"flamefisted",
+    "prompt":"<red>flamefisted"
   },
   "mangledrightleg":{
-    "name":"mangledrightleg",
-    "prompt":"<red>RL3",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1265,11 +1139,11 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":11
+    "priority":11,
+    "name":"mangledrightleg",
+    "prompt":"<red>RL3"
   },
   "indifference":{
-    "name":"indifference",
-    "prompt":"<white>indifference",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -1295,11 +1169,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":13
+    "priority":13,
+    "name":"indifference",
+    "prompt":"<white>indifference"
   },
   "shyness":{
-    "name":"shyness",
-    "prompt":"<white>shyness",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -1332,25 +1206,25 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":10
+    "priority":10,
+    "name":"shyness",
+    "prompt":"<white>shyness"
   },
   "enmesh":{
-    "name":"enmesh",
-    "prompt":"<red>enmesh",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":4,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"enmesh",
+    "prompt":"<red>enmesh"
   },
   "heartseed":{
-    "name":"heartseed",
-    "prompt":"<white>heartseed",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1359,55 +1233,39 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":6
+    "priority":6,
+    "name":"heartseed",
+    "prompt":"<white>heartseed"
   },
   "numbedleftarm":{
-    "name":"numbedleftarm",
-    "prompt":"<red>numbedleftarm",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"numbedleftarm",
+    "prompt":"<red>numbedleftarm"
   },
-  "hypersomnia":{
-    "name":"hypersomnia",
-    "prompt":"<white>hypersomnia",
+  "vitrified":{
     "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr ash;eat ash",
-          "alchemical":"outr stannum;eat stannum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
+        "seconds":45,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
         "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
       }],
-    "priority":12
+    "priority":1,
+    "name":"vitrified",
+    "prompt":"<red>vitrified"
   },
   "flushings":{
-    "name":"flushings",
-    "prompt":"<white>flushings",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -1433,11 +1291,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":9
+    "priority":9,
+    "name":"flushings",
+    "prompt":"<white>flushings"
   },
   "generosity":{
-    "name":"generosity",
-    "prompt":"<white>generosity",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -1470,25 +1328,25 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":13
+    "priority":13,
+    "name":"generosity",
+    "prompt":"<white>generosity"
   },
   "icefisted":{
-    "name":"icefisted",
-    "prompt":"<red>icefisted",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":15,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"icefisted",
+    "prompt":"<red>icefisted"
   },
   "transfixation":{
-    "name":"transfixation",
-    "prompt":"<red>transfixation",
     "cures":[{
         "type":"balance",
         "requires":"balance",
@@ -1497,11 +1355,11 @@
         "cooldown":"writhe",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"transfixation",
+    "prompt":"<red>transfixation"
   },
   "whisperingmadness":{
-    "name":"whisperingmadness",
-    "prompt":"<white>whisperingmadness",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -1527,11 +1385,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":6
+    "priority":6,
+    "name":"whisperingmadness",
+    "prompt":"<white>whisperingmadness"
   },
   "sleeping":{
-    "name":"sleeping",
-    "prompt":"<red>sleeping",
     "cures":[{
         "type":"free",
         "requires":"free",
@@ -1539,38 +1397,54 @@
         "blockers":[""],
         "cooldown":"wake"
       }],
-    "priority":1
+    "priority":1,
+    "name":"sleeping",
+    "prompt":"<red>sleeping"
   },
   "blistered":{
-    "name":"blistered",
-    "prompt":"<red>blistered",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"blistered",
+    "prompt":"<red>blistered"
   },
-  "confusion":{
-    "name":"confusion",
-    "prompt":"<white>confusion",
+  "damagedleftarm":{
     "cures":[{
-        "type":"focus",
-        "requires":"focus",
-        "command":"focus",
-        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
-        "cooldown":"focus",
-        "handle":2
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to arms",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":16,
+    "name":"damagedleftarm",
+    "prompt":"<white>LA2"
+  },
+  "slickness":{
+    "cures":[{
+        "type":"smoke",
+        "requires":"smoke",
+        "command":{
+          "herbal":"light valerian;smoke valerian",
+          "alchemical":"light realgar;smoke realgar"
+        },
+        "blockers":["asthma","sleeping"],
+        "cooldown":"smoke",
+        "handle":1
       },{
         "type":"herb",
         "requires":"herb",
         "command":{
-          "herbal":"outr ash;eat ash",
-          "alchemical":"outr stannum;eat stannum"
+          "herbal":"outr bloodroot;eat bloodroot",
+          "alchemical":"outr magnesium;eat magnesium"
         },
         "blockers":["anorexia","sleeping"],
         "cooldown":"herb",
@@ -1590,38 +1464,25 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":12
-  },
-  "damagedleftleg":{
-    "name":"damagedleftleg",
-    "prompt":"<white>LL2",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to legs",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":15
+    "priority":3,
+    "name":"slickness",
+    "prompt":"<red>slickness"
   },
   "bruisedribs":{
-    "name":"bruisedribs",
-    "prompt":"<red>bruisedribs",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":30,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"bruisedribs",
+    "prompt":"<red>bruisedribs"
   },
   "vertigo":{
-    "name":"vertigo",
-    "prompt":"<white>vertigo",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -1647,11 +1508,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":11
+    "priority":11,
+    "name":"vertigo",
+    "prompt":"<white>vertigo"
   },
   "recklessness":{
-    "name":"recklessness",
-    "prompt":"<white>recklessness",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -1684,11 +1545,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":11
+    "priority":11,
+    "name":"recklessness",
+    "prompt":"<white>recklessness"
   },
   "hellsight":{
-    "name":"hellsight",
-    "prompt":"<red>hellsight",
     "cures":[{
         "type":"smoke",
         "requires":"smoke",
@@ -1714,53 +1575,53 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":2
+    "priority":2,
+    "name":"hellsight",
+    "prompt":"<red>hellsight"
   },
   "hecatecurse":{
-    "name":"hecatecurse",
-    "prompt":"<red>hecatecurse",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":16,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"hecatecurse",
+    "prompt":"<red>hecatecurse"
   },
   "latched":{
-    "name":"latched",
-    "prompt":"<red>latched",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "vinewreathed":{
-    "name":"vinewreathed",
-    "prompt":"<red>vinewreathed",
-    "cures":[{
-        "type":"time",
         "requires":"time",
-        "seconds":20,
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"latched",
+    "prompt":"<red>latched"
+  },
+  "deathsickness":{
+    "cures":[{
+        "seconds":60,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"deathsickness",
+    "prompt":"<red>deathsickness"
   },
   "pacified":{
-    "name":"pacified",
-    "prompt":"<white>pacified",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -1793,24 +1654,38 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":13
+    "priority":13,
+    "name":"pacified",
+    "prompt":"<white>pacified"
   },
-  "serioustrauma":{
-    "name":"serioustrauma",
-    "prompt":"<white>serioustrauma",
+  "ablaze":{
     "cures":[{
         "type":"salve",
         "requires":"salve",
-        "command":"apply restoration to body",
+        "command":"apply mending to body",
         "blockers":["slickness","sleeping"],
         "cooldown":"salve",
         "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
       }],
-    "priority":13
+    "priority":20,
+    "name":"ablaze",
+    "prompt":"<white>ablaze"
   },
   "brokenrightleg":{
-    "name":"brokenrightleg",
-    "prompt":"<white>RL1",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1833,25 +1708,25 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":18
+    "priority":18,
+    "name":"brokenrightleg",
+    "prompt":"<white>RL1"
   },
   "timeflux":{
-    "name":"timeflux",
-    "prompt":"<red>timeflux",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":60,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"timeflux",
+    "prompt":"<red>timeflux"
   },
   "stuttering":{
-    "name":"stuttering",
-    "prompt":"<white>stuttering",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1860,24 +1735,24 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":21
+    "priority":21,
+    "name":"stuttering",
+    "prompt":"<white>stuttering"
   },
-  "crackedribs":{
-    "name":"crackedribs",
-    "prompt":"<cyan>(bru <white>0<cyan>)<white>",
+  "impaled":{
     "cures":[{
-        "type":"sip",
-        "requires":"sip",
-        "command":"apply health",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"sip",
+        "type":"balance",
+        "requires":"balance",
+        "command":"writhe",
+        "blockers":["sleeping"],
+        "cooldown":"writhe",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"impaled",
+    "prompt":"<red>impaled"
   },
   "damagedhead":{
-    "name":"damagedhead",
-    "prompt":"<white>H2",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -1886,24 +1761,41 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":14
+    "priority":14,
+    "name":"damagedhead",
+    "prompt":"<white>H2"
   },
-  "damagedrightleg":{
-    "name":"damagedrightleg",
-    "prompt":"<white>RL2",
+  "spiritburn":{
     "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to legs",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr lobelia;eat lobelia",
+          "alchemical":"outr argentum;eat argentum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
         "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
       }],
-    "priority":15
+    "priority":11,
+    "name":"spiritburn",
+    "prompt":"<white>spiritburn"
   },
   "wristfractures":{
-    "name":"wristfractures",
-    "prompt":"<cyan> (wri <white>0<cyan>)<white>",
     "cures":[{
         "type":"sip",
         "requires":"sip",
@@ -1912,11 +1804,658 @@
         "cooldown":"sip",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"wristfractures",
+    "prompt":"<cyan> (wri <white>0<cyan>)<white>"
   },
-  "claustrophobia":{
-    "name":"claustrophobia",
-    "prompt":"<white>claustrophobia",
+  "lethargy":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ginseng;eat ginseng",
+          "alchemical":"outr ferrum;eat ferrum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":9,
+    "name":"lethargy",
+    "prompt":"<white>lethargy"
+  },
+  "unweavingbody":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ginseng;eat ginseng",
+          "alchemical":"outr ferrum;eat ferrum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":9,
+    "name":"unweavingbody",
+    "prompt":"<white> [unwbdy <white>0]"
+  },
+  "retribution":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr bellwort;eat bellwort",
+          "alchemical":"outr cuprum;eat cuprum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":13,
+    "name":"retribution",
+    "prompt":"<white>retribution"
+  },
+  "dazzled":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply mending to head",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":4
+      }],
+    "priority":17,
+    "name":"dazzled",
+    "prompt":"<white>dazzled"
+  },
+  "numbedrightarm":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"numbedrightarm",
+    "prompt":"<red>numbedrightarm"
+  },
+  "horror":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr goldenseal;eat goldenseal",
+          "alchemical":"outr plumbum;eat plumbum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      }],
+    "priority":10,
+    "name":"horror",
+    "prompt":"<white> [hor <white>0]"
+  },
+  "bound":{
+    "cures":[{
+        "type":"balance",
+        "requires":"balance",
+        "command":"writhe",
+        "blockers":["sleeping"],
+        "cooldown":"writhe",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"bound",
+    "prompt":"<white>bound"
+  },
+  "kaisurge":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"kaisurge",
+    "prompt":"<red>kaisurge"
+  },
+  "entangled":{
+    "cures":[{
+        "type":"balance",
+        "requires":"balance",
+        "command":"writhe",
+        "blockers":["sleeping"],
+        "cooldown":"writhe",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"entangled",
+    "prompt":"<red>entangled"
+  },
+  "masochism":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr lobelia;eat lobelia",
+          "alchemical":"outr argentum;eat argentum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":11,
+    "name":"masochism",
+    "prompt":"<white>masochism"
+  },
+  "peace":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr bellwort;eat bellwort",
+          "alchemical":"outr cuprum;eat cuprum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":13,
+    "name":"peace",
+    "prompt":"<red>peace"
+  },
+  "sandfever":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr goldenseal;eat goldenseal",
+          "alchemical":"outr plumbum;eat plumbum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":10,
+    "name":"sandfever",
+    "prompt":"<white>sandfever"
+  },
+  "timeloop":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr bellwort;eat bellwort",
+          "alchemical":"outr cuprum;eat cuprum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":13,
+    "name":"timeloop",
+    "prompt":"<white>timeloop"
+  },
+  "asphyxiating":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":3,
+    "name":"asphyxiating",
+    "prompt":"<red>asphyxiating"
+  },
+  "nausea":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ginseng;eat ginseng",
+          "alchemical":"outr ferrum;eat ferrum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":9,
+    "name":"nausea",
+    "prompt":"<white>nausea"
+  },
+  "voyria":{
+    "cures":[{
+        "type":"antidote",
+        "requires":"antidote",
+        "command":"sip immunity",
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"antidote",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":1,
+    "name":"voyria",
+    "prompt":"<red>voyria"
+  },
+  "slashedthroat":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply epidermal to head",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":14,
+    "name":"slashedthroat",
+    "prompt":"<white>slashedthroat"
+  },
+  "damagedrightarm":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to arms",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":16,
+    "name":"damagedrightarm",
+    "prompt":"<white>RA2"
+  },
+  "slimeobscure":{
+    "cures":[{
+        "seconds":60,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"slimeobscure",
+    "prompt":"<red>slimeobscure"
+  },
+  "frozen":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply caloric",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":9,
+    "name":"frozen",
+    "prompt":"<blue>frozen"
+  },
+  "trueblind":{
+    "cures":[{
+        "seconds":7,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"trueblind",
+    "prompt":"<red>trueblind"
+  },
+  "serioustrauma":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to body",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":13,
+    "name":"serioustrauma",
+    "prompt":"<white>serioustrauma"
+  },
+  "palpatarfeed":{
+    "cures":[{
+        "seconds":20,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"palpatarfeed",
+    "prompt":"<red>palpatarfeed"
+  },
+  "vinewreathed":{
+    "cures":[{
+        "seconds":20,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"vinewreathed",
+    "prompt":"<red>vinewreathed"
+  },
+  "fulminated":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr goldenseal;eat goldenseal",
+          "alchemical":"outr plumbum;eat plumbum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":10,
+    "name":"fulminated",
+    "prompt":"<white>fulminated"
+  },
+  "brokenrightarm":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply mending to left arm",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":19,
+    "name":"brokenrightarm",
+    "prompt":"<white>RA1"
+  },
+  "impatience":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr goldenseal;eat goldenseal",
+          "alchemical":"outr plumbum;eat plumbum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":6,
+    "name":"impatience",
+    "prompt":"<white>impatience"
+  },
+  "dissonance":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr goldenseal;eat goldenseal",
+          "alchemical":"outr plumbum;eat plumbum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":10,
+    "name":"dissonance",
+    "prompt":"<white>dissonance"
+  },
+  "deteriorate":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"deteriorate",
+    "prompt":"<red>deteriorate"
+  },
+  "unweavingspirit":{
+    "cures":[{
+        "type":"smoke",
+        "requires":"smoke",
+        "command":{
+          "herbal":"light elm;smoke elm",
+          "alchemical":"light cinnabar;smoke cinnabar"
+        },
+        "blockers":["asthma","sleeping"],
+        "cooldown":"smoke",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":5,
+    "name":"unweavingspirit",
+    "prompt":"<white> [unwspr <white>0]"
+  },
+  "loneliness":{
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -1947,19 +2486,19 @@
         "command":"fling fool at me",
         "blockers":["sleeping","paralysis"],
         "cooldown":"fool",
-        "handle":4
+        "handle":3
       }],
-    "priority":11
+    "priority":11,
+    "name":"loneliness",
+    "prompt":"<white>loneliness"
   },
-  "unweavingbody":{
-    "name":"unweavingbody",
-    "prompt":"<white> [unwbdy <white>0]",
+  "sensitivity":{
     "cures":[{
         "type":"herb",
         "requires":"herb",
         "command":{
-          "herbal":"outr ginseng;eat ginseng",
-          "alchemical":"outr ferrum;eat ferrum"
+          "herbal":"outr kelp;eat kelp",
+          "alchemical":"outr aurum;eat aurum"
         },
         "blockers":["anorexia","sleeping"],
         "cooldown":"herb",
@@ -1979,604 +2518,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":9
-  },
-  "retribution":{
-    "name":"retribution",
-    "prompt":"<white>retribution",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr bellwort;eat bellwort",
-          "alchemical":"outr cuprum;eat cuprum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":13
-  },
-  "dazzled":{
-    "name":"dazzled",
-    "prompt":"<white>dazzled",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply mending to head",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":4
-      }],
-    "priority":17
-  },
-  "numbedrightarm":{
-    "name":"numbedrightarm",
-    "prompt":"<red>numbedrightarm",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "horror":{
-    "name":"horror",
-    "prompt":"<white> [hor <white>0]",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr goldenseal;eat goldenseal",
-          "alchemical":"outr plumbum;eat plumbum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      }],
-    "priority":10
-  },
-  "bound":{
-    "name":"bound",
-    "prompt":"<white>bound",
-    "cures":[{
-        "type":"balance",
-        "requires":"balance",
-        "command":"writhe",
-        "blockers":["sleeping"],
-        "cooldown":"writhe",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "kaisurge":{
-    "name":"kaisurge",
-    "prompt":"<red>kaisurge",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "entangled":{
-    "name":"entangled",
-    "prompt":"<red>entangled",
-    "cures":[{
-        "type":"balance",
-        "requires":"balance",
-        "command":"writhe",
-        "blockers":["sleeping"],
-        "cooldown":"writhe",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "sandfever":{
-    "name":"sandfever",
-    "prompt":"<white>sandfever",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr goldenseal;eat goldenseal",
-          "alchemical":"outr plumbum;eat plumbum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":10
-  },
-  "vitiated":{
-    "name":"vitiated",
-    "prompt":"<red>vitiated",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":20,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "pinshot":{
-    "name":"pinshot",
-    "prompt":"<red>pinshot",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":21,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "timeloop":{
-    "name":"timeloop",
-    "prompt":"<white>timeloop",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr bellwort;eat bellwort",
-          "alchemical":"outr cuprum;eat cuprum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":13
-  },
-  "asphyxiating":{
-    "name":"asphyxiating",
-    "prompt":"<red>asphyxiating",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":3
-  },
-  "nausea":{
-    "name":"nausea",
-    "prompt":"<white>nausea",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr ginseng;eat ginseng",
-          "alchemical":"outr ferrum;eat ferrum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":9
-  },
-  "voyria":{
-    "name":"voyria",
-    "prompt":"<red>voyria",
-    "cures":[{
-        "type":"antidote",
-        "requires":"antidote",
-        "command":"sip immunity",
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"antidote",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":1
-  },
-  "slashedthroat":{
-    "name":"slashedthroat",
-    "prompt":"<white>slashedthroat",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply epidermal to head",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":14
-  },
-  "lightbind":{
-    "name":"lightbind",
-    "prompt":"<red>lightbind",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":22,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "calcifiedtorso":{
-    "name":"calcifiedtorso",
-    "prompt":"<white>calcifiedtorso",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to body",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":17
-  },
-  "frozen":{
-    "name":"frozen",
-    "prompt":"<blue>frozen",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply caloric",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":9
-  },
-  "trueblind":{
-    "name":"trueblind",
-    "prompt":"<red>trueblind",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":7,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "ablaze":{
-    "name":"ablaze",
-    "prompt":"<white>ablaze",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply mending to body",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":20
-  },
-  "palpatarfeed":{
-    "name":"palpatarfeed",
-    "prompt":"<red>palpatarfeed",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":20,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "deathsickness":{
-    "name":"deathsickness",
-    "prompt":"<red>deathsickness",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":60,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "fulminated":{
-    "name":"fulminated",
-    "prompt":"<white>fulminated",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr goldenseal;eat goldenseal",
-          "alchemical":"outr plumbum;eat plumbum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":10
-  },
-  "brokenrightarm":{
-    "name":"brokenrightarm",
-    "prompt":"<white>RA1",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply mending to left arm",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":19
-  },
-  "impatience":{
-    "name":"impatience",
-    "prompt":"<white>impatience",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr goldenseal;eat goldenseal",
-          "alchemical":"outr plumbum;eat plumbum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":6
-  },
-  "waterbonds":{
-    "name":"waterbonds",
-    "prompt":"<red>waterbonds",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":15,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "scrambledbrains":{
-    "name":"scrambledbrains",
-    "prompt":"<red>scrambledbrains",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":60,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "unweavingspirit":{
-    "name":"unweavingspirit",
-    "prompt":"<white> [unwspr <white>0]",
-    "cures":[{
-        "type":"smoke",
-        "requires":"smoke",
-        "command":{
-          "herbal":"light elm;smoke elm",
-          "alchemical":"light cinnabar;smoke cinnabar"
-        },
-        "blockers":["asthma","sleeping"],
-        "cooldown":"smoke",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":5
-  },
-  "selarnia":{
-    "name":"selarnia",
-    "prompt":"<white>selarnia",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply mending to body",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":20
-  },
-  "kkractlebrand":{
-    "name":"kkractlebrand",
-    "prompt":"<white>kkractlebrand",
-    "cures":[{
-        "type":"sip",
-        "requires":"sip",
-        "command":"sip health",
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"sip",
-        "handle":1
-      }],
-    "priority":1
+    "priority":8,
+    "name":"sensitivity",
+    "prompt":"<white>sensitivity"
   },
   "rebbies":{
-    "name":"rebbies",
-    "prompt":"<white>rebbies",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -2588,27 +2534,37 @@
         "cooldown":"herb",
         "handle":1
       }],
-    "priority":8
+    "priority":8,
+    "name":"rebbies",
+    "prompt":"<white>rebbies"
   },
-  "slickness":{
-    "name":"slickness",
-    "prompt":"<red>slickness",
+  "damagedleftleg":{
     "cures":[{
-        "type":"smoke",
-        "requires":"smoke",
-        "command":{
-          "herbal":"light valerian;smoke valerian",
-          "alchemical":"light realgar;smoke realgar"
-        },
-        "blockers":["asthma","sleeping"],
-        "cooldown":"smoke",
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to legs",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
         "handle":1
+      }],
+    "priority":15,
+    "name":"damagedleftleg",
+    "prompt":"<white>LL2"
+  },
+  "confusion":{
+    "cures":[{
+        "type":"focus",
+        "requires":"focus",
+        "command":"focus",
+        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
+        "cooldown":"focus",
+        "handle":2
       },{
         "type":"herb",
         "requires":"herb",
         "command":{
-          "herbal":"outr bloodroot;eat bloodroot",
-          "alchemical":"outr magnesium;eat magnesium"
+          "herbal":"outr ash;eat ash",
+          "alchemical":"outr stannum;eat stannum"
         },
         "blockers":["anorexia","sleeping"],
         "cooldown":"herb",
@@ -2628,38 +2584,24 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":3
+    "priority":12,
+    "name":"confusion",
+    "prompt":"<white>confusion"
   },
-  "ensorcelled":{
-    "name":"ensorcelled",
-    "prompt":"<red>ensorcelled",
+  "disrupted":{
     "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":20,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
+        "type":"free",
+        "requires":"free",
+        "command":"concentrate",
+        "blockers":["sleeping"],
+        "cooldown":"free",
         "handle":1
       }],
-    "priority":1
-  },
-  "tonguetied":{
-    "name":"tonguetied",
-    "prompt":"<white>tonguetied",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to head",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":6
+    "priority":1,
+    "name":"disrupted",
+    "prompt":"<white>disrupted"
   },
   "lovers":{
-    "name":"lovers",
-    "prompt":"<white>lovers",
     "cures":[{
         "type":"focus",
         "requires":"focus",
@@ -2692,353 +2634,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":13
+    "priority":13,
+    "name":"lovers",
+    "prompt":"<white>lovers"
   },
-  "vitrified":{
-    "name":"vitrified",
-    "prompt":"<red>vitrified",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":45,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "itching":{
-    "name":"itching",
-    "prompt":"<red>itching",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply epidermal to body",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":8
-  },
-  "disfigurement":{
-    "name":"disfigurement",
-    "prompt":"<white>disfigurement",
-    "cures":[{
-        "type":"smoke",
-        "requires":"smoke",
-        "command":{
-          "herbal":"light valerian;smoke valerian",
-          "alchemical":"light realgar;smoke realgar"
-        },
-        "blockers":["asthma","sleeping"],
-        "cooldown":"smoke",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":5
-  },
-  "sensitivity":{
-    "name":"sensitivity",
-    "prompt":"<white>sensitivity",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr kelp;eat kelp",
-          "alchemical":"outr aurum;eat aurum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":8
-  },
-  "deadening":{
-    "name":"deadening",
-    "prompt":"<white>deadening",
-    "cures":[{
-        "type":"smoke",
-        "requires":"smoke",
-        "command":{
-          "herbal":"light elm;smoke elm",
-          "alchemical":"light cinnabar;smoke cinnabar"
-        },
-        "blockers":["asthma","sleeping"],
-        "cooldown":"smoke",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":5
-  },
-  "revealed":{
-    "name":"revealed",
-    "prompt":"<red>revealed",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":60,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "pyre":{
-    "name":"pyre",
-    "prompt":"<white>pyre",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr bellwort;eat bellwort",
-          "alchemical":"outr cuprum;eat cuprum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      }],
-    "priority":13
-  },
-  "pyramides":{
-    "name":"pyramides",
-    "prompt":"<white>pyramides",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr bloodroot;eat bloodroot",
-          "alchemical":"outr magnesium;eat magnesium"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":7
-  },
-  "phlogisticated":{
-    "name":"phlogisticated",
-    "prompt":"<red>phlogisticated",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":45,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "voidfisted":{
-    "name":"voidfisted",
-    "prompt":"<red>voidfisted",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":15,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "cremated":{
-    "name":"cremated",
-    "prompt":"<red>cremated",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":60,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "petrified":{
-    "name":"petrified",
-    "prompt":"<red>petrified",
-    "cures":[{
-        "type":"time",
-        "requires":"time",
-        "seconds":0,
-        "command":"",
-        "blockers":[""],
-        "cooldown":"time",
-        "handle":1
-      }],
-    "priority":1
-  },
-  "paralysis":{
-    "name":"paralysis",
-    "prompt":"<red>paralysis",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr bloodroot;eat bloodroot",
-          "alchemical":"outr magnesium;eat magnesium"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":1
-      }],
-    "priority":7
-  },
-  "grievouswounds":{
-    "name":"grievouswounds",
-    "prompt":"<white>grievouswounds",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply health to torso",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":21
-  },
-  "scytherus":{
-    "name":"scytherus",
-    "prompt":"<white>scytherus",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr ginseng;eat ginseng",
-          "alchemical":"outr ferrum;eat ferrum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":9
-  },
-  "hypothermia":{
-    "name":"hypothermia",
-    "prompt":"<white>hypothermia",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to body",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":21
-  },
-  "parasite":{
-    "name":"parasite",
-    "prompt":"<white>parasite",
-    "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr kelp;eat kelp",
-          "alchemical":"outr aurum;eat aurum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
-        "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
-      }],
-    "priority":8
-  },
-  "paranoia":{
-    "name":"paranoia",
-    "prompt":"<white>paranoia",
+  "hypersomnia":{
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3064,11 +2664,336 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":12
+    "priority":12,
+    "name":"hypersomnia",
+    "prompt":"<white>hypersomnia"
+  },
+  "itching":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply epidermal to body",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":8,
+    "name":"itching",
+    "prompt":"<red>itching"
+  },
+  "disfigurement":{
+    "cures":[{
+        "type":"smoke",
+        "requires":"smoke",
+        "command":{
+          "herbal":"light valerian;smoke valerian",
+          "alchemical":"light realgar;smoke realgar"
+        },
+        "blockers":["asthma","sleeping"],
+        "cooldown":"smoke",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":5,
+    "name":"disfigurement",
+    "prompt":"<white>disfigurement"
+  },
+  "scrambledbrains":{
+    "cures":[{
+        "seconds":60,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"scrambledbrains",
+    "prompt":"<red>scrambledbrains"
+  },
+  "mangledleftarm":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to arms",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":12,
+    "name":"mangledleftarm",
+    "prompt":"<red>LA3"
+  },
+  "revealed":{
+    "cures":[{
+        "seconds":60,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"revealed",
+    "prompt":"<red>revealed"
+  },
+  "pyre":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr bellwort;eat bellwort",
+          "alchemical":"outr cuprum;eat cuprum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      }],
+    "priority":13,
+    "name":"pyre",
+    "prompt":"<white>pyre"
+  },
+  "pyramides":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr bloodroot;eat bloodroot",
+          "alchemical":"outr magnesium;eat magnesium"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":7,
+    "name":"pyramides",
+    "prompt":"<white>pyramides"
+  },
+  "phlogisticated":{
+    "cures":[{
+        "seconds":45,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"phlogisticated",
+    "prompt":"<red>phlogisticated"
+  },
+  "voidfisted":{
+    "cures":[{
+        "seconds":15,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"voidfisted",
+    "prompt":"<red>voidfisted"
+  },
+  "cremated":{
+    "cures":[{
+        "seconds":60,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"cremated",
+    "prompt":"<red>cremated"
+  },
+  "petrified":{
+    "cures":[{
+        "seconds":0,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
+        "handle":1
+      }],
+    "priority":1,
+    "name":"petrified",
+    "prompt":"<red>petrified"
+  },
+  "paralysis":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr bloodroot;eat bloodroot",
+          "alchemical":"outr magnesium;eat magnesium"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":1
+      }],
+    "priority":7,
+    "name":"paralysis",
+    "prompt":"<red>paralysis"
+  },
+  "grievouswounds":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply health to torso",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":21,
+    "name":"grievouswounds",
+    "prompt":"<white>grievouswounds"
+  },
+  "scytherus":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ginseng;eat ginseng",
+          "alchemical":"outr ferrum;eat ferrum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":9,
+    "name":"scytherus",
+    "prompt":"<white>scytherus"
+  },
+  "hypothermia":{
+    "cures":[{
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to body",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
+        "handle":1
+      }],
+    "priority":21,
+    "name":"hypothermia",
+    "prompt":"<white>hypothermia"
+  },
+  "parasite":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr kelp;eat kelp",
+          "alchemical":"outr aurum;eat aurum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":8,
+    "name":"parasite",
+    "prompt":"<white>parasite"
+  },
+  "paranoia":{
+    "cures":[{
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ash;eat ash",
+          "alchemical":"outr stannum;eat stannum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":12,
+    "name":"paranoia",
+    "prompt":"<white>paranoia"
   },
   "prone":{
-    "name":"prone",
-    "prompt":"<red>prone",
     "cures":[{
         "type":"stand",
         "requires":"balance",
@@ -3077,11 +3002,11 @@
         "cooldown":"free",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"prone",
+    "prompt":"<red>prone"
   },
   "mycalium":{
-    "name":"mycalium",
-    "prompt":"<white>mycalium",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3107,11 +3032,11 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":10
+    "priority":10,
+    "name":"mycalium",
+    "prompt":"<white>mycalium"
   },
   "depression":{
-    "name":"depression",
-    "prompt":"<white>depression",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3137,77 +3062,133 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":10
+    "priority":10,
+    "name":"depression",
+    "prompt":"<white>depression"
   },
   "mindravaged":{
-    "name":"mindravaged",
-    "prompt":"<red>mindravaged",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"mindravaged",
+    "prompt":"<red>mindravaged"
   },
-  "mangledleftarm":{
-    "name":"mangledleftarm",
-    "prompt":"<red>LA3",
+  "deadening":{
     "cures":[{
+        "type":"smoke",
+        "requires":"smoke",
+        "command":{
+          "herbal":"light elm;smoke elm",
+          "alchemical":"light cinnabar;smoke cinnabar"
+        },
+        "blockers":["asthma","sleeping"],
+        "cooldown":"smoke",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":5,
+    "name":"deadening",
+    "prompt":"<white>deadening"
+  },
+  "anorexia":{
+    "cures":[{
+        "type":"focus",
+        "requires":"focus",
+        "command":"focus",
+        "blockers":["impatience","guilt","fulminated","hecate","sleeping"],
+        "cooldown":"focus",
+        "handle":1
+      },{
         "type":"salve",
         "requires":"salve",
-        "command":"apply restoration to arms",
+        "command":"apply epidermal to body",
         "blockers":["slickness","sleeping"],
         "cooldown":"salve",
-        "handle":1
+        "handle":2
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":3
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":4
       }],
-    "priority":12
+    "priority":7,
+    "name":"anorexia",
+    "prompt":"<red>anorexia"
   },
-  "mangledhead":{
-    "name":"mangledhead",
-    "prompt":"<red>H3",
+  "ensorcelled":{
     "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to head",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
+        "seconds":20,
+        "requires":"time",
+        "type":"time",
+        "command":"",
+        "blockers":[""],
+        "cooldown":"time",
         "handle":1
       }],
-    "priority":10
+    "priority":1,
+    "name":"ensorcelled",
+    "prompt":"<red>ensorcelled"
   },
-  "damagedleftarm":{
-    "name":"damagedleftarm",
-    "prompt":"<white>LA2",
+  "temperedmelancholic":{
     "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to arms",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ginger;eat ginger",
+          "alchemical":"outr antimony;eat antimony"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
         "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
       }],
-    "priority":16
-  },
-  "fear":{
-    "name":"fear",
-    "prompt":"<white>fear",
-    "cures":[{
-        "type":"compose",
-        "requires":"free",
-        "command":"compose",
-        "blockers":["sleeping"],
-        "cooldown":"free",
-        "handle":1
-      }],
-    "priority":1
+    "priority":14,
+    "name":"temperedmelancholic",
+    "prompt":"<cyan>(MeH <white>0<cyan>)<white>"
   },
   "dazed":{
-    "name":"dazed",
-    "prompt":"<white>dazed",
     "cures":[{
         "type":"smoke",
         "requires":"dazed",
@@ -3233,38 +3214,55 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":9
+    "priority":9,
+    "name":"dazed",
+    "prompt":"<white>dazed"
   },
-  "slimeobscure":{
-    "name":"slimeobscure",
-    "prompt":"<red>slimeobscure",
+  "addiction":{
     "cures":[{
-        "type":"time",
+        "type":"herb",
+        "requires":"herb",
+        "command":{
+          "herbal":"outr ginseng;eat ginseng",
+          "alchemical":"outr ferrum;eat ferrum"
+        },
+        "blockers":["anorexia","sleeping"],
+        "cooldown":"herb",
+        "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
+      }],
+    "priority":9,
+    "name":"addiction",
+    "prompt":"<red>addiction"
+  },
+  "lightbind":{
+    "cures":[{
+        "seconds":22,
         "requires":"time",
-        "seconds":60,
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
-  },
-  "damagedrightarm":{
-    "name":"damagedrightarm",
-    "prompt":"<white>RA2",
-    "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply restoration to arms",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
-        "handle":1
-      }],
-    "priority":16
+    "priority":1,
+    "name":"lightbind",
+    "prompt":"<red>lightbind"
   },
   "crushedthroat":{
-    "name":"crushedthroat",
-    "prompt":"<white>crushedthroat",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -3287,24 +3285,24 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":17
+    "priority":17,
+    "name":"crushedthroat",
+    "prompt":"<white>crushedthroat"
   },
-  "disrupted":{
-    "name":"disrupted",
-    "prompt":"<white>disrupted",
+  "tonguetied":{
     "cures":[{
-        "type":"free",
-        "requires":"free",
-        "command":"concentrate",
-        "blockers":["sleeping"],
-        "cooldown":"free",
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to head",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
         "handle":1
       }],
-    "priority":1
+    "priority":6,
+    "name":"tonguetied",
+    "prompt":"<white>tonguetied"
   },
   "temperedphlegmatic":{
-    "name":"temperedphlegmatic",
-    "prompt":"<cyan>(PlH <white>0<cyan>)<white>",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3330,68 +3328,51 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":14
+    "priority":14,
+    "name":"temperedphlegmatic",
+    "prompt":"<cyan>(PlH <white>0<cyan>)<white>"
   },
-  "impaled":{
-    "name":"impaled",
-    "prompt":"<red>impaled",
+  "crackedribs":{
     "cures":[{
-        "type":"balance",
-        "requires":"balance",
-        "command":"writhe",
-        "blockers":["sleeping"],
-        "cooldown":"writhe",
+        "type":"sip",
+        "requires":"sip",
+        "command":"apply health",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"sip",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"crackedribs",
+    "prompt":"<cyan>(bru <white>0<cyan>)<white>"
   },
-  "spiritburn":{
-    "name":"spiritburn",
-    "prompt":"<white>spiritburn",
+  "damagedrightleg":{
     "cures":[{
-        "type":"herb",
-        "requires":"herb",
-        "command":{
-          "herbal":"outr lobelia;eat lobelia",
-          "alchemical":"outr argentum;eat argentum"
-        },
-        "blockers":["anorexia","sleeping"],
-        "cooldown":"herb",
+        "type":"salve",
+        "requires":"salve",
+        "command":"apply restoration to legs",
+        "blockers":["slickness","sleeping"],
+        "cooldown":"salve",
         "handle":1
-      },{
-        "type":"tree",
-        "requires":"tree",
-        "command":"touch tree",
-        "blockers":["paralysis","sleeping"],
-        "cooldown":"tree",
-        "handle":2
-      },{
-        "type":"fool",
-        "requires":["fool"],
-        "command":"fling fool at me",
-        "blockers":["sleeping","paralysis"],
-        "cooldown":"fool",
-        "handle":3
       }],
-    "priority":11
+    "priority":15,
+    "name":"damagedrightleg",
+    "prompt":"<white>RL2"
   },
   "condemned":{
-    "name":"condemned",
-    "prompt":"<red>condemned",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":0,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"condemned",
+    "prompt":"<red>condemned"
   },
   "daeggerimpale":{
-    "name":"daeggerimpale",
-    "prompt":"<white>daeggerimpale",
     "cures":[{
         "type":"balance",
         "requires":"balance",
@@ -3400,11 +3381,11 @@
         "cooldown":"writhe",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"daeggerimpale",
+    "prompt":"<white>daeggerimpale"
   },
   "mildtrauma":{
-    "name":"mildtrauma",
-    "prompt":"<yellow>mildtrauma",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -3413,11 +3394,11 @@
         "cooldown":"salve",
         "handle":1
       }],
-    "priority":17
+    "priority":17,
+    "name":"mildtrauma",
+    "prompt":"<yellow>mildtrauma"
   },
   "hypochondria":{
-    "name":"hypochondria",
-    "prompt":"<white>hypochondria",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3443,25 +3424,25 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":8
+    "priority":8,
+    "name":"hypochondria",
+    "prompt":"<white>hypochondria"
   },
   "hamstrung":{
-    "name":"hamstrung",
-    "prompt":"<red>hamstrung",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":10,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"hamstrung",
+    "prompt":"<red>hamstrung"
   },
   "hallucinations":{
-    "name":"hallucinations",
-    "prompt":"<white>hallucinations",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3487,38 +3468,55 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":12
+    "priority":12,
+    "name":"hallucinations",
+    "prompt":"<white>hallucinations"
   },
-  "scalded":{
-    "name":"scalded",
-    "prompt":"<white>scalded",
+  "disloyalty":{
     "cures":[{
-        "type":"salve",
-        "requires":"salve",
-        "command":"apply epidermal to head",
-        "blockers":["slickness","sleeping"],
-        "cooldown":"salve",
+        "type":"smoke",
+        "requires":"smoke",
+        "command":{
+          "herbal":"light valerian;smoke valerian",
+          "alchemical":"light realgar;smoke realgar"
+        },
+        "blockers":["asthma","sleeping"],
+        "cooldown":"smoke",
         "handle":1
+      },{
+        "type":"tree",
+        "requires":"tree",
+        "command":"touch tree",
+        "blockers":["paralysis","sleeping"],
+        "cooldown":"tree",
+        "handle":2
+      },{
+        "type":"fool",
+        "requires":["fool"],
+        "command":"fling fool at me",
+        "blockers":["sleeping","paralysis"],
+        "cooldown":"fool",
+        "handle":3
       }],
-    "priority":9
+    "priority":5,
+    "name":"disloyalty",
+    "prompt":"<white>disloyalty"
   },
   "muddled":{
-    "name":"muddled",
-    "prompt":"<red>muddled",
     "cures":[{
-        "type":"time",
-        "requires":"time",
         "seconds":12,
+        "requires":"time",
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"muddled",
+    "prompt":"<red>muddled"
   },
   "temperedcholeric":{
-    "name":"temperedcholeric",
-    "prompt":"<cyan>(ChH <white>0<cyan>)<white>",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3544,25 +3542,25 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":14
+    "priority":14,
+    "name":"temperedcholeric",
+    "prompt":"<cyan>(ChH <white>0<cyan>)<white>"
   },
-  "dehydrated":{
-    "name":"dehydrated",
-    "prompt":"<red>dehydrated",
+  "airfisted":{
     "cures":[{
-        "type":"time",
+        "seconds":15,
         "requires":"time",
-        "seconds":0,
+        "type":"time",
         "command":"",
         "blockers":[""],
         "cooldown":"time",
         "handle":1
       }],
-    "priority":1
+    "priority":1,
+    "name":"airfisted",
+    "prompt":"<red>airfisted"
   },
   "asthma":{
-    "name":"asthma",
-    "prompt":"<red>asthma",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3588,11 +3586,11 @@
         "cooldown":"fool",
         "handle":4
       }],
-    "priority":8
+    "priority":8,
+    "name":"asthma",
+    "prompt":"<red>asthma"
   },
   "justice":{
-    "name":"justice",
-    "prompt":"<white>justice",
     "cures":[{
         "type":"herb",
         "requires":"herb",
@@ -3604,11 +3602,11 @@
         "cooldown":"herb",
         "handle":1
       }],
-    "priority":13
+    "priority":13,
+    "name":"justice",
+    "prompt":"<white>justice"
   },
   "brokenleftleg":{
-    "name":"brokenleftleg",
-    "prompt":"<white>LL1",
     "cures":[{
         "type":"salve",
         "requires":"salve",
@@ -3631,6 +3629,8 @@
         "cooldown":"fool",
         "handle":3
       }],
-    "priority":18
+    "priority":18,
+    "name":"brokenleftleg",
+    "prompt":"<white>LL1"
   }
 }
