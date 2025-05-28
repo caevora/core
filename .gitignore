@@ -1,41 +1,49 @@
-# Compiled Lua sources
+# ✅ Keep the exported profile file
+!core.xml
+
+# ❌ Ignore JSON data & backups
+/system/libs/*.json
+/system/libs/backup/
+/system/libs/archived/
+
+# ❌ Ignore temporary and generated files
+*.bak
+*.corrupt
+*.zip
+*.tmp
+
+# ❌ Ignore user-specific Mudlet files
+*.map
+*.profile
+
+# ❌ Compiled Lua outputs
 luac.out
 
-# luarocks build files
+# ❌ luarocks build artifacts
 *.src.rock
-*.zip
 *.tar.gz
 
-# Object files
+# ❌ Common binary and object formats
 *.o
 *.os
 *.ko
 *.obj
 *.elf
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
 *.lib
 *.a
 *.la
 *.lo
 *.def
 *.exp
-
-# Shared objects (inc. Windows DLLs)
 *.dll
 *.so
 *.so.*
 *.dylib
-
-# Executables
 *.exe
 *.out
 *.app
 *.i*86
 *.x86_64
 *.hex
-
+*.pch
+*.gch
