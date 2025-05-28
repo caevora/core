@@ -22,6 +22,18 @@ exportGit.bat
 *.zip
 *.tmp
 
+
+# ❌ General ignore for JSON (only as fallback)
+*.json
+
+# ✅ But explicitly ignore JSONs only in system/libs (most important)
+# (Prevents accidental global ignoring if others are tracked elsewhere)
+!/Achaean System/system/libs/
+Achaean System/system/libs/*.json
+
+# ignore ALL json files
+**/*.json
+
 # ❌ Ignore user-specific Mudlet files
 *.map
 *.profile
