@@ -98,7 +98,8 @@ function handleTargetsAndAttacks()
   local target = ""
  
   if findNextHuntTarget() ~= "" then
-  
+	  --hunttarget = hunttarget or ""
+	  --if target ~= findNextHuntTarget() and hunttarget ~= target then
 	  if target ~= findNextHuntTarget() then
 	    target = findNextHuntTarget()
 		send("settarget "..target)
@@ -148,6 +149,11 @@ function handleTargetsAndAttacks()
     end
   end
 end
+
+
+
+
+
 
 
 function handleShieldAttacks(target)
@@ -275,7 +281,9 @@ function handleRegularAttacks(target)
 
     -- Validate regular attack configuration
     if huntSettingsData[class]["regular attack"] then
+		expandAlias("mstop")
         targetCommand = "queue add eqbal " .. huntSettingsData[class]["regular attack"]
+		
     else
         cecho("\n<cyan>Configure Regular Hunt Attack (hunt configure)")
         return
@@ -309,32 +317,106 @@ function handleRegularAttacks(target)
     return
 end
 
+ local hp = PLAYER:healthData()
+ local mp = PLAYER:manaData()
+ local hpPercent = hp.current / hp.total
+ local mpPercent = mp.current / mp.total
+
+ -- Recovery casting
+  if huntRecovering --[[and not retreatCooldown]] then
+    if not isOffBalance and (hpPercent < 0.95 or mpPercent < 0.95) then
+      if hpPercent < mpPercent then
+        cecho("\n<green>[RECOVERY] Flinging Magician for health during retreat.")
+        TAROT:flingCard("magician", "me")
+      else
+        cecho("\n<cyan>[RECOVERY] Flinging Priestess for mana during retreat.")
+        TAROT:flingCard("priestess", "me")
+      end
+    end
+  end
+
+registerAnonymousEventHandler("mmapper arrived", function()
+  if not (huntRecovering and shouldRecover and hunting and autohunting) then return end
+
+  local route = routedb[selectedroute]
+  if not route or huntingpointer > #route then
+    cecho("<gray>[WARN] Invalid route or huntingpointer beyond bounds. Aborting arrival logic.")
+    return
+  end
+
+  local currentRoom = tonumber(gmcp.Room.Info.num)
+  local expectedStep = route[huntingpointer]
+  local expectedRoom = expectedStep and tonumber(expectedStep[2])
+
+  if currentRoom == expectedRoom then
+    cecho("\n<green>[HUNT] Mapper has arrived at correct recovery target.")
+
+    huntRecovering = false
+    justmoved = ""
+    requestedhuntstep = false
+    hunttarget = ""
+    commandSent = false
+
+    tempTimer(0.2, function()
+      huntNext()
+    end)
+  else
+    if expectedRoom and currentRoom then
+      if isPrompt() then
+        cecho(string.format("\n<orange>[WARN] Mapper arrived, but not in expected room (%s). Current: %s", expectedRoom, currentRoom))
+      end
+    else
+      if isPrompt() then
+        cecho("\n<orange>[WARN] Mapper arrived, but expectedRoom or currentRoom was nil.")
+      end
+    end
+  end
+end)
+
+
 
 
 function huntNext()
+  if not hunting then return end
 
-    if hunting then
+  local currentRoom = tonumber(gmcp.Room.Info.num)
+  local nextStep = routedb[selectedroute] and routedb[selectedroute][huntingpointer]
+  local expectedRoom = nextStep and tonumber(nextStep[2])
 
-        if not isAloneInRoom() then
-            if not(table.contains(myaffs, "blackout")) then
-                myEcho("red", "People Here - Move to Next Room")
+  -- Pointer sanity check
+  --if expectedRoom and currentRoom == expectedRoom then
+    --cecho(string.format("\n<gray>[DEBUG] Already at hunting target room (%s). Advancing pointer.", currentRoom))
+    --huntingpointer = huntingpointer + 1
+    --tempTimer(0.2, function()
+    --  huntNext()
+   -- end)
+    --return
+  --end
 
-                if autohunting then
-                    moveToNextRoom()
-                    if DEBUG_MODE then myDebugEcho("white", "Moving to next room") end
-                end
-            end
-        else
-            -- Check health or flee condition (uncomment if needed)
-            -- if vitals.health.current < vitals.maxHealth * 0.45 or fleemode then
-            --    expandAlias("hunt flee")
-            -- else
-            handleTargetsAndAttacks()
-            myDebugEcho("white", "Handling targets and attacks")
-            -- end
-        end
+  -- Normal flow
+  if not isAloneInRoom() then
+    if not(table.contains(myaffs, "blackout")) then
+      myEcho("red", "People Here - Move to Next Room")
+
+      if autohunting then
+        moveToNextRoom()
+        if DEBUG_MODE then myDebugEcho("white", "Moving to next room") end
+      end
     end
+  else
+    if not huntResuming then
+      huntResuming = true
+
+      tempTimer(0.2, function()
+        handleTargetsAndAttacks()
+        huntResuming = false
+      end)
+    end
+
+    myDebugEcho("white", "Handling targets and attacks")
+  end
 end
+
 
 
 -- Function to handle the end of a hunting route

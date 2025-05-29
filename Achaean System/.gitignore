@@ -1,38 +1,15 @@
 # ✅ Keep the exported profile file
 !core.xml
 
-# 📝 Ignore Git logs
-gitlog.txt
+# ❌ Ignore JSON data & backups
+/system/libs/*.json
+/system/libs/backup/
 
-# 🪟 Ignore Windows system files
-Thumbs.db
-Desktop.ini
-
-# ⚙️ Ignore auto-generated batch files
-exportGit.bat
-
-# 🧹 Ignore JSON data and backups (but keep dkjson.lua)
-Achaean System/system/libs/*.json
-!Achaean System/system/libs/dkjson.lua
-Achaean System/system/libs/backup/
-
-
-# ❌ Ignore the entire combat directory (your personal logic)
-Achaean System/combat/
-
-# 🗃️ Ignore temporary and generated file types
+# ❌ Ignore temporary and generated files
 *.bak
 *.corrupt
 *.zip
 *.tmp
-
-# ✅ But explicitly ignore JSONs only in system/libs (most important)
-# (Prevents accidental global ignoring if others are tracked elsewhere)
-!/Achaean System/system/libs/
-Achaean System/system/libs/*.json
-
-# ignore ALL json files
-**/*.json
 
 # ❌ Ignore user-specific Mudlet files
 *.map
