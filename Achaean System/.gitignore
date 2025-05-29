@@ -15,7 +15,7 @@ exportGit.bat
 Achaean System/system/libs/*.json
 !Achaean System/system/libs/dkjson.lua
 Achaean System/system/libs/backup/
-Achaean System/system/libs/archived/
+
 
 # ❌ Ignore the entire combat directory (your personal logic)
 Achaean System/combat/
