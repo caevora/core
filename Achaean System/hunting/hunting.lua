@@ -38,23 +38,6 @@ function isAloneInRoom()
 	end
 end
 
-function moveToNextRoom()
-  if routedb[selectedroute] and not table.is_empty(routedb) then
-    if huntingpointer > #routedb[selectedroute] or routedb[selectedroute][huntingpointer] == nil then
-      --disable hunting at end of route.
-      if hunting then
-        huntToggle()
-        autoHuntToggle()
-      end
-      --used for auto moving between pre-set selected routes.
-      --selectNextRoute()
-    else
-      --move to next room in currently selected route.
-      lasthunttarget = ""
-      expandAlias("hunt step")
-    end
-  end
-end
 
 function isTargetAlive(target)
   return findkey(roomstufflist, target)
@@ -117,9 +100,9 @@ function handleTargetsAndAttacks()
     return
   end
 
-  --if inslowcuringmode() then 
-    --return 
-  --end
+  if inslowcuringmode() then 
+    return 
+  end
 
   if balance_data.stunned.in_use then
     return
@@ -129,23 +112,10 @@ function handleTargetsAndAttacks()
     if hasMoreHuntTargets(target) then
       if shielded then
 		handleShieldAttacks(target)
-      else
-	
+      else	
         handleRegularAttacks(target)
         handleBattlerageAttacks(target)
       end
-    else
-      --myEcho("green", "Room Empty")
-      if autohunting then
-        moveToNextRoom()
-        myDebugEcho("white", "Moving to next room")
-      end
-    end
-  else
-    --myEcho("green", "Room Empty")
-    if autohunting then
-      moveToNextRoom()
-      myDebugEcho("white", "Moving to next room (no target found)")
     end
   end
 end
@@ -192,20 +162,17 @@ function handleShieldAttacks(target)
     end
 
     -- ✅ REGULAR SHIELD BREAKS (queued, keep existing logic)
-    send("clearqueue eq")
     local regularCmd = huntSettingsData[class]["regular shield break"]
 
     if myclass() == "occultist" then
-        local targetCommand = "queue add eq " .. regularCmd:gsub("@tar", target)
+        local targetCommand = "queue addclear eq " .. regularCmd:gsub("@tar", target)
         commandSent = true
-        addToQueue("eq", targetCommand)
-        processQueue("eq")
-        if DEBUG_MODE then cecho("\n<green>[BRAGE] Regular shield break added to queue: " .. targetCommand) end
+		send(targetCommand)
+		if DEBUG_MODE then cecho("\n<green>[BRAGE] Regular shield break added to queue: " .. targetCommand) end
     else
-        local targetCommand = "queue add eqbal " .. regularCmd:gsub("@tar", target)
+        local targetCommand = "queue addclear eqbal " .. regularCmd:gsub("@tar", target)
         commandSent = true
-        addToQueue("eqbal", targetCommand)
-        processQueue("eqbal")
+		send(targetCommand)
         if DEBUG_MODE then cecho("\n<green>[BRAGE] Regular shield break added to queue: " .. targetCommand) end
     end
 
@@ -298,16 +265,13 @@ function handleRegularAttacks(target)
     end
 
     -- Implement queue check
-    if targetCommand and not isCommandInQueue("eqbal", targetCommand) then
+    if targetCommand then
 
         -- Mark the command as sent
         commandSent = true
 
         -- Add the command to the queue and process it
-        addToQueue("eqbal", targetCommand)
-        processQueue("eqbal")
-
-
+        send(targetCommand)
 
         if DEBUG_MODE then cecho("\n<green>Command added to queue: "..targetCommand) end
     else
@@ -317,62 +281,7 @@ function handleRegularAttacks(target)
     return
 end
 
- local hp = PLAYER:healthData()
- local mp = PLAYER:manaData()
- local hpPercent = hp.current / hp.total
- local mpPercent = mp.current / mp.total
-
- -- Recovery casting
-  if huntRecovering --[[and not retreatCooldown]] then
-    if not isOffBalance and (hpPercent < 0.95 or mpPercent < 0.95) then
-      if hpPercent < mpPercent then
-        cecho("\n<green>[RECOVERY] Flinging Magician for health during retreat.")
-        TAROT:flingCard("magician", "me")
-      else
-        cecho("\n<cyan>[RECOVERY] Flinging Priestess for mana during retreat.")
-        TAROT:flingCard("priestess", "me")
-      end
-    end
-  end
-
-registerAnonymousEventHandler("mmapper arrived", function()
-  if not (huntRecovering and shouldRecover and hunting and autohunting) then return end
-
-  local route = routedb[selectedroute]
-  if not route or huntingpointer > #route then
-    cecho("<gray>[WARN] Invalid route or huntingpointer beyond bounds. Aborting arrival logic.")
-    return
-  end
-
-  local currentRoom = tonumber(gmcp.Room.Info.num)
-  local expectedStep = route[huntingpointer]
-  local expectedRoom = expectedStep and tonumber(expectedStep[2])
-
-  if currentRoom == expectedRoom then
-    cecho("\n<green>[HUNT] Mapper has arrived at correct recovery target.")
-
-    huntRecovering = false
-    justmoved = ""
-    requestedhuntstep = false
-    hunttarget = ""
-    commandSent = false
-
-    tempTimer(0.2, function()
-      huntNext()
-    end)
-  else
-    if expectedRoom and currentRoom then
-      if isPrompt() then
-        cecho(string.format("\n<orange>[WARN] Mapper arrived, but not in expected room (%s). Current: %s", expectedRoom, currentRoom))
-      end
-    else
-      if isPrompt() then
-        cecho("\n<orange>[WARN] Mapper arrived, but expectedRoom or currentRoom was nil.")
-      end
-    end
-  end
-end)
-
+ 
 
 
 
@@ -380,52 +289,18 @@ function huntNext()
   if not hunting then return end
 
   local currentRoom = tonumber(gmcp.Room.Info.num)
-  local nextStep = routedb[selectedroute] and routedb[selectedroute][huntingpointer]
-  local expectedRoom = nextStep and tonumber(nextStep[2])
 
-  -- Pointer sanity check
-  --if expectedRoom and currentRoom == expectedRoom then
-    --cecho(string.format("\n<gray>[DEBUG] Already at hunting target room (%s). Advancing pointer.", currentRoom))
-    --huntingpointer = huntingpointer + 1
-    --tempTimer(0.2, function()
-    --  huntNext()
-   -- end)
-    --return
-  --end
-
-  -- Normal flow
+    -- Normal flow
   if not isAloneInRoom() then
     if not(table.contains(myaffs, "blackout")) then
       myEcho("red", "People Here - Move to Next Room")
-
-      if autohunting then
-        moveToNextRoom()
-        if DEBUG_MODE then myDebugEcho("white", "Moving to next room") end
-      end
     end
   else
-    if not huntResuming then
-      huntResuming = true
-
       tempTimer(0.2, function()
         handleTargetsAndAttacks()
-        huntResuming = false
       end)
-    end
-
     myDebugEcho("white", "Handling targets and attacks")
   end
-end
-
-
-
--- Function to handle the end of a hunting route
-function endHuntingRoute(route)
-  hunting = false
-  cecho("\n<white>(<gold>Hunt<white>):<red> Hunting Disabled")
-  autohunting = false
-  cecho("\n<white>(<gold>Hunt<white>):<red> Auto Hunting Disabled")
-  cecho("\n<yellow>hunt route " .. route .. " ended")
 end
 
 
@@ -684,7 +559,6 @@ end
 
 function updateDenizenPriorities()
   -- Load targetMasterList
-  loadTargetMasterList()
   -- Set values for the current area to targetPriorityList
   targetPriorityList = targetMasterList[gmcp.Room.Info.area] or {}
   
@@ -744,6 +618,7 @@ function setHuntSettingsData()
 		class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
 	end
 
+	setTargetMasterList()
 	-- Append the command to the command line for easy user configuration.
 	-- appendCmdLine(text)
 	cecho("\n<green>Hunt Settings\n")
@@ -805,8 +680,6 @@ function huntStart()
   autohunting = autohunting or false
   systemLoaded = true
   systemPaused = false
-  lasthunttarget = ""
-  requestedhuntstep = false
   send("put gold in pack")
   if myclass() == "serpent" then
     send("summon treesnake inventory")
@@ -817,59 +690,8 @@ function huntStart()
   end
 end
 
--- Save targetMasterList to a file
 
-function saveTargetMasterList()
-	local userHome = os.getenv("USERPROFILE") or "C:/Users/Default"
-    local baseDir = userHome .. "/Documents/" .. gmcp.Char.Status.name:title() .. " System/Tables"
-	local filename = "huntmasterlist.lua"
-	ensureFileExists(baseDir, filename, "save", targetMasterList)
-end
 
--- Load targetMasterList from a file
-
-function loadTargetMasterList()
-    local userHome = os.getenv("USERPROFILE") or "C:/Users/Default"
-	local baseDir = userHome .. "/Documents/" .. gmcp.Char.Status.name:title() .. " System/Tables"
-	local filename = "huntmasterlist.lua"
-	ensureFileExists(baseDir, filename, "load", targetMasterList)
-end
-
--- Save areaIgnoreList to a file
-
-function saveAreaIgnoreList()
-    local userHome = os.getenv("USERPROFILE") or "C:/Users/Default"
-	local baseDir = userHome .. "/Documents/" .. gmcp.Char.Status.name:title() .. " System/Tables"
-	local filename = "areaignorelist.lua"
-	ensureFileExists(baseDir, filename, "save", targetMasterList)
-end
-
--- Load areaIgnoreList from a file
-
-function loadAreaIgnoreList()
-    local userHome = os.getenv("USERPROFILE") or "C:/Users/Default"
-	local baseDir = userHome .. "/Documents/" .. gmcp.Char.Status.name:title() .. " System/Tables"
-	local filename = "areaignorelist.lua"
-	ensureFileExists(baseDir, filename, "load", targetMasterList)
-end
-
--- Save huntSettingsData to a file
-
-function saveHuntSettings()
-    local userHome = os.getenv("USERPROFILE") or "C:/Users/Default"
-	local baseDir = userHome .. "/Documents/" .. gmcp.Char.Status.name:title() .. " System/Tables"
-	local filename = "huntsettings.lua"
-	ensureFileExists(baseDir, filename, "save", targetMasterList)
-end
-
--- Load huntSettingsData from a file
-
-function loadHuntSettings()
-    local userHome = os.getenv("USERPROFILE") or "C:/Users/Default"
-	local baseDir = userHome .. "/Documents/" .. gmcp.Char.Status.name:title() .. " System/Tables"
-	local filename = "huntsettings.lua"
-	ensureFileExists(baseDir, filename, "load", targetMasterList)
-end
 
 function setTargetMasterList()
 if not targetMasterList or targetMasterList == "" or table.is_empty(targetMasterList) then
@@ -2185,7 +2007,6 @@ function updateAreaInfo()
     if area ~= currentarea then
       currentarea = area
       -- Load targetMasterList
-      loadTargetMasterList()
       -- Set values for the current area to targetPriorityList
       targetPriorityList = targetMasterList[currentarea] or {}
       printpriolist = true
