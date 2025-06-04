@@ -1,9 +1,9 @@
-# Curing and Utility System
-A full-featured Mudlet setup for Achaea — includes utility tools, backup automation, JSON recovery, system management, and more!
+# 
+A full-featured Curing and Utility System — includes utility tools, backup automation, JSON recovery, system management, and more!
 
 ### Profile File
 
-This repo includes a full Mudlet profile export:
+This repo includes a full profile export:
 - **File:** `Achaean System`
-- **Type:** XML (Mudlet exported format)
+- **Type:** XML (exported format)
 - You can import it directly into Mudlet.
