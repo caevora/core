@@ -518,7 +518,7 @@ end
     -- Function to send the batch commands
     function sendBatch(batch)
 	    local cs = cmdsep
-        local filename = myclass() .. "prios.lua"
+        local filename = PLAYER:myclass() .. "prios.lua"
 		local batchString = table.concat(batch, cs)
         --cecho("<yellow>Sending batch: " .. batchString .. "<reset>\n")
 

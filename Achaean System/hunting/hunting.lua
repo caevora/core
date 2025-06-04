@@ -1,36 +1,44 @@
-function huntToggle()
-  hunting = hunting or false
-  if not hunting then
-    hunting = true
-    defenses.hiding.keepup=false
-    if myclass() == "serpent" then send("emerge") end
-	GUI.datawindow:activateTab("Room")
-    huntStart()
-    cecho("\n<white>(<gold>Hunt<white>):<green> Hunting Enabled")
-  elseif hunting then
-    hunting = false
-    defenses.hiding.keepup=true
-    cecho("\n<white>(<gold>Hunt<white>):<red> Hunting Disabled")
+function toggleHuntingMode(mode)
+  mode = mode or "manual"
+
+  if mode == "manual" then
+    hunting = not hunting
+
+    if hunting then
+      defenses.hiding.keepup = false
+      if PLAYER:myclass() == "serpent" then send("emerge") end
+      GUI.datawindow:activateTab("Room")
+	  huntTargetCooldown = false
+      huntStart()
+      cecho("\n<white>(<gold>Hunt<white>): <green>Hunting Enabled")
+    else
+      defenses.hiding.keepup = true
+      cecho("\n<white>(<gold>Hunt<white>): <red>Hunting Disabled")
+    end
+
+  elseif mode == "auto" then
+    autohunting = not autohunting
+
+    if autohunting then
+      cecho("\n<white>(<gold>Hunt<white>): <green>Auto Hunting Enabled")
+      send("look")
+    else
+      cecho("\n<white>(<gold>Hunt<white>): <red>Auto Hunting Disabled")
+    end
+
+  else
+    cecho("<red>[ERROR] Unknown hunting mode: " .. tostring(mode) .. "\n")
   end
 end
 
-function autoHuntToggle()
-  autohunting = autohunting or false
-  if not autohunting then
-    autohunting = true
-    cecho("\n<white>(<gold>Hunt<white>):<green> Auto Hunting Enabled")
-    send("look")
-  elseif autohunting then
-    autohunting = false
-    cecho("\n<white>(<gold>Hunt<white>):<red> Auto Hunting Disabled")
-  end
-end
+
+
 
 -- Check if the character is alone in the room.
 
 function isAloneInRoom()
 	if not table.contains(myaffs, "blackout") then
-	   if #gmcp.Room.Players == 1 then
+	   if #gmcp.Room.Players <= 1 then
 		  return true
 	   else
 		  return false
@@ -71,51 +79,103 @@ end
 
 
 function hasMoreHuntTargets(target)
-  local hasMoreTargets = not (target == "") and not (table.is_empty(roomstufflist))
+
+local ignore = {
+  ["a sharp-toothed gremlin"] = true,
+  ["some other name"] = true
+}
+
+	local function roomHasNonIgnoredTargets()
+	  for _, item in pairs(inv_room or {}) do
+		if not ignore[item.name] then
+		  return true -- found a valid (non-ignored) target
+		end
+	  end
+	  return false
+	end	
+
+  --local hasMoreTargets = not (target == "") and not (table.is_empty(roomstufflist))
+  local hasMoreTargets = target ~= "" and not table.is_empty(roomstufflist) and roomHasNonIgnoredTargets()
+  
   myDebugEcho("white", string.format("Has more hunt targets: %s", tostring(hasMoreTargets)))
   return hasMoreTargets
 end
 
+
+
+
+
+
+function attemptHuntSettingsRestore()
+
+  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs"
+  local backupPath = jsonDir .. "/huntsettings.json.bak"
+
+  if not fileExists(backupPath) then
+    cecho("<red>[ERROR] Backup file not found: " .. backupPath .. "\n")
+    cecho("<white>Please reconfigure your hunt settings manually using: <cyan>hunt configure\n")
+    return false
+  end
+
+  local f = io.open(backupPath, "r")
+  if not f then
+    cecho("<red>[ERROR] Could not open backup file for reading.\n")
+    cecho("<white>Please reconfigure your hunt settings manually using: <cyan>hunt configure\n")
+    return false
+  end
+
+  local contents = f:read("*a")
+  f:close()
+
+  local decoded, _, err = dkjson.decode(contents, 1, nil)
+  if not err and type(decoded) == "table" then
+    huntSettingsData = decoded
+    cecho("<green>[SUCCESS] Restored hunt settings from backup.\n")
+    return true
+  else
+    cecho("<red>[ERROR] Failed to decode huntsettings.json.bak: " .. (err or "invalid format") .. "\n")
+    cecho("<white>Please reconfigure your hunt settings manually using: <cyan>hunt configure\n")
+    return false
+  end
+end
+
+
+
+
 function handleTargetsAndAttacks()
+
+        updateWhoHere()
+
+  if not systemLoaded or systemPaused or inslowcuringmode() or balance_data.stunned.in_use then
+    return
+  end
+
+
+  if not huntTargetCooldown then
+    local nextTarget = findNextHuntTarget()
+    if nextTarget ~= "" and target ~= nextTarget then
+      target = nextTarget
+      send("settarget " .. target)
+      hunttarget = target
+
+      huntTargetCooldown = true
+      tempTimer(1.2, function() huntTargetCooldown = false end)
+    end
+  end
+  
  
-  local target = ""
- 
-  if findNextHuntTarget() ~= "" then
-	  --hunttarget = hunttarget or ""
-	  --if target ~= findNextHuntTarget() and hunttarget ~= target then
-	  if target ~= findNextHuntTarget() then
-	    target = findNextHuntTarget()
-		send("settarget "..target)
-		hunttarget = target
-		updateWhoHere()
-	  end
-  
-  end
-  
-  if not (systemLoaded) then
-    return
-  end
-  
-  if systemPaused then
-    return
+  if huntSettingsData == nil then
+    cecho("<yellow>[INFO] Hunt settings nil. Attempting to restore from backup.\n")
+    local success = attemptHuntSettingsRestore()
+    cecho((success and "<green>Hunt Restore Successful\n") or "<red>Hunt Restore Unsuccessful\n")
   end
 
-  if inslowcuringmode() then 
-    return 
-  end
-
-  if balance_data.stunned.in_use then
-    return
-  end
-
-  if target ~= "" then
-    if hasMoreHuntTargets(target) then
-      if shielded then
-		handleShieldAttacks(target)
-      else	
-        handleRegularAttacks(target)
-        handleBattlerageAttacks(target)
-      end
+  if target ~= "" and hasMoreHuntTargets(target) then
+    if shielded then
+      handleShieldAttacks(target)
+    else
+      handleRegularAttacks(target)
+      handleBattlerageAttacks(target)
     end
   end
 end
@@ -127,7 +187,7 @@ end
 
 
 function handleShieldAttacks(target)
-    local class = myclass()
+    local class = PLAYER:myclass()
     local maxShieldAttackRetries = 10
     local shieldAttackCounter = 1 -- simple protection
 
@@ -164,7 +224,7 @@ function handleShieldAttacks(target)
     -- ✅ REGULAR SHIELD BREAKS (queued, keep existing logic)
     local regularCmd = huntSettingsData[class]["regular shield break"]
 
-    if myclass() == "occultist" then
+    if PLAYER:myclass() == "occultist" then
         local targetCommand = "queue addclear eq " .. regularCmd:gsub("@tar", target)
         commandSent = true
 		send(targetCommand)
@@ -188,7 +248,7 @@ function handleBattlerageAttacks(target)
         return
     end
 
-    local class = myclass()
+    local class = PLAYER:myclass()
     if class == "dragon" then
         class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
     end
@@ -231,7 +291,7 @@ end
 
 -- Main function to handle regular hunting attacks.
 function handleRegularAttacks(target)
-    local class = myclass()
+    local class = PLAYER:myclass()
     local targetCommand = ""
 
     if class == "dragon" then
@@ -248,9 +308,7 @@ function handleRegularAttacks(target)
 
     -- Validate regular attack configuration
     if huntSettingsData[class]["regular attack"] then
-		expandAlias("mstop")
-        targetCommand = "queue add eqbal " .. huntSettingsData[class]["regular attack"]
-		
+        targetCommand = "queue add eqbal " .. huntSettingsData[class]["regular attack"]		
     else
         cecho("\n<cyan>Configure Regular Hunt Attack (hunt configure)")
         return
@@ -294,6 +352,9 @@ function huntNext()
   if not isAloneInRoom() then
     if not(table.contains(myaffs, "blackout")) then
       myEcho("red", "People Here - Move to Next Room")
+	  if hunting and autohunting then
+		huntNextRoom()
+	  end
     end
   else
       tempTimer(0.2, function()
@@ -521,7 +582,7 @@ function setDenizenPriority(denizen, action)
     end
   end
 
-  saveTargetMasterList()
+  --saveTargetMasterList()
   updateDenizenPriorities()
   echo("\n\n")
   printDenizenPriorityList()
@@ -611,9 +672,44 @@ function setHuntSettings(type, cmd)
   saveHuntSettings()
 end
 
+
+function saveHuntSettings()
+  if not dkjson then
+    cecho("<red>[ERROR] dkjson not loaded. Cannot save hunting data.\n")
+    return
+  end
+
+  if not huntSettingsData or type(huntSettingsData) ~= "table" then
+    cecho("<yellow>[WARNING] huntSettingsData is empty or missing. Skipping save.\n")
+    return
+  end
+
+  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs"
+  local savePath = jsonDir .. "/huntsettings.json"
+
+  -- Optional: backup old version
+  if fileExists(savePath) then
+    os.rename(savePath, savePath .. ".bak")
+    cecho("<gray>Created backup: huntsettings.json.bak\n")
+  end
+
+  local json = dkjson.encode(huntSettingsData, { indent = true })
+  local f, err = io.open(savePath, "w")
+  if not f then
+    cecho("<red>[ERROR] Failed to write hunt settings: " .. (err or "unknown") .. "\n")
+    return
+  end
+
+  f:write(json)
+  f:close()
+  cecho("<green>✅ Hunting settings saved to: " .. savePath .. "\n")
+end
+
+
+
 function setHuntSettingsData()
 
-	local class = myclass()
+	local class = PLAYER:myclass()
 	if class == "dragon" then
 		class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
 	end
@@ -681,7 +777,7 @@ function huntStart()
   systemLoaded = true
   systemPaused = false
   send("put gold in pack")
-  if myclass() == "serpent" then
+  if PLAYER:myclass() == "serpent" then
     send("summon treesnake inventory")
   end
   expandAlias("inra")
@@ -693,8 +789,9 @@ end
 
 
 
-function setTargetMasterList()
-if not targetMasterList or targetMasterList == "" or table.is_empty(targetMasterList) then
+function setTargetMasterList(arg)
+local check = arg or false
+if check or not targetMasterList or targetMasterList == "" or table.is_empty(targetMasterList) then
 targetMasterList =  
   {
     Ashtan = {},
@@ -1042,7 +1139,6 @@ targetMasterList =
         ["a meek servant"] = "ignored",
         ["an emaciated prisoner"] = "ignored",
       },
-    ["the bog of Ashtan"] = {},
     ["the Sunderlands"] = {},
     ["The Caverns of Dominar"] =
       {
@@ -1478,7 +1574,15 @@ targetMasterList =
         ["Bearnath, the Beast Cultist"] = "ignored",
         ["Glash, the three-headed cerberus"] = "ignored",
         ["Inish, the head cultist"] = "ignored",
-        ["the Beastlord"] = "ignored",
+        ["the Beastlord"] = "ignored",		
+		["a cowled initiate"] = "ignored",
+		["a bloodied acolyte"] = "ignored",
+		["a mysterious cloaked figure"] = "ignored",
+		["a bestial, two-headed canine"] = "ignored",	
+		["a warrior ophidian"] = "ignored",
+		["the ophidian chieftain, Skt'all"] = "ignored",
+		
+	
       },
     ["the Eastern Shore"] =
       {
@@ -1812,7 +1916,7 @@ targetMasterList =
         ["a shifting mass of shadows"] = "ignored",
         ["an enraged ogre destroyer"] = "ignored",
         ["the beast in the crypt"] = "ignored",
-      },
+	},
     ["the Shamtota Hills"] = {["the giant dwarf Tordahl"] = "ignored"},
     ["the Siroccian Mountains"] =
       {["a foul-smelling orc"] = "ignored", ["a vicious wolverine"] = "ignored"},
@@ -1873,7 +1977,10 @@ targetMasterList =
       },
     ["the Village of Qerstead"] = {["a Kelstaad lioness"] = "ignored"},
     ["the Village of Tomacula"] = {["Elegnem, shaman of Tomacula"] = "ignored"},
-    ["the bog of Ashtan"] = {"a bog hound", ["a bog hound"] = "ignored"},
+    ["the bog of Ashtan"] = {
+		["a bog hound"] = "ignored", 
+		["Haag, the Swamp Witch"] = "ignored",
+	},
     ["the fathomless expanse of the World Tree"] =
       {
         ["a bulbous banovaettr"] = "ignored",
@@ -1974,7 +2081,7 @@ targetMasterList =
     ["the village of Tasur'ke"] =
       {["a barnacle encrusted oyster"] = "ignored", ["a man-eating shark"] = "ignored"},
   }
-  saveTargetMasterList()
+  --saveTargetMasterList()
   end
 end
 
@@ -1996,7 +2103,7 @@ function updateAreaInfo()
               if not table.contains(targetMasterList[area], denizenName) then
                 targetMasterList[area][denizenName] = "ignored"
                 -- Save the updated targetMasterList
-                saveTargetMasterList()
+                --saveTargetMasterList()
                 printpriolist = true
               end
             end

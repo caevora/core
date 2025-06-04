@@ -348,8 +348,8 @@ function configureSystem()
   cechoLink(
     " <white>(click) ",
     function()
-    
-	  settings.myclass = myclass()
+	  local class = PLAYER:myclass()
+	  settings.myclass = class
 
     local class = false
   	-- Check if settings.myclass is an empty string

@@ -109,7 +109,7 @@ end
 
 function fortify:relax()
     local cs = cmdsep
-	local currentClassType = myclass()  -- Get the current class type
+	local currentClassType = PLAYER:myclass()  -- Get the current class type
     local validSkillTree = skillTreeList[currentClassType]  -- Get the skills for the current class
     local list = table.n_union(validSkillTree, {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "yourMissingType1", "yourMissingType2"})  -- Add missing types
     local relaxCommands = {}  -- Table to hold the relax commands
@@ -181,14 +181,14 @@ function queue:process()
 
     fortify:reset()
 
-    local list = table.n_union(skillTreeList[myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo"})
+    local list = table.n_union(skillTreeList[PLAYER:myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo"})
     local validDefenses = {}
 
     for defense, details in pairs(defenses) do
         local defenseType = details.type
         if type(defenseType) == "table" then
             for _, v in ipairs(defenseType) do
-                if table.contains(skillTreeList[myclass()], v) then
+                if table.contains(skillTreeList[PLAYER:myclass()], v) then
                     defenseType = v
                     break
                 end
@@ -312,6 +312,30 @@ end
 
 
 
+-- Initialize cleanup timer once
+lastPipelineCleanup = lastPipelineCleanup or 0
+
+function queue:cleanPipeline()
+    local now = os.clock()
+    if now - lastPipelineCleanup < 2 then return end  -- throttle to every 2 seconds
+    lastPipelineCleanup = now
+
+    local cleaned = 0
+    for name, _ in pairs(pipeline.defenses) do
+        local def = defenses[name]
+        if def and not def.active and not table.contains(mydefs, name) then
+            pipeline.defenses[name] = nil
+            cleaned = cleaned + 1
+        end
+    end
+
+    if cleaned > 0 then
+        cecho("\n<grey>[INFO] Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies."))
+    end
+end
+
+
+
 
 
 
@@ -327,3 +351,5 @@ function reloadFortifyQueue()
 	
 	echo("\nDefenses Loaded")
 end
+
+
