@@ -60,16 +60,16 @@ function fortify:update(defense, value)
   --end
 
   if defenses[defense] then
-    cecho("\n<green>[DEBUG] Updating defense: " .. defense)
+    if DEBUG_MODE then cecho("\n<green>[DEBUG] Updating defense: " .. defense) end
   else
 	if defense == "tree" then
-		cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!")
-		cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!")
-		cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!")
-		cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!")
-		cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!")
+		if DEBUG_MODE then cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!") end
+		if DEBUG_MODE then cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!") end
+		if DEBUG_MODE then cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!") end
+		if DEBUG_MODE then cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!") end
+		if DEBUG_MODE then cecho("\n<red>[DEBUG] TREE GONE - <white>GET A PERMA TATTOO!!!") end
 	else
-		cecho("\n<red>[DEBUG] No such defense found in defenses table: " .. tostring(defense))
+		if DEBUG_MODE then cecho("\n<red>[DEBUG] No such defense found in defenses table: " .. tostring(defense))  end
 	end
   end
 
@@ -88,7 +88,7 @@ function fortify:update(defense, value)
       defenses[defense].enabled = value
     end
 
-    cecho("\n<yellow>[DEBUG] Cleared pipeline key: " .. tostring(defense))
+    if DEBUG_MODE then cecho("\n<yellow>[DEBUG] Cleared pipeline key: " .. tostring(defense)) end
 
   else
     if table.contains(mydefs, defense) then
@@ -181,7 +181,7 @@ function queue:process()
 
     fortify:reset()
 
-    local list = table.n_union(skillTreeList[PLAYER:myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo"})
+    local list = table.n_union(skillTreeList[PLAYER:myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo","resistance"})
     local validDefenses = {}
 
     for defense, details in pairs(defenses) do
@@ -246,7 +246,7 @@ function queue:process()
         if not pipeline.defenses[bestDefense.name] then
              pipeline.defenses[bestDefense.name] = true
              pipeline.activeCommand = bestDefense.command  -- Set active command
-			 cecho("\n<magenta>[DEBUG] Added pipeline key: " .. bestDefense.name)
+			 if DEBUG_MODE then  cecho("\n<magenta>[DEBUG] Added pipeline key: " .. bestDefense.name) end
 			 self:send(bestDefense) 
          end
 
@@ -256,9 +256,9 @@ end
 
 
 function queue:debugPipeline()
-    cecho("\n<cyan>[DEBUG] Pipeline contents:")
+    if DEBUG_MODE then  cecho("\n<cyan>[DEBUG] Pipeline contents:") end
     for k, v in pairs(pipeline.defenses) do
-        cecho("\n<white> - " .. k)
+        if DEBUG_MODE then cecho("\n<white> - " .. k) end
     end
 end
 
@@ -267,7 +267,7 @@ function queue:send(defense)
     local command = defense.command
 
     if not defense.name then
-        cecho("\n<red>[ERROR] Defense is missing name!")
+        if DEBUG_MODE then  cecho("\n<red>[ERROR] Defense is missing name!") end
         return
     end
 
@@ -302,7 +302,7 @@ function queue:send(defense)
 		
 		--pipeline.defenses[defense.name] = nil
         --pipeline.activeCommand = nil
-		echo("[DEBUG] Marked delayed defense as active and cleared key:", defense.name)
+		if DEBUG_MODE then  echo("[DEBUG] Marked delayed defense as active and cleared key:", defense.name) end
     end
 
     self:debugPipeline()
@@ -330,7 +330,7 @@ function queue:cleanPipeline()
     end
 
     if cleaned > 0 then
-        cecho("\n<grey>[INFO] Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies."))
+        if DEBUG_MODE then cecho("\n<grey>[INFO] Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies.")) end
     end
 end
 
@@ -349,7 +349,7 @@ function reloadFortifyQueue()
     -- Optionally, re-initialize
     fortify = fortify or queue:new()
 	
-	echo("\nDefenses Loaded")
+	if DEBUG_MODE then echo("\nDefenses Loaded") end
 end
 
 
