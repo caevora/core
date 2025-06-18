@@ -1,5 +1,5 @@
 # 
-A full-featured Curing and Utility System — includes utility tools, backup automation, JSON recovery, system management, and more!
+A full-featured Curing and Utility System — includes utility tools, backup automation, JSON recovery, system management, automatic GIT version handling, and more!
 
 ### Profile File
 
