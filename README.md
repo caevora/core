@@ -5,5 +5,5 @@ A full-featured Curing and Utility System — includes utility tools, backup aut
 
 This repo includes a full profile export:
 - **File:** `Achaean System`
-- **Type:** XML (exported format)
+- **Type:** MPACKAGE (exported format)
 - You can import it directly into Mudlet.
