@@ -108,7 +108,7 @@ end
 
 function attemptHuntSettingsRestore()
 
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs"
+  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local backupPath = jsonDir .. "/huntsettings.json.bak"
 
   if not fileExists(backupPath) then
@@ -684,7 +684,7 @@ function saveHuntSettings()
     return
   end
 
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs"
+  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local savePath = jsonDir .. "/huntsettings.json"
 
   -- Optional: backup old version

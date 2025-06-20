@@ -61,6 +61,9 @@ function configureSystem()
   echo"\n"
 
   -- Common toggles with custom handlers
+  addInput("Page Length", "pagelength", "250")
+  addInput("Screen Width", "screenwidth", "0")
+  addInput("Timeout", "timeout", "0")
   addToggle("ANSI", "ansi", "CONFIG ANSI ON", "CONFIG ANSI OFF", "ANSI", toggleAnsi)
   addToggle("MXP", "mxp", "CONFIG MXP ON", "CONFIG MXP OFF", "MXP", toggleMXP)
   addToggle("Queue Alerts", "showqueuealerts", "CONFIG SHOWQUEUEALERTS ON", "CONFIG SHOWQUEUEALERTS OFF", "Show Queue Alerts")
@@ -82,6 +85,22 @@ function configureSystem()
   addToggle("Tree", "tree", "CURING TREE ON", "CURING TREE OFF", "Tree")
   addToggle("Focus", "focus", "CURING FOCUS ON", "CURING FOCUS OFF", "Focus")
   addToggle("Vault", "usevault", "CURING USEVAULT ON", "CURING USEVAULT OFF", "Vault")
+  addToggle("Prompt Display", "promptEnabled", "", "", "Show Prompt", togglePrompt)
+  addToggle("Prompt Percentages", "promptPercentages", "", "", "Show Prompt Percentages", togglePromptPercentages)
+
+   --class logic
+	cechoLink(" <white>(click) ", function()
+	  local class = PLAYER:myclass()
+	  settings.myclass = class
+	  initializeFlags()
+	  saveTableToJSON(settings, "configuration")
+	  configureSystem()
+	end, "click to set 'class'", true)
+
+	local classSet = settings.myclass and settings.myclass ~= ""
+	cecho(" "..(classSet and "<white>Current Class: <green>"..settings.myclass.." <white>(+)" or "<red>Class: Not Set (-)"))
+	echo"\n"
+
 
   -- Cure method
   cechoLink(" <white>(click) ", function()
@@ -188,6 +207,48 @@ end
 -- Toggle handler for Inventory Display
 function toggleInventory()
   settings.showInventory = not settings.showInventory
+
+  initializeFlags()
+  saveTableToJSON(settings, "configuration")
+  configureSystem()
+end
+
+function togglePrompt()
+  settings.promptEnabled = not settings.promptEnabled
+
+  local promptstring
+  if settings.promptPercentages then
+    promptstring = "*h#W(#G*%h#W)#Gh#W, *m#W(#G*%m#W)#Cm#G#W, #W(#G*%w#W)#Mw#G#W, #W(#G*%e#W)#Ye#G#W, #w*b*d #R*t #W*T"
+  else
+    promptstring = "*h#W#Gh#W, *m#W#Cm#G#W, #w*b*d #R*t #W*T"
+  end
+
+  if settings.promptEnabled then
+    send("CONFIG PROMPT CUSTOM " .. promptstring)
+  else
+    send("CONFIG PROMPT OFF")
+  end
+
+  initializeFlags()
+  saveTableToJSON(settings, "configuration")
+  configureSystem()
+end
+
+function togglePromptPercentages()
+  settings.promptPercentages = not settings.promptPercentages
+
+  local promptstring
+  if settings.promptPercentages then
+    promptstring = "*h#W(#G*%h#W)#Gh#W, *m#W(#G*%m#W)#Cm#G#W, #W(#G*%w#W)#Mw#G#W, #W(#G*%e#W)#Ye#G#W, #w*b*d #R*t #W*T"
+  else
+    promptstring = "*h#W#Gh#W, *m#W#Cm#G#W, #w*b*d #R*t #W*T"
+  end
+
+  if settings.promptEnabled then
+    send("CONFIG PROMPT CUSTOM " .. promptstring)
+  else
+    send("CONFIG PROMPT OFF")
+  end
 
   initializeFlags()
   saveTableToJSON(settings, "configuration")
