@@ -1,19 +1,9 @@
 # ✅ Keep the exported profile file
 !core.xml
 
-# ❌ Ignore contents of specific subfolders
-Achaean System/system/libs/backup/*
-!Achaean System/system/libs/backup/
-!Achaean System/system/libs/backup/.gitkeep
-
-Achaean System/system/libs/json/*
-!Achaean System/system/libs/json/
-!Achaean System/system/libs/json/.gitkeep
-
-Achaean System/system/libs/ndb/*
-!Achaean System/system/libs/ndb/
-!Achaean System/system/libs/ndb/.gitkeep
-
+# ❌ Ignore JSON data & backups
+/system/libs/*.json
+/system/libs/backup/
 
 # ❌ Ignore temporary and generated files
 *.bak
