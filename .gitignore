@@ -11,11 +11,18 @@ Desktop.ini
 # ⚙️ Ignore auto-generated batch files
 exportGit.bat
 
-# 🧹 Ignore JSON data and backups (but keep dkjson.lua)
-Achaean System/system/libs/*.json
-!Achaean System/system/libs/dkjson.lua
-Achaean System/system/libs/backup/
-Achaean System/system/libs/archived/
+# ❌ Ignore contents of specific subfolders
+Achaean System/system/libs/backup/*
+!Achaean System/system/libs/backup/
+!Achaean System/system/libs/backup/.gitkeep
+
+Achaean System/system/libs/json/*
+!Achaean System/system/libs/json/
+!Achaean System/system/libs/json/.gitkeep
+
+Achaean System/system/libs/ndb/*
+!Achaean System/system/libs/ndb/
+!Achaean System/system/libs/ndb/.gitkeep
 
 # ❌ Ignore the entire combat directory (your personal logic)
 Achaean System/combat/
