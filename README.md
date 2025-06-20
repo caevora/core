@@ -11,3 +11,6 @@ This repo includes a full profile export:
 Install package directly from within mudlet CMD line via:
 
 ```lua installPackage("https://github.com/Mudlet/mudlet-package-repository/raw/refs/heads/main/packages/Achaean System.mpackage")```
+
+
+![image](https://github.com/user-attachments/assets/f5a75521-01de-43a2-9abc-fb23968b0b8a)
