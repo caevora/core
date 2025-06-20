@@ -10,4 +10,4 @@ This repo includes a full profile export:
 
 Install via Mudlet CMD line:
 
-```lua installPackage("https://github.com/Mudlet/mudlet-package-repository/raw/refs/heads/main/packages/Achaean Time Tracker.mpackage")```
+```lua installPackage("https://github.com/Mudlet/mudlet-package-repository/raw/refs/heads/main/packages/******")``` <<ready soon.
