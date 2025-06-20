@@ -50,6 +50,9 @@ function configureSystem()
     send("set command separator " .. settings.cmdsep)
     cecho("\n<yellow>Command separator not set. Defaulting to ';'.\n")
   end
+  
+    settings.autoAllyManagement = settings.autoAllyManagement or false
+	settings.autoEnemyManagement = settings.autoEnemyManagement or false
 
   cecho("\n<white>System Settings\n-------------------------------\n")
 
@@ -101,7 +104,6 @@ function configureSystem()
 	cecho(" "..(classSet and "<white>Current Class: <green>"..settings.myclass.." <white>(+)" or "<red>Class: Not Set (-)"))
 	echo"\n"
 
-
   -- Cure method
   cechoLink(" <white>(click) ", function()
     if settings.cureMethod == "alchemical" then
@@ -117,6 +119,41 @@ function configureSystem()
   end, "click to toggle 'cure method'", true)
   cecho(" "..(settings.cureMethod == "alchemical" and "<white>Cure Type: <cyan>Alchemical (+)" or "<white>Cure Type: <green>Concoctions (-)"))
   echo"\n"
+  
+  -- Auto Ally/Unally
+	cechoLink(
+	  " <white>(click) ",
+	  function()
+		settings.autoAllyManagement = not settings.autoAllyManagement
+
+		initializeFlags()
+		saveTableToJSON(settings, "configuration")
+		configureSystem()
+	  end,
+	  "click to toggle 'auto ally/unally allies', (ON or OFF)",
+	  true
+	)
+
+	cecho(" "..(settings.autoAllyManagement and "<white>Auto Ally/Unally (+)" or "<DarkSlateGray>Auto Ally/Unally (-)"))
+	echo("\n")
+
+
+	-- Auto Enemy/Unenemy
+	cechoLink(
+	  " <white>(click) ",
+	  function()
+		settings.autoEnemyManagement = not settings.autoEnemyManagement
+
+		initializeFlags()
+		saveTableToJSON(settings, "configuration")
+		configureSystem()
+	  end,
+	  "click to toggle 'auto enemy/unenemy enemies', (ON or OFF)",
+	  true
+	)
+
+	cecho(" "..(settings.autoEnemyManagement and "<white>Auto Enemy/Unenemy (+)" or "<DarkSlateGray>Auto Enemy/Unenemy (-)"))
+	echo("\n")
 
   -- Priority toggle
   cechoLink(" <white>(click) ", function()
@@ -163,6 +200,8 @@ function toggleShowScrollbar()
   saveTableToJSON(settings, "configuration")
   configureSystem()
 end
+
+
 
 -- Toggle handler for ANSI
 function toggleAnsi()
