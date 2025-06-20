@@ -3,17 +3,15 @@
 
 # ❌ Ignore contents of specific subfolders
 Achaean System/system/libs/backup/*
-Achaean System/system/libs/json/*
-Achaean System/system/libs/ndb/*
-
-# ✅ But do not ignore the folders themselves (so .gitkeep is reachable)
 !Achaean System/system/libs/backup/
-!Achaean System/system/libs/json/
-!Achaean System/system/libs/ndb/
-
-# ✅ And do not ignore the .gitkeep files
 !Achaean System/system/libs/backup/.gitkeep
+
+Achaean System/system/libs/json/*
+!Achaean System/system/libs/json/
 !Achaean System/system/libs/json/.gitkeep
+
+Achaean System/system/libs/ndb/*
+!Achaean System/system/libs/ndb/
 !Achaean System/system/libs/ndb/.gitkeep
 
 
