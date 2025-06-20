@@ -4,15 +4,12 @@
 # ❌ Ignore JSON data & backups
 # Ignore contents of specific subfolders
 Achaean System/system/libs/backup/*
-Achaean System/system/libs/json/*
-Achaean System/system/libs/ndb/*
-
-# But do NOT ignore the folders themselves
-!Achaean System/system/libs/backup/
-!Achaean System/system/libs/json/
-!Achaean System/system/libs/ndb/
 !Achaean System/system/libs/backup/.gitkeep
+
+Achaean System/system/libs/json/*
 !Achaean System/system/libs/json/.gitkeep
+
+Achaean System/system/libs/ndb/*
 !Achaean System/system/libs/ndb/.gitkeep
 
 # ❌ Ignore temporary and generated files
