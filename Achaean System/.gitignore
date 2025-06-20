@@ -2,8 +2,15 @@
 !core.xml
 
 # ❌ Ignore JSON data & backups
-/system/libs/*.json
-/system/libs/backup/
+# Ignore contents of specific subfolders
+Achaean System/system/libs/backup/*
+Achaean System/system/libs/json/*
+Achaean System/system/libs/ndb/*
+
+# But do NOT ignore the folders themselves
+!Achaean System/system/libs/backup/
+!Achaean System/system/libs/json/
+!Achaean System/system/libs/ndb/
 
 # ❌ Ignore temporary and generated files
 *.bak
