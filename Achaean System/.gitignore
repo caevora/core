@@ -11,6 +11,9 @@ Achaean System/system/libs/ndb/*
 !Achaean System/system/libs/backup/
 !Achaean System/system/libs/json/
 !Achaean System/system/libs/ndb/
+!Achaean System/system/libs/backup/.gitkeep
+!Achaean System/system/libs/json/.gitkeep
+!Achaean System/system/libs/ndb/.gitkeep
 
 # ❌ Ignore temporary and generated files
 *.bak
