@@ -2493,8 +2493,10 @@ fortify:update("deathsight_herb",true)</script>
 						<regexCodeList>
 							<string>You shut your eyes and concentrate on the Soulrealms. A moment later, you feel inextricably linked with the realm of Death.</string>
 							<string>Your mind is already attuned to the realm of Death.</string>
+							<string>You already possess the deathsight.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
@@ -4190,9 +4192,7 @@ send("curing predict impatience")</script>
   cecho("\n&lt;green&gt;System Unpaused")
 end
 fullwillandmana = true
-send("curing insomnia on")
-expandAlias("fl")
-   
+send("curing insomnia on")  
 </script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -33839,7 +33839,7 @@ end
 
 function sendClots(n)
   local num = n or 0
-  cecho(string.format("\n&lt;green&gt;[CLOT] Sending %d clot commands\n", num))
+  if DEBUG_MODE then cecho(string.format("\n&lt;green&gt;[CLOT] Sending %d clot commands\n", num)) end
   local cs = cmdsep or ";"
   local cmd = {}
   for i = 1, num do
