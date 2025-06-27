@@ -51,6 +51,8 @@ function configureSystem()
     cecho("\n<yellow>Command separator not set. Defaulting to ';'.\n")
   end
   
+	settings.gag_pipes = settings.gag_pipes or false
+	settings.refill_pipes_at = settings.refill_pipes_at or 3
     settings.autoAllyManagement = settings.autoAllyManagement or false
 	settings.autoEnemyManagement = settings.autoEnemyManagement or false
 
@@ -84,6 +86,7 @@ function configureSystem()
   addToggle("Sipping", "sipping", "CURING SIPPING ON", "CURING SIPPING OFF", "Sipping")
   addToggle("Afflictions", "afflictions", "CURING AFFLICTIONS ON", "CURING AFFLICTIONS OFF", "Afflictions")
   addToggle("Insomnia", "insomnia", "CURING INSOMNIA ON", "CURING INSOMNIA OFF", "Insomnia")
+  addInput("Refill Pipes", "refill_pipes_at", "3")
   addToggle("Clot", "clot", "CURING USECLOT ON", "CURING USECLOT OFF", "Clot")
   addToggle("Tree", "tree", "CURING TREE ON", "CURING TREE OFF", "Tree")
   addToggle("Focus", "focus", "CURING FOCUS ON", "CURING FOCUS OFF", "Focus")
@@ -113,9 +116,12 @@ function configureSystem()
       settings.cureMethod = "alchemical"
       send("CURING TRANSMUTATION ON")
     end
-    initializeFlags()
+	initializeFlags()
     saveTableToJSON(settings, "configuration")
     configureSystem()
+	cecho("\n<yellow>Dont forget to change your pipes!!")
+	cecho("\n<yellow>Dont forget to change your pipes!!")
+	cecho("\n<yellow>Dont forget to change your pipes!!")
   end, "click to toggle 'cure method'", true)
   cecho(" "..(settings.cureMethod == "alchemical" and "<white>Cure Type: <cyan>Alchemical (+)" or "<white>Cure Type: <green>Concoctions (-)"))
   echo"\n"
@@ -183,6 +189,10 @@ function configureSystem()
   addInput("Mana Threshold", "manathreshold", "70")
   addInput("Moss Health", "mosshealth", "75")
   addInput("Moss Mana", "mossmana", "75")
+  
+  cecho("\n-------------------------------\n")
+  
+  
 end
 
 -- Toggle handler for showScrollbar

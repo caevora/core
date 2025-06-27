@@ -1158,6 +1158,7 @@ local ep = PLAYER:enduranceData()
 
   prompt()
   sipper()
+  refill_pipes()
   afflictionlist()
   
   if hiddenaff &gt;= 2 and gmcp.Char.Vitals.bal == '1' then
@@ -13653,6 +13654,28 @@ mystackableaffs.pressure = mystackableaffs.pressure - 1</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList />
 					<regexCodePropertyList />
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>lit pipes</name>
+						<script>on_pipe_lit_trigger()</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You carefully light your treasured pipe until it is smoking nicely.</string>
+							<string>That pipe is already lit and burning nicely.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>pipe refill</name>
 						<script>refilled_pipe(multimatches[2][2])
@@ -13696,6 +13719,33 @@ refill_pipes()</script>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>empty pipes</name>
+						<script> emptied_pipes_count = emptied_pipes_count + 1
+ 
+ if emptied_pipes_count &gt;= count_pipes(pipes) then
+    emptypipes = false -- all pipes emptied, allow refill now
+    if DEBUG_MODE then cecho("\n&lt;green&gt;[REFILL] All pipes emptied, ready to refill.") end
+ end
+ 
+</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You tap out the contents of your pipe.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="yes" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -13764,6 +13814,126 @@ parse_plist(matches[2],matches[3],matches[4],matches[5])
 								<integer>1</integer>
 							</regexCodePropertyList>
 						</Trigger>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>skullcap</name>
+						<script>pipes.skullcap.status = "out"</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your pipe, containing a skullcap flower, has gone cold and dark.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>elm</name>
+						<script>pipes.elm.status = "out"</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your pipe, containing slippery elm, has gone cold and dark.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>valerian</name>
+						<script>pipes.valerian.status = "out"</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your pipe, containing a valerian leaf, has gone cold and dark.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>cinnabar</name>
+						<script>pipes.cinnabar.status = "out"</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your pipe, containing a pinch of ground cinnabar, has gone cold and dark.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>malachite</name>
+						<script>pipes.malachite.status = "out"</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your pipe, containing a pinch of ground malachite, has gone cold and dark.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>realgar</name>
+						<script>pipes.realgar.status = "out"</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your pipe, containing a pinch of realgar crystals, has gone cold and dark.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -17764,33 +17934,25 @@ remedy:setAfflictionPriorities()</script>
 					<regex></regex>
 					<Alias isActive="yes" isFolder="no">
 						<name>refill pipes at</name>
-						<script>pipes.refill=matches[2]</script>
+						<script>refill_pipes_at=matches[2]
+settings.refill_pipes_at=matches[2]
+configureSystem()</script>
 						<command></command>
 						<packageName></packageName>
-						<regex>^refillpipesat (\d+)$</regex>
+						<regex>^set refill_pipes_at (\d+)$</regex>
 					</Alias>
 					<Alias isActive="yes" isFolder="no">
 						<name>empty pipes (cmd)</name>
-						<script>empty_pipes()</script>
+						<script>pipes = {}
+emptypipes = true
+emptied_pipes_count = 0
+send("plist")
+tempTimer(.3, [[
+empty_pipes()
+]])</script>
 						<command></command>
 						<packageName></packageName>
 						<regex>^empty pipes$</regex>
-					</Alias>
-					<Alias isActive="yes" isFolder="no">
-						<name>gag pipes</name>
-						<script>if matches[2] == nil and gag_pipes then
-	gag_pipes=false
-	cecho("\n&lt;green&gt;not gagging pipes")
-elseif matches[2] == "off" then
-	gag_pipes=false
-	cecho("\n&lt;green&gt;Ok, not gagging pipes")
-else
-	gag_pipes=true
-	cecho("\n&lt;green&gt;Ok, gagging pipes")
-end</script>
-						<command></command>
-						<packageName></packageName>
-						<regex>^gagpipes\s?(on|off)?$</regex>
 					</Alias>
 				</AliasGroup>
 				<AliasGroup isActive="yes" isFolder="yes">
@@ -21625,6 +21787,7 @@ end</script>
   dead = false
   siphealth = -1
   sipmana = -1
+  refill_pipes_at = settings.refill_pipes_at or 3 -- need to add to configure
   sipbalance = true
   hasDashing = false -- have dashing artefact.. to work in to configs later.
   hasPacing = false -- has pacing artefact.. to work in to configs later.
@@ -33171,27 +33334,27 @@ end
     local id = tonumber(matches[3])
     local herb = pipenames[matches[4]]
     local puffs = tonumber(matches[5])
-    local status = matches[2]
+    local status = matches[2] or "out"
 
     if not pipes then
         pipes = {}
     end
 
     if herb and id and puffs and status then  
-        pipes[herb] = { id = id, puffs = puffs, lit = status, names = herb }
+        pipes[herb] = { id = id, puffs = puffs, status = status, name = herb }
 
         -- Initialize names array if it doesn't exist
-        if not pipes.names then
-            pipes.names = {}
+        if not pipes.name then
+            pipes.name = {}
         end
         
-        if not table.contains(pipes.names, herb) then
-          table.insert(pipes.names, herb)  -- Add the herb name to the names array
+        if not table.contains(pipes.name, herb) then
+          table.insert(pipes.name, herb)  -- Add the herb name to the names array
         end
 
-        if not (pipes[herb].lit == "artf") and (pipes[herb].lit == "out") then
+        if not (pipes[herb].status == "artf") and (pipes[herb].status == "out") then
             send("light " .. pipes[herb].id, false)
-            pipes[herb].lit = "lit"
+            pipes[herb].status = "lit"
         end
     end
 end
@@ -33213,43 +33376,30 @@ function refilled_pipe(herb)
 
   pipes[herb].puffs = 10 
    
-  if pipes[herb].lit ~= "artf" then
+  if pipes[herb].status ~= "artf" then
       send("light " .. pipes[herb].id, false)
-      pipes[herb].lit = "lit"
+      pipes[herb].status = "lit"
   end
 end
 
 -- func
 --parselist parses, this is the end of parselist
 
-function parse_plist_end()
-  -- fill up at least one of each first
-  if not pipes or not pipes.names then return end
-  for id = 1, #pipes.names do
-    local i = pipes.names[id]
-    if pipes[i] and pipes[i].id == 0 and next(pipes.empties) then
-      pipes[i].id = pipes.empties[#pipes.empties].id
-      if pipes.empties[#pipes.empties].status == "Lit" then
-        pipes[i].lit = true
-      else
-        pipes[i].lit = false
-      end
-      -- if
-      if pipes.empties[#pipes.empties].arty then
-        pipes[i].arty = true
-      end
-      -- if
-      pipes.empties[#pipes.empties] = nil
+function parse_plist_end(data)
+  for _, name in ipairs(data.names) do
+    if data[name] then
+      if not pipes then pipes = {} end
+      pipes[name] = {
+        id = data[name].id,
+        status = data[name].lit,
+        name = data[name].names
+      }
     end
-    -- if
   end
-  -- for
 end
 
--- func
 
 function puff_count(herb)
-
   if pipes[herb] == nil then
     send("plist")
   end
@@ -33260,9 +33410,19 @@ function puff_count(herb)
 end
 
 
+function count_pipes(tbl)
+  local count = 0
+  for k, v in pairs(tbl) do
+    if type(v) == "table" and v.id and v.name then
+      count = count + 1
+    end
+  end
+  return count
+end
+
 -- empty out pipes
 function empty_pipes()
-
+  
   if not (systemLoaded) then
     return
   end
@@ -33281,54 +33441,96 @@ function empty_pipes()
 
   for herb, data in pairs(pipes) do
     if type(data) == "table" then
-    
-        if not (selfishness) and not (table.contains(myaffs, "paralysis")) then
+        if not (selfishness) and not (table.contains(myaffs, "paralysis")) then  
           send("empty " .. data.id .. " out ")
         end
       end
    end
    
-   refill_pipes()
-   
 end
 
 function refill_pipes()
-
-  if not (systemLoaded) then
-    return
-  end
   
-  if systemPaused then
+  if emptypipes then return end
+  
+  if not systemLoaded then
+    if DEBUG_MODE then  cecho("\n&lt;red&gt;[REFILL] System not loaded.") end
     return
   end
-
-  if inslowcuringmode() then 
-    return 
+  if systemPaused then
+    if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] System paused.") end
+    return
   end
-
+  if inslowcuringmode() then
+    if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] In slow curing mode.") end
+    return
+  end
   if balance_data.stunned.in_use then
+    if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] Stunned — cannot act.") end
     return
   end
 
   for herb, data in pairs(pipes) do
-    -- Ensure 'data' is a table and contains a 'puffs' key
-      if type(data) == "table" and data.puffs then
-        if not table.contains(mydefs, "selfishness") 
-           and not table.contains(myaffs, "paralysis") 
-           and not hunting then
-          if data.puffs &lt;= pipes.refill then
-            send("empty " .. data.id .. " out")
-          end
-        end
-      end
+    if type(data) == "table" and data.puffs then
+    
+    if DEBUG_MODE then cecho(string.format(
+        "\n&lt;white&gt;[REFILL] Checking pipe: &lt;green&gt;%s &lt;white&gt;(id: &lt;yellow&gt;%s&lt;white&gt;, puffs: &lt;green&gt;%s&lt;white&gt;, status: &lt;magenta&gt;%s&lt;white&gt;)",
+        herb, tostring(data.id), tostring(data.puffs), tostring(data.status)
+      ))
     end
-   
+      
+      local refill = refill_pipes_at or 3
+      local should_refill = data.puffs &lt;= refill
+      local can_act = not table.contains(mydefs, "selfishness")
+                      and not table.contains(myaffs, "paralysis")
+                      and not balance_data.stunned.in_use
 
-   
+      if should_refill then
+        if DEBUG_MODE then cecho("\n&lt;white&gt;[REFILL] -&gt; Needs refill.") end
+      else
+        if DEBUG_MODE then cecho("\n&lt;gray&gt;[REFILL] -&gt; Refill not needed.") end
+      end
+
+      if can_act then
+      if DEBUG_MODE then cecho("\n&lt;green&gt;[REFILL] -&gt; Can act.") end
+      else
+       if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] -&gt; Cannot act (selfish or paralyzed).") end
+      end
+
+      if should_refill and can_act then
+        if DEBUG_MODE then cecho("\n&lt;green&gt;[REFILL] -&gt; Sending empty command.") end
+        send("empty " .. data.id .. " out")
+      end
+
+      if data.status ~= "artf" and data.status ~= "lit" then
+        if DEBUG_MODE then cecho("\n&lt;yellow&gt;[REFILL] -&gt; Lighting pipe: " .. herb) end
+        local cmd = "light " .. data.id
+        pipecmd = data.id
+        send(cmd)
+      else
+       if DEBUG_MODE then cecho("\n&lt;gray&gt;[REFILL] -&gt; No need to light pipe: " .. herb) end
+      end
+    else
+     if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] -&gt; Invalid pipe data for: " .. tostring(herb)) end
+    end
+  end
 end
 
 
--- func</script>
+function on_pipe_lit_trigger()
+  if not pipecmd then return end
+
+  for herb, data in pairs(pipes) do
+    if type(data) == "table" and data.id == pipecmd then
+      pipes[herb].status = "lit"
+      if DEBUG_MODE then cecho("\n&lt;green&gt;[Pipe lit] &lt;white&gt;" .. herb:title() .. " (" .. data.id .. ")") end
+      break
+    end
+  end
+
+  pipecmd = nil  -- clear after handling
+end
+</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
@@ -33675,7 +33877,7 @@ function clotcheck()
     not table.contains(myaffs, "haemophilia") and
     not table.contains(myaffs, "corruption") and
     not table.contains(myaffs, "aeon") and
-    not table.contains(myaffs, "blackout") and
+   -- not table.contains(myaffs, "blackout") and
     not inslowcuringmode()
   then
     if enemyclass["alchemist"].enabled then
@@ -33750,7 +33952,7 @@ function clotcalc()
       earthlord = {bleed = 90, mana = 0.25, health = 0.50},
     }
   local bleed = bleedcheck()
-  local MAX_CLOTS_PER_CALL = 10
+  local MAX_CLOTS_PER_CALL = 20
   local hp = tonumber(gmcp.Char.Vitals.hp or 0)
   local mp = tonumber(gmcp.Char.Vitals.mp or 0)
   local maxhp = tonumber(gmcp.Char.Vitals.maxhp or 1)
