@@ -1,0 +1,2 @@
+return {{[ [[Lobelia]] ] = true,[ [[Echinacea]] ] = true,[ [[Sileris]] ] = true,[ [[Cohosh]] ] = true,[ [[Irid]] ] = true,[ [[Slipper]] ] = true,[ [[Bayberry]] ] = true,[ [[Hawthorn]] ] = true,[ [[Kelp]] ] = true,[ [[Ginseng]] ] = true,[ [[Myrrh]] ] = true,[ [[Goldenseal]] ] = true,[ [[Bloodroot]] ] = true,[ [[Pear]] ] = true,[ [[Bellwort]] ] = true,[ [[Elm]] ] = true,[ [[Ash]] ] = true,[ [[Kola]] ] = true,[ [[Skullcap]] ] = true,[ [[Kuzu]] ] = true,[ [[Ginger]] ] = true,[ [[Valerian]] ] = true,[ [[Weed]] ] = true,},
+}

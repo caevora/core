@@ -52,7 +52,7 @@ function configureSystem()
   end
   
 	settings.gag_pipes = settings.gag_pipes or false
-	settings.refill_pipes_at = settings.refill_pipes_at or 3
+	settings.refill_pipes_at = DEFAULT_REFILL_PUFFS or 3
     settings.autoAllyManagement = settings.autoAllyManagement or false
 	settings.autoEnemyManagement = settings.autoEnemyManagement or false
 
