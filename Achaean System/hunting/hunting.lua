@@ -2,7 +2,7 @@ function toggleHuntingMode(mode)
   mode = mode or "manual"
 
   if mode == "manual" then
-    hunting = not hunting
+    hunting = not hunting	
 
     if hunting then
       defenses.hiding.keepup = false
