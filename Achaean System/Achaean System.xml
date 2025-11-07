@@ -15690,10 +15690,12 @@ appendBuffer(window)</script>
 					<regexCodeList>
 						<string>You disembark the ship via the lowered gangplank.</string>
 						<string>You leave the subdivision.</string>
+						<string>You shuffle a tarot card inscribed with the Universe out of your deck,</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>3</integer>
 						<integer>3</integer>
+						<integer>2</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -16934,7 +16936,7 @@ resetFormat()
 			<Alias isActive="no" isFolder="no">
 				<name>logout</name>
 				<script>expandAlias("elist")
-send("inr all"..cmdsep.."put gold in pack"..cmdsep.."qq"..cmdsep.."wave")
+send("inr all"..cmdsep.."put gold in handbag"..cmdsep.."qq"..cmdsep.."wave")
 
 </script>
 				<command></command>
@@ -17271,6 +17273,13 @@ configureSystem()</script>
 					<command></command>
 					<packageName></packageName>
 					<regex>^curing healthaffsabove (\d+)$</regex>
+				</Alias>
+				<Alias isActive="yes" isFolder="no">
+					<name>prompt toggle</name>
+					<script></script>
+					<command></command>
+					<packageName></packageName>
+					<regex>^prompt (t)$</regex>
 				</Alias>
 			</AliasGroup>
 			<AliasGroup isActive="yes" isFolder="yes">
@@ -18915,9 +18924,11 @@ end
 function toggleDebugMode()
   if DEBUG_MODE then
     DEBUG_MODE = false
+    settings.debug = DEBUG_MODE
     cecho("\n&lt;red&gt;Debug mode has been turned off.")
   else
     DEBUG_MODE = true
+    settings.debug = DEBUG_MODE
     cecho("\n&lt;green&gt;Debug mode has been turned on.")
   end
 end
@@ -19551,7 +19562,7 @@ color_table.zsSilver = color_table.zsSilver or {160, 160, 160}
   end
 
   local sourceDir = getMudletHomeDir()
-  local targetDir = [[C:\Users\Owner\Documents\Mudlet-Git]]
+  local targetDir = [[C:\Users\JS\Documents\Mudlet-Git]]
   local git = [["C:\Program Files\Git\mingw64\bin\git.exe"]]
   local log = targetDir .. "\\gitlog.txt"
 
@@ -19560,7 +19571,7 @@ color_table.zsSilver = color_table.zsSilver or {160, 160, 160}
   if f then f:write("") f:close() end
 
   -- 🗂 Copy profile files silently
-  --local excludeFile = [[C:\Users\Owner\Documents\Mudlet-Git\exclude.txt]]
+  --local excludeFile = [[C:\Users\JS\Documents\Mudlet-Git\exclude.txt]]
   
   --os.execute(string.format(
    -- [[xcopy /E /Y /I /EXCLUDE:"%s" "%s\\Achaean System" "%s\\Achaean System" &gt;&gt; "%s" 2&gt;&amp;1]],
@@ -21459,7 +21470,7 @@ end
 
   tempTimer(1, function()
     local sourceDir = getMudletHomeDir()
-    local targetDir = [[C:\Users\Owner\Documents\Mudlet-Git]]
+    local targetDir = [[C:\Users\JS\Documents\Mudlet-Git]]
     local git = [["C:\Program Files\Git\mingw64\bin\git.exe"]]
     local log = targetDir .. "\\gitlog.txt"
 
@@ -26718,9 +26729,10 @@ inks = {
 						<name>initializePipeSettings</name>
 						<packageName></packageName>
 						<script>function initializePipeSettings()
-  pipes = {
-    refill = 3
-}
+  pipes = {}
+  pipes_to_light = {}
+  DEFAULT_REFILL_PUFFS = 3
+  
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -33321,14 +33333,184 @@ end
 				<Script isActive="yes" isFolder="no">
 					<name>pipes</name>
 					<packageName></packageName>
-					<script>function parse_plist()
+					<script>pipes = pipes or {} 
+
+-- Table to track pipe IDs that are currently waiting for a 'light' command.
+-- This prevents command spamming.
+pipes_to_light = pipes_to_light or {}
+
+-- ==============================================================================
+-- 2. HELPER FUNCTIONS FOR TRACKING
+-- ==============================================================================
+
+-- Helper function to check if a pipe is already scheduled to be lit
+function is_scheduled_to_light(pipe_id)
+    return pipes_to_light[pipe_id] ~= nil
+end
+
+-- Helper function to add a pipe to the schedule
+function schedule_light(pipe_id)
+    pipes_to_light[pipe_id] = true
+end
+
+-- Helper function to remove a pipe from the schedule (THE CRITICAL CLEANUP)
+function unschedule_light(pipe_id)
+    pipes_to_light[pipe_id] = nil
+end
+
+
+-- ==============================================================================
+-- 3. UPDATED CORE LOGIC
+-- ==============================================================================
+
+-- Trigger handler when the MUD confirms a pipe is lit
+function on_pipe_lit_trigger()
+    -- If no pipes are scheduled to light, we return.
+    if next(pipes_to_light) == nil then return end 
+
+    -- Iterate over every pipe currently scheduled to be lit.
+    for pipe_id, _ in pairs(pipes_to_light) do
+        local pipe_name = nil
+        
+        -- Find the pipe data in the main 'pipes' table using the ID.
+        for herb, data in pairs(pipes) do
+            if type(data) == "table" and data.id == pipe_id then
+                pipe_name = herb
+                break
+            end
+        end
+
+        if pipe_name then
+            -- Set its status to 'lit' and remove it from the tracking queue.
+            pipes[pipe_name].status = "lit"
+            unschedule_light(pipe_id) 
+            
+            if DEBUG_MODE then 
+                cecho("\n&lt;green&gt;[Pipe lit] &lt;white&gt;" .. pipe_name:title() .. " (" .. pipe_id .. ") - UNSCHEDULED") 
+            end
+        end
+    end
+end
+
+
+function refill_pipes()
+    
+ if emptypipes then return end
+    
+    if not systemLoaded then
+        if DEBUG_MODE then  cecho("\n&lt;red&gt;[REFILL] System not loaded.") end
+        return
+    end
+    if systemPaused then
+        if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] System paused.") end
+        return
+    end
+    if inslowcuringmode() then
+        if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] In slow curing mode.") end
+        return
+    end
+    if balance_data.stunned.in_use then
+        if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] Stunned — cannot act.") end
+        return
+    end
+
+    for herb, data in pairs(pipes) do
+        if type(data) == "table" and data.puffs then
+        
+        if DEBUG_MODE then cecho(string.format(
+            "\n&lt;white&gt;[REFILL] Checking pipe: &lt;green&gt;%s &lt;white&gt;(id: &lt;yellow&gt;%s&lt;white&gt;, puffs: &lt;green&gt;%s&lt;white&gt;, status: &lt;magenta&gt;%s&lt;white&gt;)",
+            herb, tostring(data.id), tostring(data.puffs), tostring(data.status)
+            ))
+        end
+        
+         local refill = data.refill or 3
+         local should_refill = data.puffs &lt;= refill
+         local can_act = not table.contains(mydefs, "selfishness")
+                             and not table.contains(myaffs, "paralysis")
+                             and not balance_data.stunned.in_use
+
+         if should_refill then
+             if DEBUG_MODE then cecho("\n&lt;white&gt;[REFILL] -&gt; Needs refill.") end
+         else
+             if DEBUG_MODE then cecho("\n&lt;gray&gt;[REFILL] -&gt; Refill not needed.") end
+         end
+
+         if can_act then
+         if DEBUG_MODE then cecho("\n&lt;green&gt;[REFILL] -&gt; Can act.") end
+         else
+            if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] -&gt; Cannot act (selfish or paralyzed).") end
+         end
+
+         if should_refill and can_act then
+             if DEBUG_MODE then cecho("\n&lt;green&gt;[REFILL] -&gt; Sending empty command.") end
+             send("empty " .. data.id .. " out")
+         end
+
+         if data.status ~= "artf" and data.status ~= "lit" then
+            
+             local pipe_id = data.id
+            
+             -- NEW LOGIC: Check if pipe is already scheduled to be lit
+             if not is_scheduled_to_light(pipe_id) then
+                 if DEBUG_MODE then cecho("\n&lt;yellow&gt;[REFILL] -&gt; Lighting pipe: " .. herb) end
+                
+                 local cmd = "light " .. pipe_id
+                 schedule_light(pipe_id) -- Schedule the command
+
+                 -- pipecmd = data.id -- REMOVE THIS LINE
+                 send(cmd)
+             else
+                  if DEBUG_MODE then cecho("\n&lt;gray&gt;[REFILL] -&gt; Light already pending for pipe: " .. herb) end
+             end
+         else
+            --if DEBUG_MODE then cecho("\n&lt;gray&gt;[REFILL] -&gt; No need to light pipe: " .. herb) end
+         end
+        --else
+         --if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] -&gt; Invalid pipe data for: " .. tostring(herb)) end
+        end
+    end
+end
+
+
+function refilled_pipe(herb)
+
+    local pipenames =
+     {
+      ["slippery elm"] = "elm",
+      ["a valerian leaf"] = "valerian",
+      ["a skullcap flower"] = "skullcap",
+      ["a pinch of ground malachite"] = "malachite",
+      ["a pinch of realgar crystals"] = "realgar",
+      ["a pinch of ground cinnabar"] = "cinnabar",
+     }
+
+    local herb = pipenames[herb] 
+
+    pipes[herb].puffs = 10 
+    
+    if pipes[herb].status ~= "artf" then
+         local pipe_id = pipes[herb].id
+
+         -- NEW LOGIC: Check if pipe is already scheduled to be lit
+         if not is_scheduled_to_light(pipe_id) then
+             schedule_light(pipe_id) -- Schedule the command
+             send("light " .. pipe_id, false)
+             pipes[herb].status = "lit"
+         else
+             -- If already scheduled, trust the previous command will go through
+             pipes[herb].status = "lit" 
+         end
+    end
+end
+
+function parse_plist()
     local pipenames = {
-        ["slippery elm"] = "elm",
-        ["a valerian leaf"] = "valerian",
-        ["a skullcap flower"] = "skullcap",
-        ["a pinch of ground malachite"] = "malachite",
-        ["a pinch of realgar crystals"] = "realgar",
-        ["a pinch of ground cinnabar"] = "cinnabar",
+     ["slippery elm"] = "elm",
+     ["a valerian leaf"] = "valerian",
+     ["a skullcap flower"] = "skullcap",
+     ["a pinch of ground malachite"] = "malachite",
+     ["a pinch of realgar crystals"] = "realgar",
+     ["a pinch of ground cinnabar"] = "cinnabar",
     }
     
     local id = tonumber(matches[3])
@@ -33337,50 +33519,40 @@ end
     local status = matches[2] or "out"
 
     if not pipes then
-        pipes = {}
+     pipes = {}
     end
 
     if herb and id and puffs and status then  
-        pipes[herb] = { id = id, puffs = puffs, status = status, name = herb }
+     pipes[herb] = { id = id, puffs = puffs, status = status, name = herb, refill = 3 }
 
-        -- Initialize names array if it doesn't exist
-        if not pipes.name then
-            pipes.name = {}
-        end
-        
-        if not table.contains(pipes.name, herb) then
-          table.insert(pipes.name, herb)  -- Add the herb name to the names array
-        end
+     -- Initialize names array if it doesn't exist
+     if not pipes.name then
+         pipes.name = {}
+     end
+     
+     if not table.contains(pipes.name, herb) then
+      table.insert(pipes.name, herb)  -- Add the herb name to the names array
+     end
 
-        if not (pipes[herb].status == "artf") and (pipes[herb].status == "out") then
-            send("light " .. pipes[herb].id, false)
-            pipes[herb].status = "lit"
-        end
+     if not (pipes[herb].status == "artf") and (pipes[herb].status == "out") then
+         local pipe_id = pipes[herb].id
+         
+         -- NEW LOGIC: Check if pipe is already scheduled to be lit
+         if not is_scheduled_to_light(pipe_id) then
+             schedule_light(pipe_id) -- Schedule the command
+             send("light " .. pipe_id, false)
+             pipes[herb].status = "lit"
+         else
+             -- If already scheduled, trust the previous command will go through
+             pipes[herb].status = "lit"
+         end
+     end
     end
 end
 
-
-function refilled_pipe(herb)
-
-  local pipenames =
-    {
-      ["slippery elm"] = "elm",
-      ["a valerian leaf"] = "valerian",
-      ["a skullcap flower"] = "skullcap",
-      ["a pinch of ground malachite"] = "malachite",
-      ["a pinch of realgar crystals"] = "realgar",
-      ["a pinch of ground cinnabar"] = "cinnabar",
-    }
-
-  local herb = pipenames[herb] 
-
-  pipes[herb].puffs = 10 
-   
-  if pipes[herb].status ~= "artf" then
-      send("light " .. pipes[herb].id, false)
-      pipes[herb].status = "lit"
-  end
-end
+-- ==============================================================================
+-- 4. OTHER FUNCTIONS (No Changes Needed Here)
+-- ==============================================================================
 
 -- func
 --parselist parses, this is the end of parselist
@@ -33445,92 +33617,9 @@ function empty_pipes()
           send("empty " .. data.id .. " out ")
         end
       end
-   end
-   
-end
-
-function refill_pipes()
-  
-  if emptypipes then return end
-  
-  if not systemLoaded then
-    if DEBUG_MODE then  cecho("\n&lt;red&gt;[REFILL] System not loaded.") end
-    return
-  end
-  if systemPaused then
-    if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] System paused.") end
-    return
-  end
-  if inslowcuringmode() then
-    if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] In slow curing mode.") end
-    return
-  end
-  if balance_data.stunned.in_use then
-    if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] Stunned — cannot act.") end
-    return
-  end
-
-  for herb, data in pairs(pipes) do
-    if type(data) == "table" and data.puffs then
+    end
     
-    if DEBUG_MODE then cecho(string.format(
-        "\n&lt;white&gt;[REFILL] Checking pipe: &lt;green&gt;%s &lt;white&gt;(id: &lt;yellow&gt;%s&lt;white&gt;, puffs: &lt;green&gt;%s&lt;white&gt;, status: &lt;magenta&gt;%s&lt;white&gt;)",
-        herb, tostring(data.id), tostring(data.puffs), tostring(data.status)
-      ))
-    end
-      
-      local refill = refill_pipes_at or 3
-      local should_refill = data.puffs &lt;= refill
-      local can_act = not table.contains(mydefs, "selfishness")
-                      and not table.contains(myaffs, "paralysis")
-                      and not balance_data.stunned.in_use
-
-      if should_refill then
-        if DEBUG_MODE then cecho("\n&lt;white&gt;[REFILL] -&gt; Needs refill.") end
-      else
-        if DEBUG_MODE then cecho("\n&lt;gray&gt;[REFILL] -&gt; Refill not needed.") end
-      end
-
-      if can_act then
-      if DEBUG_MODE then cecho("\n&lt;green&gt;[REFILL] -&gt; Can act.") end
-      else
-       if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] -&gt; Cannot act (selfish or paralyzed).") end
-      end
-
-      if should_refill and can_act then
-        if DEBUG_MODE then cecho("\n&lt;green&gt;[REFILL] -&gt; Sending empty command.") end
-        send("empty " .. data.id .. " out")
-      end
-
-      if data.status ~= "artf" and data.status ~= "lit" then
-        if DEBUG_MODE then cecho("\n&lt;yellow&gt;[REFILL] -&gt; Lighting pipe: " .. herb) end
-        local cmd = "light " .. data.id
-        pipecmd = data.id
-        send(cmd)
-      else
-       if DEBUG_MODE then cecho("\n&lt;gray&gt;[REFILL] -&gt; No need to light pipe: " .. herb) end
-      end
-    else
-     if DEBUG_MODE then cecho("\n&lt;red&gt;[REFILL] -&gt; Invalid pipe data for: " .. tostring(herb)) end
-    end
-  end
-end
-
-
-function on_pipe_lit_trigger()
-  if not pipecmd then return end
-
-  for herb, data in pairs(pipes) do
-    if type(data) == "table" and data.id == pipecmd then
-      pipes[herb].status = "lit"
-      if DEBUG_MODE then cecho("\n&lt;green&gt;[Pipe lit] &lt;white&gt;" .. herb:title() .. " (" .. data.id .. ")") end
-      break
-    end
-  end
-
-  pipecmd = nil  -- clear after handling
-end
-</script>
+end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
