@@ -249,7 +249,7 @@ end</script>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList />
 				<regexCodePropertyList />
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Get Player Information</name>
 					<script>if honoursPerson and matches[2]:find(honoursPerson) then
   getNDBCity = "None"
@@ -17542,7 +17542,7 @@ cecho("\nUpdate complete. Total of "..count.." people have been re-checked.")</s
 					<Alias isActive="yes" isFolder="no">
 						<name>show class count</name>
 						<script>local classList = {"Alchemist", "Apostate", "Bard", "Blademaster", "Depthswalker", "Dragon", "Druid", "Infernal", "Jester", "Magi", "Monk", "Occultist",
-	"Paladin", "Pariah", "Priest", "Psion", "Runewarden", "Sentinel", "Serpent", "Shaman", "Sylvan",}
+	"Paladin", "Pariah", "Priest", "Psion", "Runewarden", "Sentinel", "Serpent", "Shaman", "Sylvan","Unnamable"}
 local classes = {
 	Alchemist = {},
 	Apostate = {},
@@ -17565,15 +17565,27 @@ local classes = {
 	Serpent = {},
 	Shaman = {},
 	Sylvan = {},
+  Unnamable = {},
 }
 
 for player, tab in pairs(NDB.players) do
-	if tab.class ~= "" then
-		table.insert(classes[tab.class], player)
-		if tab.level &gt;= 99 then
-		table.insert(classes.Dragon, player)
-		end	
-	end
+    if tab.class and tab.class ~= "" then
+        -- Force Title Case to match your 'classes' table keys
+        local className = tab.class:title() 
+        
+        -- Check if the class actually exists in your table before inserting
+        if classes[className] then
+            table.insert(classes[className], player)
+            
+            -- Handle the Dragon level check
+            if tab.level &gt;= 99 then
+                table.insert(classes.Dragon, player)
+            end
+        else
+            -- Optional: Log if a class is found that isn't in your list
+            echo("\nUnknown class found: " .. className)
+        end
+    end
 end
 
 cecho("Displaying class count of currently tracked players.")
@@ -17585,11 +17597,11 @@ send(" ")</script>
 						<packageName></packageName>
 						<regex>^an classes$</regex>
 					</Alias>
-					<Alias isActive="no" isFolder="no">
+					<Alias isActive="yes" isFolder="no">
 						<name>show city count</name>
-						<script>
-local classList = {"Alchemist", "Apostate", "Bard", "Blademaster", "Depthswalker", "Dragon", "Druid", "Infernal", "Jester", "Magi", "Monk", "Occultist",
-	"Paladin", "Pariah", "Priest", "Psion", "Runewarden", "Sentinel", "Serpent", "Shaman", "Sylvan"}
+						<script>local classList = {"Alchemist", "Apostate", "Bard", "Blademaster", "Depthswalker", "Dragon", "Druid", "Infernal", "Jester", "Magi", "Monk", "Occultist",
+	"Paladin", "Pariah", "Priest", "Psion", "Runewarden", "Sentinel", "Serpent", "Shaman", "Sylvan", "Unnamable"}
+
 local classes = {
 	Alchemist = {},
 	Apostate = {},
@@ -17604,7 +17616,7 @@ local classes = {
 	Monk = {},
 	Occultist = {},
 	Paladin = {},
-  Pariah = {},
+	Pariah = {},
 	Priest = {},
 	Psion = {},
 	Runewarden = {},
@@ -17612,18 +17624,27 @@ local classes = {
 	Serpent = {},
 	Shaman = {},
 	Sylvan = {},
+	Unnamable = {},
 }
 
 for player, tab in pairs(NDB.players) do
-	if (( tab.city == matches[2]:title() ) or (tab.city == "None" and matches[2]:title() == "Rogues")) and tab.class ~= "" then
-		table.insert(classes[tab.class], player)
-		if tab.level &gt;= 99 then
-			table.insert(classes.Dragon, player)
-		end	
+	-- Clean up the class name from NDB to match our table keys
+	local className = tab.class:title()
+
+	if ((tab.city == matches[2]:title()) or (tab.city == "None" and matches[2]:title() == "Rogues")) and className ~= "" then
+		-- Guard clause: only insert if the class exists in our 'classes' table
+		if classes[className] then
+			table.insert(classes[className], player)
+			
+			if tab.level &gt;= 99 then
+				table.insert(classes.Dragon, player)
+			end
+		end
 	end
 end
 
 cecho("Displaying class count of currently tracked players in &lt;"..NDB.highlighting[matches[2]:title()].."&gt;"..matches[2]:title()..".")
+
 for _, class in ipairs(classList) do
 	if #classes[class] &gt; 0 then
 		cecho("\n &lt;DimGrey&gt;[&lt;NavajoWhite&gt;"..class:title().."&lt;DimGrey&gt;]"..string.rep(" ", 13-string.len(class)).."- &lt;NavajoWhite&gt;"..#classes[class].." tracked people are "..class..".")
@@ -17632,7 +17653,7 @@ end
 send(" ")</script>
 						<command></command>
 						<packageName></packageName>
-						<regex>^an cclasses (\w+)$</regex>
+						<regex>^an cityclasses (\w+)$</regex>
 					</Alias>
 					<Alias isActive="yes" isFolder="no">
 						<name>show player count</name>
@@ -17693,7 +17714,7 @@ end
 					<Alias isActive="yes" isFolder="no">
 						<name>tracked of class</name>
 						<script>local classList = {"Alchemist", "Apostate", "Bard", "Blademaster", "Depthswalker", "Dragon", "Druid", "Infernal", "Jester", "Magi", "Monk", "Occultist",
-	"Paladin", "Priest", "Psion", "Runewarden", "Sentinel", "Serpent", "Shaman", "Sylvan"}
+	"Paladin", "Priest", "Psion", "Runewarden", "Sentinel", "Serpent", "Shaman", "Sylvan","Unnamable"}
 	
 	cecho("Displaying tracked people as "..matches[2].." class:")
 	local people = {}
@@ -20228,7 +20249,6 @@ BACKUP_RETENTION_DAYS = BACKUP_RETENTION_DAYS or 1
     {name = gmcp.Char.Status.class:lower() .. "prios", table = afflictions},
     {name = "curinglist", table = curinglist},
     {name = "defuplist", table = defenses},
-    {name = "deck", table = TAROT and TAROT.DECK and TAROT.DECK.cards or {}},
   }
 
   for _, file in ipairs(filesToBackup) do
@@ -21189,14 +21209,6 @@ function systemLogin()
 	initializeScrollbar()
 	initializeGUIContainers()
   
-  --load primary files
-  
-  --reloadSystem()
-  --reloadSrvQueue()
-  --reloadRemediesQueue()
-  --reloadFortifyQueue()
-  --reloadHuntingFile()
-    
   	if DEBUG_MODE then cecho("&lt;green&gt;\nLoading System Settings") end
     startGameFeedPolling()
   
@@ -21586,81 +21598,59 @@ end
 					<packageName></packageName>
 					<script>function updateFromGitAsync()
   cecho("&lt;yellow&gt;📥 Downloading latest system update in background...\n")
-  updateEchoTimer = nil
   local mudletDir   = getMudletHomeDir()
   local targetDir   = mudletDir .. "/Achaean System"
-  local backupDir   = mudletDir .. "/Achaean System Backup " .. os.date("%Y-%m-%d %H-%M-%S")
+  -- This creates a unique backup name using the current date/time
+  local backupDir   = mudletDir .. "/Backup Achaean System " .. os.date("%Y-%m-%d %H-%M-%S")
   local tempZip     = mudletDir .. "/Achaean System.zip"
   local extractRoot = mudletDir .. "/core-main"
   local zipUrl      = "https://github.com/caevora/core/archive/refs/heads/main.zip"
 
-  local downloadCmd = string.format(
-    [[powershell -Command "Invoke-WebRequest -Uri '%s' -OutFile '%s'"]],
-    zipUrl, tempZip
-  )
-  
-  -- Start hold message timer
-  updateEchoTimer = tempTimer(1.5, function()
-    cecho("&lt;yellow&gt;⏳ Please hold while we update the system files...\n")
-  end, true)  -- true = repeating
-
-
-  -- Step 1: Download ZIP
+  -- Step 1 &amp; 2: Download and Extract
   tempTimer(0.1, function()
-    cecho("&lt;yellow&gt;🔽 Downloading system zip...\n")
-    if not os.execute(downloadCmd) then
-      cecho("&lt;red&gt;❌ Failed to download system zip.\n")
-      return
-    end
+    cecho("&lt;yellow&gt;🔽 Downloading zip...\n")
+    os.execute(string.format([[powershell -Command "Invoke-WebRequest -Uri '%s' -OutFile '%s'"]], zipUrl, tempZip))
+    
+    cecho("&lt;yellow&gt;📦 Extracting files...\n")
+    os.execute(string.format([[powershell -Command "Expand-Archive -LiteralPath '%s' -DestinationPath '%s' -Force"]], tempZip, mudletDir))
 
-    -- Step 2: Extract ZIP
+    -- Step 3: The Rename-and-Swap
     tempTimer(0.5, function()
-      cecho("&lt;yellow&gt;📦 Extracting MPACKAGE and SYSTEM files...\n")
-      local extractCmd = string.format(
-        [[powershell -Command "Expand-Archive -LiteralPath '%s' -DestinationPath '%s' -Force"]],
-        tempZip, mudletDir
+      cecho("&lt;yellow&gt;🚀 Renaming live folder to backup and importing new files...\n")
+      
+      local winTarget      = targetDir:gsub("/", "\\")
+      local winBackup      = backupDir:gsub("/", "\\")
+      local winSource      = (extractRoot .. "\\Achaean System"):gsub("/", "\\")
+      local winExtractRoot = extractRoot:gsub("/", "\\")
+
+      -- COMMAND LOGIC:
+      -- 1. Rename 'Achaean System' -&gt; 'Backup Achaean System [Date]'
+      -- 2. Move 'core-main\Achaean System' -&gt; Root Profile Folder
+      local swapCmd = string.format(
+        [[powershell -Command "Rename-Item -Path '%s' -NewName '%s' -Force -ErrorAction SilentlyContinue; Move-Item -Path '%s' -Destination '%s' -Force"]],
+        winTarget, winBackup, winSource, winTarget
       )
-      if not os.execute(extractCmd) then
-        cecho("&lt;red&gt;❌ Failed to extract system files.\n")
-        return
-      end
+      
+      os.execute(swapCmd)
 
-      -- Step 3: Backup existing system
-      tempTimer(0.5, function()
-        if lfs.attributes(targetDir, "mode") == "directory" then
-          cecho("&lt;yellow&gt;🗂 Backing up current system to:\n&lt;blue&gt;📁 " .. backupDir .. "\n")
-          os.execute(string.format([[xcopy /E /Y /I "%s" "%s"]], targetDir, backupDir))
+      -- Step 4: Verification
+      tempTimer(1.0, function()
+        local liveXml = targetDir .. "/Achaean System.xml"
+        if lfs.attributes(liveXml) then
+          cecho("&lt;green&gt;✅ SUCCESS: The new system is now active in the root directory.\n")
+          cecho("&lt;blue&gt;📁 Old files are safe in: " .. backupDir .. "\n")
+        else
+          cecho("&lt;red&gt;❌ FAILED: The folder rename was blocked. Try closing Mudlet and running this again.\n")
         end
-
-        -- Step 4: Copy new system files
-        tempTimer(0.5, function()
-          cecho("&lt;yellow&gt;🔁 Installing new system files...\n")
-
-          local copyCmd1 = string.format([[xcopy /E /Y /I "%s\\Achaean System" "%s"]], extractRoot, targetDir)
-          local copyCmd2 = string.format([[copy /Y "%s\\Achaean System.xml" "%s\\Achaean System.xml"]], extractRoot, mudletDir)
-
-          os.execute('cmd /c "' .. copyCmd1 .. '"')
-          os.execute('cmd /c "' .. copyCmd2 .. '"')
-
-          -- Step 5: Cleanup
-          tempTimer(0.5, function()
-            os.remove(tempZip)
-            os.execute('rmdir /S /Q "' .. extractRoot .. '"')
-            
-            if updateEchoTimer then
-              killTimer(updateEchoTimer)
-              updateEchoTimer = nil
-            end
-
-            cecho("&lt;green&gt;✅ Update complete. Your system is now up to date.\n")
-            cecho("&lt;orange&gt;🛑 Mudlet restart is recommended to apply changes.\n")
-          end)
-        end)
+        
+        -- Cleanup temporary junk
+        os.remove(tempZip)
+        os.execute(string.format([[powershell -Command "Remove-Item -Path '%s' -Recurse -Force -ErrorAction SilentlyContinue"]], winExtractRoot))
+        cecho("&lt;green&gt;✅ Update routine finished.\n")
       end)
     end)
   end)
-end
-</script>
+end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
