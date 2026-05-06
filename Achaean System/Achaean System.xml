@@ -20920,17 +20920,25 @@ function incrementLocalVersion()
   end
 
   for line in io.lines(versionPath) do
-    local prefix, major, minor, patch, suffix = line:match("^(.-)V_(%d+)%.(%d+)%.(%d+)(.-)%]%]")
-    if prefix then
-      major, minor, patch = tonumber(major), tonumber(minor), tonumber(patch)
-      patch = patch + 1
-      local newLine = string.format('%sV_%d.%d.%d%s]]', prefix, major, minor, patch, suffix)
-      table.insert(lines, newLine)
-      found = true
-    else
-      table.insert(lines, line)
+      -- This new pattern is much more robust:
+      -- It looks for "v_" followed by numbers/dots and captures the parts.
+      local prefix, v_tag, major, minor, patch = line:match("^(.-)([vV]_(%d+)%.(%d+)%.(%d+))")
+      
+      if prefix then
+        major, minor, patch = tonumber(major), tonumber(minor), tonumber(patch)
+        patch = patch + 1
+        
+        -- We rebuild the line but preserve your specific formatting (like the double zeros if they exist)
+        -- However, using %d will normalize 00 to 0. If you want to keep '00', use %02d
+        local newVString = string.format("v_%d.%02d.%d", major, minor, patch)
+        local newLine = line:gsub(v_tag, newVString)
+        
+        table.insert(lines, newLine)
+        found = true
+      else
+        table.insert(lines, line)
+      end
     end
-  end
 
   if not found then
     cecho("&lt;red&gt;🚫 Version line not found in config.lua\n")
@@ -20949,7 +20957,8 @@ end
 
 function isNewerVersion(remote, localVersion)
   local function parseVersion(v)
-    local major, minor, patch = v:match("V_(%d+)%.(%d+)%.(%d+)")
+    -- The [vV] matches both upper and lower case V
+    local major, minor, patch = v:match("[vV]_(%d+)%.(%d+)%.(%d+)")
     return tonumber(major), tonumber(minor), tonumber(patch)
   end
   local rMaj, rMin, rPat = parseVersion(remote)
@@ -20997,20 +21006,28 @@ function updateFromGitAsync(version)
   local mudletDir = getMudletHomeDir()
   local targetDir = mudletDir .. "/Achaean System"
   local backupDir = mudletDir .. "/Backup Achaean System " .. os.date("%Y-%m-%d %H-%M-%S")
-  local packageUrl = string.format("https://github.com/caevora/core/releases/download/%s/Achaean.System.mpackage", version)
+  local packageUrl = "https://github.com/caevora/core/releases/download/" .. version .. "/Achaean.System.mpackage"
 
-  cecho("&lt;yellow&gt;📥 Starting Safe Update to " .. version .. "...\n")
+  -- 1. PHYSICAL RENAME (Step 1)
+  cecho("&lt;yellow&gt;📂 Renaming local folder to backup...\n")
+  collectgarbage()
+  local winTarget = targetDir:gsub("/", "\\")
+  local winBackup = backupDir:gsub("/", "\\")
+  local cmd = string.format([[powershell -Command "Rename-Item -Path '%s' -NewName '%s' -Force"]], winTarget, winBackup)
+  os.execute(cmd)
 
-  -- Physical Backup
-  os.execute(string.format([[powershell -Command "Rename-Item -Path '%s' -NewName '%s' -Force"]], targetDir:gsub("/", "\\"), backupDir:gsub("/", "\\")))
-
+  -- 2. CLEAR MEMORY CACHE (Step 2)
+  -- We wait a moment for the rename to settle, then tell Mudlet to "forget" the package.
   tempTimer(1.0, function()
-    cecho("&lt;yellow&gt;🗑️ Clearing registry...\n")
+    cecho("&lt;yellow&gt;🗑️ Clearing Mudlet's internal registry...\n")
     uninstallPackage("Achaean System")
-    tempTimer(1.0, function()
-      cecho("&lt;yellow&gt;🔽 Downloading package...\n")
+
+    -- 3. FRESH INSTALL
+    -- We wait one more second to ensure the "Uninstall" is fully processed.
+    tempTimer(1.5, function()
+      cecho("&lt;yellow&gt;🔽 Downloading fresh package: &lt;white&gt;" .. packageUrl .. "\n")
       installPackage(packageUrl)
-      cecho("&lt;green&gt;✅ Installation started! Check Module Manager.\n")
+      cecho("&lt;green&gt;✅ Update initiated. Watch your main console for the [  OK  ].\n")
     end)
   end)
 end
