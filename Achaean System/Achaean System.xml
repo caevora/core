@@ -20888,6 +20888,167 @@ registerAnonymousEventHandler("gmcp.Char.Vitals", onProtocolEnabled)</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
+					<name>async</name>
+					<packageName></packageName>
+					<script>-- =============================================================================
+-- VERSION CONTROL &amp; UTILITY FUNCTIONS
+-- =============================================================================
+
+function getLocalVersion()
+  local versionPath = getMudletHomeDir() .. "/Achaean System/config.lua"
+  local version = "unknown"
+  if not lfs.attributes(versionPath) then return version end
+
+  for line in io.lines(versionPath) do
+    local v = line:match('version%s*=%s*%[%[(.-)%]%]')
+    if v then
+      version = v
+      break
+    end
+  end
+  return version
+end
+
+function incrementLocalVersion()
+  local versionPath = getMudletHomeDir() .. "/Achaean System/config.lua"
+  local lines = {}
+  local found = false
+
+  if not lfs.attributes(versionPath) then 
+    cecho("&lt;red&gt;🚫 config.lua not found at " .. versionPath .. "\n")
+    return false 
+  end
+
+  for line in io.lines(versionPath) do
+    local prefix, major, minor, patch, suffix = line:match("^(.-)V_(%d+)%.(%d+)%.(%d+)(.-)%]%]")
+    if prefix then
+      major, minor, patch = tonumber(major), tonumber(minor), tonumber(patch)
+      patch = patch + 1
+      local newLine = string.format('%sV_%d.%d.%d%s]]', prefix, major, minor, patch, suffix)
+      table.insert(lines, newLine)
+      found = true
+    else
+      table.insert(lines, line)
+    end
+  end
+
+  if not found then
+    cecho("&lt;red&gt;🚫 Version line not found in config.lua\n")
+    return false
+  end
+
+  local f = io.open(versionPath, "w")
+  if f then
+    for _, l in ipairs(lines) do f:write(l .. "\n") end
+    f:close()
+    cecho("&lt;green&gt;🔄 Version incremented in config.lua.\n")
+    return true
+  end
+  return false
+end
+
+function isNewerVersion(remote, localVersion)
+  local function parseVersion(v)
+    local major, minor, patch = v:match("V_(%d+)%.(%d+)%.(%d+)")
+    return tonumber(major), tonumber(minor), tonumber(patch)
+  end
+  local rMaj, rMin, rPat = parseVersion(remote)
+  local lMaj, lMin, lPat = parseVersion(localVersion)
+  if not (rMaj and lMaj) then return false end
+  if rMaj ~= lMaj then return rMaj &gt; lMaj end
+  if rMin ~= lMin then return rMin &gt; lMin end
+  return rPat &gt; lPat
+end
+
+-- =============================================================================
+-- THE "MODERN" ASYNC UPDATE SYSTEM (IMPORT)
+-- =============================================================================
+
+function checkForAsyncUpdate()
+  cecho("&lt;yellow&gt;🔍 Checking remote version...\n")
+  -- The URL we send
+  local url = "https://raw.githubusercontent.com/caevora/core/main/Achaean%20System/config.lua"
+  -- The "Expected" URL with spaces for matching
+  local expectedUrl = "https://raw.githubusercontent.com/caevora/core/main/Achaean System/config.lua"
+  
+  registerAnonymousEventHandler("sysGetHttpDone", function(_, rurl, body)
+    -- Normalize the returning URL by converting %20 back to spaces for comparison
+    local normalizedUrl = rurl:gsub("%%20", " ")
+    
+    if normalizedUrl ~= expectedUrl then return end
+    
+    local remoteVersion = body:match('version%s*=%s*%[%[(.-)%]%]')
+    local localVersion = getLocalVersion()
+
+    cecho(string.format("&lt;white&gt;  [Debug] Local: %s | Remote: %s\n", localVersion, remoteVersion))
+
+    if remoteVersion and isNewerVersion(remoteVersion, localVersion) then
+      cecho(string.format("&lt;yellow&gt;🆕 Update Available: &lt;red&gt;%s&lt;reset&gt; -&gt; &lt;green&gt;%s&lt;reset&gt;\n", localVersion, remoteVersion))
+      cechoLink("&lt;cyan&gt;[ Click to Update Now ]\n", function() updateFromGitAsync(remoteVersion) end, "Install " .. remoteVersion, true)
+    else
+      cecho("&lt;green&gt;✅ System is up to date.\n")
+    end
+  end, true) 
+  
+  getHTTP(url)
+end
+
+function updateFromGitAsync(version)
+  local mudletDir = getMudletHomeDir()
+  local targetDir = mudletDir .. "/Achaean System"
+  local backupDir = mudletDir .. "/Backup Achaean System " .. os.date("%Y-%m-%d %H-%M-%S")
+  local packageUrl = string.format("https://github.com/caevora/core/releases/download/%s/Achaean.System.mpackage", version)
+
+  cecho("&lt;yellow&gt;📥 Starting Safe Update to " .. version .. "...\n")
+
+  -- Physical Backup
+  os.execute(string.format([[powershell -Command "Rename-Item -Path '%s' -NewName '%s' -Force"]], targetDir:gsub("/", "\\"), backupDir:gsub("/", "\\")))
+
+  tempTimer(1.0, function()
+    cecho("&lt;yellow&gt;🗑️ Clearing registry...\n")
+    uninstallPackage("Achaean System")
+    tempTimer(1.0, function()
+      cecho("&lt;yellow&gt;🔽 Downloading package...\n")
+      installPackage(packageUrl)
+      cecho("&lt;green&gt;✅ Installation started! Check Module Manager.\n")
+    end)
+  end)
+end
+
+-- =============================================================================
+-- THE "MODERN" ASYNC EXPORT SYSTEM (PUSH)
+-- =============================================================================
+
+function exportToGitAsync()
+  cecho("&lt;yellow&gt;📤 Initializing Git Export...\n")
+  if not incrementLocalVersion() then return end
+  saveProfile()
+
+  tempTimer(2.0, function()
+    local sourceDir = getMudletHomeDir()
+    local targetDir = [[C:\Users\JS\Documents\Mudlet-Git]]
+    local git       = [["C:\Program Files\Git\mingw64\bin\git.exe"]]
+    local log       = targetDir .. "\\gitlog.txt"
+
+    -- Auto-copy the XML and mpackage
+    os.execute(string.format([[copy /Y "%s\\Achaean System.xml" "%s\\Achaean System\\Achaean System.xml" &gt;&gt; "%s" 2&gt;&amp;1]], sourceDir, targetDir, log))
+    os.execute(string.format([[robocopy "%s\\Achaean System" "%s\\Achaean System" /E /NFL /NDL /NJH /NJS /XD "%s\\Achaean System\\combat" &gt;&gt; "%s" 2&gt;&amp;1]], sourceDir, targetDir, sourceDir, log))
+
+    tempTimer(1.5, function()
+      local cmds = {
+        string.format([[cd /d "%s" &amp;&amp; %s add -A &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log),
+        string.format([[cd /d "%s" &amp;&amp; %s commit -m "🧩 Auto-backup: Profile snapshot" &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log),
+        string.format([[cd /d "%s" &amp;&amp; %s pull --rebase origin main &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log),
+        string.format([[cd /d "%s" &amp;&amp; %s push origin main &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log)
+      }
+      for _, cmd in ipairs(cmds) do os.execute(cmd) end
+      cecho("&lt;green&gt;✅ Git push complete.\n")
+    end)
+  end)
+end</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
 					<name>prompt</name>
 					<packageName></packageName>
 					<script>function prompt()
@@ -21107,199 +21268,6 @@ function pingCheck()
 end
 
 registerAnonymousEventHandler("sysDataSendRequest", pingCheck)</script>
-					<eventHandlerList />
-				</Script>
-				<Script isActive="yes" isFolder="no">
-					<name>Async Load</name>
-					<packageName></packageName>
-					<script>function checkForAsyncUpdate()
- cecho("&lt;yellow&gt;🔍 Checking remote version in background...\n")
-
-  -- Define the GitHub config URL
-  GITHUB_CONFIG_URL = "https://raw.githubusercontent.com/caevora/core/main/Achaean%20System/config.lua"
-  local expectedUrl = "https://raw.githubusercontent.com/caevora/core/main/Achaean System/config.lua"
-  local handlerID
-  handlerID = registerAnonymousEventHandler("sysGetHttpDone", function(_, rurl, body)
-    local normalizedUrl = rurl:gsub("%%20", " ")
-    if normalizedUrl ~= expectedUrl then return end
-    killAnonymousEventHandler(handlerID)
-    local remoteVersion = body and (
-      body:match('version%s*=%s*%[%[(.-)%]%]') or
-      body:match('version%s*=%s*["\'](.-)["\']')
-    )
-    if not remoteVersion then
-      cecho("&lt;red&gt;🚫 Version not found in config.lua\n")
-      return
-    end
-
-    local localVersion = getLocalVersion()
-    cecho(string.format("&lt;green&gt;✅ Remote version: %s | Local version: %s\n", remoteVersion, localVersion))
-
-    if isNewerVersion(remoteVersion, localVersion) then
-      cecho(string.format(
-        "&lt;yellow&gt;🆕 Update available!\n  Local: &lt;red&gt;%s&lt;reset&gt;\n  Remote: &lt;green&gt;%s&lt;reset&gt;\n",
-        localVersion, remoteVersion
-      ))
-      cechoLink(
-        "&lt;cyan&gt;[ &lt;white&gt;Click here to update your system&lt;cyan&gt; ]\n",
-        function() updateFromGitAsync(remoteVersion) end,
-        "Update the Achaean System from GitHub",
-        true
-      )
-    else
-      cecho("&lt;green&gt;✅ You are on the latest version.\n")
-    end
-  end)
-
-  -- Optional: one-time error handler
-  local errorHandlerID
-  errorHandlerID = registerAnonymousEventHandler("sysGetHttpError", function(_, err, rurl)
-    if rurl:gsub("%%20", " ") == expectedUrl then
-      killAnonymousEventHandler(errorHandlerID)
-      cecho("&lt;red&gt;❌ HTTP request error: " .. tostring(err) .. "\n")
-    end
-  end)
-  getHTTP(GITHUB_CONFIG_URL)
-end
-
-
-
-function simulateUpdatePopup(remoteVersion, localVersion)
-  cecho(string.format(
-    "&lt;green&gt;🧪 Simulating version check...\n  Local: &lt;red&gt;%s&lt;reset&gt;\n  Remote: &lt;green&gt;%s&lt;reset&gt;\n",
-    localVersion, remoteVersion
-  ))
-
-  if isNewerVersion(remoteVersion, localVersion) then
-    cecho(string.format(
-      "&lt;yellow&gt;🆕 Update available!\n  Local: &lt;red&gt;%s&lt;reset&gt;\n  Remote: &lt;green&gt;%s&lt;reset&gt;\n",
-      localVersion, remoteVersion
-    ))
-
-    cechoLink(
-      "&lt;cyan&gt;[ &lt;white&gt;Click here to update your system&lt;cyan&gt; ]\n",
-      function()
-        cecho("&lt;green&gt;📦 Simulated update running (this would trigger updateFromGitAsync())\n")
-        -- Uncomment this if you want it to run the actual update
-        -- updateFromGitAsync()
-      end,
-      "Simulated system update from GitHub",
-      true
-    )
-  else
-    cecho("&lt;green&gt;✅ You are already on the latest version.\n")
-  end
-end
-
-</script>
-					<eventHandlerList />
-				</Script>
-				<Script isActive="yes" isFolder="no">
-					<name>Async GIT Import</name>
-					<packageName></packageName>
-					<script>function updateFromGitAsync(version)
-  -- If for some reason no version is passed, we can't build the URL
-  if not version then 
-    cecho("&lt;red&gt;❌ Error: No version provided for update!\n")
-    return 
-  end
-
-  local mudletDir = getMudletHomeDir()
-  local targetDir = mudletDir .. "/Achaean System"
-  local backupDir = mudletDir .. "/Backup Achaean System " .. os.date("%Y-%m-%d %H-%M-%S")
- 
-  -- DYNAMIC URL: Uses the version fetched from config.lua
-  local packageUrl = string.format("https://github.com/caevora/core/releases/download/%s/Achaean.System.mpackage", version)
-  cecho("&lt;yellow&gt;📥 Starting Safe System Update to version " .. version .. "...\n")
-
-  -- STEP 1: PHYSICAL MOVE (The Backup)
-  local winTarget = targetDir:gsub("/", "\\")
-  local winBackup = backupDir:gsub("/", "\\")
-  cecho("&lt;yellow&gt;🗂 Creating backup: " .. os.date("%H:%M:%S") .. "\n")
-  os.execute(string.format([[powershell -Command "Rename-Item -Path '%s' -NewName '%s' -Force -ErrorAction SilentlyContinue"]], winTarget, winBackup))
-
-    -- STEP 2: CLEAR REGISTRY
-    tempTimer(1.0, function()
-      cecho("&lt;yellow&gt;🗑️ Clearing Mudlet registry...\n")
-      uninstallPackage("Achaean System")
-
-      -- STEP 3: INSTALL
-      tempTimer(1.0, function()
-        cecho("&lt;yellow&gt;🔽 Downloading version " .. version .. " from GitHub...\n")
-        installPackage(packageUrl)
-        cecho("&lt;green&gt;✅ Update process initiated. Watch your main console for the [OK] message.\n")
-        cecho("&lt;blue&gt;📁 Backup folder: " .. backupDir .. "\n")
-    end)
-  end)
-end</script>
-					<eventHandlerList />
-				</Script>
-				<Script isActive="yes" isFolder="no">
-					<name>Async GIT Export</name>
-					<packageName></packageName>
-					<script>-------------------------------------------------------------------------------------
---        DON'T Forget to MANUAL COPY AND PASTE THE .XML into the before 
---        pushing to git mudlet home directory Achaean System folder, or 
---        the XML changes wont update.
--------------------------------------------------------------------------------------
-
-
-function exportToGitAsync()
-    -- Reminder message (Runs first)
-    cecho("\n--------------------------------------------------------------\n")
-    cecho("&lt;red&gt;🛑 MANUAL STEP REQUIRED BEFORE GIT PUSH!\n")
-    cecho("&lt;white&gt;1. &lt;orange&gt;MANUALLY COPY&lt;orange&gt; &lt;cyan&gt;Achaean System.xml&lt;cyan&gt; &lt;white&gt;FROM:&lt;white&gt;\n")
-    cecho(string.format("&lt;white&gt;   &lt;magenta&gt;%s\\Achaean System&lt;magenta&gt;\n", getMudletHomeDir()))
-    cecho("&lt;white&gt;2. &lt;white&gt;TO YOUR GIT REPOSITORY FOLDER:&lt;white&gt;\n")
-    cecho("&lt;white&gt;   &lt;magenta&gt;C:\\Users\\JS\\Documents\\Mudlet-Git\\Achaean System&lt;magenta&gt;\n")
-    cecho("&lt;white&gt;3. &lt;green&gt;If you forgot!!:\n&lt;gold&gt;Git will push the old XML. \nCopy it now and run this function again.&lt;gold&gt;\n")
-    cecho("--------------------------------------------------------------\n")
-    cecho("&lt;yellow&gt;📤 Exporting and pushing to GitHub in background...\n")
-
-    -- Step 1: Increment version + export
-    if not incrementLocalVersion() then
-        cecho("&lt;red&gt;🚫 Version increment failed. Git export aborted.\n")
-        return
-    end
-
-    saveProfile()
-    --autoExportMpackage() (THIS WORKS, but exports full package. So only use it on a profile that has ONLY the scripts you want to export.)
-
-    tempTimer(1, function()
-        local sourceDir = getMudletHomeDir()
-        local targetDir = [[C:\Users\JS\Documents\Mudlet-Git]]
-        local git = [["C:\Program Files\Git\mingw64\bin\git.exe"]]
-        local log = targetDir .. "\\gitlog.txt"
-
-        local mpackagePath = string.format([[%s\Achaean System\Achaean System.mpackage]], sourceDir)
-        os.execute(string.format(
-            [[if exist "%s" (copy /Y "%s" "%s\\Achaean System.mpackage" &gt;&gt; "%s" 2&gt;&amp;1)]],
-            mpackagePath, mpackagePath, targetDir, log
-        ))
-
-        os.execute(string.format(
-            [[robocopy "%s\\Achaean System" "%s\\Achaean System" /E /NFL /NDL /NJH /NJS /XD "%s\\Achaean System\\combat" &gt;&gt; "%s" 2&gt;&amp;1]],
-            sourceDir, targetDir, sourceDir, log
-        ))
-
-        -- Step 2: Run Git commands
-        tempTimer(1, function()
-            local cmds = {
-                string.format([[cd /d "%s" &amp;&amp; %s add -A &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log),
-                string.format([[cd /d "%s" &amp;&amp; %s commit -am "🧩 Auto-backup: Profile snapshot" &gt;&gt; "%s" 2&gt;&amp;1 || echo Nothing to commit &gt;&gt; "%s"]], targetDir, git, log, log),
-                string.format([[cd /d "%s" &amp;&amp; %s pull --rebase origin main &gt;&gt; "%s" 2&gt;&amp;1 || echo Pull failed &gt;&gt; "%s"]], targetDir, git, log, log),
-                string.format([[cd /d "%s" &amp;&amp; %s push origin main &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log)
-            }
-
-            for _, cmd in ipairs(cmds) do
-                os.execute(cmd)
-            end
-
-            cecho("&lt;green&gt;✅ Git push complete (background).\n")
-            cecho("--------------------------------------------------------------\n")
-        end)
-    end)
-end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
