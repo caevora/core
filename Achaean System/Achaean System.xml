@@ -12592,8 +12592,13 @@ function updateFromGitAsync(version)
   local backupDir = mudletDir .. "/" .. backupFolderName
   local packageUrl = "https://github.com/caevora/core/releases/download/" .. version .. "/Achaean.System.mpackage"
 
-  -- 💾 STORE THE BACKUP PATH IN A SYSTEM-AGNOSTIC GLOBAL VARIABLE
-  SystemUpdateLastBackup = backupDir
+  -- 💾 HARD-WRITE PATH TO DISK: Solves the memory-wipe bug
+  local trackFile = mudletDir .. "/update_migration_path.txt"
+  local f = io.open(trackFile, "w")
+  if f then
+      f:write(backupDir)
+      f:close()
+  end
 
   -- 1. PHYSICAL RENAME (Step 1)
   cecho("&lt;yellow&gt;📂 Renaming local folder to backup...\n")
@@ -12627,18 +12632,31 @@ function handleDataMigration(event, packageInstalled)
         return 
     end
 
-    -- Verify that we actually have a backup path primed from an async update run
-    if not SystemUpdateLastBackup then
+    local mudletDir = getMudletHomeDir()
+    local trackFile = mudletDir .. "/update_migration_path.txt"
+    
+    -- Check if the track file exists on disk
+    if not fileExists(trackFile) then
         return
     end
 
-    local mudletDir = getMudletHomeDir()
-    local sourceLibsDir = SystemUpdateLastBackup .. "/system/libs"
+    -- Read the backup folder path back from disk
+    local f = io.open(trackFile, "r")
+    local sourceBackupPath = f and f:read("*l")
+    if f then f:close() end
+
+    if not sourceBackupPath or sourceBackupPath == "" then
+        os.remove(trackFile)
+        return
+    end
+
+    local sourceLibsDir = sourceBackupPath .. "/system/libs"
     local targetLibsDir = mudletDir .. "/Achaean System/system/libs"
 
     -- Verify the source backup directory physically exists before executing a copy
     if not fileExists(sourceLibsDir) then
-        cecho("&lt;red&gt;⚠️ [MIGRATOR] Source backup libs folder not found. Skipping auto-migration.\n")
+        cecho("&lt;red&gt;⚠️ [MIGRATOR] Source backup libs folder not found at: " .. sourceLibsDir .. "\n")
+        os.remove(trackFile)
         return
     end
 
@@ -12648,10 +12666,7 @@ function handleDataMigration(event, packageInstalled)
     local winSource = sourceLibsDir:gsub("/", "\\")
     local winTarget = targetLibsDir:gsub("/", "\\")
 
-    -- ✨ THE MAXIMUM-SAFETY COMMAND:
-    -- Instead of deleting the folder, we copy everything FROM the backup libs folder (\*) 
-    -- directly INTO the target libs folder. The -Recurse and -Force flags will perfectly
-    -- overwrite the files and bring along all subfolders (json, ndb, backup) seamlessly.
+    -- ✨ FORCE OVERWRITE INTERNALS: Drops your ndb, json, and backup sub-folders straight in
     local cmd = string.format([[powershell -Command "Copy-Item -Path '%s\*' -Destination '%s' -Force -Recurse"]], 
         winSource, winTarget)
     
@@ -12659,8 +12674,8 @@ function handleDataMigration(event, packageInstalled)
 
     cecho("&lt;green&gt;✅ [MIGRATOR]: Complete /libs directory (including json, ndb, and backups) successfully restored!\n")
     
-    -- Clear the migration path variable so it doesn't run again on accidental manual reinstalls
-    SystemUpdateLastBackup = nil
+    -- Clean up the tracking text file so it doesn't fire again on manual package installs
+    os.remove(trackFile)
 
     -- Force reload your system report framework manager to pull values back into game memory instantly
     if jsonManager then
@@ -12670,7 +12685,6 @@ end
 
 registerAnonymousEventHandler("sysInstallPackage", handleDataMigration)
 
-registerAnonymousEventHandler("sysInstallPackage", handleDataMigration)
 
 -- =============================================================================
 -- THE "MODERN" ASYNC EXPORT SYSTEM (PUSH)
