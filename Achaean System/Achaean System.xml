@@ -12586,8 +12586,14 @@ end
 function updateFromGitAsync(version)
   local mudletDir = getMudletHomeDir()
   local targetDir = mudletDir .. "/Achaean System"
-  local backupDir = mudletDir .. "/Backup Achaean System " .. os.date("%Y-%m-%d %H-%M-%S")
+  
+  -- Create the unique backup path string
+  local backupFolderName = "Backup Achaean System " .. os.date("%Y-%m-%d %H-%M-%S")
+  local backupDir = mudletDir .. "/" .. backupFolderName
   local packageUrl = "https://github.com/caevora/core/releases/download/" .. version .. "/Achaean.System.mpackage"
+
+  -- 💾 STORE THE BACKUP PATH IN A SYSTEM-AGNOSTIC GLOBAL VARIABLE
+  SystemUpdateLastBackup = backupDir
 
   -- 1. PHYSICAL RENAME (Step 1)
   cecho("&lt;yellow&gt;📂 Renaming local folder to backup...\n")
@@ -12598,20 +12604,73 @@ function updateFromGitAsync(version)
   os.execute(cmd)
 
   -- 2. CLEAR MEMORY CACHE (Step 2)
-  -- We wait a moment for the rename to settle, then tell Mudlet to "forget" the package.
   tempTimer(1.0, function()
     cecho("&lt;yellow&gt;🗑️ Clearing Mudlet's internal registry...\n")
     uninstallPackage("Achaean System")
 
     -- 3. FRESH INSTALL
-    -- We wait one more second to ensure the "Uninstall" is fully processed.
     tempTimer(1.5, function()
       cecho("&lt;yellow&gt;🔽 Downloading fresh package: &lt;white&gt;" .. packageUrl .. "\n")
       installPackage(packageUrl)
-      cecho("&lt;green&gt;✅ Update initiated. Watch your main console for the [  OK  ].\n")
+      cecho("&lt;green&gt;✅ Update initiated. Migration sequence armed.\n")
     end)
   end)
 end
+
+-- This function must have these exact parameters to capture the data Mudlet sends it
+function handleDataMigration(event, packageInstalled)
+    
+    ---------------------------------------------------------
+    -- 🔒 SAFETY LOCK: Only run if it's YOUR package name
+    ---------------------------------------------------------
+    if packageInstalled ~= "Achaean System" then 
+        return 
+    end
+
+    -- Verify that we actually have a backup path primed from an async update run
+    if not SystemUpdateLastBackup then
+        return
+    end
+
+    local mudletDir = getMudletHomeDir()
+    local sourceLibsDir = SystemUpdateLastBackup .. "/system/libs"
+    local targetLibsDir = mudletDir .. "/Achaean System/system/libs"
+
+    -- Verify the source backup directory physically exists before executing a copy
+    if not fileExists(sourceLibsDir) then
+        cecho("&lt;red&gt;⚠️ [MIGRATOR] Source backup libs folder not found. Skipping auto-migration.\n")
+        return
+    end
+
+    cecho("\n&lt;SkyBlue&gt;📦 [MIGRATOR]: &lt;white&gt;Fresh package detected. Synchronizing complete /libs tree...\n")
+
+    -- Format paths safely for Windows PowerShell execution
+    local winSource = sourceLibsDir:gsub("/", "\\")
+    local winTarget = targetLibsDir:gsub("/", "\\")
+
+    -- ✨ THE MAXIMUM-SAFETY COMMAND:
+    -- Instead of deleting the folder, we copy everything FROM the backup libs folder (\*) 
+    -- directly INTO the target libs folder. The -Recurse and -Force flags will perfectly
+    -- overwrite the files and bring along all subfolders (json, ndb, backup) seamlessly.
+    local cmd = string.format([[powershell -Command "Copy-Item -Path '%s\*' -Destination '%s' -Force -Recurse"]], 
+        winSource, winTarget)
+    
+    os.execute(cmd)
+
+    cecho("&lt;green&gt;✅ [MIGRATOR]: Complete /libs directory (including json, ndb, and backups) successfully restored!\n")
+    
+    -- Clear the migration path variable so it doesn't run again on accidental manual reinstalls
+    SystemUpdateLastBackup = nil
+
+    -- Force reload your system report framework manager to pull values back into game memory instantly
+    if jsonManager then
+        tempTimer(1.0, function() jsonManager({diff = true}) end)
+    end
+end
+
+registerAnonymousEventHandler("sysInstallPackage", handleDataMigration)
+
+registerAnonymousEventHandler("sysInstallPackage", handleDataMigration)
 
 -- =============================================================================
 -- THE "MODERN" ASYNC EXPORT SYSTEM (PUSH)
@@ -16762,7 +16821,7 @@ end
 function attemptHuntSettingsRestore()
 
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-  local backupPath = jsonDir .. "/huntsettings.json.bak"
+  local backupPath = getMudletHomeDir() .. "/Achaean System/system/libs/backup/huntsettings.json.bak"
 
   if not fileExists(backupPath) then
     cecho("&lt;red&gt;[ERROR] Backup file not found: " .. backupPath .. "\n")
@@ -17339,10 +17398,11 @@ function saveHuntSettings()
 
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local savePath = jsonDir .. "/huntsettings.json"
+  local backPath = getMudletHomeDir() .. "/Achaean System/system/libs/backup/"
 
   -- Optional: backup old version
   if fileExists(savePath) then
-    os.rename(savePath, savePath .. ".bak")
+    os.rename(savePath, backPath .. ".bak")
     cecho("&lt;gray&gt;Created backup: huntsettings.json.bak\n")
   end
 
