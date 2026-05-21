@@ -8649,8 +8649,8 @@ cecho("\n&lt;SkyBlue&gt;[SYSTEM]: &lt;white&gt;Server config &lt;yellow&gt;" .. 
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
 					<name>adv curing configs</name>
-					<script>local key = matches[2]:upper() -- e.g., CURINGSET or MOSSHEALTH
-local fullValue = matches[3]    -- e.g., "SWITCH set1" or "NEW set1"
+					<script>local key = matches[2]:upper() -- e.g., CURINGSET or KAIDOTRANSMUTE
+local fullValue = matches[3]    -- e.g., "SWITCH set1" or "BELOW_HEALTH 95"
 
 -- 1. Split the value into parts
 local parts = {}
@@ -8658,35 +8658,74 @@ for word in string.gmatch(fullValue, "%S+") do
     table.insert(parts, word)
 end
 
--- 2. Handle Logic and Server Pass-Through
+---------------------------------------------------------
+-- 🧩 1. SPECIAL CASE: CURINGSET LOGIC
+---------------------------------------------------------
 if key == "CURINGSET" then
-local subCommand = (parts[1] or ""):upper()
-local targetName = (parts[2] or ""):lower()
+    local subCommand = (parts[1] or ""):upper()
+    local targetName = (parts[2] or ""):lower()
     if subCommand == "NEW" and targetName ~= "" then
         if not table.contains(settings.curingsetList, targetName) then
-          table.insert(settings.curingsetList, targetName)  
-          send("CURINGSET NEW " .. targetName)
-          cecho("\n&lt;SkyBlue&gt;[SYSTEM]: &lt;white&gt;Created new curingset: &lt;yellow&gt;" .. targetName:upper())  
+            table.insert(settings.curingsetList, targetName)  
+            send("CURINGSET NEW " .. targetName)
+            cecho("\n&lt;SkyBlue&gt;[SYSTEM]: &lt;white&gt;Created new curingset: &lt;yellow&gt;" .. targetName:upper())  
         else
-          send("CURINGSET LIST")
+            send("CURINGSET LIST")
         end  
     elseif subCommand == "LIST" and targetName ~= "" then  
         send("CURINGSET LIST")  
     end
+
+---------------------------------------------------------
+-- 🔥 2. SPECIAL CASE: KAIDOTRANSMUTE LOGIC
+---------------------------------------------------------
+elseif key == "KAIDOTRANSMUTE" then
+    local subKey = (parts[1] or ""):upper()  -- e.g., "BELOW_HEALTH"
+    local rawVal = parts[2] or ""             -- e.g., "95"
+    local numVal = tonumber(rawVal)
+
+    -- Translate uppercase snake_case to your camelCase settings keys
+    local settingsMapping = {
+        ["BELOW_HEALTH"] = "kaidotransmutebelowhealth",
+        ["ABOVE_MANA"]   = "kaidotransmuteabovemana",
+        ["MINIMUM"]      = "kaidotransmuteminimum"
+    }
+
+    local targetSettingField = settingsMapping[subKey]
+
+    if targetSettingField then
+        -- Update your local settings state table accurately
+        settings[targetSettingField] = numVal or rawVal
+        
+        -- Send the exact syntax to the Achaea server: CURING KAIDOTRANSMUTE BELOW_HEALTH 95
+        send("CURING KAIDOTRANSMUTE " .. subKey .. " " .. rawVal)
+        cecho(string.format("\n&lt;SkyBlue&gt;[SYSTEM]: &lt;white&gt;Updated %s to &lt;yellow&gt;%s", targetSettingField, rawVal))
+    else
+        cecho("\n&lt;red&gt;[SYSTEM ERROR]: Invalid Kaido Transmute configuration key: " .. subKey)
+    end
+
+---------------------------------------------------------
+-- 🧪 3. STANDARD CURING SETTINGS (MOSSHEALTH, etc.)
+---------------------------------------------------------
 else
-    -- 3. Standard Curing Logic (MOSSHEALTH, etc.)
     local numValue = tonumber(fullValue)
     settings[key:lower()] = numValue or fullValue
     send("CURING " .. key .. " " .. fullValue:upper())
 end
 
--- 4. Maintenance
-saveTableToJSON(settings, "settings")
--- Re-draw the menu to show the updated active set or values
+---------------------------------------------------------
+-- 💾 MAINTENANCE &amp; UI REDRAW
+---------------------------------------------------------
+-- Ensure you use your centralized framework manager rather than naked functions if needed
+if jsonManager then
+    saveTableToJSON(settings, "settings")
+end
+
+-- Re-draw the menu to display your fresh configurations instantly
 menuAdvancedCuringSettings()</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^(?:advanced)?curinginput\s+(\w+)\s+(.*)$</regex>
+					<regex>^advancedcuringinput\s+(\w+)\s+(.*)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
 					<name>reset user interface</name>
@@ -13228,10 +13267,10 @@ end</script>
             healthaffsabove = 95,
             clothealth = 50,
             aeoncommand = "nothing",
-            kaidoTransmute = false,
-            kaidoTransmuteBelowHealth = 95,
-            kaidoTransmuteAboveMana = 95,
-            kaidoTransmuteMinimum = 50,
+            kaidotransmute = false,
+            kaidotransmutebelowhealth = 95,
+            kaidotransmuteabovemana = 95,
+            kaidotransmuteminimum = 50,
             curingset = "",
             curingsetList = {},
             refill_skullcap_at = 3,
@@ -13266,11 +13305,15 @@ end</script>
         end
     end
     
+    
+    saveTableToJSON(settings, "settings")
+    
+    
     send("inv reset")
     send("plist")
     send("date")
  
-    --setDefensePrios()
+    
 
 end</script>
 						<eventHandlerList />
@@ -15466,13 +15509,13 @@ end</script>
     
     -- --- KAIDO TRANSMUT ---
     cecho("&lt;cyan&gt;\n Kaido Transmut\n")
-    addToggle("Kaido Trans.", "kaidoTransmute", "AdvancedCuring", "CURING KAIDOTRANSMUTE ON", "CURING KAIDOTRANSMUTE OFF")
+    addToggle("Kaido Transmute", "kaidotransmute", "AdvancedCuring", "CURING KAIDOTRANSMUTE ON", "CURING KAIDOTRANSMUTE OFF")
     col2()
-    addInput("Below Health", "kaidoTransmuteBelowHealth", "95", "AdvancedCuring")
+    addInput("Below Health", "kaidotransmutebelowhealth", "95", "AdvancedCuring")
     cecho("\n")
-    addInput("Above Mana", "kaidoTransmuteAboveMana", "95", "AdvancedCuring")
+    addInput("Above Mana", "kaidotransmuteabovemana", "95", "AdvancedCuring")
     col2()
-    addInput("Min. Loss", "kaidoTransmuteMinimum", "50", "AdvancedCuring")
+    addInput("Minimum Loss", "kaidotransmuteminimum", "50", "AdvancedCuring")
     cecho("\n")
     
     -- --- BLEEDING &amp; HEALTH AFFS ---
