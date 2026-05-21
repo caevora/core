@@ -15174,36 +15174,40 @@ end</script>
 function addToggle(label, settingKey, typeHandler, example, extra, callback)
     
     cechoLink(" &lt;white&gt;(toggle) ", function()
-        -- Flip the boolean value
+        -- 1. Flip the local boolean value
         settings[settingKey] = not settings[settingKey]
         
-        -- Feedback in the console
+        -- 2. Feedback in the console
         local status = settings[settingKey] and "&lt;green&gt;ON" or "&lt;red&gt;OFF"
         cecho("\n&lt;white&gt;Setting: ["..typeHandler.."] &lt;yellow&gt;" .. label .. "&lt;white&gt; is now " .. status)
         
-        -- Save to JSON immediately so it persists!
+        -- 3. Save to JSON immediately so it persists!
         saveTableToJSON(settings, "settings")
         
-        -- Run the callback (like updatePrompt) to tell the server
+        -- 🎯 4. SERVER AUTOMATION LAYER: Send the corresponding config command out to Achaea
+        if settings[settingKey] then
+            if example then send(example:lower()) end
+        else
+            if extra then send(extra:lower()) end
+        end
+        
+        -- 5. Run the callback (like updatePrompt) if provided
         if callback then callback() end
         
-        -- Refresh the UI if you have a display function
-        -- 1. Evaluate the function name immediately using the parameter string
+        -- 6. Refresh the UI menu automatically
         local targetMenuFunc = "menu" .. typeHandler .. "Settings"
-        
-        -- 2. Execute the function directly from the global environment
         if _G[targetMenuFunc] then
             _G[targetMenuFunc]()
         else
             cecho("\n&lt;red&gt;Error: Function " .. targetMenuFunc .. " does not exist!")
         end
-    end, "Click to toggle " .. label, true) -- &lt;--- THIS WAS MISSING ITS CLOSURE!
+    end, "Click to toggle " .. label, true)
 
-      if settings.showScrollbar then
-          enableScrollBar("main")
-      else
-          disableScrollBar()
-      end
+    if settings.showScrollbar then
+        enableScrollBar("main")
+    else
+        disableScrollBar()
+    end
 
     -- Display the current state in the menu
     local val = settings[settingKey]
@@ -15211,7 +15215,6 @@ function addToggle(label, settingKey, typeHandler, example, extra, callback)
     local state = val and "ON" or "OFF"
     cecho("&lt;white&gt;(+) " .. color .. label .. "&lt;white&gt;: " .. state)
 end
-
 
 -- Unified Input Helper Updated for Curing Set Logic
 function addInput(label, settingKey, example, typeHandler)
