@@ -7463,38 +7463,6 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>hunt step</name>
-					<script>if hunting and autohunting then
-  if not returnToAshtan then
-    huntNextRoom()
-  end
-end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You detect nothing here by that name.</string>
-						<string>You cannot see that being here.</string>
-						<string>Nothing can be seen here by that name.</string>
-						<string>Ahh, I am truly sorry, but I do not see anyone by that name here.</string>
-						<string>I do not recognise anything called that here.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>hunting slain</name>
 					<script>if huntTargetTimerHandle then
   killTimer(huntTargetTimerHandle)
@@ -7508,7 +7476,6 @@ if hunting then
   UIUpdateRoom() 
   if hunting and autohunting then
     huntNext()
-    huntNextRoom()
   end
 end</script>
 					<triggerType>0</triggerType>
@@ -7532,7 +7499,6 @@ end</script>
 					<name>blackout</name>
 					<script>if hunting and autohunting then
   huntNext()
-  huntNextRoom()
   
 end</script>
 					<triggerType>0</triggerType>
@@ -11001,8 +10967,35 @@ Let me know if you'd like to implement an automated ZIP restore function next, o
 ]]
 
 
+function fetchDKJSON()
+
+  opts = opts or {}
+  local fallback = opts.fallback
+  local libsDir = getMudletHomeDir() .. "/Achaean System/system/libs/"
+  local jsonDir = libsDir .. "json/"
+
+    ---------------------------------------------------------
+    -- 📦 DKJSON LIBRARY LOADER
+    ---------------------------------------------------------
+    if not dkjson then
+      local dkjsonPath = libsDir .. "dkjson.lua"
+      
+      if fileExists(dkjsonPath) then
+        return dofile(dkjsonPath)
+      else
+        cecho("&lt;red&gt;CRITICAL: dkjson.lua missing from " .. libsDir .. "\n")
+        return fallback or {}
+      end
+    end
+    ---------------------------------------------------------
+    
+end
+
+dkjson = dkjson or fetchDKJSON()
+
 -- load data from JSON
 function loadTableFromJSON(tblRef, filename)
+
   if not dkjson then
     cecho("&lt;red&gt;Cannot load: dkjson not loaded.\n")
     return
@@ -11041,6 +11034,7 @@ end
 
 -- Save data to JSON with directory verification
 function saveTableToJSON(tbl, filename, directory)
+
   if not dkjson then
     cecho("&lt;red&gt;Cannot save: dkjson not loaded.\n")
     return
@@ -11151,6 +11145,7 @@ end
 
 
 function loadJsonWithBackup(primaryPath, label)
+
   local function decodeJsonFile(path)
     local f = io.open(path, "r")
     if not f then return nil, "File not found" end
@@ -11192,6 +11187,7 @@ end
 
 --MAIN JSON FUNCTION
 function jsonManager(opts)
+
   opts = opts or {}
   local safe = opts.safe
   local diff = opts.diff
@@ -11203,21 +11199,6 @@ function jsonManager(opts)
   -- ✅ If called like safeJSONLoad(path, fallback)
   if safe and path and fallback then
     
-    ---------------------------------------------------------
-    -- 📦 FIXED DIRECTORY LIBRARY LOADER
-    ---------------------------------------------------------
-    if not dkjson then
-      local dkjsonPath = libsDir .. "dkjson.lua"
-      
-      if fileExists(dkjsonPath) then
-        dkjson = dofile(dkjsonPath)
-      else
-        cecho("&lt;red&gt;CRITICAL: dkjson.lua missing from " .. libsDir .. "\n")
-        return fallback or {}
-      end
-    end
-    ---------------------------------------------------------
-
     if not fileExists(path) then
       cecho("&lt;yellow&gt;JSON not found, creating empty: " .. path .. "\n")
       local f = io.open(path, "w")
@@ -11352,6 +11333,7 @@ end
 
 --main load funciton
 function loadAllTablesFromJSON()
+
   if not dkjson then
     cecho("&lt;red&gt;Cannot load JSON: dkjson not loaded.\n")
     return
@@ -11417,6 +11399,7 @@ end
 
 
 function loadClassSpecificData()
+
   local class = (gmcp and gmcp.Char and gmcp.Char.Status and gmcp.Char.Status.class)
   if not class then return end
   
@@ -11438,6 +11421,7 @@ end
 
 --main save function
 function saveAllTablesAsJSON()
+
   if not dkjson then
     cecho("&lt;red&gt;Cannot save JSON: dkjson not loaded.\n")
     return
@@ -16667,7 +16651,11 @@ end
 end
 
 
+
+
+
 function loadHuntMasterList()
+
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local savePath = jsonDir .. "/huntmasterlist.json"
   
@@ -16687,6 +16675,7 @@ function loadHuntMasterList()
 end
 
 function saveTargetMasterList()
+
   if not dkjson or not targetMasterList or table.is_empty(targetMasterList) then return end
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local savePath = jsonDir .. "/huntmasterlist.json"
@@ -17337,6 +17326,7 @@ end
 
 
 function saveHuntSettings()
+
   if not dkjson then
     cecho("&lt;red&gt;[ERROR] dkjson not loaded. Cannot save hunting data.\n")
     return
