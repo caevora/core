@@ -9,6 +9,7 @@ This repo includes a full profile export:
 - You can import it directly into Mudlet.
 
 Click the Achaea Banner Image to view the Instructional Video:
+
 [![Watch the video!](https://static.wikia.nocookie.net/muds/images/b/b8/AchaeaLogo.jpg/revision/latest?cb=20130203071350)](https://www.youtube.com/watch?v=fTVK0PAKcnQ)
 
 
