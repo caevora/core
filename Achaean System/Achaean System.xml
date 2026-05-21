@@ -12592,15 +12592,22 @@ function updateFromGitAsync(version)
   local backupDir = mudletDir .. "/" .. backupFolderName
   local packageUrl = "https://github.com/caevora/core/releases/download/" .. version .. "/Achaean.System.mpackage"
 
-  -- 💾 HARD-WRITE PATH TO DISK: Solves the memory-wipe bug
+  ---------------------------------------------------------
+  -- 💾 STEP 0: WRITE THE TRACKING FILE FIRST (Maximum Stability)
+  ---------------------------------------------------------
   local trackFile = mudletDir .. "/update_migration_path.txt"
   local f = io.open(trackFile, "w")
   if f then
       f:write(backupDir)
       f:close()
+      cecho("&lt;yellow&gt;💾 Migration path locked to disk...\n")
+  else
+      cecho("&lt;red&gt;🚫 CRITICAL ERROR: Could not write tracking file!\n")
   end
 
+  ---------------------------------------------------------
   -- 1. PHYSICAL RENAME (Step 1)
+  ---------------------------------------------------------
   cecho("&lt;yellow&gt;📂 Renaming local folder to backup...\n")
   collectgarbage()
   local winTarget = targetDir:gsub("/", "\\")
@@ -12608,7 +12615,9 @@ function updateFromGitAsync(version)
   local cmd = string.format([[powershell -Command "Rename-Item -Path '%s' -NewName '%s' -Force"]], winTarget, winBackup)
   os.execute(cmd)
 
+  ---------------------------------------------------------
   -- 2. CLEAR MEMORY CACHE (Step 2)
+  ---------------------------------------------------------
   tempTimer(1.0, function()
     cecho("&lt;yellow&gt;🗑️ Clearing Mudlet's internal registry...\n")
     uninstallPackage("Achaean System")
@@ -12621,6 +12630,7 @@ function updateFromGitAsync(version)
     end)
   end)
 end
+
 
 -- This function must have these exact parameters to capture the data Mudlet sends it
 function handleDataMigration(event, packageInstalled)
