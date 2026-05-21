@@ -26458,6 +26458,237 @@ function getMyTotalSlots()
 end</script>
 					<eventHandlerList />
 				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>roomFindEchoArea</name>
+					<packageName></packageName>
+					<script>function mmp.roomFindEchoArea(query)
+    if query:ends('.') then
+        query = query:sub(1, -2)
+    end
+
+    local result = mmp.searchRoom(query)
+    if not next(result) then
+        return
+    end
+
+    local roomsTable = {}
+
+    -- Build roomsTable with area data
+    for roomID, roomName in pairs(result) do
+        local areaID = getRoomArea(roomID) -- Get the area ID from the room ID
+        local roomArea = areaID and mmp.areatabler[areaID] or "Unknown Area"
+        table.insert(roomsTable, {num = tonumber(roomID), area = roomArea, name = roomName})
+    end
+
+    -- Sort roomsTable by area name
+    table.sort(roomsTable, function(a, b) return a.area &lt; b.area end)
+
+
+    for _, roomData in ipairs(roomsTable) do
+        roomID = roomData.num
+        roomName = roomData.name
+        roomArea = roomData.area
+    end
+    
+      cechoLink(
+            string.format("\n &lt;DarkSlateGray&gt;[ &lt;%s&gt;%s &lt;DarkSlateGray&gt;]","white", roomArea),
+            string.format([[mmp.gotoRoom(%d)]], roomID),
+            string.format("Go to %s in %s", roomName, roomArea),
+            true
+        )
+
+
+end
+
+function mmp.roomFindEchoNumber(query)
+    if query:ends('.') then
+        query = query:sub(1, -2)
+    end
+
+    local result = mmp.searchRoom(query)
+    if not next(result) then
+        return
+    end
+
+    local roomsTable = {}
+
+    -- Build roomsTable with area data
+    for roomID, roomName in pairs(result) do
+        local areaID = getRoomArea(roomID) -- Get the area ID from the room ID
+        local roomArea = areaID and mmp.areatabler[areaID] or "Unknown Area"
+        table.insert(roomsTable, {num = tonumber(roomID), area = roomArea, name = roomName})
+    end
+
+    -- Sort roomsTable by area name
+    table.sort(roomsTable, function(a, b) return a.area &lt; b.area end)
+
+
+    for _, roomData in ipairs(roomsTable) do
+        roomID = roomData.num
+        roomName = roomData.name
+        roomArea = roomData.area
+    end
+    
+      cechoLink(
+            --string.format("\n &lt;DarkSlateGray&gt;[ &lt;%s&gt;%s &lt;DarkSlateGray&gt;]","white", roomArea),
+            string.format([[mmp.gotoRoom(%d)]], roomID),
+            --string.format("Go to %s in %s", roomName, roomArea),
+            true
+        )
+
+
+end
+
+function mmp.getAreaNameFromQuery(query)
+    if query:ends('.') then
+        query = query:sub(1, -2)
+    end
+
+    local result = mmp.searchRoom(query)
+    if not next(result) then
+       -- cecho("&lt;red&gt;No results found for query: " .. query .. "\n")
+        return "Unknown Area"
+    end
+
+    -- Iterate through the rooms found by the query
+    for roomID, _ in pairs(result) do
+        local areaID = getRoomArea(roomID)
+        
+        -- Debugging output to check the room ID and area ID
+        --cecho("&lt;yellow&gt;Room ID: " .. roomID .. ", Area ID: " .. tostring(areaID) .. "\n")
+        
+        if areaID then
+            -- Debugging to check the area name
+            local areaName = mmp.areatabler[areaID]
+           -- cecho("&lt;green&gt;Area Name: " .. tostring(areaName) .. "\n")
+            return areaName or "Unknown Area"
+        end
+    end
+
+    return "Unknown Area" -- Fallback if no valid area found
+end
+
+
+function mmp.getRoomNumber(query)
+    if query:ends('.') then
+        query = query:sub(1, -2)
+    end
+
+    local result = mmp.searchRoom(query)
+    if not next(result) then
+        return
+    end
+
+    local roomsTable = {}
+
+    -- Build roomsTable with area data
+    for roomID, roomName in pairs(result) do
+        local areaID = getRoomArea(roomID) -- Get the area ID from the room ID
+        local roomArea = areaID and mmp.areatabler[areaID] or "Unknown Area"
+        table.insert(roomsTable, {num = tonumber(roomID), area = roomArea, name = roomName})
+    end
+
+    -- Sort roomsTable by area name
+    table.sort(roomsTable, function(a, b) return a.area &lt; b.area end)
+
+
+    for _, roomData in ipairs(roomsTable) do
+        roomID = roomData.num
+        if roomID then
+          return roomID
+        end
+    end
+    
+      return "Unknown Room Number"
+
+
+end
+
+
+-- Function to find the room associated with a person's name
+function findRoomByPerson(personName)
+    -- Iterate through areas
+    for areaName, locations in pairs(groupedByArea) do
+        -- Iterate through locations in each area
+        for _, locationData in ipairs(locations) do
+            -- Check if the person exists in the 'people' list
+            if table.contains(locationData.people, personName) then
+                return locationData.room -- Return room ID if found
+            end
+        end
+    end
+    return "room not found" -- Return a default value if person is not found
+end
+</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>getClickableLink</name>
+					<packageName></packageName>
+					<script>function mmp.getClickableLink(room, area)
+  
+  --display(room)
+  
+  -- Perform the same search and filtering steps
+  local t = mmp.searchRoomExact(room)
+  if area then
+    t = mmp.filterRooms(t, area)
+  end
+  
+  -- Prepare the result
+  local result = "  ("
+  mmp.echonums(room, area)
+  result = result .. ")"
+  
+  -- Lowercase results
+  for k, v in pairs(t) do
+    if tonumber(k) then
+      t[k] = v:lower()
+    else
+      t[k:lower()] = v
+    end
+  end
+
+  if not (t[room:lower()] or table.contains(t, room:lower())) then
+    return result
+  end
+  
+  result = result .. "\n"
+  
+  -- If only one match, return the formatted clickable link
+  if table.size(t) == 1 then
+    local k, v = next(t)
+    result = result .. "&lt;red&gt;From your knowledge, that room is in &lt;orange_red&gt;" ..
+      mmp.cleanAreaName(mmp.areatabler[getRoomArea(type(k) == "number" and k or v)] or "?") .. "&lt;red&gt;."
+  else
+    -- If multiple matches, provide all the possible areas
+    local k, v = next(t)
+    local areas = {}
+    if type(k) == "number" then
+      for k, _ in pairs(t) do
+        areas[mmp.areatabler[getRoomArea(k)] or "?"] = true
+      end
+    else
+      for _, k in pairs(t) do
+        areas[mmp.areatabler[getRoomArea(k)] or "?"] = true
+      end
+    end
+    local flattened_areas = {}
+    for k, _ in pairs(areas) do
+      if k ~= "" then
+        flattened_areas[#flattened_areas + 1] = mmp.cleanAreaName(k)
+      end
+    end
+    result = result .. "&lt;red&gt;From your knowledge, that room might be in &lt;orange_red&gt;" ..
+      table.concat(flattened_areas, ", or ") .. "&lt;red&gt;."
+  end
+  
+  -- Return the final result with the clickable link
+  return result
+end
+</script>
+					<eventHandlerList />
+				</Script>
 			</ScriptGroup>
 		</ScriptGroup>
 	</ScriptPackage>
