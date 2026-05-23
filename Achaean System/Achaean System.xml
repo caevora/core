@@ -34,7 +34,8 @@
 				<regexCodePropertyList />
 				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>class change</name>
-					<script></script>
+					<script>updateCurativeTable() 
+updateDefensiveTable()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -64,6 +65,8 @@ loadTableFromJSON(afflictions, PLAYER:myclass() .. "prios")
 resetVitals()
 resetCureBalance()
 resetMyStackableAffs()
+updateCurativeTable() 
+updateDefensiveTable()
 
   settings.systemPaused=false
   send("curing on")
@@ -103,6 +106,9 @@ send("queue addclear eqbal wear "..armor)
 send("queue addclear eqbal wear "..armor) 
 
 settings.myclass = PLAYER:myclass()
+
+updateCurativeTable() 
+updateDefensiveTable()
 
 -- To load or create the file:
 loadTableFromJSON(afflictions, PLAYER:myclass() .. "prios")</script>
@@ -169,6 +175,8 @@ loadTableFromJSON(afflictions, PLAYER:myclass() .. "prios")
 resetVitals()
 resetCureBalance()
 resetMyStackableAffs()
+updateCurativeTable() 
+updateDefensiveTable()
 
   settings.systemPaused=false
   send("curing on")
@@ -7188,13 +7196,13 @@ end</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded up</name>
-					<script>commandSent = false
+					<script>commandSent = true
 shieldCommandSent = false
 if hunting then
   shielded = true
-  send("clearqueue eqbal")
+  send("clearqueue all")
   if autohunting then
-    huntNext()
+    handleShieldAttacks()
   end
 end</script>
 					<triggerType>0</triggerType>
@@ -7216,13 +7224,13 @@ end</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded up</name>
-					<script>commandSent = false
+					<script>commandSent = true
 shieldCommandSent = false
 if hunting then
   shielded = true
-  send("clearqueue eqbal")
+  send("clearqueue all")
   if autohunting then
-    huntNext()
+    handleShieldAttacks()
   end
 end</script>
 					<triggerType>0</triggerType>
@@ -7245,10 +7253,10 @@ end</script>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded stripped</name>
 					<script>commandSent = false
-shieldCommandSent = false
+shieldCommandSent = true
 if hunting then
   shielded = false
-  send("clearqueue eqbal")
+  send("clearqueue all")
   if autohunting then
     huntNext()
   end
@@ -7274,6 +7282,8 @@ balanceStart("balance",false)</script>
 						<string>^The magical shield surrounding .+ fades away.$</string>
 						<string>You command your gremlin to shatter the defences surrounding</string>
 						<string>has no shield to shatter.</string>
+						<string>You conjure a blade of ice and drive it straight through the magical shield </string>
+						<string>The magical shield surrounding</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -7285,18 +7295,18 @@ balanceStart("balance",false)</script>
 						<integer>1</integer>
 						<integer>2</integer>
 						<integer>0</integer>
+						<integer>2</integer>
+						<integer>2</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>rage wasted shield</name>
 					<script>commandSent = false
-shieldCommandSent = false
+shieldCommandSent = true
 if hunting then
   shielded = false
-  send("clearqueue eqbal")
+  send("clearqueue all")
   if autohunting then
-   commandSent = false
-   shieldCommandSent = false
     huntNext()
   end
 end</script>
@@ -7345,12 +7355,16 @@ end</script>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>attack actions</name>
 					<script>if hunting and autohunting then
-  commandSent = false
-  shieldCommandSent = false
-  huntNext()
-  tempTimer(4, [[ commandSent = false shieldCommandSent = false huntNext()]])
+    commandSent = false
+    huntNext()
+    tempTimer(1.8, [[ 
+        if hunting and autohunting and not shielded then
+            commandSent = false 
+            huntNext() 
+        end 
+    ]])
 end
-balanceStart("balance",false)</script>
+balanceStart("balance", false)</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -7479,7 +7493,7 @@ end
 commandSent = false
 shieldCommandSent = false
 if hunting then
-  send("clearqueue eqbal")
+  send("clearqueue all")
   lasthunttarget = ""
   UIUpdateRoom() 
   if hunting and autohunting then
@@ -7508,8 +7522,7 @@ end</script>
 					<script>commandSent = false
 shieldCommandSent = false
 if hunting and autohunting then
-  huntNext()
-  
+  huntNext()  
 end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -11259,9 +11272,9 @@ function jsonBackup()
     {name = "huntmasterlist", table = targetMasterList},
     {name = "areaignorelist", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
-    {name = gmcp.Char.Status.class:lower() .. "prios", table = afflictions},
     {name = "curinglist", table = curinglist},
-    {name = "defuplist", table = defenses},
+    {name = "defenses", table = defenses},
+    {name = "afflictions", table = afflictions},
   }
 
   for _, file in ipairs(filesToBackup) do
@@ -11446,7 +11459,8 @@ function jsonManager(opts)
     {name = "areaignorelist", ref = areaIgnoreList},
     {name = "huntsettings", ref = huntSettingsData},
     {name = "curinglist", ref = curinglist},
-    {name = "defuplist", ref = defenses},   
+    {name = "defuplist", ref = defenses},  
+    {name = "afflictions", ref = afflictions}, 
   }
 
   cecho("\n&lt;white&gt;" .. (diff and "📦 JSON Table Report + Diff" or "🔍 JSON Table Report") .. ":\n")
@@ -11500,7 +11514,8 @@ function loadAllTablesFromJSON()
       {name = "areaignorelist", target = "areaIgnoreList"},
       {name = "huntsettings", target = "huntSettingsData"},
       {name = "curinglist", target = "curinglist"},
-      {name = "defuplist", target = "defenses"},
+      {name = "defenses", target = "defenses"},
+      {name = "afflictions", target = "afflictions"},
   }
 
   for _, file in ipairs(filesToLoad) do
@@ -11587,9 +11602,9 @@ function saveAllTablesAsJSON()
     {name = "huntmasterlist", table = targetMasterList},
     {name = "areaignorelist", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
-    {name = gmcp.Char.Status.class:lower() .. "prios", table = afflictions},
     {name = "curinglist", table = curinglist},
-    {name = "defuplist", table = defenses},
+    {name = "defenses", table = defenses},
+    {name = "afflictions", table = afflictions},
   }
 
   for _, file in ipairs(filesToConvert) do
@@ -12605,8 +12620,10 @@ function onProtocolEnabled(event, protocol)
 
         updateCharStats() 
         updateActiveCureData() 
+        
         updateCurativeTable() 
-        updateDefensiveTable() 
+        updateDefensiveTable()
+        
         startGameFeedPolling() 
 
         -- 💣 THE PERMANENT KILL SWITCH:
@@ -13811,8 +13828,7 @@ end</script>
     ["wristfractures"] = { name = "wristfractures", priority = 1, prompt = "&lt;cyan&gt;wri(&lt;white&gt;" .. mystackableaffs.wristfractures .. "&lt;cyan&gt;)", cures = { {type = "sip", command = "apply health to arms", cooldown = "sip", requires = "sip", handle = 1, blockers = {"slickness", "sleeping"}} } },
     ["voyria"] = { name = "voyria", priority = 1, prompt = "&lt;red&gt;VOYRIA", cures = { {type = "antidote", command = "sip immunity", cooldown = "antidote", requires = "antidote", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
    
-    }   
-    
+    }       
     
     
 end</script>
@@ -13954,7 +13970,7 @@ end</script>
       shroud = { type = PLAYER:getAbilityType(), command = PLAYER:getAbilityCommand("shroud"), relax = PLAYER:getAbilityCommand("relax"), active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
 
       -- WATERLORD
-      cohesion = { type = "pervasion", command = "manifest cohesion", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
+      cohesion = { type = "pervasion", command = "manifest cohesion", relax = "", active = false, enabled = true, keepup = false, name = "pervasion", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
       -- FIRELORD
       --template = { type = "ignition", command = "", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
       -- AIRLORD
@@ -14310,194 +14326,78 @@ end</script>
 						<name>updateCurativeTable</name>
 						<packageName></packageName>
 						<script>function updateCurativeTable()
+    local cs = settings.cmdsep or ";"
 
-  local cs = settings.cmdsep
+    -- 1. Grab current class data baseline
+    local class = PLAYER:myclass()
+    if not class then
+        cecho("&lt;red&gt;⚠️ Cannot initialize curatives: class not detected.\n")
+        return
+    end
 
+    local data = activeCureData[class]
+    if not data then
+        cecho("&lt;red&gt;⚠️ No cure data found for class: " .. tostring(class) .. "\n")
+        return
+    end
 
-  local class = PLAYER:myclass()
-  if not class then
-    cecho("&lt;red&gt;⚠️ Cannot initialize curatives: class not detected.\n")
-  end
+    -- Safety check: exit if afflictions table hasn't been created yet
+    if not afflictions then return end
 
- local data = activeCureData[class]
-  if not data then
-    cecho("&lt;red&gt;⚠️ No cure data found for class: " .. tostring(class) .. "\n")
-  end
+    -- 2. Agnostic separator rebuilder function
+    local function rebuildCommand(cmdField, newCS)
+        if type(cmdField) == "string" then
+            local actions = {}
+            for action in string.gmatch(cmdField, "[^;:|,]+") do
+                action = string.match(action, "^%s*(.-)%s*$")
+                table.insert(actions, action)
+            end
+            return table.concat(actions, newCS)
+        elseif type(cmdField) == "table" then
+            local updatedTable = {}
+            for key, value in pairs(cmdField) do
+                updatedTable[key] = rebuildCommand(value, newCS)
+            end
+            return updatedTable
+        end
+        return cmdField
+    end
 
- afflictions = {
-    ["ablaze"] = { name = "ablaze", priority = 1, prompt = "&lt;red&gt;ablaze", cures = { {type = "salve", command = "apply mending to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["addiction"] = { name = "addiction", priority = 3, prompt = "&lt;orange&gt;ADD", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["airfisted"] = { name = "airfisted", priority = 1, prompt = "&lt;orange&gt;airf", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 15.0} } },
-    ["aeon"] = { name = "aeon", priority = 1, prompt = "&lt;purple&gt;AEON", cures = { {type = "smoke", command = {herbal = "light elm"..cs.."smoke elm", alchemical = "light cinnabar"..cs.."smoke cinnabar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["anorexia"] = { name = "anorexia", priority = 1, prompt = "&lt;purple&gt;ANO", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "salve", command = "apply epidermal to body", cooldown = "salve", requires = "salve", handle = 2, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["asthma"] = { name = "asthma", priority = 3, prompt = "&lt;cyan&gt;AST", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["asphyxiating"] = { name = "asphyxiating", priority = 3, prompt = "&lt;yellow&gt;asph", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["agoraphobia"] = { name = "agoraphobia", priority = 1, prompt = "&lt;light_slate_blue&gt;ago", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["bound"] = { name = "bound", priority = 1, prompt = "&lt;orange&gt;bnd", cures = { {type = "balance", command = "writhe", cooldown = "writhe", requires = "balance", handle = 1, blockers = {"sleeping"}} } },
-    ["burning"] = { name = "burning", priority = 1, prompt = "&lt;red&gt;burn(&lt;red&gt;" .. mystackableaffs.burning .. "&lt;red&gt;)", cures = { {type = "salve", command = "apply mending to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["blackout"] = { name = "blackout", priority = 1, prompt = "&lt;white&gt;BLCK", cures = { {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 1, blockers = {"paralysis", "sleeping"}} } },
-    ["blistered"] = { name = "blistered", priority = 1, prompt = "&lt;orange&gt;blst", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["bruisedribs"] = { name = "bruisedribs", priority = 1, prompt = "&lt;orange&gt;Bribs", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 30.0} } },
-    ["brokenleftleg"] = { name = "brokenleftleg", priority = 1, prompt = "&lt;yellow&gt;ll1", cures = { {type = "salve", command = "apply mending to left leg", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["brokenrightleg"] = { name = "brokenrightleg", priority = 1, prompt = "&lt;yellow&gt;rl1", cures = { {type = "salve", command = "apply mending to right leg", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["brokenleftarm"] = { name = "brokenleftarm", priority = 1, prompt = "&lt;yellow&gt;la1", cures = { {type = "salve", command = "apply mending to right arm", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["brokenrightarm"] = { name = "brokenrightarm", priority = 1, prompt = "&lt;yellow&gt;ra1", cures = { {type = "salve", command = "apply mending to left arm", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["calcifiedskull"] = { name = "calcifiedskull", priority = 1, prompt = "&lt;red&gt;CAL-SKLL", cures = { {type = "salve", command = "apply restoration to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["calcifiedtorso"] = { name = "calcifiedtorso", priority = 1, prompt = "&lt;red&gt;CAL-TT", cures = { {type = "salve", command = "apply restoration to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["coldfate"] = { name = "coldfate", priority = 1, prompt = "&lt;red&gt;cfate", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["condemned"] = { name = "condemned", priority = 1, prompt = "&lt;red&gt;COND", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["concussion"] = { name = "concussion", priority = 1, prompt = "&lt;red&gt;conc", cures = { {type = "salve", command = "apply restoration to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["claustrophobia"] = { name = "claustrophobia", priority = 1, prompt = "&lt;light_slate_blue&gt;claus", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["crackedribs"] = { name = "crackedribs", priority = 1, prompt = "&lt;yellow&gt;cribs(&lt;cyan&gt;" .. mystackableaffs.crackedribs .. "&lt;white&gt;)", cures = { {type = "sip", command = "apply health", cooldown = "sip", requires = "sip", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["cremated"] = { name = "cremated", priority = 1, prompt = "&lt;red&gt;crem", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 60.0} } },
-    ["crushedthroat"] = { name = "crushedthroat", priority = 1, prompt = "&lt;red&gt;CRTHROAT", cures = { {type = "salve", command = "apply mending to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["confusion"] = { name = "confusion", priority = 1, prompt = "&lt;orange&gt;conf", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 2, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr ash"..cs.."eat ash", alchemical = "outr stannum"..cs.."eat stannum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["clumsiness"] = { name = "clumsiness", priority = 1, prompt = "&lt;cyan&gt;clum", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["daeggerimpale"] = { name = "daeggerimpale", priority = 1, prompt = "&lt;red&gt;DAEG-IMP", cures = { {type = "balance", command = "writhe", cooldown = "writhe", requires = "balance", handle = 1, blockers = {"sleeping"}} } },
-    ["darkshade"] = { name = "darkshade", priority = 1, prompt = "&lt;orange&gt;DARK", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = "shrugging", command = "shrugging", cooldown = "shrugging", requires = "shrugging", handle = 3, blockers = {"weariness", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["damagedleftleg"] = { name = "damagedleftleg", priority = 1, prompt = "&lt;orange&gt;ll2", cures = { {type = "salve", command = "apply restoration to legs", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["damagedrightleg"] = { name = "damagedrightleg", priority = 1, prompt = "&lt;orange&gt;rl2", cures = { {type = "salve", command = "apply restoration to legs", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["damagedleftarm"] = { name = "damagedleftarm", priority = 1, prompt = "&lt;orange&gt;la2", cures = { {type = "salve", command = "apply restoration to arms", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["damagedrightarm"] = { name = "damagedrightarm", priority = 1, prompt = "&lt;orange&gt;ra2", cures = { {type = "salve", command = "apply restoration to arms", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["damagedhead"] = { name = "damagedhead", priority = 1, prompt = "&lt;orange&gt;h2", cures = { {type = "salve", command = "apply restoration to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["dazzled"] = { name = "dazzled", priority = 1, prompt = "&lt;orange&gt;dazz", cures = { {type = "salve", command = "apply mending to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["deathsickness"] = { name = "deathsickness", priority = 1, prompt = "&lt;red&gt;dsick", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 60.0} } },
-    ["degenerate"] = { name = "degenerate", priority = 1, prompt = "&lt;orange&gt;dgen", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["dehydrated"] = { name = "dehydrated", priority = 1, prompt = "&lt;orange&gt;dhydr", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["demonstain"] = { name = "demonstain", priority = 1, prompt = "&lt;orange&gt;dstain", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["depression"] = { name = "depression", priority = 1, prompt = "&lt;gold&gt;depr", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["deteriorate"] = { name = "deteriorate", priority = 1, prompt = "&lt;orange&gt;det", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["dissonance"] = { name = "dissonance", priority = 1, prompt = "&lt;orange&gt;diss", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["disrupted"] = { name = "disrupted", priority = 1, prompt = "&lt;turquoise&gt;DISR", cures = { {type = "free", command = "concentrate", cooldown = "free", requires = "free", handle = 1, blockers = {"sleeping"}} } },
-    ["dazed"] = { name = "dazed", priority = 1, prompt = "&lt;orange&gt;daze", cures = { {type = "smoke", command = {herbal = "light elm"..cs.."smoke elm", alchemical = "light cinnabar"..cs.."smoke cinnabar"}, cooldown = "smoke", requires = "dazed", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["deadening"] = { name = "deadening", priority = 1, prompt = "&lt;orange&gt;ddn", cures = { {type = "smoke", command = {herbal = "light elm"..cs.."smoke elm", alchemical = "light cinnabar"..cs.."smoke cinnabar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["dementia"] = { name = "dementia", priority = 1, prompt = "&lt;tan&gt;dem", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr ash"..cs.."eat ash", alchemical = "outr stannum"..cs.."eat stannum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["disfigurement"] = { name = "disfigurement", priority = 1, prompt = "&lt;red&gt;disf", cures = { {type = "smoke", command = {herbal = "light valerian"..cs.."smoke valerian", alchemical = "light realgar"..cs.."smoke realgar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["disloyalty"] = { name = "disloyalty", priority = 1, prompt = "&lt;red&gt;disl", cures = { {type = "smoke", command = {herbal = "light valerian"..cs.."smoke valerian", alchemical = "light realgar"..cs.."smoke realgar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["dizziness"] = { name = "dizziness", priority = 1, prompt = "&lt;gold&gt;dizz", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["enmesh"] = { name = "enmesh", priority = 1, prompt = "&lt;orange&gt;enms", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 4.0} } },
-    ["ensorcelled"] = { name = "ensorcelled", priority = 1, prompt = "&lt;medium_blue&gt;ENS", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 20.0} } },
-    ["entangled"] = { name = "entangled", priority = 1, prompt = "&lt;orange&gt;entg", cures = { {type = "balance", command = "writhe", cooldown = "writhe", requires = "balance", handle = 1, blockers = {"sleeping"}} } },
-    ["epilepsy"] = { name = "epilepsy", priority = 1, prompt = "&lt;gold&gt;epi", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["flamefisted"] = { name = "flamefisted", priority = 1, prompt = "&lt;red&gt;ffst", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 15.0} } },
-    ["freezing"] = { name = "freezing", priority = 1, prompt = "&lt;blue&gt;froz", cures = { {type = "salve", command = "apply caloric", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["frostbite"] = { name = "frostbite", priority = 1, prompt = "&lt;blue&gt;frost", cures = { {type = "salve", command = "apply caloric", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["frozen"] = { name = "frozen", priority = 1, prompt = "&lt;blue&gt;froz", cures = { {type = "salve", command = "apply caloric", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["fear"] = { name = "fear", priority = 1, prompt = "&lt;purple&gt;fear", cures = { {type = "compose", command = "compose", cooldown = "free", requires = "free", handle = 1, blockers = {"sleeping"}} } },
-    ["flushings"] = { name = "flushings", priority = 1, prompt = "&lt;orange&gt;fls", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["fulminated"] = { name = "fulminated", priority = 1, prompt = "&lt;gold&gt;fulm", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["grievouswounds"] = { name = "grievouswounds", priority = 1, prompt = "&lt;red&gt;gwnd", cures = { {type = "salve", command = "apply health to torso", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["generosity"] = { name = "generosity", priority = 1, prompt = "&lt;deep_sky_blue&gt;gene", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["guilt"] = { name = "guilt", priority = 1, prompt = "&lt;light_slate_blue&gt;GUI", cures = { {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["hatred"] = { name = "hatred", priority = 1, prompt = "&lt;red&gt;hatr", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["hamstrung"] = { name = "hamstrung", priority = 1, prompt = "&lt;orange&gt;HAMS", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 10.0} } },
-    ["heartseed"] = { name = "heartseed", priority = 1, prompt = "&lt;red&gt;HSEED", cures = { {type = "salve", command = "apply restoration to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["hecatecurse"] = { name = "hecatecurse", priority = 1, prompt = "&lt;orange&gt;HECATE", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 16.0} } },
-    ["hypothermia"] = { name = "hypothermia", priority = 1, prompt = "&lt;orange&gt;hthm", cures = { {type = "salve", command = "apply restoration to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["hallucinations"] = { name = "hallucinations", priority = 1, prompt = "&lt;tan&gt;hall", cures = { {type = "herb", command = {herbal = "outr ash"..cs.."eat ash", alchemical = "outr stannum"..cs.."eat stannum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["haemophilia"] = { name = "haemophilia", priority = 1, prompt = "&lt;orange&gt;haem", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["healthleech"] = { name = "healthleech", priority = 1, prompt = "&lt;cyan&gt;hlch", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["hellsight"] = { name = "hellsight", priority = 1, prompt = "&lt;red&gt;HELL", cures = { {type = "smoke", command = {herbal = "light valerian"..cs.."smoke valerian", alchemical = "light realgar"..cs.."smoke realgar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["horror"] = { name = "horror", priority = 1, prompt = "&lt;gold&gt;hor(&lt;orange&gt;" .. mystackableaffs.horror .. "&lt;gold&gt;)", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },
-    ["hypersomnia"] = { name = "hypersomnia", priority = 1, prompt = "&lt;tan&gt;hsomn", cures = { {type = "herb", command = {herbal = "outr ash"..cs.."eat ash", alchemical = "outr stannum"..cs.."eat stannum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["hypochondria"] = { name = "hypochondria", priority = 1, prompt = "&lt;cyan&gt;hchon", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["icefisted"] = { name = "icefisted", priority = 1, prompt = "&lt;orange&gt;ifst", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 15.0} } },
-    ["impaled"] = { name = "impaled", priority = 1, prompt = "&lt;red&gt;IMP", cures = { {type = "balance", command = "writhe", cooldown = "writhe", requires = "balance", handle = 1, blockers = {"sleeping"}} } },
-    ["impatience"] = { name = "impatience", priority = 1, prompt = "&lt;gold&gt;impa", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["indifference"] = { name = "indifference", priority = 1, prompt = "&lt;deep_sky_blue&gt;indf", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["internalbleeding"] = { name = "internalbleeding", priority = 1, prompt = "&lt;red&gt;intb", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["itching"] = { name = "itching", priority = 1, prompt = "&lt;cyan&gt;itch", cures = { {type = "salve", command = "apply epidermal to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },    
-    ["justice"] = { name = "justice", priority = 1, prompt = "&lt;deep_sky_blue&gt;just", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },    
-    ["kaisurge"] = { name = "kaisurge", priority = 1, prompt = "&lt;orange&gt;KAI", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["kkractlebrand"] = { name = "kkractlebrand", priority = 1, prompt = "&lt;red&gt;KKR-BRND", cures = { {type = "sip", command = "sip health", cooldown = "sip", requires = "sip", handle = 1, blockers = {"anorexia", "sleeping"}} } },        
-    ["laceratedthroat"] = { name = "laceratedthroat", priority = 1, prompt = "&lt;red&gt;LCTH", cures = { {type = "salve", command = "apply restoration to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["lapsingconsciousness"] = { name = "lapsingconsciousness", priority = 1, prompt = "&lt;red&gt;LAPS", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["latched"] = { name = "latched", priority = 1, prompt = "&lt;orange&gt;ltch", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["lethargy"] = { name = "lethargy", priority = 1, prompt = "&lt;orange&gt;leth", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["lightbind"] = { name = "lightbind", priority = 1, prompt = "&lt;yellow&gt;lbind", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 22.0} } },
-    ["loneliness"] = { name = "loneliness", priority = 1, prompt = "&lt;light_slate_blue&gt;lone", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["lovers"] = { name = "lovers", priority = 1, prompt = "&lt;deep_sky_blue&gt;lov", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },         
-    ["manaleech"] = { name = "manaleech", priority = 1, prompt = "&lt;blue&gt;mlch", cures = { {type = "smoke", command = {herbal = "light valerian"..cs.."smoke valerian", alchemical = "light realgar"..cs.."smoke realgar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["masochism"] = { name = "masochism", priority = 1, prompt = "&lt;light_slate_blue&gt;maso", cures = { {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["mangledleftleg"] = { name = "mangledleftleg", priority = 1, prompt = "&lt;red&gt;ll3", cures = { {type = "salve", command = "apply restoration to legs", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["mangledrightleg"] = { name = "mangledrightleg", priority = 1, prompt = "&lt;red&gt;rl3", cures = { {type = "salve", command = "apply restoration to legs", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["mangledleftarm"] = { name = "mangledleftarm", priority = 1, prompt = "&lt;red&gt;la3", cures = { {type = "salve", command = "apply restoration to arms", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["mangledrightarm"] = { name = "mangledrightarm", priority = 1, prompt = "&lt;red&gt;ra3", cures = { {type = "salve", command = "apply restoration to arms", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["mangledhead"] = { name = "mangledhead", priority = 1, prompt = "&lt;red&gt;h3", cures = { {type = "salve", command = "apply restoration to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["mildtrauma"] = { name = "mildtrauma", priority = 1, prompt = "&lt;orange&gt;mtrauma", cures = { {type = "salve", command = "apply restoration to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["mindravaged"] = { name = "mindravaged", priority = 1, prompt = "&lt;red&gt;MRAV", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["muddled"] = { name = "muddled", priority = 1, prompt = "&lt;orange&gt;mudd", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 12.0} } },
-    ["mycalium"] = { name = "mycalium", priority = 1, prompt = "&lt;gold&gt;myc", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["nausea"] = { name = "nausea", priority = 1, prompt = "&lt;orange&gt;naus", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["numbedleftarm"] = { name = "numbedleftarm", priority = 1, prompt = "&lt;orange&gt;numb-la", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["numbedrightarm"] = { name = "numbedrightarm", priority = 1, prompt = "&lt;orange&gt;numb-ra", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["palpatarfeed"] = { name = "palpatarfeed", priority = 1, prompt = "&lt;red&gt;FEED", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 20.0} } },
-    ["paranoia"] = { name = "paranoia", priority = 1, prompt = "&lt;tan&gt;para", cures = { {type = "herb", command = {herbal = "outr ash"..cs.."eat ash", alchemical = "outr stannum"..cs.."eat stannum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["parasite"] = { name = "parasite", priority = 1, prompt = "&lt;cyan&gt;pars", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["pacified"] = { name = "pacified", priority = 1, prompt = "&lt;deep_sky_blue&gt;paci", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["paralysis"] = { name = "paralysis", priority = 1, prompt = "&lt;red&gt;PARA", cures = { {type = "herb", command = {herbal = "outr bloodroot"..cs.."eat bloodroot", alchemical = "outr magnesium"..cs.."eat magnesium"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 1} } },
-    ["peace"] = { name = "peace", priority = 1, prompt = "&lt;deep_sky_blue&gt;peace", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["petrified"] = { name = "petrified", priority = 1, prompt = "&lt;red&gt;petr", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["phlogisticated"] = { name = "phlogisticated", priority = 1, prompt = "&lt;purple&gt;phlog", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 45.0} } },
-    ["pinshot"] = { name = "pinshot", priority = 1, prompt = "&lt;orange&gt;pin", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 21.0} } },
-    ["pressure"] = { name = "pressure", priority = 1, prompt = "&lt;deep_sky_blue&gt;prs(&lt;white&gt;" .. mystackableaffs.pressure .. "&lt;deep_sky_blue&gt;)", requires = "herb", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },
-    ["pyramides"] = { name = "pyramides", priority = 1, prompt = "&lt;red&gt;pyra", cures = { {type = "herb", command = {herbal = "outr bloodroot"..cs.."eat bloodroot", alchemical = "outr magnesium"..cs.."eat magnesium"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["pyre"] = { name = "pyre", priority = 1, prompt = "&lt;deep_sky_blue&gt;pyre", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },
-    ["prone"] = { name = "prone", priority = 1, prompt = "&lt;red&gt;PRNE", cures = { {type = "stand", command = "stand", cooldown = "free", requires = "balance", handle = 1, blockers = {"paralysis", "sleeping", "brokenleftleg", "brokenrightleg", "dizziness", "hunger", "webbed", "damagedleftleg", "damagedrightleg", "mangledleftleg", "mangledrightleg", "bound", "daeggerimpale", "impale", "transfixation", "entangled"}} } },          
-    ["rebbies"] = { name = "rebbies", priority = 1, prompt = "&lt;cyan&gt;rebb", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },
-    ["recklessness"] = { name = "recklessness", priority = 1, prompt = "&lt;light_slate_blue&gt;reck", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["retribution"] = { name = "retribution", priority = 1, prompt = "&lt;deep_sky_blue&gt;retr", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["revealed"] = { name = "revealed", priority = 1, prompt = "&lt;purple&gt;REVEAL", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 60.0} } },
-    ["sandfever"] = { name = "sandfever", priority = 1, prompt = "&lt;gold&gt;sand", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },      
-    ["scytherus"] = { name = "scytherus", priority = 1, prompt = "&lt;orange&gt;scyth", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["scrambledbrains"] = { name = "scrambledbrains", priority = 1, prompt = "&lt;red&gt;SCRM", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 60.0} } },
-    ["sensitivity"] = { name = "sensitivity", priority = 1, prompt = "&lt;cyan&gt;sens", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["scalded"] = { name = "scalded", priority = 1, prompt = "&lt;red&gt;scald", cures = { {type = "salve", command = "apply epidermal to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["selarnia"] = { name = "selarnia", priority = 1, prompt = "&lt;purple&gt;selar", cures = { {type = "salve", command = "apply mending to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["serioustrauma"] = { name = "serioustrauma", priority = 1, prompt = "&lt;red&gt;strauma", cures = { {type = "salve", command = "apply restoration to body", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["shivering"] = { name = "shivering", priority = 1, prompt = "&lt;cyan&gt;shiv", cures = { {type = "salve", command = "apply caloric", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["shyness"] = { name = "shyness", priority = 1, prompt = "&lt;gold&gt;shy", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["silenced"] = { name = "silenced", priority = 1, prompt = "&lt;red&gt;SIL", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 0.0} } },
-    ["silver"] = { name = "silver", priority = 1, prompt = "&lt;white&gt;slvr", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 180.0} } },
-    ["skullfractures"] = { name = "skullfractures", priority = 1, prompt = "&lt;cyan&gt;sku(&lt;white&gt;" .. mystackableaffs.skullfractures .. "&lt;cyan&gt;)", cures = { {type = "sip", command = "apply health to head", cooldown = "sip", requires = "sip", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["slashedthroat"] = { name = "slashedthroat", priority = 1, prompt = "&lt;red&gt;slth", cures = { {type = "salve", command = "apply epidermal to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["sleeping"] = { name = "sleeping", priority = 1, prompt = "&lt;red&gt;ZZZ", cures = { {type = "free", command = "wake", cooldown = "wake", requires = "free", blockers = {""}} } },
-    ["slickness"] = { name = "slickness", priority = 1, prompt = "&lt;red&gt;SLICK", cures = { {type = "smoke", command = {herbal = "light valerian"..cs.."smoke valerian", alchemical = "light realgar"..cs.."smoke realgar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "herb", command = {herbal = "outr bloodroot"..cs.."eat bloodroot", alchemical = "outr magnesium"..cs.."eat magnesium"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },      
-    ["slimeobscure"] = { name = "slimeobscure", priority = 1, prompt = "&lt;green&gt;slimed", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 60.0} } },
-    ["solarburn"] = { name = "solarburn", priority = 1, prompt = "&lt;orange&gt;sburn", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 5.0} } },
-    ["stuttering"] = { name = "stuttering", priority = 1, prompt = "&lt;blue&gt;stut", cures = { {type = "salve", command = "apply epidermal to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["shadowmadness"] = { name = "shadowmadness", priority = 1, prompt = "&lt;gold&gt;smad", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["stupidity"] = { name = "stupidity", priority = 1, prompt = "&lt;gold&gt;stup", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },
-    ["spiritburn"] = { name = "spiritburn", priority = 1, prompt = "&lt;light_slate_blue&gt;spbn", cures = { {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["temperedmelancholic"] = { name = "temperedmelancholic", priority = 1, prompt = "&lt;cyan&gt;MeH(&lt;white&gt;" .. mystackableaffs.temperedmelancholic .. "&lt;cyan&gt;)", cures = { {type = "herb", command = {herbal = "outr ginger"..cs.."eat ginger", alchemical = "outr antimony"..cs.."eat antimony"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["temperedcholeric"] = { name = "temperedcholeric", priority = 1, prompt = "&lt;cyan&gt;ChH(&lt;white&gt;" .. mystackableaffs.temperedcholeric .. "&lt;cyan&gt;)", cures = { {type = "herb", command = {herbal = "outr ginger"..cs.."eat ginger", alchemical = "outr antimony"..cs.."eat antimony"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["temperedphlegmatic"] = { name = "temperedphlegmatic", priority = 1, prompt = "&lt;cyan&gt;PlH(&lt;white&gt;" .. mystackableaffs.temperedphlegmatic .. "&lt;cyan&gt;)", cures = { {type = "herb", command = {herbal = "outr ginger"..cs.."eat ginger", alchemical = "outr antimony"..cs.."eat antimony"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["temperedsanguine"] = { name = "temperedsanguine", priority = 1, prompt = "&lt;cyan&gt;SaH(&lt;white&gt;" .. mystackableaffs.temperedsanguine .. "&lt;cyan&gt;)", cures = { {type = "herb", command = {herbal = "outr ginger"..cs.."eat ginger", alchemical = "outr antimony"..cs.."eat antimony"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["tenderskin"] = { name = "tenderskin", priority = 1, prompt = "&lt;light_slate_blue&gt;tend", cures = { {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["timeflux"] = { name = "timeflux", priority = 1, prompt = "&lt;purple&gt;TFLUX", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 60.0} } },
-    ["timeloop"] = { name = "timeloop", priority = 1, prompt = "&lt;deep_sky_blue&gt;loop", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["tonguetied"] = { name = "tonguetied", priority = 1, prompt = "&lt;purple&gt;ttied", cures = { {type = "salve", command = "apply restoration to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["torntendons"] = { name = "torntendons", priority = 1, prompt = "&lt;cyan&gt;tend(&lt;white&gt;" .. mystackableaffs.torntendons .. "&lt;cyan&gt;)", cures = { {type = "sip", command = "apply health to legs", cooldown = "sip", requires = "sip", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["transfixation"] = { name = "transfixation", priority = 1, prompt = "&lt;red&gt;TFIX", cures = { {type = "balance", command = "writhe", cooldown = "writhe", requires = "balance", handle = 1, blockers = {"sleeping"}} } },
-    ["trueblind"] = { name = "trueblind", priority = 1, prompt = "&lt;DarkSlateGrey&gt;TBLIND", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 7.0} } },
-    ["unweavingbody"] = { name = "unweavingbody", priority = 1, prompt = "&lt;orange&gt;unw-b(&lt;white&gt;" .. mystackableaffs.unweavingbody .. "&lt;orange&gt;)", cures = { {type = "herb", command = {herbal = "outr ginseng"..cs.."eat ginseng", alchemical = "outr ferrum"..cs.."eat ferrum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },     
-    ["unweavingmind"] = { name = "unweavingmind", priority = 1, prompt = "&lt;gold&gt;unw-m(&lt;white&gt;" .. mystackableaffs.unweavingmind .. "&lt;gold&gt;)", cures = { {type = "herb", command = {herbal = "outr goldenseal"..cs.."eat goldenseal", alchemical = "outr plumbum"..cs.."eat plumbum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["unweavingspirit"] = { name = "unweavingspirit", priority = 1, prompt = "&lt;deep_sky_blue&gt;unw-s(&lt;white&gt;" .. mystackableaffs.unweavingspirit .. "&lt;deep_sky_blue&gt;)", cures = { {type = "smoke", command = {herbal = "light elm"..cs.."smoke elm", alchemical = "light cinnabar"..cs.."smoke cinnabar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["vertigo"] = { name = "vertigo", priority = 1, prompt = "&lt;light_slate_blue&gt;vert", cures = { {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["vinewreathed"] = { name = "vinewreathed", priority = 1, prompt = "&lt;green&gt;vine", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 20.0} } },
-    ["vitiated"] = { name = "vitiated", priority = 1, prompt = "&lt;red&gt;VITI", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 20.0} } },
-    ["vitrified"] = { name = "vitrified", priority = 1, prompt = "&lt;purple&gt;vitr", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 45.0} } },
-    ["voidfisted"] = { name = "voidfisted", priority = 1, prompt = "&lt;orange&gt;vfst", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 15.0} } },
-    ["waterbonds"] = { name = "waterbonds", priority = 1, prompt = "&lt;light_slate_blue&gt;wbond", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 15.0} } },
-    ["webbed"] = { name = "webbed", priority = 1, prompt = "&lt;red&gt;WEB", cures = { {type = "balance", command = "writhe", cooldown = "writhe", requires = "balance", handle = 1, blockers = {"sleeping"}} } },
-    ["weariness"] = { name = "weariness", priority = 1, prompt = "&lt;cyan&gt;wear", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["whisperingmadness"] = { name = "whisperingmadness", priority = 1, prompt = "&lt;light_slate_blue&gt;wmad", cures = { {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-    ["wristfractures"] = { name = "wristfractures", priority = 1, prompt = "&lt;cyan&gt;wri(&lt;white&gt;" .. mystackableaffs.wristfractures .. "&lt;cyan&gt;)", cures = { {type = "sip", command = "apply health to arms", cooldown = "sip", requires = "sip", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["voyria"] = { name = "voyria", priority = 1, prompt = "&lt;red&gt;VOYRIA", cures = { {type = "antidote", command = "sip immunity", cooldown = "antidote", requires = "antidote", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
-   
-    }   
+    -- 3. THE SAFE REFRESH LOOP
+    for affName, affData in pairs(afflictions) do
+        if affData.cures and type(affData.cures) == "table" then
+            for i, cureBlock in ipairs(affData.cures) do
+                
+                -- 🟢 THE HOT-SWAP TRIGGER:
+                -- Check the handle or slot configuration to find the class cure.
+                -- In your setup, the class slot is always the last entry (handle 3 or 4).
+                -- We can identify it precisely if its type matches a dynamic variable, 
+                -- or if it represents the specialized class block.
+                
+                if cureBlock.handle == 3 or cureBlock.handle == 4 then
+                    -- If this slot matches a dynamic class-based cure requirement, 
+                    -- hot-swap the entire sub-block data structure using the new class payload.
+                    -- This strips the old class skill out instantly!
+                    afflictions[affName].cures[i].type = data.type
+                    afflictions[affName].cures[i].cooldown = data.cooldown
+                    afflictions[affName].cures[i].requires = safeFlatten(data.requires)
+                    afflictions[affName].cures[i].blockers = safeFlatten(data.blockers)
+                    
+                    -- Inject the new class command string directly as the fresh base formula
+                    cureBlock.command = data.command
+                end
+
+                -- 🟢 THE REWRITE EXECUTION:
+                -- Process the command field (whether generic or the newly injected class command)
+                -- to ensure it uses the user's active separator rule.
+                if cureBlock.command then
+                    afflictions[affName].cures[i].command = rebuildCommand(cureBlock.command, cs)
+                end
+            end
+        end
+    end
     
-    
+    saveTableToJSON(afflictions, "afflictions")
     
 end</script>
 						<eventHandlerList />
@@ -14506,207 +14406,48 @@ end</script>
 						<name>updateDefensiveTable</name>
 						<packageName></packageName>
 						<script>function updateDefensiveTable()
+    -- Grab the live separator rule from settings
+    local cs = settings.cmdsep or ";"
+
+    if not defenses then return end
+
+    -- Helper function to dismantle and rebuild strings in place
+    local function rebuildCommand(cmdField, newCS)
+        if type(cmdField) == "string" then
+            local actions = {}
+            
+            -- 🟢 THE PLUG-AND-PLAY FIX:
+            -- Added '|' to the excluded character set [^;:|,]
+            -- This cleanly catches and splits actions regardless of if they use ;, :, ,, or |
+            for action in string.gmatch(cmdField, "[^;:|,]+") do
+                -- Trim any accidental trailing/leading spaces
+                action = string.match(action, "^%s*(.-)%s*$")
+                table.insert(actions, action)
+            end
+            
+            -- Stitch them back together using the live 'cs' choice
+            return table.concat(actions, newCS)
+            
+        elseif type(cmdField) == "table" then
+            local updatedTable = {}
+            for key, value in pairs(cmdField) do
+                updatedTable[key] = rebuildCommand(value, newCS)
+            end
+            return updatedTable
+        end
+        return cmdField
+    end
+
+    -- Loop through defenses and swap out ONLY the command payload keys
+    for defName, data in pairs(defenses) do
+        if data.command then
+            defenses[defName].command = rebuildCommand(data.command, cs)
+        end
+    end
     
-    --[[ Still Missing Classes:
-       APOSTATE
-       JESTER
-       SHAMAN
-       UNNAMABLE
-      ]]
     
-    --blackboarlegend
-    local cs = settings.cmdsep
-    defenses = {
-
-      --OCCULTIST
-      astralvision = { type = "occultism", command = "astralvision", relax = "", active = false, enabled = true, keepup = false, name = "astralvision", cooldown = {"equilibrium"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      distortaura = { type = "occultism", command = "distortaura", relax = "normalaura", active = false, enabled = true, keepup = false, name = "distortaura", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      astralform = { type = "occultism", command = "astralform", relax = "", active = false, enabled = true, keepup = false, name = "astralform", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      devilmark = { type = "occultism", command = "devilmark", relax = "", active = false, enabled = true, keepup = false, name = "devilmark", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      tentacles = { type = "occultism", command = "tentacles", relax = "", active = false, enabled = true, keepup = false, name = "tentacles", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      
-      --RUNEWARDEN
-      gripping = { type = "discipline", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      blademastery = { type = "discipline", command = "mastery on", relax = "relax mastery", active = false, enabled = true, keepup = false, name = "blademastery", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      resistance = { type = "discipline", command = "resistance", relax = "", active = false, enabled = true, keepup = false, name = "resistance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      weathering = { type = "discipline", command = "weathering", relax = "", active = false, enabled = true, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      --BLADEMASTER
-      gripping = { type = "twoarts", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      shintrance = { type = "shindo", command = "shin trance", relax = "break trance", active = false, enabled = true, keepup = false, name = "shintrance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      weathering = { type = "shindo", command = "weathering", relax = "", active = false, enabled = true, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      toughness = { type = "shindo", command = "toughness", relax = "", active = false, enabled = true, keepup = false, name = "toughness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      projectiles = { type = "shindo", command = "projectiles on", relax = "relax projectiles", active = false, enabled = true, keepup = false, name = "projectiles", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      shinbinding = { type = "shindo", command = "binding on", relax = "binding off", active = false, enabled = true, keepup = false, name = "shinbinding", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      retaliation = { type = "shindo", command = "retaliation on", relax = "retaliation off", active = false, enabled = true, keepup = false, name = "retaliation", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      waterwalking = { type = "shindo", command = "waterwalk", relax = "relax waterwalk", active = false, enabled = true, keepup = false, name = "waterwalking", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
-      shinclarity = { type = "shindo", command = "clarity", relax = "", active = false, enabled = true, keepup = false, name = "shinclarity", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
-      mindnet = { type = "shindo", command = "mindnet on", relax = "relax mindnet", active = false, enabled = true, keepup = false, name = "mindnet", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      consciousness = { type = "shindo", command = "consciousness on", relax = "relax consciousness", active = false, enabled = true, keepup = false, name = "consciousness", cooldown = {"free"}, requires = {"free"}, drain = "", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- ALCHEMIST
-      astronomy = { type = "alchemy", command = "astronomy", relax = "", active = false, enabled = true, keepup = false, name = "astronomy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      extispicy = { type = "alchemy", command = "extispicy", relax = "", active = false, enabled = true, keepup = false, name = "extispicy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      mercury = { type = "alchemy", command = "mercury", relax = "", active = false, enabled = true, keepup = false, name = "mercury", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      sulphur = { type = "alchemy", command = "sulphur", relax = "", active = false, enabled = true, keepup = false, name = "sulphur", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      tin = { type = "alchemy", command = "tin", relax = "", active = false, enabled = true, keepup = false, name = "tin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- BARD
-      acrobatics = { type = "performance", command = "acrobatics", relax = "", active = false, enabled = true, keepup = false, name = "acrobatics", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      arrowcatching = { type = "performance", command = "arrowcatching", relax = "", active = false, enabled = true, keepup = false, name = "arrowcatching", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      balancing = { type = "performance", command = "balancing", relax = "", active = false, enabled = true, keepup = false, name = "balancing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      drunkensailor = { type = "performance", command = "sing drunkensailor", relax = "", active = false, enabled = true, keepup = false, name = "drunkensailor", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      heartsfury = { type = "performance", command = "heartsfury", relax = "", active = false, enabled = true, keepup = false, name = "heartsfury", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      aria = { type = "performance", command = "sing aria", relax = "", active = false, enabled = true, keepup = false, name = "aria", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      lay = { type = "performance", command = "sing lay", relax = "", active = false, enabled = true, keepup = false, name = "lay", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      songbird = { type = "performance", command = "sing songbird", relax = "", active = false, enabled = true, keepup = false, name = "songbird", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      tune = { type = "performance", command = "sing tune", relax = "", active = false, enabled = true, keepup = false, name = "tune", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      slippery = { type = "performance", command = "slippery", relax = "", active = false, enabled = true, keepup = false, name = "slippery", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- DEPTHSWALKER
-      bodyaugment = { type = "shadowbinding", command = "bodyaugment", relax = "", active = false, enabled = true, keepup = false, name = "bodyaugment", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      durability = { type = "shadowbinding", command = "durability", relax = "", active = false, enabled = true, keepup = false, name = "durability", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      percision = { type = "shadowbinding", command = "percision", relax = "", active = false, enabled = true, keepup = false, name = "percision", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      blur = { type = "shadowbinding", command = "blur", relax = "", active = false, enabled = true, keepup = false, name = "blur", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      reflections_dw = { type = "shadowbinding", command = "reflections", relax = "", active = false, enabled = true, keepup = false, name = "reflections", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      disperse = { type = "shadowbinding", command = "disperse", relax = "", active = false, enabled = true, keepup = false, name = "disperse", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      shadowveil = { type = "shadowbinding", command = "shadowveil", relax = "", active = false, enabled = true, keepup = false, name = "shadowveil", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- MAGI
-      chargeshield = { type = "crystalweaving", command = "chargeshield", relax = "", active = false, enabled = true, keepup = false, name = "chargeshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      diamondskin = { type = "crystalweaving", command = "diamondskin", relax = "", active = false, enabled = true, keepup = false, name = "diamondskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      stoneskin = { type = "crystalweaving", command = "stoneskin", relax = "", active = false, enabled = true, keepup = false, name = "stoneskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      reflections_magi = { type = "crystalweaving", command = "reflections", relax = "", active = false, enabled = true, keepup = false, name = "reflections", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      stonefist = { type = "crystalweaving", command = "stonefist", relax = "", active = false, enabled = true, keepup = false, name = "stonefist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- MONK
-      standingfirm = { type = "kai", command = "standingfirm", relax = "", active = false, enabled = true, keepup = false, name = "standingfirm", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      vitality = { type = "kai", command = "vitality", relax = "", active = false, enabled = true, keepup = false, name = "vitality", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      bodyblock = { type = "kai", command = "bodyblock", relax = "", active = false, enabled = true, keepup = false, name = "bodyblock", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      evadeblock = { type = "kai", command = "evadeblock", relax = "", active = false, enabled = true, keepup = false, name = "evadeblock", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      pinchblock = { type = "kai", command = "pinchblock", relax = "", active = false, enabled = true, keepup = false, name = "pinchblock", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      regeneration = { type = "kai", command = "regenerate", relax = "", active = false, enabled = true, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      splitmind = { type = "kai", command = "splitmind", relax = "", active = false, enabled = true, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      mindcloak = { type = "kai", command = "mindcloak", relax = "", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      kaitrance = { type = "kai", command = "trance", relax = "", active = false, enabled = true, keepup = false, name = "kaitrance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- NATURE CLASSES (DRUID/SENTINEL/SYLVAN)
-      evasion_druid = { type = "naturalism", command = "evasion", relax = "", active = false, enabled = true, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      evasion_sentinel = { type = "tracking", command = "evasion", relax = "", active = false, enabled = true, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      barkskin_sentinel = { type = "tracking", command = "barkskin", relax = "", active = false, enabled = true, keepup = false, name = "barkskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      barkskin_sylvan = { type = "wilderness", command = "barkskin", relax = "", active = false, enabled = true, keepup = false, name = "barkskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      flailingstaff = { type = "tracking", command = "flailingstaff", relax = "", active = false, enabled = true, keepup = false, name = "flailingstaff", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      affinity = { type = "naturalism", command = "affinity", relax = "", active = false, enabled = true, keepup = false, name = "affinity", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      elusiveness = { type = "naturalism", command = "elusiveness", relax = "", active = false, enabled = true, keepup = false, name = "elusiveness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      reflexes = { type = "naturalism", command = "reflexes", relax = "", active = false, enabled = true, keepup = false, name = "reflexes", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      --PRIEST
-      faith = { type = "spirituality", command = "faith", relax = "", active = false, enabled = true, keepup = false, name = "faith", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      fervour = { type = "spirituality", command = "fervour", relax = "", active = false, enabled = true, keepup = false, name = "fervour", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      retribution = { type = "spirituality", command = "retribution", relax = "", active = false, enabled = true, keepup = false, name = "retribution", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      dawnhand = { type = "spirituality", command = "dawnhand", relax = "", active = false, enabled = true, keepup = false, name = "dawnhand", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      unbowed = { type = "spirituality", command = "unbowed", relax = "", active = false, enabled = true, keepup = false, name = "unbowed", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      heresy = { type = "devotion", command = "heresy", relax = "", active = false, enabled = true, keepup = false, name = "heresy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      inspiration = { type = "devotion", command = "inspiration", relax = "", active = false, enabled = true, keepup = false, name = "inspiration", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      thermalshield = { type = "devotion", command = "thermalshield", relax = "", active = false, enabled = true, keepup = false, name = "thermalshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      earthshield = { type = "devotion", command = "earthshield", relax = "", active = false, enabled = true, keepup = false, name = "earthshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      enduranceblessing = { type = "devotion", command = "bless endurance", relax = "", active = false, enabled = true, keepup = false, name = "enduranceblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      frostshield = { type = "devotion", command = "frostshield", relax = "", active = false, enabled = true, keepup = false, name = "frostshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      willpowerblessing = { type = "devotion", command = "bless willpower", relax = "", active = false, enabled = true, keepup = false, name = "willpowerblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- PSION
-      secondskin = { type = "weaving", command = "secondskin", relax = "", active = false, enabled = true, keepup = false, name = "secondskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      rupturesight = { type = "weaving", command = "rupturesight", relax = "", active = false, enabled = true, keepup = false, name = "rupturesight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      guidedstrike = { type = "weaving", command = "guidedstrike", relax = "", active = false, enabled = true, keepup = false, name = "guidedstrike", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      psitranscend = { type = "weaving", command = "transcend", relax = "", active = false, enabled = true, keepup = false, name = "psitranscend", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- INFERNAL
-      deathaura = { type = "oppression", command = "deathaura", relax = "", active = false, enabled = true, keepup = false, name = "deathaura", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
-      -- DRAGON 
-      dragonarmour = { type = "dragoncraft", command = "dragonarmour on", relax = "relax dragonarmour", active = false, enabled = true, keepup = false, name = "dragonarmour", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
-      dragonbreath = { type = "dragoncraft", command = dragon_breath(), relax = "", active = false, enabled = true, keepup = false, name = "dragonbreath", cooldown = {"free"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep","prone","paralysis"} },
-      
-      -- SERPENT
-      hiding = { type = "subterfuge", command = "hide", relax = "emerge", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      pacing = { type = "subterfuge", command = "pacing on", relax = "relax pacing", active = false, enabled = true, keepup = false, name = "pacing", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      scales = { type = "subterfuge", command = "scales", relax = "scales shed", active = false, enabled = true, keepup = false, name = "scales", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep"} },
-      ghost = { type = "subterfuge", command = "conjure ghost", relax = "dispel me", active = false, enabled = true, keepup = false, name = "ghost", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
-      lipreading = { type = "subterfuge", command = "lipread", relax = "", active = false, enabled = true, keepup = false, name = "lipreading", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
-      weaving = { type = "subterfuge", command = "weaving on", relax = "relax weaving", active = false, enabled = true, keepup = false, name = "weaving", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "mana", priority = 3, blockers = {"sleep"} },
-      secondsight = { type = "subterfuge", command = "secondsight", relax = "", active = false, enabled = true, keepup = false, name = "secondsight", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
-      shroud = { type = PLAYER:getAbilityType(), command = PLAYER:getAbilityCommand("shroud"), relax = PLAYER:getAbilityCommand("relax"), active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
-
-      -- WATERLORD
-      cohesion = { type = "pervasion", command = "manifest cohesion", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      -- FIRELORD
-      --template = { type = "ignition", command = "", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      -- AIRLORD
-      --template = { type = "duress", command = "", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      -- EARTHLORD
-      --template = { type = "sculpting", command = "", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      
-      -- RESISTANCES
-      coldresist = { type = "resistance", command = "activate cold resistance", relax = "", active = false, enabled = true, keepup = false, name = "coldresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      fireresist = { type = "resistance", command = "activate fire resistance", relax = "", active = false, enabled = true, keepup = false, name = "fireresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      magicresist = { type = "resistance", command = "activate magic resistance", relax = "", active = false, enabled = true, keepup = false, name = "magicresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      electricresist = { type = "resistance", command = "activate electric resistance", relax = "", active = false, enabled = true, keepup = false, name = "electricresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      
-      -- VISION
-      lifevision = { type = "vision", command = "lifevision", relax = "relax nightsight", active = false, enabled = true, keepup = false, name = "lifevision", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      nightsight = { type = "vision", command = "nightsight on", relax = "relax nightsight", active = false, enabled = true, keepup = false, name = "nightsight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      vigilance = { type = "vision", command = "vigilance on", relax = "relax vigilance", active = false, enabled = true, keepup = false, name = "vigilance", cooldown = {"free"}, requires = {"equilibrium"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      treewatch = { type = "vision", command = "treewatch on", relax = "relax treewatch", active = false, enabled = true, keepup = false, name = "treewatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      deathsight_vision = { type = "vision", command = "deathsight", relax = "relax deathsight", active = false, enabled = true, keepup = false, name = "deathsight", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      skywatch = { type = "vision", command = "skywatch on", relax = "relax skywatch", active = false, enabled = true, keepup = false, name = "skywatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      groundwatch = { type = "vision", command = "groundwatch on", relax = "relax groundwatch", active = false, enabled = true, keepup = false, name = "groundwatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      alertness = { type = "vision", command = "alertness on", relax = "relax alertness", active = false, enabled = true, keepup = false, name = "alertness", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "mana", priority = 2, blockers = {"sleep"} },
-      hypersight = { type = "vision", command = "hypersight on", relax = "relax hypersight", active = false, enabled = true, keepup = false, name = "hypersight", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "mana", priority = 2, blockers = {"sleep"} },
-      thirdeye_vision = { type = "vision", command = "thirdeye", relax = "", active = false, enabled = true, keepup = false, name = "thirdeye", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      telesense = { type = "vision", command = "telesense on", relax = "relax telesense", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      softfocusing = { type = "vision", command = "softfocus on", relax = "relax softfocus", active = false, enabled = true, keepup = false, name = "softfocusing", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      mindseye = { type = "vision", command = "touch mindseye", relax = "", active = false, enabled = true, keepup = false, name = "mindseye", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 1, blockers = {"sleep","paralysis"} },
-
-      -- SURIVIAL
-      selfishness = { type = "survival", command = "selfishness", relax = "generosity", active = false, enabled = true, keepup = false, name = "selfishness", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
-      heldbreath = { type = "survival", command = "hold breath", relax = "release", active = false, enabled = true, keepup = false, name = "heldbreath", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 4, blockers = {"sleep"} },
-      insomnia = { type = "survival", command = "insomnia", relax = "relax insomnia", active = false, enabled = true, keepup = false, name = "insomnia", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      curseward = { type = "survival", command = "curseward", relax = "", active = false, enabled = true, keepup = false, name = "curseward", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      metawake = { type = "survival", command = "metawake on", relax = "relax metawake", active = false, enabled = true, keepup = false, name = "metawake", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "mana", priority = 3, blockers = {"sleep"} },
-      
-      -- FREE
-      speed = { type = "free", command = "sip speed", relax = "", active = false, enabled = true, keepup = false, name = "speed", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      levitating = { type = "free", command = "sip levitation", relax = "", active = false, enabled = true, keepup = false, name = "levitating", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      poisonresist = { type = "free", command = "sip venom", relax = "", active = false, enabled = true, keepup = false, name = "poisonresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      temperance = { type = "free", command = "sip frost", relax = "", active = false, enabled = true, keepup = false, name = "temperance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      insulation = { type = "salve", command = "apply caloric", relax = "", active = false, enabled = true, keepup = false, name = "insulation", cooldown = {"salve"}, requires = {"salve"}, drain = "none", priority = 1, blockers = {"sleep","slickness"} },
-      density = { type = "salve", command = "apply mass", relax = "", active = false, enabled = true, keepup = false, name = "density", cooldown = {"salve"}, requires = {"salve"}, drain = "none", priority = 3, blockers = {"sleep","paralysis","slickness"} },
-
-      -- HERBS
-      deathsight_herb = { type = "herb", command = {herbal = "outr skullcap"..cs.."eat skullcap", alchemical = "outr malachite"..cs.."eat malachite"}, relax = "relax deathsight", active = false, enabled = true, keepup = false, name = "deathsight", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      thirdeye_herb = { type = "herb", command = {herbal = "outr echinacea"..cs.."eat echinacea", alchemical = "outr dolomite"..cs.."eat dolomite"}, relax = "", active = false, enabled = true, keepup = false, name = "thirdeye", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      fangbarrier = { type = "herb", command = {herbal = "outr sileris"..cs.."apply sileris", alchemical = "outr quicksilver"..cs.."apply quicksilver"}, relax = "", active = false, enabled = true, keepup = false, name = "fangbarrier", cooldown = {"free"}, requires = {"free"}, priority = 1, drain = "none", blockers = {"sleep","slickness"} },
-      deafness = { type = "herb", command = {herbal = "outr hawthorn"..cs.."eat hawthorn", alchemical = "outr calamine"..cs.."eat calamine"}, relax = "apply epidermal", active = false, enabled = true, keepup = false, name = "deafness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 3, blockers = {"sleep","anorexia"} },
-      blindness = { type = "herb", command = {herbal = "outr bayberry"..cs.."eat bayberry", alchemical = "outr arsenic"..cs.."eat arsenic"}, relax = "apply epidermal", active = false, enabled = true, keepup = false, name = "blindness", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 3, blockers = {"sleep","anorexia"} },
-      
-      -- SMOKE         
-      rebounding = { type = "smoke", command = {herbal = "light skullcap"..cs.."smoke skullcap", alchemical = "light malachite"..cs.."smoke malachite"}, relax = "", active = false, enabled = true, keepup = false, name = "rebounding", cooldown = {"smoke"}, requires = {"smoke"}, drain = "none", priority = 3, blockers = {"sleep","asthma"} },
-      
-      -- TATTOOS
-      mosstattoo = { type = "tattoo", command = "touch moss", relax = "", active = false, enabled = true, keepup = false, name = "mosstattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      boartattoo = { type = "tattoo", command = "touch boar", relax = "", active = false, enabled = true, keepup = false, name = "boartattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      moontattoo = { type = "tattoo", command = "touch moon", relax = "", active = false, enabled = true, keepup = false, name = "moontattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      oxtattoo = { type = "tattoo", command = "touch ox", relax = "", active = false, enabled = true, keepup = false, name = "oxtattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      megalithtattoo = { type = "tattoo", command = "touch megalith", relax = "", active = false, enabled = true, keepup = false, name = "megalithtattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      belltattoo = { type = "tattoo", command = "touch bell", relax = "", active = false, enabled = true, keepup = false, name = "belltattoo", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      cloak = { type = "tattoo", command = "touch cloak", relax = "", active = false, enabled = true, keepup = false, name = "cloak", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-
-      --MISC
-      benediction = { type = PLAYER:getAbilityType(), command = "recite benediction on me", relax = "", active = false, enabled = true, keepup = false, name = "benediction", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },    
+    saveTableToJSON(defenses, "defenses")
     
-    }
-
-
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -14828,7 +14569,6 @@ end</script>
 
     if not isValidDefenses(defenses) then
       cecho("\n&lt;red&gt;[FAILURE] Reload failed. Reinitializing with default defenses...\n")
-      initializeDefensiveTable("save")
 
       local profileName = gmcp.Char.Status and gmcp.Char.Status.name or "Unknown"
       local backupPath = string.format(
@@ -17564,18 +17304,18 @@ function handleTargetsAndAttacks()
     end
 
     if target ~= "" and hasMoreHuntTargets(target) then
-        if shielded then
+        --if shielded then
             -- 🛡️ Execute the isolated shield routine and exit immediately
-            handleShieldAttacks(target)
-            return 
-        else
+           -- handleShieldAttacks(target)
+           -- return 
+       -- else
             -- If target is not shielded, make sure the shield flag is dropped
             shieldCommandSent = false
             
             -- Run normal routines tracking standard commandSent status
             handleRegularAttacks(target)
             handleBattlerageAttacks(target)
-        end
+        --end
     end
 end
 
@@ -17616,11 +17356,10 @@ function handleShieldAttacks(target)
                     
                     if currentTarget ~= "" then
                         attackString = string.gsub(attackString, "@tar", currentTarget)
-                    end
-                    
-                    send("clearqueue eqbal")
+                    end              
+
                     send(attackString)
-                    shieldCommandSent = true -- Flip the specific shield flag
+                    shieldCommandSent = true 
                     if settings.debug then cecho("\n&lt;green&gt;[BRAGE] Sent pure shield break: " .. attackString) end
                 else
                     if settings.debug then cecho("\n&lt;yellow&gt;[BRAGE] Balance not ready for rage shield break.") end
@@ -17630,7 +17369,7 @@ function handleShieldAttacks(target)
         end
     end
 
-    -- ✅ REGULAR SHIELD BREAKS (queued)
+    -- ✅ REGULAR SHIELD BREAKS (queued via addclear)
     local regularCmd = huntSettingsData[class]["regular shield break"]
 
     if regularCmd and regularCmd ~= "" then
@@ -17638,27 +17377,26 @@ function handleShieldAttacks(target)
             regularCmd = string.gsub(regularCmd, "@tar", currentTarget)
         end
 
+        -- 🟢 THE FIX: Use queue addclear instead of separate clearqueue packets.
+        -- This forces the server to swap the attacks instantly, beating the balance tick.
         if PLAYER:myclass() == "occultist" then
-            send("clearqueue eq")
             local targetCommand = "queue add eq " .. regularCmd
-            shieldCommandSent = true -- Flip the specific shield flag
+            shieldCommandSent = true 
             send(targetCommand)
-            if settings.debug then cecho("\n&lt;green&gt;[BRAGE] Regular shield break added to queue: " .. targetCommand) end
+            if settings.debug then cecho("\n&lt;green&gt;Shield break replaced queue (addclear eq): " .. targetCommand) end
         else
-            send("clearqueue eqbal")
             local targetCommand = "queue add eqbal " .. regularCmd
-            shieldCommandSent = true -- Flip the specific shield flag
+            shieldCommandSent = true 
             send(targetCommand)
-            if settings.debug then cecho("\n&lt;green&gt;[BRAGE] Regular shield break added to queue: " .. targetCommand) end
+            if settings.debug then cecho("\n&lt;green&gt;Shield break replaced queue (addclear eqbal): " .. targetCommand) end
         end
     else
-        if settings.debug then cecho("\n&lt;yellow&gt;[BRAGE] Regular shield break configuration missing or empty.") end
-    end
+        if settings.debug then cecho("\n&lt;yellow&gt;Shield break configuration missing or empty.") end
+    end   
 
     shieldAttackCounter = 0
     return
 end
-
 
 
 function handleBattlerageAttacks(target)
@@ -26789,9 +26527,10 @@ end</script>
 
 -- Global tracking variables
 tatQ = tatQ or {}            
-inking = inking or false      
-settings.systemPaused = settings.systemPaused or false
+inking = inking or false 
 tattoos = tattoos or {}  
+settings = settings or {}     
+if settings.systemPaused == nil then settings.systemPaused = false end
 
 function initializeTattooSettings()
     -- Define every tattoo that SHOULD appear in the menu
@@ -27191,7 +26930,6 @@ function setTattooPreset(type)
 end
 
 function getMyTotalSlots()
-    -- Your new table is clean, so #tattoos is finally a reliable count.
     -- Defaulting to 11 if the table is empty for some reason.
     return (tattoos and #tattoos &gt; 0) and #tattoos or 11
 end</script>
