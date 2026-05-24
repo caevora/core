@@ -4247,9 +4247,8 @@ for i = 1, #names do
             defenses[defName].enabled = false
         end
         
-        if settings.debug then
-            cecho("\n&lt;orange&gt;[SYSTEM]: missing ring for " .. names[i] .. ". Moving to next defense.")
-        end
+        debugEcho("orange","[SYSTEM]: missing ring for " .. names[i] .. ". Moving to next defense.")
+
         
         -- 3. Move to the next defense
         tryToDefup()
@@ -4926,7 +4925,7 @@ refill_pipes()</script>
  
  if emptied_pipes_count &gt;= count_pipes(pipes) then
     emptypipes = false -- all pipes emptied, allow refill now
-    if settings.debug then cecho("\n&lt;green&gt;[REFILL] All pipes emptied, ready to refill.") end
+    debugEcho("green","[REFILL] All pipes emptied, ready to refill.")
  end
  
 </script>
@@ -5637,10 +5636,8 @@ end
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>won arena</name>
-						<script>--raiseEvent("arenaEvent")
-arenaEvent()
+						<script>arenaEvent()
 send("def")
-send("curingset switch set1")
 resetCuringList()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -5661,10 +5658,8 @@ resetCuringList()</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>lost arena</name>
-						<script>--raiseEvent("arenaEvent")
-arenaEvent()
+						<script>arenaEvent()
 send("def")
-send("curingset switch set1")
 resetCuringList()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>2</conditonLineDelta>
@@ -9447,10 +9442,21 @@ cecho("\n ")</script>
 				</AliasGroup>
 				<Alias isActive="yes" isFolder="no">
 					<name>who groups</name>
-					<script>whogroups = {}
-SILENT_WHO = false
-enableTrigger("Who Grouping")
-send("echo -Parsing Who List: "..settings.cmdsep.."who b",false)</script>
+					<script>if not(defenses.thirdeye_vision.active) or not (defenses.thirdeye_herb.active) then
+  
+  cecho("\n PUT UP THIRD EYE FOR QWHOM")
+  
+  return
+else
+
+  whogroups = {}
+  SILENT_WHO = false
+  enableTrigger("Who Grouping")
+  send("echo -Parsing Who List: "..settings.cmdsep.."who b",false)
+
+end
+
+</script>
 					<command></command>
 					<packageName></packageName>
 					<regex>^qwhom$</regex>
@@ -10150,9 +10156,7 @@ end
 function ensureDirectoryExists(path)
     if not lfs.attributes(path, "mode") then
         lfs.mkdir(path)
-        if settings.debug then
-          cecho("&lt;green&gt;Created directory: " .. path .. "\n")
-        end
+        debugEcho("green","Created directory: " .. path .. "\n")
     end
 end
 
@@ -10163,9 +10167,7 @@ function ensureFileExists(directory, filename, mode, tableToUse)
     -- Ensure the directory exists
     if not lfs.attributes(directory, "mode") then
         lfs.mkdir(directory)
-        if settings.debug then
-          cecho("&lt;green&gt;Created directory: " .. directory .. "\n")
-        end
+        debugEcho("green","Created directory: " .. directory .. "\n")
     end
 
     -- Check if the file exists; if not, create it
@@ -10173,16 +10175,12 @@ function ensureFileExists(directory, filename, mode, tableToUse)
         local file = io.open(fullPath, "w")
         if file then
             file:close()
-           if settings.debug then
-              cecho("&lt;green&gt;Created new file: " .. fullPath .. "\n")
-            end
+            debugEcho("green","Created new file: " .. fullPath .. "\n")
             if tableToUse then
                 table.save(fullPath, tableToUse)
             end
         else
-           if settings.debug then
-              cecho("&lt;red&gt;Error: Could not create file: " .. fullPath .. "\n")
-           end
+           debugEcho("red","Error: Could not create file: " .. fullPath .. "\n")
             return
         end
     end
@@ -10190,11 +10188,11 @@ function ensureFileExists(directory, filename, mode, tableToUse)
     -- Load or save the file depending on the mode
     if mode == "load" and tableToUse then
         table.load(fullPath, tableToUse)
-        if settings.debug then cecho("&lt;green&gt;Loaded file: " .. fullPath .. "\n")  end
+        debugEcho("green","Loaded file: " .. fullPath .. "\n")
     elseif mode == "save" and tableToUse then
         table.save(fullPath, tableToUse)
 
-           if settings.debug then cecho("&lt;green&gt;Saved file: " .. fullPath .. "\n") end
+           debugEcho("green","Saved file: " .. fullPath .. "\n")
 
     end
 end
@@ -10511,7 +10509,7 @@ function myTimerEcho(dbug, balanceType, string, color)
   end
 end
 
-function myDebugEcho(color, string)
+function debugEcho(color, string)
   local nextline = ""
   local debug = settings.debug
   moveCursorEnd("main")
@@ -10747,9 +10745,8 @@ end
 function loadMethods()
 
     -- Reload the updated script (if srvQueue is defined in it)
-    dofile(getMudletHomeDir() .. "/Achaean System/system/methods.lua")  -- Adjust the path as needed
-  
-    if settings.debug then cecho("\n&lt;greend&gt;Methods File Loaded") end
+    dofile(getMudletHomeDir() .. "/Achaean System/system/methods.lua")  -- Adjust the path as needed  
+    debugEcho("green","Methods File Loaded")
 end</script>
 					<eventHandlerList />
 				</Script>
@@ -11240,7 +11237,7 @@ function saveTableToJSON(tbl, filename, directory)
   file:write(jsonString)
   file:close()
 
-  if settings.debug then cecho(string.format("&lt;green&gt;Saved '%s' to %s\n", filename, path)) end
+  debugEcho("green",string.format("&lt;green&gt;Saved '%s' to %s", filename, path))
 end
 
 
@@ -11248,7 +11245,7 @@ end
 function jsonBackup()
 
   if not dkjson then
-    if settings.debug then cecho("&lt;red&gt;Cannot create backups: dkjson not loaded.\n") end
+    debugEcho("red","Cannot create backups: dkjson not loaded.")
     return
   end
 
@@ -11317,11 +11314,11 @@ function loadJsonWithBackup(primaryPath, label)
 
   local decoded, _, err = decodeJsonFile(primaryPath)
   if not err and type(decoded) == "table" then
-    if settings.debug then cecho(string.format("&lt;green&gt;Loaded %s from JSON.\n", label)) end
+    debugEcho("green",string.format("&lt;green&gt;Loaded %s from JSON.", label))
     return decoded
   end
 
-  cecho(string.format("&lt;yellow&gt;[WARN] Failed to load %s. Trying backup...\n", label))
+  debugEcho("yellow","[WARN] Failed to load %s. Trying backup...", label)
 
   local bakPath = primaryPath .. ".bak"
   local bakDecoded, _, bakErr = decodeJsonFile(bakPath)
@@ -11550,9 +11547,8 @@ function loadAllTablesFromJSON()
       end
     end
 
-    if settings.debug then
-      cecho(string.format("&lt;green&gt;✔ Loaded %s → %s\n", file.name, file.target))
-    end
+    debugEcho("green", string.format("&lt;green&gt;✔ Loaded %s → %s", file.name, file.target))
+
   end
 end
 
@@ -11575,9 +11571,8 @@ function loadClassSpecificData()
   -- This turns _G["monkprios"] = { ... }
   _G[classKey] = afflictions
   
-  --if settings.debug then 
-    --cecho("&lt;green&gt;✔ Loaded priorities into both 'afflictions' and '" .. classKey .. "'.\n") 
-  --end
+    debugEcho("green","✔ Loaded priorities into both 'afflictions' and '" .. classKey .. "'.") 
+
 end
 
 --main save function
@@ -11625,7 +11620,7 @@ function saveAllTablesAsJSON()
           if bakFile then
             bakFile:write(oldContents)
             bakFile:close()
-            if settings.debug then cecho("&lt;yellow&gt;↩ Created .bak: " .. bakPath .. "\n") end
+            debugEcho("yellow","↩ Created .bak: " .. bakPath .. "")
           end
         end
       end
@@ -11635,9 +11630,9 @@ function saveAllTablesAsJSON()
       if f then
         f:write(result)
         f:close()
-        if settings.debug then cecho("&lt;green&gt;Saved JSON: " .. jsonPath .. "\n") end
+        debugEcho("green","Saved JSON: " .. jsonPath .. "")
       else
-        cecho(string.format("&lt;red&gt;Failed to write %s.json: %s\n", file.name, err or "unknown error"))
+        debugEcho("green",string.format("&lt;red&gt;Failed to write %s.json: %s", file.name, err or "unknown error"))
       end
     end
   end
@@ -11699,11 +11694,9 @@ end
     local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
     if fileExists(dkjsonPath) then
       dkjson = dofile(dkjsonPath)
-      if settings.debug then
-        cecho("&lt;green&gt;Loaded dkjson library.\n")
-      end
-    else
-      cecho("&lt;red&gt;dkjson.lua not found at: " .. dkjsonPath .. "\n")
+      debugEcho("green","Loaded dkjson library.")
+     else
+      debugEcho("green","dkjson.lua not found at: " .. dkjsonPath .. "")
       return
     end
   end
@@ -11717,9 +11710,7 @@ end
     if f then
       f:write(dkjson.encode({}, {indent = true}))
       f:close()
-      if settings.debug then
-        cecho("&lt;yellow&gt;Created missing doesnotexist.json\n")
-      end
+      debugEcho("green","Created missing doesnotexist.json")
     end
   end
   -- 3. Protective NDB Skeleton Init
@@ -11783,9 +11774,8 @@ end
       end
     end
   end
-  if settings.debug then
-    cecho("&lt;green&gt;✔ Loaded all NDB player files from /ndb/\n")
-  end
+  debugEcho("green","✔ Loaded all NDB player files from /ndb/")
+
   -- 5. Load 'Does Not Exist' list
   NDB.doesNotExist = loadJsonWithBackup(doesNotExistFile, "doesnotexist") or {}
   -- 6. Load City Ally List (Consolidated to avoid double-loading)
@@ -11797,9 +11787,7 @@ end
       for _, ally in ipairs(NDB.cityList) do
         NDB_Acquire(ally)
       end
-      if settings.debug then
-        cecho("&lt;green&gt;Loaded cityallylist from JSON.\n")
-      end
+      debugEcho("green","Loaded cityallylist from JSON.")
     end
   end
   -- 7. Load City Enemy List (Consolidated to avoid double-loading)
@@ -11811,9 +11799,7 @@ end
       for _, enemy in ipairs(NDB.cityEnemies) do
         NDB_Acquire(enemy)
       end
-      if settings.debug then
-        cecho("&lt;green&gt;Loaded cityenemylist from JSON.\n")
-      end
+      debugEcho("green","Loaded cityenemylist from JSON.")
     end
   end
   -- 8. Load additional tables
@@ -11871,9 +11857,7 @@ function initializeFileSaves()
         saveTableToJSON(data, name, ndbPath)
       end
     end
-    if settings.debug then
-      cecho("&lt;green&gt;Saved " .. table.size(NDB.players) .. " NDB player files.\n")
-    end
+    debugEcho("green","" .. table.size(NDB.players) .. " NDB player files.")
   end
 
   -- 4. Save NDB "Does Not Exist" tracking file
@@ -11884,23 +11868,20 @@ function initializeFileSaves()
   -- 5. Execute Master Table Core Save
   if type(saveAllTablesAsJSON) == "function" then
     saveAllTablesAsJSON()
-  elseif settings.debug then
-    cecho("&lt;yellow&gt;Note: saveAllTablesAsJSON() skipped (not defined).\n")
+  else
+    debugEcho("yellow","Note: saveAllTablesAsJSON() skipped (not defined).")
   end
 
-  if settings.debug then
-    cecho("&lt;green&gt;✔ All system data synced to disk.\n")
-  end
+  debugEcho("green","✔ All system data synced to disk.")
+  
 end
 
 function systemOnDeath()
-  local currentCuringSet = settings.curingset or "default"
   if not settings.systemPaused then
+    myaffs = {}
     send("stop")
     expandAlias("mstop")
     settings.systemPaused = true
-    send("def")   
-    send("curingset switch " .. currentCuringSet)    
     resetCuringList()
     LimbTrackerReset()
     cecho("\n&lt;red&gt;[BRAIN] We died. Disengaging.\n")
@@ -11913,28 +11894,25 @@ function systemOnDeath()
       toggleHuntingMode("manual")
     end
     cecho("System has been &lt;red&gt;paused.\n")
-    if inaparty() then
-      if settings.callForAid then
-        send("CALL FOR AID")
-      end
-    else
       if settings.autoEmbrace then
         send("embrace death")
       end
-    end
   end
 end
 
 function systemOnRespawn()
+  local currentCuringSet = settings.curingset or "default"
   if settings.systemPaused then
     settings.systemPaused = false
     cecho("\nSystem has been " .. (settings.systemPaused and "&lt;red&gt;paused." or "&lt;green&gt;unpaused."))
+    myaffs = {}
     fortify:reset()
     remedy:reset()
     resetSelfPrecache()
     resetVitals()
     resetActiveDefenses()
     send("renounce grace")
+    send("curingset switch " .. currentCuringSet)  
   end
 end
 
@@ -13122,9 +13100,8 @@ end</script>
     GUI.affwindow.middle:cecho(affstring)
 
     -- Debugging
-    if settings.debug then
-        cecho("\n&lt;yellow&gt;[DEBUG] Total Affs: " .. totalAffs)
-    end
+    debugEcho("yellow","[DEBUG] Total Affs: " .. totalAffs)
+ 
 end
 
 -- Fixed bridge execution logic to update GUI safely without recursion crashes
@@ -13289,16 +13266,7 @@ registerAnonymousEventHandler("sysGetHttpDone", "sysGetHttpDoneHandler")
 
 function sysGetHttpErrorHandler(event, response, url)
   if settings.systemLoaded then
-    -- Print a debug message to confirm the event was raised
-    if settings.debug then
-      cecho(
-        "&lt;red&gt;sysGetHttpError event triggered! URL: " ..
-        url ..
-        " Error: " ..
-        response ..
-        "&lt;reset&gt;\n"
-      )
-    end
+     debugEcho("red", "sysGetHttpError event triggered! URL: " .. url .. " Error: " .. response .."")
   end
 end
 
@@ -13323,10 +13291,7 @@ registerAnonymousEventHandler("sysGetHttpError", "sysGetHttpErrorHandler")
 function fetchGameFeed()
   if settings.systemLoaded then
     -- Print a debug message to confirm the function is called
-    if settings.debug then
-      cecho("⏹️&lt;green&gt; Fetching game feed...&lt;reset&gt;\n")
-      -- Global variable to track the polling timer
-     end
+     debugEcho("green","⏹️ Fetching game feed...")
     -- Send the HTTP GET request to the game feed API
     getHTTP("https://api.achaea.com/gamefeed.json")
     gameFeedTimer = nil
@@ -13575,6 +13540,7 @@ end</script>
             refill_skullcap_at = 3,
             refill_elm_at = 3,
             refill_valerian_at = 3,
+            enemyAttackTimes = {},
         },
         client = {
             -- Core System Infrastructure
@@ -13585,7 +13551,6 @@ end</script>
             showInventory = false,
             showScrollbar = false,
             autoEmbrace = false,
-            callForAid = false,
             autoAllyManagement = false,
             autoEnemyManagement = false,
             myclass = "",
@@ -14113,7 +14078,7 @@ end</script>
 function resetCuringList()
     -- Guard clause: If afflictions isn't a table or is empty, get out.
     if type(afflictions) ~= "table" or not next(afflictions) then 
-        if settings.debug then cecho("&lt;yellow&gt;Skipping resetCuringList — afflictions not loaded yet.\n") end
+        debugEcho("yellow","Skipping resetCuringList — afflictions not loaded yet.")
         return 
     end
 
@@ -14550,80 +14515,6 @@ end</script>
 						<eventHandlerList />
 					</Script>
 				</ScriptGroup>
-				<ScriptGroup isActive="no" isFolder="yes">
-					<name>defenses</name>
-					<packageName></packageName>
-					<script></script>
-					<eventHandlerList />
-					<Script isActive="no" isFolder="no">
-						<name>save</name>
-						<packageName></packageName>
-						<script>function saveDefensiveTable()
-  if not dkjson then
-    cecho("&lt;red&gt;[ERROR] Cannot save defenses: dkjson is not loaded.\n")
-    return
-  end
-
-  -- Validate the defenses table
-  local function isValidDefenses(tbl)
-    return type(tbl) == "table"
-        and next(tbl) ~= nil
-        and type(tbl[next(tbl)]) == "table"
-        and tbl[next(tbl)].command ~= nil
-  end
-
-  -- If defenses table is invalid, try to recover from JSON first
-  if not isValidDefenses(defenses) then
-    cecho("&lt;yellow&gt;[WARNING] Defenses table invalid — attempting to recover from disk...\n")
-
-    if type(readDefensiveTable) == "function" then
-      readDefensiveTable()
-    else
-      cecho("&lt;red&gt;[ERROR] readDefensiveTable() is missing. Cannot reload defenses.\n")
-      return
-    end
-
-    if not isValidDefenses(defenses) then
-      cecho("\n&lt;red&gt;[FAILURE] Reload failed. Reinitializing with default defenses...\n")
-
-      local profileName = gmcp.Char.Status and gmcp.Char.Status.name or "Unknown"
-      local backupPath = string.format(
-        "C:\\Users\\Owner\\.config\\mudlet\\profiles\\%s\\Achaean System\\system\\libs\\backup",
-        profileName
-      )
-
-      cecho(string.format("\n&lt;yellow&gt;A backup copy may be available at:\n&lt;white&gt;%s\n", backupPath))
-      return
-    else
-      cecho("&lt;green&gt;[RECOVERY] Successfully recovered defenses from JSON. Proceeding with save...\n")
-    end
-  end
-
-  -- Backup old file
-  local savePath = getMudletHomeDir() .. "/Achaean System/system/libs/json/defenses.json"
-  if fileExists(savePath) then
-    os.rename(savePath, savePath .. ".bak")
-    cecho("\n&lt;green&gt;[INFO] Created backup&lt;white&gt;: defenses.json.bak\n")
-  end
-
-  -- Encode and write the table
-  local jsonString = dkjson.encode(defenses, { indent = true })
-  local file, err = io.open(savePath, "w")
-  if not file then
-    cecho("&lt;red&gt;[ERROR] Could not open file for writing: " .. (err or "unknown") .. "\n")
-    return
-  end
-
-  file:write(jsonString)
-  file:close()
-
-  cecho("&lt;green&gt;[SUCCESS] Defenses saved to: " .. savePath .. "\n")
-end
-
-</script>
-						<eventHandlerList />
-					</Script>
-				</ScriptGroup>
 				<ScriptGroup isActive="yes" isFolder="yes">
 					<name>ndb</name>
 					<packageName></packageName>
@@ -14687,7 +14578,7 @@ function loadAllNDBPlayers()
 
   -- Ensure the directory exists before we try to read it
   if not lfs.attributes(path, "mode") then
-    if settings.debug then cecho("&lt;yellow&gt;NDB directory not found, skipping player load.\n") end
+    debugEcho("yellow","NDB directory not found, skipping player load.")
     return
   end
 
@@ -14710,9 +14601,8 @@ function loadAllNDBPlayers()
     end
   end
 
-  if settings.debug then 
-    cecho(string.format("&lt;green&gt;✔ Loaded %d individual NDB player files.\n", table.size(NDB.players))) 
-  end
+     debugEcho("green",string.format("✔ Loaded %d individual NDB player files.", table.size(NDB.players))) 
+
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -14720,23 +14610,23 @@ end</script>
 						<name>NDB_Failed</name>
 						<packageName></packageName>
 						<script>function NDB_Failed(_, filepath)
-    if settings.debug then cecho("\n&lt;red&gt;Error downloading information.") end
+    debugEcho("red","Error downloading information.")
     
     -- Define the base directory for the C: drive    
     local tablesDir = getNDBPath()
 
     if filepath:match("server replied: Not Found") then
-        if settings.debug then echo("\n" .. filepath) end
+        debugEcho("yellow","" .. filepath)
         local person = filepath:match("/(%w+).json")
         local fpr = tablesDir .. "/" .. person .. ".json"
 
         NDB.doesNotExist[person] = true
-        if settings.debug then cecho("\n&lt;red&gt;This person does not exist: " .. person) end
+        debugEcho("red","This person does not exist: " .. person)
         NDB_Remove(person)
         saveTableToJSON(NDB.doesNotExist, "doesnotexist")
         os.remove(fpr)
     else
-        if settings.debug then cecho("\n&lt;red&gt;Unknown error while downloading: " .. filepath) end
+        debugEcho("red","Unknown error while downloading: " .. filepath)
     end
 end
 </script>
@@ -14814,23 +14704,23 @@ end
 
 
 function NDB_ProcessOnlineList(filepath)
-  if settings.debug then  cecho("\n&lt;yellow&gt;1. Reading Online.json...") end
+  debugEcho("yellow","1. Reading Online.json...")
   local file = io.open(filepath, "r")
   if not file then 
-    cecho("&lt;red&gt;FAILED to open file.") 
+    debugEcho("red","FAILED to open file.") 
     return 
   end
   
   local contents = file:read("*a")
   file:close()
   
-  if settings.debug then  cecho("\n&lt;yellow&gt;2. Decoding JSON...") end
+  debugEcho("yellow","2. Decoding JSON...")
   local data = dkjson.decode(contents)
   
   if data and data.characters then
     local total = #data.characters
     local newCount = 0
-    if settings.debug then  cecho("\n&lt;yellow&gt;3. Found " .. total .. " characters in API.") end
+    debugEcho("yellow","3. Found " .. total .. " characters in API.")
     
     -- Ensure peopleOnline is a table
     if type(peopleOnline) ~= "table" then 
@@ -14849,14 +14739,14 @@ function NDB_ProcessOnlineList(filepath)
       end
     end
     
-    if settings.debug then cecho("\n&lt;green&gt;SUCCESS: Triggered " .. newCount .. " downloads.") end
+    debugEcho("green","SUCCESS: Triggered " .. newCount .. " downloads.")
     
     if newCount == 0 then
-      if settings.debug then  cecho("\n&lt;cyan&gt;4. Sorting display initiated...") end
+      debugEcho("cyan","4. Sorting display initiated...")
       
       -- AUDIT: Initialize global list
       apiOnlineFound = {}
-      if settings.debug then cecho("\n&lt;grey&gt;DEBUG: apiOnlineFound type: " .. type(apiOnlineFound)) end
+      debugEcho("grey","DEBUG: apiOnlineFound type: " .. type(apiOnlineFound))
       
       local insertCount = 0
       for name, _ in pairs(peopleOnline) do 
@@ -14869,24 +14759,24 @@ function NDB_ProcessOnlineList(filepath)
         end
       end
       
-      if settings.debug then cecho("\n&lt;grey&gt;DEBUG: Inserted " .. insertCount .. " names into apiOnlineFound.") end
+      debugEcho("grey","DEBUG: Inserted " .. insertCount .. " names into apiOnlineFound.")
       
       if #apiOnlineFound &gt; 0 then
         table.sort(apiOnlineFound)
-        if settings.debug then cecho("\n&lt;grey&gt;DEBUG: Table sorted. Calling NDB_displayOnline...") end
+        debugEcho("grey","DEBUG: Table sorted. Calling NDB_displayOnline...")
         NDB_RenderDisplay(apiOnlineFound)
       else
-        cecho("\n&lt;red&gt;ERROR: apiOnlineFound is empty after loop.")
+        debugEcho("red","ERROR: apiOnlineFound is empty after loop.")
       end
     end
     
   else
-    cecho("\n&lt;red&gt;FAILED: JSON data was empty or invalid.")
+    debugEcho("red","FAILED: JSON data was empty or invalid.")
   end
   
   parsingQW = false
   os.remove(filepath)
-  if settings.debug then cecho("\n&lt;yellow&gt;5. Cleanup complete. File removed.") end
+  debugEcho("yellow","5. Cleanup complete. File removed.")
 end</script>
 						<eventHandlerList>
 							<string>sysDownloadDone</string>
@@ -14908,7 +14798,7 @@ end</script>
   local savePath = ndbPath .. "/Online.json"
   
   downloadFile(savePath, url)
-  if settings.debug then cecho("\n&lt;yellow&gt;Syncing with Achaea API... ") end
+  debugEcho("yellow","Syncing with Achaea API... ")
 end
 
 function handleNDBDownload(event, filename)
@@ -14950,7 +14840,7 @@ function NDB_Acquire(person)
 
     -- 2. Skip if known to not exist (Check if NDB exists first!)
     if NDB and NDB.doesNotExist and NDB.doesNotExist[person] then
-        if settings.debug then cecho("\n&lt;yellow&gt;Skipping " .. person .. " — known invalid.\n") end
+        debugEcho("yellow","Skipping " .. person .. " — known invalid.\n")
         return
     end
 
@@ -14989,7 +14879,7 @@ end</script>
   local base = getMudletHomeDir() .. "/Achaean System/system/libs/ndb"
   if not lfs.attributes(base, "mode") then
     lfs.mkdir(base)
-    if settings.debug then cecho("&lt;green&gt;Created NDB data folder: " .. base .. "\n") end
+    debugEcho("green","Created NDB data folder: " .. base .. "\n")
   end
   return base
 end
@@ -15069,7 +14959,7 @@ function NDB_isCitizenOf(city, name)
 	if NDB_Exists(name:title()) then
 		return (NDB.players[name:title()].city == city:title() and true or false)
 	else
-		if settings.debug then cecho("\n&lt;red&gt;That person's information has not yet been gathered.") end
+		debugEcho("red","That person's information has not yet been gathered.")
 		return false
 	end
 end
@@ -15090,7 +14980,7 @@ function NDB_Ignore(name)
   local person = name:title()
   NDB.doesNotExist[person] = true
   saveTableToJSON(NDB.doesNotExist, "doesnotexist")
-  if settings.debug then cecho("\n&lt;yellow&gt;Added " .. person .. " to ignore list.") end
+  debugEcho("yellow","Added " .. person .. " to ignore list.")
 end
 
 
@@ -15102,9 +14992,9 @@ function NDB_Remove(name)
 		if NDB.highlightTriggers and NDB.highlightTriggers[person] then
 			killTrigger(NDB.highlightTriggers[person])
 		end
-		if settings.debug then cecho("\n&lt;red&gt;"..person.." has been removed from the database.") end
+		debugEcho("red",""..person.." has been removed from the database.")
 	else
-		if settings.debug then cecho("\n&lt;red&gt;"..person.." is not in the database, anyway.") end
+		debugEcho("red",""..person.." is not in the database, anyway.")
 	end
 end
 
@@ -15118,7 +15008,7 @@ function NDB_SortOnline(filepath)
 
 	-- didn't get JSON data? 
 	if s:find("Internal error", 1, true) or s:find("DOCTYPE html PUBLIC", 1, true) then
-		if settings.debug then cecho("\n&lt;red&gt;Data Acquisition Failed!") end
+		debugEcho("red","Data Acquisition Failed!")
 		return 
 	end
 
@@ -15132,14 +15022,14 @@ function NDB_SortOnline(filepath)
   
   -- Check for a valid ending character before parsing
   if not s:match("[%]%}]$") then
-    if settings.debug then cecho("&lt;red&gt;[JSON ERROR] Incomplete or malformed JSON — see last_json_incomplete.txt\n") end
+    debugEcho("red","[JSON ERROR] Incomplete or malformed JSON — see last_json_incomplete.txt")
     return
   end
   
   -- Attempt to parse JSON safely
   local ok, t = pcall(yajl.to_value, s)
   if not ok then
-    if settings.debug then cecho("&lt;red&gt;[JSON ERROR] Failed to parse JSON — see last_json_incomplete.txt\n") end
+    debugEcho("red","[JSON ERROR] Failed to parse JSON — see last_json_incomplete.txt")
     return
   end
 
@@ -15997,13 +15887,11 @@ end</script>
     addToggle("Auto Embrace", "autoEmbrace", "Client")
     cecho("\n")
     
-    addToggle("Call For Aid", "callForAid", "Client")
-    col2()
     addToggle("Auto Allies", "autoAllyManagement", "Client")
-    cecho("\n")
+    col2()
     
     addToggle("Auto Enemies", "autoEnemyManagement", "Client")
-    col2()
+    cecho("\n")
     
     -- Class Logic (Self-contained clickable)
     cechoLink(" &lt;white&gt;(click) ", function()
@@ -16248,9 +16136,8 @@ function updatePrompt()
     saveTableToJSON(settings, "settings")
     if menuServerSettings then menuServerSettings() end
     
-    if settings.debug then
-        cecho("\n&lt;yellow&gt;[PROMPT ENGINE] Sent Layout: " .. promptstring)
-    end
+    debugEcho("yellow","[PROMPT ENGINE] Sent Layout: " .. promptstring)
+
 end
 </script>
 					<eventHandlerList />
@@ -16332,7 +16219,7 @@ end
 
 -- Print the queued command for debugging
 function queue:echo(command)
-    cecho("\n&lt;DarkSlateGray&gt;SENT COMMAND: &lt;white&gt;- &lt;PowderBlue&gt;" .. command:upper() .. "\n")
+    cecho("\n&lt;DarkSlateGray&gt;CURING COMMAND: &lt;white&gt;- &lt;PowderBlue&gt;" .. command:upper() .. "\n")
 end
 
 -- Check if any blockers are active for a cure
@@ -16984,23 +16871,27 @@ function queue:blockers(blockers)
     return false
 end
 
+function queue:echo(command)
+    cecho("\n&lt;DarkSlateGray&gt;DEFENSE COMMAND: &lt;white&gt;- &lt;PowderBlue&gt;" .. command:upper() .. "\n")
+end
+
 function fortify:update(defense, value)
 
   --if defense == "speed" then
-    --cecho("\n&lt;orange&gt;[DEBUG] fortify:update() called for speed - value = " .. tostring(value))
+    --self:echo(" fortify:update() called for speed - value = " .. tostring(value))
   --end
 
   if defenses[defense] then
-    if settings.debug then cecho("\n&lt;green&gt;[DEBUG] Updating defense: " .. defense) end
+    if settings.debug then self:echo("Updating defense: " .. defense) end
   else
 	if defense == "tree" then
-		if settings.debug then cecho("\n&lt;red&gt;[DEBUG] TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then cecho("\n&lt;red&gt;[DEBUG] TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then cecho("\n&lt;red&gt;[DEBUG] TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then cecho("\n&lt;red&gt;[DEBUG] TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then cecho("\n&lt;red&gt;[DEBUG] TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
+		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
+		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
+		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
+		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
+		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
 	else
-		if settings.debug then cecho("\n&lt;red&gt;[DEBUG] No such defense found in defenses table: " .. tostring(defense))  end
+		if settings.debug then self:echo("No such defense found in defenses table: " .. tostring(defense))  end
 	end
   end
 
@@ -17019,7 +16910,7 @@ function fortify:update(defense, value)
       defenses[defense].enabled = value
     end
 
-    if settings.debug then cecho("\n&lt;yellow&gt;[DEBUG] Cleared pipeline key: " .. tostring(defense)) end
+    if settings.debug then self:echo("Cleared pipeline key: " .. tostring(defense)) end
 
   else
     if table.contains(mydefs, defense) then
@@ -17188,7 +17079,7 @@ function queue:process()
              pipeline.activeCommand = bestDefense.command 
              
              if settings.debug then 
-                cecho("\n&lt;magenta&gt;[DEBUG] Sending Defense: " .. bestDefense.name) 
+                self:echo("Sending Defense: " .. bestDefense.name) 
              end
              
              -- Send to the server via your system's sender
@@ -17199,7 +17090,7 @@ end
 
 
 function queue:debugPipeline()
-    if settings.debug then  cecho("\n&lt;cyan&gt;[DEBUG] Pipeline contents:") end
+    if settings.debug then self:echo("Pipeline contents:") end
     for k, v in pairs(pipeline.defenses) do
         if settings.debug then cecho("\n&lt;white&gt; - " .. k) end
     end
@@ -17245,7 +17136,7 @@ function queue:send(defense)
 		
 		--pipeline.defenses[defense.name] = nil
         --pipeline.activeCommand = nil
-		if settings.debug then  echo("[DEBUG] Marked delayed defense as active and cleared key:", defense.name) end
+		  if settings.debug then self:echo("Marked delayed defense as active and cleared key:", defense.name) end
     end
 
     self:debugPipeline()
@@ -17273,7 +17164,7 @@ function queue:cleanPipeline()
     end
 
     if cleaned &gt; 0 then
-        if settings.debug then cecho("\n&lt;grey&gt;[INFO] Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies.")) end
+        if settings.debug then self:echo("Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies.")) end
     end
 end
 
@@ -17420,7 +17311,7 @@ local ignore = {
   --local hasMoreTargets = not (target == "") and not (table.is_empty(roomstufflist))
   local hasMoreTargets = target ~= "" and not table.is_empty(roomstufflist) and roomHasNonIgnoredTargets()
   
-  myDebugEcho("white", string.format("Has more hunt targets: %s", tostring(hasMoreTargets)))
+  debugEcho("white", string.format("Has more hunt targets: %s", tostring(hasMoreTargets)))
   return hasMoreTargets
 end
 
@@ -17523,12 +17414,12 @@ function handleShieldAttacks(target)
     end
 
     if shieldAttackCounter &gt; maxShieldAttackRetries then
-        if settings.debug then cecho("\n&lt;orange&gt;Error: Shield attack function exceeded max retries.") end
+        debugEcho("red","Error: Shield attack function exceeded max retries.")
         return
     end
 
     if not huntSettingsData[class] then
-        if settings.debug then cecho("\n&lt;orange&gt;Error: Class not found in huntSettingsData: " .. class) end
+        debugEcho("red","Error: Class not found in huntSettingsData: " .. class)
         return
     end
 
@@ -17547,9 +17438,9 @@ function handleShieldAttacks(target)
 
                     send(attackString)
                     shieldCommandSent = true 
-                    if settings.debug then cecho("\n&lt;green&gt;[BRAGE] Sent pure shield break: " .. attackString) end
+                    debugEcho("green","[BRAGE] Sent pure shield break: " .. attackString)
                 else
-                    if settings.debug then cecho("\n&lt;yellow&gt;[BRAGE] Balance not ready for rage shield break.") end
+                    debugEcho("yellow","[BRAGE] Balance not ready for rage shield break.")
                 end
                 return
             end
@@ -17570,15 +17461,15 @@ function handleShieldAttacks(target)
             local targetCommand = "queue add eq " .. regularCmd
             shieldCommandSent = true 
             send(targetCommand)
-            if settings.debug then cecho("\n&lt;green&gt;Shield break replaced queue (addclear eq): " .. targetCommand) end
+            debugEcho("green","Shield break replaced queue (addclear eq): " .. targetCommand)
         else
             local targetCommand = "queue add eqbal " .. regularCmd
             shieldCommandSent = true 
             send(targetCommand)
-            if settings.debug then cecho("\n&lt;green&gt;Shield break replaced queue (addclear eqbal): " .. targetCommand) end
+            debugEcho("green","Shield break replaced queue (addclear eqbal): " .. targetCommand)
         end
     else
-        if settings.debug then cecho("\n&lt;yellow&gt;Shield break configuration missing or empty.") end
+        debugEcho("yellow","Shield break configuration missing or empty.")
     end   
 
     shieldAttackCounter = 0
@@ -17588,7 +17479,7 @@ end
 
 function handleBattlerageAttacks(target)
     if shielded then
-        if settings.debug then cecho("\n&lt;yellow&gt;[BRAGE] Target is shielded — not sending rage attack.") end
+        debugEcho("yellow","[BRAGE] Target is shielded — not sending rage attack.")
         return
     end
 
@@ -17621,7 +17512,7 @@ function handleBattlerageAttacks(target)
         if data.command and not balance_data.balance.in_use then
             local targetCommand = data.command:gsub("@tar", target)
             send(targetCommand)
-            if settings.debug then cecho("\n&lt;green&gt;[BRAGE] Sent rage skill: " .. targetCommand) end
+            debugEcho("green","[BRAGE] Sent rage skill: " .. targetCommand)
             return
         end
     end
@@ -17644,7 +17535,7 @@ function handleRegularAttacks(target)
 
     -- Debugging and safeguard
     if not huntSettingsData[class] then
-        if settings.debug then cecho("\n&lt;red&gt;Error: Class not found in huntSettingsData: "..class) end
+        debugEcho("red","Error: Class not found in huntSettingsData: "..class)
         return
     end
 
@@ -17680,38 +17571,21 @@ function handleRegularAttacks(target)
         -- Add the command to the queue and process it
         send(targetCommand)
 
-        if settings.debug then cecho("\n&lt;green&gt;Command added to queue: "..targetCommand) end
+        debugEcho("green","Command added to queue: "..targetCommand)
     else
-        if settings.debug then cecho("\n&lt;yellow&gt;Command already in queue or invalid: ".. targetCommand) end
+        debugEcho("red","Command already in queue or invalid: ".. targetCommand)
     end
 
     return
 end
 
 
- 
-
-
-
 function huntNext()
   if not hunting then return end
-
-  local currentRoom = tonumber(gmcp.Room.Info.num)
-
-    -- Normal flow
-  if not isAloneInRoom() then
-    if not(table.contains(myaffs, "blackout")) then
-      myEcho("red", "People Here - Move to Next Room")
-	  if hunting and autohunting then
-		--huntNextRoom()
-	  end
-    end
-  else
       tempTimer(0.2, function()
         handleTargetsAndAttacks()
       end)
-    myDebugEcho("white", "Handling targets and attacks")
-  end
+    debugEcho("white","Handling targets and attacks")
 end
 
 
@@ -18011,8 +17885,8 @@ function setHuntSettings(type, cmd)
     cecho("\n&lt;green&gt;You set your regular attack command succesfully")
   end
   if type == "regular shield break" then
-    myDebugEcho("white", class)
-    myDebugEcho("white", command)
+    debugEcho("white", class)
+    debugEcho("white", command)
     huntSettingsData[class]["regular shield break"] = command
     cecho("\n&lt;green&gt;You set your regular shield break command succesfully")
   end
@@ -20016,7 +19890,7 @@ function updateGUIGauges()
             local clampedCurrent = math.min(current, maxValue)
 
             interpolate(previous, clampedCurrent, duration, function(value)
-                if settings.debug then print("Interpolating " .. label .. ":", value) end
+                debugEcho("red","Interpolating " .. label .. ": ".. value.."")
                 guiElement:setValue(value, maxValue)
                 guiElement:echo(string.format(
                     "&lt;center&gt;&lt;b&gt;&lt;font size='5' color='white'&gt;%.0f%%&lt;/font&gt;&lt;/b&gt;&lt;/center&gt;",
@@ -23025,7 +22899,7 @@ end
 					<script>-- Start tracking personal balance time for a specific type
 function startPersonalBalanceAction(balanceType)
     personalBalanceStartTimes[balanceType] = os.clock()
-    if settings.debug then cecho(string.format("\n&lt;cyan&gt;Starting balance timer for %s at time: %f", balanceType, personalBalanceStartTimes[balanceType])) end
+    debugEcho("cyan",string.format("Starting balance timer for %s at time: %f", balanceType, personalBalanceStartTimes[balanceType]))
 end
 
 -- Get remaining time for a specific personal balance type
@@ -23034,14 +22908,14 @@ function getRemainingPersonalTimerTime(balanceType)
     -- Check if the specified balance type exists in balanceTimes
     local balanceInfo = balance_data[balanceType]
     if not balanceInfo then
-        if settings.debug then cecho(string.format("\n&lt;red&gt;Invalid balance type specified: %s", balanceType)) end
+        debugEcho("red",string.format("Invalid balance type specified: %s", balanceType))
         return -1 -- Using -1 to indicate an error
     end
     
     -- Retrieve the start time for the specific personal balance action
     local start_time = personalBalanceStartTimes[balanceType]
     if not start_time then
-        if settings.debug then cecho(string.format("\n&lt;yellow&gt;No start time set for %s, returning -1", balanceType)) end
+        debugEcho("red",string.format("No start time set for %s, returning -1", balanceType))
         return -1 -- Return -1 if the start time hasn't been set
     end
     
@@ -23054,7 +22928,7 @@ function getRemainingPersonalTimerTime(balanceType)
     -- Round remaining time to two decimal places
     remaining_time = tonumber(string.format("%.2f", remaining_time))
     
-    if settings.debug then cecho(string.format("\n&lt;green&gt;Remaining time for %s: %f", balanceType, remaining_time)) end
+    debugEcho("green",string.format("Remaining time for %s: %f", balanceType, remaining_time))
     
     return remaining_time
 end</script>
@@ -23246,11 +23120,8 @@ function on_pipe_lit_trigger()
         if pipe_name then
             -- Set its status to 'lit' and remove it from the tracking queue.
             pipes[pipe_name].status = "lit"
-            unschedule_light(pipe_id) 
-            
-            if settings.debug then 
-                cecho("\n&lt;green&gt;[Pipe lit] &lt;white&gt;" .. pipe_name:title() .. " (" .. pipe_id .. ") - UNSCHEDULED") 
-            end
+            unschedule_light(pipe_id)            
+            debugEcho("green","[Pipe lit] &lt;white&gt;" .. pipe_name:title() .. " (" .. pipe_id .. ") - UNSCHEDULED") 
         end
     end
 end
@@ -23261,30 +23132,30 @@ function refill_pipes()
  if emptypipes then return end
     
     if not settings.systemLoaded then
-        if settings.debug then  cecho("\n&lt;red&gt;[REFILL] System not loaded.") end
+        debugEcho("red","[REFILL] System not loaded.")
         return
     end
     if settings.systemPaused then
-        if settings.debug then cecho("\n&lt;red&gt;[REFILL] System paused.") end
+        debugEcho("red","[REFILL] System paused.")
         return
     end
     if inslowcuringmode() then
-        if settings.debug then cecho("\n&lt;red&gt;[REFILL] In slow curing mode.") end
+        debugEcho("red","[REFILL] In slow curing mode.")
         return
     end
     if balance_data.stunned.in_use then
-        if settings.debug then cecho("\n&lt;red&gt;[REFILL] Stunned — cannot act.") end
+        debugEcho("red","[REFILL] Stunned — cannot act.")
         return
     end
 
     for herb, data in pairs(pipes) do
         if type(data) == "table" and data.puffs then
         
-        if settings.debug then cecho(string.format(
+        debugEcho("red",string.format(
             "\n&lt;white&gt;[REFILL] Checking pipe: &lt;green&gt;%s &lt;white&gt;(id: &lt;yellow&gt;%s&lt;white&gt;, puffs: &lt;green&gt;%s&lt;white&gt;, status: &lt;magenta&gt;%s&lt;white&gt;)",
             herb, tostring(data.id), tostring(data.puffs), tostring(data.status)
             ))
-        end
+        
         
          local refill = data.refill or 3
          local should_refill = data.puffs &lt;= refill
@@ -23293,19 +23164,19 @@ function refill_pipes()
                              and not balance_data.stunned.in_use
 
          if should_refill then
-             if settings.debug then cecho("\n&lt;white&gt;[REFILL] -&gt; Needs refill.") end
+             debugEcho("red","[REFILL] -&gt; Needs refill.")
          else
-             if settings.debug then cecho("\n&lt;gray&gt;[REFILL] -&gt; Refill not needed.") end
+             debugEcho("green","[REFILL] -&gt; Refill not needed.")
          end
 
          if can_act then
-         if settings.debug then cecho("\n&lt;green&gt;[REFILL] -&gt; Can act.") end
+            debugEcho("green","[REFILL] -&gt; Can act.")
          else
-            if settings.debug then cecho("\n&lt;red&gt;[REFILL] -&gt; Cannot act (selfish or paralyzed).") end
+            debugEcho("red","[REFILL] -&gt; Cannot act (selfish or paralyzed).")
          end
 
          if should_refill and can_act then
-             if settings.debug then cecho("\n&lt;green&gt;[REFILL] -&gt; Sending empty command.") end
+             debugEcho("green","[REFILL] -&gt; Sending empty command.")
              send("empty " .. data.id .. " out")
          end
 
@@ -23315,7 +23186,7 @@ function refill_pipes()
             
              -- NEW LOGIC: Check if pipe is already scheduled to be lit
              if not is_scheduled_to_light(pipe_id) then
-                 if settings.debug then cecho("\n&lt;yellow&gt;[REFILL] -&gt; Lighting pipe: " .. herb) end
+                 debugEcho("yellow","[REFILL] -&gt; Lighting pipe: " .. herb)
                 
                  local cmd = "light " .. pipe_id
                  schedule_light(pipe_id) -- Schedule the command
@@ -23323,13 +23194,12 @@ function refill_pipes()
                  -- pipecmd = data.id -- REMOVE THIS LINE
                  send(cmd)
              else
-                  if settings.debug then cecho("\n&lt;gray&gt;[REFILL] -&gt; Light already pending for pipe: " .. herb) end
+                  debugEcho("yellow","[REFILL] -&gt; Light already pending for pipe: " .. herb)
              end
          else
-            --if settings.debug then cecho("\n&lt;gray&gt;[REFILL] -&gt; No need to light pipe: " .. herb) end
+            debugEcho("green","[REFILL] -&gt; No need to light pipe: " .. herb)
          end
-        --else
-         --if settings.debug then cecho("\n&lt;red&gt;[REFILL] -&gt; Invalid pipe data for: " .. tostring(herb)) end
+         debugEcho("red","[REFILL] -&gt; Invalid pipe data for: " .. tostring(herb))
         end
     end
 end
@@ -23777,45 +23647,45 @@ end</script>
 -- =============================================================================
 
 function clotcheck()
-  if settings.debug then cecho("\n&lt;light_blue&gt;[TRACE-1] Entering clotcheck()...") end
+  debugEcho("light_blue","CLOTTING [TRACE-1] Entering clotcheck()...")
   
   if not (settings.systemLoaded) then 
-    if settings.debug then cecho("&lt;red&gt; [EXIT: systemLoaded is false/nil]") end
+    debugEcho("red","[EXIT CLOTTING: systemLoaded is false/nil]")
     return 
   end
   
   if settings.systemPaused then 
-    if settings.debug then cecho("&lt;red&gt; [EXIT: systemPaused is true]") end
+    debugEcho("red","[EXIT CLOTTING: systemPaused is true]")
     return 
   end
   
   if inslowcuringmode() then 
-    if settings.debug then cecho("&lt;red&gt; [EXIT: inslowcuringmode() is true]") end
+    debugEcho("red","[EXIT CLOTTING: inslowcuringmode() is true]")
     return 
   end
   
   if balance_data and balance_data.stunned and balance_data.stunned.in_use then 
-    if settings.debug then  cecho("&lt;red&gt; [EXIT: Character is stunned]") end
+    debugEcho("red","[EXIT CLOTTING: Character is stunned]")
     return 
   end
   
   if table.contains(myaffs or {}, "blackout") then 
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Blackout active]") end
+    debugEcho("red","[EXIT CLOTTING: Blackout active]")
     return 
   end
   
   -- Fallback check to ensure settings table exists
   if not settings then
-    if settings.debug then cecho("&lt;red&gt; [EXIT: settings table does not exist]") end
+    debugEcho("red","[EXIT CLOTTING: settings{} table does not exist]")
     return
   end
   
   if settings.clot then 
-    if settings.debug then cecho("&lt;red&gt; [EXIT: settings.clot is true (using serverside clotting)]") end
+    debugEcho("red","[EXIT CLOTTING: settings.clot is true (using serverside clotting)]")
     return 
   end
   
-  if settings.debug then cecho("\n&lt;light_blue&gt;[TRACE-2] Basic system state guards passed.") end
+  debugEcho("light_blue","CLOTTING [TRACE-2] Basic system state guards passed.")
   
   -- Framework verification helper for willpower check
   local wpCurrent = 0
@@ -23824,30 +23694,30 @@ function clotcheck()
   elseif PLAYER and type(PLAYER.getResourceData) == "function" then
     wpCurrent = PLAYER:getResourceData("willpower").current or 0
   else
-    if settings.debug then cecho("\n&lt;yellow&gt;[WARN] Could not read willpower framework data. Defaulting to 0.") end
+    debugEcho("yellow","CLOTTING [WARN] Could not read willpower framework data. Defaulting to 0.")
   end
 
   if table.contains(myaffs or {}, "paralysis") then
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Paralysis active]") end
+    debugEcho("red","[EXIT CLOTTING: Paralysis active]")
     return
   end
   
   if table.contains(myaffs or {}, "haemophilia") and wpCurrent &gt; 30 then
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Haemophilia active with WP &gt; 30]") end
+    debugEcho("red","[EXIT CLOTTING: Haemophilia active with WP &gt; 30]")
     return
   end
   
-  if settings.debug then cecho("\n&lt;light_blue&gt;[TRACE-3] Affliction state checks passed.") end
+  debugEcho("light_blue","CLOTTING [TRACE-3] Affliction state checks passed.")
   
   if not table.contains(myaffs or {}, "haemophilia") and
      not table.contains(myaffs or {}, "corruption") and
      not table.contains(myaffs or {}, "aeon") and
      not inslowcuringmode() 
   then
-    if settings.debug then cecho("\n&lt;light_blue&gt;[TRACE-4] Passive block limits cleared. Parsing opponent context...") end
+    debugEcho("light_blue","CLOTTING [TRACE-4] Passive block limits cleared. Parsing opponent context...")
     
     if enemyclass and enemyclass["alchemist"] and enemyclass["alchemist"].enabled then
-      if settings.debug then cecho("\n&lt;yellow&gt;[TRACE-Alchemist] Alchemist target active. Validating vitals floor...") end
+      debugEcho("yellow","CLOTTING [TRACE-Alchemist] Alchemist target active. Validating vitals floor...")
       
       local currentHP = tonumber(gmcp and gmcp.Char and gmcp.Char.Vitals and gmcp.Char.Vitals.hp or 0)
       local currentMP = tonumber(gmcp and gmcp.Char and gmcp.Char.Vitals and gmcp.Char.Vitals.mp or 0)
@@ -23857,22 +23727,22 @@ function clotcheck()
       local manaDangerLimit = tonumber(manadanger or settings.manadanger or 0)
       
       if currentHP &gt;= healthDangerLimit and currentMP &gt;= manaDangerLimit then
-        if settings.debug then cecho("\n&lt;green&gt;[TRACE-Alchemist] Vitals clear. Proceeding to clotcalc().") end
+        debugEcho("green","CLOTTING [TRACE-Alchemist] Vitals clear. Proceeding to clotcalc().")
         clotcalc()
       else
-        if settings.debug then cecho(string.format("&lt;red&gt; [EXIT: Alchemist safety limits triggered. HP: %d/%d, MP: %d/%d]", currentHP, healthDangerLimit, currentMP, manaDangerLimit)) end
+        debugEcho("red","[EXIT CLOTTING: Alchemist safety limits triggered. HP: %d/%d, MP: %d/%d]", currentHP, healthDangerLimit, currentMP, manaDangerLimit)
       end
     else
-      if settings.debug then cecho("\n&lt;green&gt;[TRACE-Default] Normal environment/class active. Dropping into clotcalc().") end
+      debugEcho("green","CLOTTING [TRACE-Default] Normal environment/class active. Dropping into clotcalc().")
       clotcalc()
     end
   else
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Blocked due to presence of haemophilia, corruption, aeon, or slowcuring]") end
+    debugEcho("red","[EXIT CLOTTING: Blocked due to presence of haemophilia, corruption, aeon, or slowcuring]")
   end
 end
 
 function clotcalc()
-  if settings.debug then cecho("\n&lt;light_blue&gt;[TRACE-5] Inside clotcalc(). Processing calculations...") end
+  debugEcho("light_blue","CLOTTING [TRACE-5] Inside clotcalc(). Processing calculations...")
   
   local classreference = {
     alchemist = {bleed = 140, mana = 0.70, health = 0.66},
@@ -23904,7 +23774,7 @@ function clotcalc()
   local bleed = bleedcheck()
   
   if bleed &lt;= 0 then 
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Bleed calculation returned 0 or less]") end
+    debugEcho("green","[EXIT CLOTTING: Bleed calculation returned 0 or less]")
     return 
   end
 
@@ -23916,13 +23786,13 @@ function clotcalc()
 
   -- If the stored CD is in the far future (more than 5s away), it's corrupt. Wipe it.
   if storedCD &gt; (currentClock + 5) then
-    if settings.debug then cecho("\n&lt;yellow&gt;[CLOT WARNING] Corrupt timestamp detected in settings.clotcd! Resetting to 0.") end
+    debugEcho("yellow","[CLOT WARNING] Corrupt timestamp detected in settings.clotcd! Resetting to 0.")
     settings.clotcd = 0
     storedCD = 0
   end
 
   if currentClock &lt; storedCD then 
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Clotting on Cooldown]") end
+    debugEcho("red","[EXIT CLOTTING: Clotting on Cooldown]")
     return 
   end
 
@@ -23960,19 +23830,18 @@ function clotcalc()
   local projectedHP = hp - bleed
   local projectedMP = mp - totalClotCost
 
-  if settings.debug then 
-    cecho(string.format("\n&lt;white&gt;[CLOT DEBUG] Bleed: %d | Clots: %d | Cost: %d | HP: %d | MP: %d", bleed, clotsNeeded, totalClotCost, hp, mp))
-    cecho(string.format("\n&lt;white&gt;[CLOT DEBUG] HP danger: %.0f | MP danger: %.0f | Projected HP: %.0f | Projected MP: %.0f", settings.healthThreshold, settings.manaThreshold, projectedHP, projectedMP))
-  end
+  debugEcho("white",string.format("[CLOT DEBUG] Bleed: %d | Clots: %d | Cost: %d | HP: %d | MP: %d", bleed, clotsNeeded, totalClotCost, hp, mp))
+  debugEcho("white",string.format("[CLOT DEBUG] HP danger: %.0f | MP danger: %.0f | Projected HP: %.0f | Projected MP: %.0f", settings.healthThreshold, settings.manaThreshold, projectedHP, projectedMP))
+  
 
   local targetDangerBleed = activeEnemy and danger.bleed or activeBleedConfig
   if bleed &lt; targetDangerBleed then
-    if settings.debug then cecho(string.format("&lt;red&gt; [EXIT: Bleed (%d) is below safety threshold limit (%d)]", bleed, targetDangerBleed)) end
+    debugEcho("red","[EXIT CLOTTING: Bleed (%d) is below safety threshold limit (%d)]", bleed, targetDangerBleed)
     return
   end
 
   if projectedHP &lt; settings.healthThreshold and projectedMP &lt; settings.manaThreshold then
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Hard resource lock. Both projected HP and MP hit critical floors]") end
+    debugEcho("red","[EXIT CLOTTING: Hard resource lock. Both projected HP and MP hit critical floors]")
     return
   end
 
@@ -23981,24 +23850,24 @@ function clotcalc()
   ---------------------------------------------------------
   if projectedHP &lt; settings.healthThreshold then
     settings.clotcd = os.clock() + 0.5
-    if settings.debug then cecho("\n&lt;green&gt;[CLOT EXECUTION] Emergency HP threshold breached! Forcing command pipeline.") end
+    debugEcho("green","[CLOT EXECUTION] Emergency HP threshold breached! Forcing command pipeline.")
     sendClots(clotsNeeded)
     return
   end
 
   if not activeEnemy or projectedMP &gt;= settings.manaThreshold then
     settings.clotcd = os.clock() + 0.5
-    if settings.debug then cecho("\n&lt;green&gt;[CLOT EXECUTION] Standard parameters clear. Sending commands.") end
+    debugEcho("red","[CLOT EXECUTION] Standard parameters clear. Sending commands.")
     sendClots(clotsNeeded)
   else
-    if settings.debug then cecho("&lt;red&gt; [EXIT: Clot execution failed to satisfy final threshold conditions]") end
+    debugEcho("red","[EXIT CLOTTING: Clot execution failed to satisfy final threshold conditions]")
   end
 end
 
 function sendClots(n)
   local num = n or 0
   if num &lt;= 0 then return end
-  if settings.debug then cecho(string.format("\n&lt;green&gt;[CLOT PIPELINE] Sending %d clot commands to game server\n", num)) end
+  debugEcho("green",string.format("[CLOT PIPELINE] Sending %d clot commands to game server\n", num))
   local cs = settings.cmdsep or ";"
   local cmd = {}
   for i = 1, num do
@@ -24530,13 +24399,13 @@ function balanceRecover(balanceType, highlight)
                   cecho("&lt;white&gt; :&lt;PowderBlue&gt;(&lt;DarkSlateGray&gt;" .. balanceTime .. "&lt;PowderBlue&gt;)")
               end
           else
-             if settings.debug then cecho("&lt;red&gt;Warning: stopStopWatch returned nil for stopwatch " .. tostring(stopwatch)) end
+             debugEcho("red","Warning: stopStopWatch returned nil for stopwatch " .. tostring(stopwatch))
           end
           
           -- Clean up the stopwatch
           deleteStopWatch(stopwatch)
       else
-          if settings.debug then cecho("\n&lt;red&gt;Warning: Stopwatch does not exist for balanceType: " .. tostring(balanceType)) end
+          debugEcho("red","Warning: Stopwatch does not exist for balanceType: " .. tostring(balanceType))
       end
       
     end
@@ -24825,7 +24694,7 @@ function LimbTrackerReset(limb)
         if LimbTracker.data[l] then
             LimbTracker.data[l] = 0
             LimbTracker.percentages[l] = 0
-            if settings.debug then cecho("\n&lt;red&gt;[LimbTracker]: &lt;white&gt;Reset " .. l) end
+            debugEcho("red","[LimbTracker]: &lt;white&gt;Reset " .. l .."")
         end
     else
         -- Total Reset (limb is nil)
@@ -24841,7 +24710,7 @@ function LimbTrackerReset(limb)
         preppedUpperLimbs = {["left arm"] = false, ["right arm"] = false}
         preppedLowerLimbs = {["left leg"] = false, ["right leg"] = false}
         
-        if settings.debug then cecho("\n&lt;red&gt;[LimbTracker]: &lt;white&gt;Total System Reset.") end
+        debugEcho("red","[LimbTracker]: &lt;white&gt;Total System Reset.")
     end
 end
 
@@ -24852,6 +24721,119 @@ function LimbTrackerGetColor(limb)
     if val &lt;= 50 then return "&lt;green&gt;"
     elseif val &lt; 90 then return "&lt;orange&gt;"
     else return "&lt;red&gt;" end
+end
+
+</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="no" isFolder="no">
+					<name>transmute</name>
+					<packageName></packageName>
+					<script>
+-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+
+function calctrans()
+
+  if not (systemLoaded) then
+    return
+  end
+  
+  if systemPaused then
+    return
+  end
+
+  if inslowcuringmode() then 
+    return 
+  end
+
+  if balance_data.stunned.in_use then
+    return
+  end
+
+local returnstring = ""
+local maxhp = tonumber(gmcp.Char.Vitals.maxhp) or "5500"
+local hp = tonumber(gmcp.Char.Vitals.hp) or "5500"
+local maxmana = tonumber(gmcp.Char.Vitals.maxmp) or "4500" 
+local mana = tonumber(gmcp.Char.Vitals.mp) or "4500"
+
+
+if hp &lt; transmutehp then
+
+
+
+hpneeded = transmutehp - hp
+
+if mana - hpneeded &lt; manathreshold then
+
+
+hpneeded = mana - manathreshold
+
+
+
+end
+
+
+returnstring = calculatetransmuteamount(hpneeded)
+
+if not(string.find(returnstring, "transmute")) then
+
+returnstring = ""
+
+
+end
+
+
+
+end
+
+
+return returnstring
+
+
+end
+
+function transmoote()
+
+transmutehp = 4500  --- amount of health you want to transmute to
+manathreshold = 500 --- dont drop below this mana level
+if not(calctrans () == "") then
+
+tsend("queue add eqbal "..calctrans())
+else 
+
+end
+end
+
+function calculatetransmuteamount(amount)
+local cs = cmdsep
+
+local producedstring = ""
+
+while amount &gt; 0 do
+
+
+if amount &gt; 1000 then
+
+producedstring = producedstring..""..cs.."transmute 1000"
+amount = amount - 1000
+else
+
+
+producedstring = producedstring..""..cs.."transmute ".. math.floor(amount)
+
+amount = 0
+
+end
+
+end
+
+
+return producedstring
+
 end
 
 </script>
@@ -25500,9 +25482,7 @@ sendAll("curingset delete default confirm", "curingset new default","curingset s
 --saveTableToJSON(afflictions, PLAYER:myclass() .. "prios") 
 saveTableToJSON(afflictions, "affictions") 
 
-if settings.debug then
-    cecho("\n&lt;green&gt;[SYSTEM]: Priorities calculated and saved. Starting Hard Reset...")
-end
+debugEcho("green","[SYSTEM]: Priorities calculated and saved. Starting Hard Reset...")
 
 -- RUN HARD RESET FOR SERVERSIDE
 remedy:setAfflictionPriorities()
@@ -25527,12 +25507,12 @@ end
             if defenseName ~= "morph" and defenseName ~= "harmony" and not string.match(defenseName, "parrying") then
                 if not table.contains(mydefs, defenseName) then
                     table.insert(mydefs, defenseName)
-                     if settings.debug then cecho("\n&lt;green&gt;You have "..#mydefs.." active defenses.")  end
+                     debugEcho("DarkSlateGrey","You have &lt;white&gt;"..#mydefs.." active defenses.")
                 end
                 if defenses[defenseName] then
                     defenses[defenseName].active = true
                 else
-                    if settings.debug then cecho("\n&lt;DarkSlateGray&gt;Warning: &lt;PowderBlue&gt;" .. tostring(defenseName) .. " &lt;DarkSlateGray&gt;is not found in defenses.\n") end
+                    debugEcho("DarkSlateGrey","Warning: &lt;PowderBlue&gt;" .. tostring(defenseName) .. " &lt;DarkSlateGray&gt;is not found in defenses.\n")
                 end
                 if pipeline.defenses[defenseName] then
                   pipeline.defenses[defenseName] = nil
@@ -25565,7 +25545,7 @@ registerAnonymousEventHandler("gmcp.Char.Defences.Add", handleDefenseAdd)
                 if defenses[defenseName] then
                     defenses[defenseName].active = false
                 else
-                    if settings.debug then cecho("\n&lt;DarkSlateGray&gt;Warning: Defense &lt;PowderBlue&gt;" .. defenseName .. " &lt;DarkSlateGray&gt;not found in defenses table.\n") end
+                    debugEcho("DarkSlateGrey","Warning: Defense &lt;white&gt;" .. defenseName .. " &lt;DarkSlateGray&gt;not found in defenses table.\n")
                 end
             end
         end
@@ -25598,7 +25578,7 @@ registerAnonymousEventHandler("gmcp.Char.Defences.Remove", handleDefenseRemove)
                 if defenses[defenseName] then
                     defenses[defenseName].active = true  -- Set active to true in defenses table
                 else
-                    if settings.debug then cecho("\n&lt;DarkSlateGray&gt;Warning: &lt;PowderBlue&gt;" .. tostring(defenseName) .. " &lt;DarkSlateGray&gt;is not found in defenses.\n") end
+                    debugEcho("DarkSlateGrey","Warning: &lt;white&gt;" .. tostring(defenseName) .. " &lt;DarkSlateGray&gt;is not found in defenses.\n")
                 end
                 if pipeline.defenses[defenseName] then
                   pipeline.defenses[defenseName] = nil
@@ -25851,58 +25831,94 @@ end
 
 function executeDefenseFunction(details, displayType)
     local data = details
+    local logMsg = "" -- Temporary holder to prevent the UI from burying our text
+    
     if displayType == "keepup" or displayType == "enabled" then
         if data[displayType] then
             data[displayType] = false
-            cecho("\n&lt;white&gt;" .. string.format("%s removed for %s", displayType:title(), data.name))
+            send("CURING PRIORITY DEFENCE " .. data.name .. " RESET")
+            logMsg = string.format("\n&lt;white&gt;%s removed for %s (Server-side Reset Sent)", displayType:title(), data.name)
         else
             data.keepup = true
             data.enabled = true
-            cecho("\n&lt;white&gt;" .. string.format("%s added for %s", displayType:title(), data.name))
+            
+            local targetPri = setDefensePrios(data.name)
+            send("CURING PRIORITY DEFENCE " .. data.name .. " " .. targetPri)
+            logMsg = string.format("\n&lt;white&gt;%s added for %s (Server-side Priority: %s)", displayType:title(), data.name, targetPri)
         end
     end
 
-    -- Save changes, but don't refresh the display immediately to prevent overlap
-    saveDefensiveTable()
-     -- Normalize displayType
+    -- Save changes to your client profile database
+    saveTableToJSON(defenses, "defenses")
+    
+    -- Normalize and update UI windows (This redraws the whole grid)
     if displayType == "enabled" then
         displayDefenses("defups")
     elseif displayType == "keepup" then
         displayDefenses("keepups")
     end
-    
 
+    -- NOW print the message so it sits safely underneath the updated UI grid
+    if logMsg ~= "" then
+        cecho(logMsg .. "\n")
+    end
 end
 </script>
 					<eventHandlerList />
 				</Script>
-				<Script isActive="no" isFolder="no">
+				<Script isActive="yes" isFolder="no">
 					<name>setDefensePrios</name>
 					<packageName></packageName>
-					<script>function setDefensePrios()
+					<script>function setDefensePrios(name)
+    -- Normalize name input to prevent casing mismatch bugs
+    local targetName = tostring(name):lower():trim()
+    
+    -- Target the defense data directly out of your master table
+    local defData = defenses[targetName]
+    
+    -- Fallback handler: If table uses numeric indices instead of name keys, uncomment this block:
+    --[[
+    for _, v in pairs(defenses) do
+        if v.name and v.name:lower():trim() == targetName then
+            defData = v
+            break
+        end
+    end
+    --]]
 
-
-  for k,v in pairs(defenses) do
-    --v.active = false
-    if k == "speed" then
-        v.priority = 1
-    else
-      if table.contains(v.cooldown, "free") or 
-         table.contains(v.cooldown, "herb") or 
-         table.contains(v.cooldown, "salve") or
-         table.contains(v.cooldown, "smoke") 
-      then
-          v.priority = 2
-      elseif k == "mindseye" then
-            v.priority = 3
-      elseif table.contains(v.cooldown, "equilibrium") then
-          v.priority = 4
-      elseif table.contains(v.cooldown, "balance") then
-          v.priority = 5   
-       end 
+    if not defData then
+        -- Safe fallback value if the defense data block is corrupted or missing
+        return 25 
     end
 
-  end
+    -- 1. Check for the Speed exception rule
+    if targetName == "speed" then  
+        defData.priority = 1
+        return defData.priority
+    end
+
+    -- 2. Verify cooldown tracker sub-table exists to prevent nil string indexing errors
+    if not defData.cooldown or type(defData.cooldown) ~= "table" then
+        defData.priority = 25 -- Bottom priority fallback if cooldown definition is missing
+        return defData.priority
+    end
+
+    -- 3. Calculate server priority based on physical cooldown locks
+    if table.contains(defData.cooldown, "free") or  
+       table.contains(defData.cooldown, "herb") or  
+       table.contains(defData.cooldown, "salve") or
+       table.contains(defData.cooldown, "smoke") 
+    then
+        defData.priority = 22
+    elseif table.contains(defData.cooldown, "equilibrium") and not table.contains(defData.cooldown, "balance") then
+        defData.priority = 23
+    elseif table.contains(defData.cooldown, "equilibrium") and table.contains(defData.cooldown, "balance") then
+        defData.priority = 24   
+    else
+        defData.priority = 25 -- Catch-all baseline
+    end 
+
+    return defData.priority
 end</script>
 					<eventHandlerList />
 				</Script>
