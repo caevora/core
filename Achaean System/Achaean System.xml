@@ -11357,7 +11357,6 @@ function jsonManager(opts)
   local libsDir = getMudletHomeDir() .. "/Achaean System/system/libs/"
   local jsonDir = libsDir .. "json/"
 
-  -- ✅ If called like safeJSONLoad(path, fallback)
   if safe and path and fallback then
     
     if not fileExists(path) then
@@ -11379,7 +11378,6 @@ function jsonManager(opts)
 
     cecho(string.format("&lt;red&gt;Corrupted JSON: %s → %s\n", path, err or "unknown"))
 
-    -- Fallback 1: .bak file
     local bakPath = path .. ".bak"
     if fileExists(bakPath) then
       local bFile = io.open(bakPath, "r")
@@ -11392,24 +11390,24 @@ function jsonManager(opts)
       end
     end
 
-    -- Fallback 2: latest backup from backup dirs
     local name = path:match("([^/\\]+)%.json$")
-    local backupDirs = {
-      libsDir .. "backup",
-    }
+    local backupDirs = { libsDir .. "backup" }
     local latestBackup, latestTime = nil, 0
     for _, dir in ipairs(backupDirs) do
-      for file in lfs.dir(dir) do
-        if file:match("^" .. name .. "_backup_.*%.json$") then
-          local fullPath = dir .. "/" .. file
-          local attr = lfs.attributes(fullPath)
-          if attr and attr.modification &gt; latestTime then
-            latestTime = attr.modification
-            latestBackup = fullPath
+      if lfs.attributes(dir, "mode") == "directory" then
+        for file in lfs.dir(dir) do
+          if file:match("^" .. name .. "_backup_.*%.json$") then
+            local fullPath = dir .. "/" .. file
+            local attr = lfs.attributes(fullPath)
+            if attr and attr.modification &gt; latestTime then
+              latestTime = attr.modification
+              latestBackup = fullPath
+            end
           end
         end
       end
     end
+    
     if latestBackup then
       local f = io.open(latestBackup, "r")
       local contents = f and f:read("*a")
@@ -11421,21 +11419,22 @@ function jsonManager(opts)
       end
     end
 
-    -- Fallback 3: suggest archive
     local archivedDir = libsDir .. "archived"
     local suggestedZip = nil
-    for file in lfs.dir(archivedDir) do
-      if file:match("%.zip$") and file:find(name) then
-        suggestedZip = file
+    if lfs.attributes(archivedDir, "mode") == "directory" then
+      for file in lfs.dir(archivedDir) do
+        if file:match("%.zip$") and file:find(name) then
+          suggestedZip = file
+        end
       end
     end
+    
     if suggestedZip then
       cecho(string.format("&lt;magenta&gt;📦 Suggest restoring from archive:\n&lt;white&gt;  archived/%s\n", suggestedZip))
     else
       cecho(string.format("&lt;red&gt;🚫 No restorable data or archive found for '%s'.\n", name))
     end
 
-    -- Final fallback: rename + write empty
     os.rename(path, path .. ".corrupt")
     cecho("&lt;yellow&gt;🚨 JSON corrupted. Renamed and replaced with empty.\n")
     local f = io.open(path, "w")
@@ -11446,7 +11445,7 @@ function jsonManager(opts)
     return fallback or {}
   end
 
-  -- 🔍 Standard Report Mode (default behavior)
+  -- 🔍 Standard Report Mode
   local LAST_LOADED = {}
   local files = {
     {name = "settings", ref = settings},
@@ -11459,7 +11458,7 @@ function jsonManager(opts)
     {name = "areaignorelist", ref = areaIgnoreList},
     {name = "huntsettings", ref = huntSettingsData},
     {name = "curinglist", ref = curinglist},
-    {name = "defuplist", ref = defenses},  
+    {name = "defenses", ref = defenses},             
     {name = "afflictions", ref = afflictions}, 
   }
 
@@ -11493,7 +11492,7 @@ function jsonManager(opts)
 end
 
 
---main load funciton
+--main load function
 function loadAllTablesFromJSON()
 
   if not dkjson then
@@ -11514,7 +11513,7 @@ function loadAllTablesFromJSON()
       {name = "areaignorelist", target = "areaIgnoreList"},
       {name = "huntsettings", target = "huntSettingsData"},
       {name = "curinglist", target = "curinglist"},
-      {name = "defenses", target = "defenses"},
+      {name = "defenses", target = "defenses"},       -- 🟩 Aligned
       {name = "afflictions", target = "afflictions"},
   }
 
@@ -11522,10 +11521,8 @@ function loadAllTablesFromJSON()
     local path = string.format("%s/%s.json", jsonDir, file.name)
     local data = jsonManager({ safe = true, path = path, fallback = {} })
 
-    -- Ensure data is a table before proceeding
     data = (type(data) == "table") and data or {}
 
-    -- Only process data if the file actually contained records (next(data) is not nil)
     if file.target == "NDB.cityList" then
       if next(data) then
         NDB = NDB or {}
@@ -11545,8 +11542,7 @@ function loadAllTablesFromJSON()
         TAROT.DECK.cards = data
       end
     else
-      -- If it's a standard table (settings, defenses, etc.) and the file is empty,
-      -- do NOT overwrite what we've already initialized in memory with an empty table.
+      -- If it's a standard table and the file is empty, protect memory defaults
       if next(data) == nil and type(_G[file.target]) == "table" then
         -- Skip assignment to protect memory defaults
       else
@@ -11559,6 +11555,8 @@ function loadAllTablesFromJSON()
     end
   end
 end
+
+
 
 --DEPRECATED [[ WILL WORK BACK IN LATER ]]
 function loadClassSpecificData()
@@ -11592,6 +11590,7 @@ function saveAllTablesAsJSON()
 
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
 
+  -- Consolidated Single Source of Truth for Data Persistence
   local filesToConvert = {
     {name = "settings", table = settings},
     {name = "lustlist", table = lustlist},
@@ -11603,8 +11602,9 @@ function saveAllTablesAsJSON()
     {name = "areaignorelist", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
     {name = "curinglist", table = curinglist},
-    {name = "defenses", table = defenses},
+    {name = "defenses", table = defenses},             -- 🟩 Aligned naming convention
     {name = "afflictions", table = afflictions},
+    {name = "ragecommands", table = bragelist or {}},  -- 🟩 Added so rage commands aren't dropped
   }
 
   for _, file in ipairs(filesToConvert) do
@@ -11614,7 +11614,7 @@ function saveAllTablesAsJSON()
     if not success then
       cecho(string.format("&lt;red&gt;Error encoding %s to JSON: %s\n", file.name, result))
     else
-      -- 💾 BEFORE overwriting, create a .bak if the JSON file already exists
+      -- 💾 Create client side backup rollback points (.bak)
       if fileExists(jsonPath) then
         local bakPath = jsonPath .. ".bak"
         local oldFile = io.open(jsonPath, "r")
@@ -11630,7 +11630,7 @@ function saveAllTablesAsJSON()
         end
       end
 
-      -- 📝 Save new JSON
+      -- 📝 Commit serialized engine state data to file system
       local f, err = io.open(jsonPath, "w")
       if f then
         f:write(result)
@@ -11642,13 +11642,12 @@ function saveAllTablesAsJSON()
     end
   end
 
-  -- 🔁 Add timestamped backups too
+  -- 🔁 Global long-term archive snapshot backup execution
   if not SAVE_ALREADY_BACKED_UP then
     jsonBackup()
     SAVE_ALREADY_BACKED_UP = true
   end
 end
-
 
 
 --archive backups
@@ -11846,9 +11845,10 @@ function initializeFileSaves()
   if not settings.systemLoaded then
     return
   end
+
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local ndbPath = getNDBPath()
-  -- Let's define this up top
+
   -- 1. Essential Library Check
   if not dkjson then
     local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
@@ -11859,18 +11859,14 @@ function initializeFileSaves()
       return
     end
   end
+
   -- 2. Directory Safety
-  if not lfs.attributes(jsonDir, "mode") then
-    lfs.mkdir(jsonDir)
-  end
-  if not lfs.attributes(ndbPath, "mode") then
-    lfs.mkdir(ndbPath)
-  end
-  -- 3. 🔄 Save Per-Player NDB Data
-  -- We add a check to make sure NDB.players isn't an empty shell
+  if not lfs.attributes(jsonDir, "mode") then lfs.mkdir(jsonDir) end
+  if not lfs.attributes(ndbPath, "mode") then lfs.mkdir(ndbPath) end
+
+  -- 3. 🔄 Save Per-Player NDB Data (Keep here since it loops dynamic player names)
   if NDB and NDB.players and next(NDB.players) then
     for name, data in pairs(NDB.players) do
-      -- Ensure we only save tables (prevents corrupting the save loop)
       if type(data) == "table" then
         saveTableToJSON(data, name, ndbPath)
       end
@@ -11879,31 +11875,19 @@ function initializeFileSaves()
       cecho("&lt;green&gt;Saved " .. table.size(NDB.players) .. " NDB player files.\n")
     end
   end
-  -- 4. 🧾 Save Core Lists
-  -- Using a more localized approach to avoid repetitive IF statements
-  if NDB then
-    if NDB.doesNotExist then
-      saveTableToJSON(NDB.doesNotExist, "doesnotexist", ndbPath)
-    end
-    if NDB.cityList then
-      saveTableToJSON(NDB.cityList, "cityallylist", jsonDir)
-    end
-    if NDB.cityEnemies then
-      saveTableToJSON(NDB.cityEnemies, "cityenemylist", jsonDir)
-    end
+
+  -- 4. Save NDB "Does Not Exist" tracking file
+  if NDB and NDB.doesNotExist then
+    saveTableToJSON(NDB.doesNotExist, "doesnotexist", ndbPath)
   end
-  if defenses and next(defenses) ~= nil then
-    saveTableToJSON(defenses, "defuplist", jsonDir)
-  end
-  if bragelist and next(bragelist) ~= nil then
-    saveTableToJSON(bragelist, "ragecommands", jsonDir)
-  end
-  -- 5. Global System Save
+
+  -- 5. Execute Master Table Core Save
   if type(saveAllTablesAsJSON) == "function" then
     saveAllTablesAsJSON()
   elseif settings.debug then
     cecho("&lt;yellow&gt;Note: saveAllTablesAsJSON() skipped (not defined).\n")
   end
+
   if settings.debug then
     cecho("&lt;green&gt;✔ All system data synced to disk.\n")
   end
@@ -14616,10 +14600,10 @@ end</script>
   end
 
   -- Backup old file
-  local savePath = getMudletHomeDir() .. "/Achaean System/system/libs/json/defuplist.json"
+  local savePath = getMudletHomeDir() .. "/Achaean System/system/libs/json/defenses.json"
   if fileExists(savePath) then
     os.rename(savePath, savePath .. ".bak")
-    cecho("\n&lt;green&gt;[INFO] Created backup&lt;white&gt;: defuplist.json.bak\n")
+    cecho("\n&lt;green&gt;[INFO] Created backup&lt;white&gt;: defenses.json.bak\n")
   end
 
   -- Encode and write the table
