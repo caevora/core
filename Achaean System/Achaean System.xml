@@ -4293,23 +4293,34 @@ end</script>
 				<regexCodePropertyList />
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>current priority</name>
-					<script>-- 1. Safe Global Initialization (only runs if nil)
+					<script>
+local affliction = string.gsub(matches[2], "%((%d+)%)","%1")
+local priority = tonumber(matches[3])
+
+    curinglist = curinglist or {}
+
+    -- Update curinglist with the manually set priority
+    curinglist[affliction] = priority
+
+
+-- 1. Safe Global Initialization (only runs if nil)
 prioBuffer = prioBuffer or {}
 
--- 2. Capture the current match data
-local aff = matches[2]:title()
-local prio = matches[3]
+-- 2. Capture the current match data safely
+local aff = matches[2]:lower()  -- 🛡️ CRITICAL: Keep lowercase for backend engine data matching!
+local prio = tonumber(matches[3]) or matches[3]
 
--- 🎯 FIX: Force every name to truncate at 6 characters and append "..."
-local displayName = aff:sub(1, 6) .. "..."
+-- 3. Visual Formatting Variables
+local displayAff = aff:title() -- Title case purely for looks on the screen
+local displayName = displayAff:sub(1, 6) .. "..."
 
--- 3. Gag the individual raw incoming lines from hitting the main screen
+-- 4. Gag the individual raw incoming lines from hitting the main screen
 deleteFull()
 
--- 4. Add current formatted data to our display buffer (using the uniform displayName)
+-- 5. Add current formatted data to our display buffer
 table.insert(prioBuffer, string.format("&lt;white&gt;%s &lt;DimGrey&gt;(&lt;goldenrod&gt;%s&lt;DimGrey&gt;)", displayName, prio))
 
--- 5. Manage the auto-flushing countdown timer cleanly
+-- 6. Manage the auto-flushing countdown timer cleanly
 if prioCleanupTimer then killTimer(prioCleanupTimer) end
 
 prioCleanupTimer = tempTimer(0.3, function()
@@ -4320,9 +4331,10 @@ prioCleanupTimer = tempTimer(0.3, function()
     end
 end)
 
--- 6. 🛡️ BACKEND PROTECTION: Keep using the original full 'aff' name so data doesn't break!
-curinglist[aff] = prio
+-- 7. 🛡️ BACKEND PROTECTION: Let the engine clear the lock and update curinglist natively
 onPriorityResetSent(aff, prio)
+
+-- 8. Persistent Storage Save
 saveTableToJSON(curinglist, "curinglist")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -9793,13 +9805,6 @@ send(parry_type .. limbs[matches[2]], false)
 					<regex>^p(h|tt|rl|ll|la|ra|c|l|r)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>combat prep</name>
-					<script>PLAYER:runPreTrip()</script>
-					<command></command>
-					<packageName></packageName>
-					<regex>^prep$</regex>
-				</Alias>
-				<Alias isActive="yes" isFolder="no">
 					<name>defences brief</name>
 					<script>-- for serverside list
 send("queue add free def brief")</script>
@@ -11108,19 +11113,6 @@ Fully recoverable, auto-backup-capable JSON persistence system:
 
 🧪 Debug hooks and testing support
 
-This is well beyond most Mudlet systems in terms of file safety and resilience.
-
-You're now in a great position to:
-
-Build restore UIs (file chooser → restore backup)
-
-Add cloud sync (OneDrive/Dropbox backup mirroring)
-
-Schedule integrity checks or auto-prune backups
-
-Let me know if you'd like to implement an automated ZIP restore function next, or even better — a command-based backup restore picker.
-
-
 
 ]]
 
@@ -11141,7 +11133,7 @@ function fetchDKJSON()
       if fileExists(dkjsonPath) then
         return dofile(dkjsonPath)
       else
-        cecho("&lt;red&gt;CRITICAL: dkjson.lua missing from " .. libsDir .. "\n")
+        debugEcho("red","CRITICAL: dkjson.lua missing from " .. libsDir .. "")
         return fallback or {}
       end
     end
@@ -11155,20 +11147,20 @@ dkjson = dkjson or fetchDKJSON()
 function loadTableFromJSON(tblRef, filename)
 
   if not dkjson then
-    cecho("&lt;red&gt;Cannot load: dkjson not loaded.\n")
+    debugEcho("red","Cannot load: dkjson not loaded.")
     return
   end
 
   local path = getMudletHomeDir() .. "/Achaean System/system/libs/json/" .. filename .. ".json"
 
   if not fileExists(path) then
-    cecho("&lt;yellow&gt;No file found for '" .. filename .. "' to load.\n")
+    debugEcho("red","No file found for '" .. filename .. "' to load.")
     return
   end
 
   local file = io.open(path, "r")
   if not file then
-    cecho("&lt;red&gt;Failed to open file for '" .. filename .. "'.\n")
+    debugEcho("red","Failed to open file for '" .. filename .. "'.")
     return
   end
 
@@ -11177,7 +11169,7 @@ function loadTableFromJSON(tblRef, filename)
 
   local decoded, _, err = dkjson.decode(contents, 1, nil)
   if err or type(decoded) ~= "table" then
-    cecho("&lt;red&gt;Error decoding " .. filename .. ": " .. (err or "invalid format") .. "\n")
+    debugEcho("red","Error decoding " .. filename .. ": " .. (err or "invalid format") .. "")
     return
   end
 
@@ -11185,7 +11177,7 @@ function loadTableFromJSON(tblRef, filename)
   for k in pairs(tblRef) do tblRef[k] = nil end
   for k, v in pairs(decoded) do tblRef[k] = v end
 
-  cecho(string.format("&lt;green&gt;Loaded data from '%s.json'.\n", filename))
+  debugEcho("green",string.format("Loaded data from '%s.json'.", filename))
 end
 
 
@@ -11194,12 +11186,12 @@ end
 function saveTableToJSON(tbl, filename, directory)
 
   if not dkjson then
-    cecho("&lt;red&gt;Cannot save: dkjson not loaded.\n")
+    debugEcho("red","Cannot save: dkjson not loaded.")
     return
   end
 
   if not tbl or type(tbl) ~= "table" then
-    cecho("&lt;red&gt;Invalid table passed to save.\n")
+    debugEcho("red","Invalid table passed to save.")
     return
   end
 
@@ -11223,13 +11215,13 @@ function saveTableToJSON(tbl, filename, directory)
 
   local file, err = io.open(path, "w")
   if not file then
-    cecho("&lt;red&gt;Error saving " .. filename .. ": " .. (err or "unknown error") .. "\n")
+    debugEcho("red","Error saving " .. filename .. ": " .. (err or "unknown error") .. "")
     return
   end
 
   local ok, jsonString = pcall(dkjson.encode, tbl, { indent = true })
   if not ok then
-    cecho("&lt;red&gt;Error encoding JSON for " .. filename .. "\n")
+    debugEcho("red","Error encoding JSON for " .. filename .. "")
     file:close()
     return
   end
@@ -11281,9 +11273,9 @@ function jsonBackup()
     if success then
       local f = io.open(path, "w")
       if f then f:write(result) f:close() end
-      --cecho(string.format("&lt;green&gt;🔁 Backup created: %s\n", path))
+      debugEcho("green",string.format("🔁 Backup created: %s\n", path))
     else
-     -- cecho(string.format("&lt;red&gt;⚠️ Error encoding %s: %s\n", file.name, result))
+      debugEcho("red",string.format("&lt;red&gt;⚠️ Error encoding %s: %s\n", file.name, result))
     end
   end
 
@@ -11357,7 +11349,7 @@ function jsonManager(opts)
   if safe and path and fallback then
     
     if not fileExists(path) then
-      cecho("&lt;yellow&gt;JSON not found, creating empty: " .. path .. "\n")
+      debugEcho("yellow","JSON not found, creating empty: " .. path .. "")
       local f = io.open(path, "w")
       if f then
         f:write(dkjson.encode(fallback or {}, { indent = true }))
@@ -11373,7 +11365,7 @@ function jsonManager(opts)
     local decoded, _, err = dkjson.decode(contents or "", 1, nil)
     if decoded and type(decoded) == "table" then return decoded end
 
-    cecho(string.format("&lt;red&gt;Corrupted JSON: %s → %s\n", path, err or "unknown"))
+    debugEcho("red",string.format("Corrupted JSON: %s → %s\n", path, err or "unknown"))
 
     local bakPath = path .. ".bak"
     if fileExists(bakPath) then
@@ -11382,7 +11374,7 @@ function jsonManager(opts)
       if bFile then bFile:close() end
       local bDecoded = dkjson.decode(bContents or "", 1, nil)
       if bDecoded and type(bDecoded) == "table" then
-        cecho("&lt;yellow&gt;✔ Loaded backup from .bak file\n")
+        debugEcho("green","✔ Loaded backup from .bak file\n")
         return bDecoded
       end
     end
@@ -11411,7 +11403,7 @@ function jsonManager(opts)
       if f then f:close() end
       local decoded = dkjson.decode(contents or "", 1, nil)
       if decoded and type(decoded) == "table" then
-        cecho("&lt;yellow&gt;✔ Loaded latest backup: " .. latestBackup .. "\n")
+        debugEcho("green","✔ Loaded latest backup: " .. latestBackup .. "")
         return decoded
       end
     end
@@ -11427,9 +11419,9 @@ function jsonManager(opts)
     end
     
     if suggestedZip then
-      cecho(string.format("&lt;magenta&gt;📦 Suggest restoring from archive:\n&lt;white&gt;  archived/%s\n", suggestedZip))
+      debugEcho("green",string.format("&lt;magenta&gt;📦 Suggest restoring from archive:\n&lt;white&gt;  archived/%s\n", suggestedZip))
     else
-      cecho(string.format("&lt;red&gt;🚫 No restorable data or archive found for '%s'.\n", name))
+      debugEcho("red",string.format("🚫 No restorable data or archive found for '%s'.\n", name))
     end
 
     os.rename(path, path .. ".corrupt")
@@ -11493,7 +11485,7 @@ end
 function loadAllTablesFromJSON()
 
   if not dkjson then
-    cecho("&lt;red&gt;Cannot load JSON: dkjson not loaded.\n")
+    debugEcho("green","Cannot load JSON: dkjson not loaded.")
     return
   end
 
@@ -16246,9 +16238,10 @@ end
 -- Select the best cure type based on priorities
 function queue:priority(cures, affliction, priority)
     local commands = {}
+    local numPriority = tonumber(priority) or 25
 
     -- Construct command structure with required fields
-    for _, cure in ipairs(cures) do
+    for _, cure in ipairs(cures or {}) do
         table.insert(commands, {
             type = cure.type,
             command = cure.command,
@@ -16256,15 +16249,15 @@ function queue:priority(cures, affliction, priority)
             requires = cure.requires,
             handle = cure.handle,
             name = affliction,
-            priority = priority,
+            priority = numPriority,
             prompt = cure.prompt,
             blockers = cure.blockers
         })
     end
 
-    -- Sort commands based on priority
+    -- Sort commands based on priority safely
     table.sort(commands, function(a, b)
-        return a.priority &lt; b.priority
+        return (a.priority or 25) &lt; (b.priority or 25)
     end)
 
     return commands
@@ -16277,7 +16270,8 @@ function queue:createLocalAffs()
     for _, affliction in ipairs(myaffs) do
         local affDetails = afflictions[affliction]
         if affDetails then
-            table.insert(localAffs, {name = affliction, priority = affDetails.priority})
+            local p = tonumber(affDetails.priority) or 25
+            table.insert(localAffs, {name = affliction, priority = p})
         end
     end
     return localAffs
@@ -16285,7 +16279,7 @@ end
 
 -- Sort the local afflictions by priority
 function queue:sortAfflictionsByPriority(localAffs)
-    table.sort(localAffs, function(a, b) return a.priority &lt; b.priority end)
+    table.sort(localAffs, function(a, b) return (a.priority or 25) &lt; (b.priority or 25) end)
 end
 
 
@@ -16311,25 +16305,29 @@ function queue:isCureValid(cure)
     -- Check balance requirements
     if type(cure.requires) == "table" then
         for _, balance in ipairs(cure.requires) do
-            if balance_data[balance].in_use then
+            if not balance_data[balance] or balance_data[balance].in_use then
                 hasRequiredBalance = false
                 break
             end
         end
-    elseif type(cure.requires) == "string" and balance_data[cure.requires].in_use then
-        hasRequiredBalance = false
+    elseif type(cure.requires) == "string" then
+        if not balance_data[cure.requires] or balance_data[cure.requires].in_use then
+            hasRequiredBalance = false
+        end
     end
 
     -- Check cooldown requirements
     if type(cure.cooldown) == "table" then
         for _, cooldown in ipairs(cure.cooldown) do
-            if balance_data[cooldown].in_use then
+            if not balance_data[cooldown] or balance_data[cooldown].in_use then
                 hasRequiredCooldown = false
                 break
             end
         end
-    elseif type(cure.cooldown) == "string" and balance_data[cure.cooldown].in_use then
-        hasRequiredCooldown = false
+    elseif type(cure.cooldown) == "string" then
+        if not balance_data[cure.cooldown] or balance_data[cure.cooldown].in_use then
+            hasRequiredCooldown = false
+        end
     end
 
     -- Ensure there are no active blockers
@@ -16337,13 +16335,9 @@ function queue:isCureValid(cure)
 end
 
 
-
 function queue:clearPipelineOnCommand(balanceType)
     for affliction, cureData in pairs(pipeline.afflictions) do
-   
- -- Check if the cure type matches the specified balanceType
         if cureData.curetype == balanceType then
-		   -- Clear the pipeline entry for this affliction
             pipeline.afflictions[affliction] = nil
 
             if settings.debug then
@@ -16354,36 +16348,30 @@ function queue:clearPipelineOnCommand(balanceType)
 end
 
 
-
 function queue:process()
-    -- Early exit if the system is not ready
-    if not settings.systemLoaded or settings.systemPaused or balance_data.stunned.in_use then
+    if not settings.systemLoaded or settings.systemPaused or (balance_data.stunned and balance_data.stunned.in_use) then
         return
     end
 
-    -- Localize data for faster access
     local afflictionData = afflictions
     local localAffs = self:createLocalAffs()
-    self:sortAfflictionsByPriority(localAffs) -- Sort once upfront
+    self:sortAfflictionsByPriority(localAffs)
 
     local validCures = {}
-    local usedCureTypes = {} -- Track highest-priority cure for each type
-    local seenCommands = {} -- Track already added commands by command and affliction
+    local usedCureTypes = {} 
+    local seenCommands = {} 
 
-    -- Iterate over sorted afflictions to find the best cures
     for _, affData in ipairs(localAffs) do
         local affliction = affData.name
         local details = afflictionData[affliction]
 
-        -- Skip afflictions with active cooldowns
-        if not self:isCureOnCooldown(affliction) then
+        if details and not self:isCureOnCooldown(affliction) then
             local bestCure = self:processCure(affliction, details)
 
             if bestCure then
                 local cureType = bestCure.type
                 local existingCure = usedCureTypes[cureType]
 
-                -- Update with the highest-priority cure for this type
                 if not existingCure or affData.priority &lt; existingCure.priority then
                     usedCureTypes[cureType] = bestCure
                 end
@@ -16391,17 +16379,14 @@ function queue:process()
         end
     end
 
-    -- Build validCures while avoiding duplicates by both command and affliction
     for _, bestCure in pairs(usedCureTypes) do
-        -- Safely handle command conversion to string
         local command
         if type(bestCure.command) == "table" then
-            command = table.concat(bestCure.command, ", ") -- Concatenate table into a string
+            command = table.concat(bestCure.command, ", ")
         else
-            command = tostring(bestCure.command) -- Convert to string if not already
+            command = tostring(bestCure.command)
         end
 
-        -- Ensure cureKey is unique for command and affliction
         local cureKey = command .. ":" .. bestCure.name
 
         if not seenCommands[cureKey] then
@@ -16410,7 +16395,6 @@ function queue:process()
         end
     end
 
-    -- Debug: Log the final list of validCures
     if settings.debug then
         self:echo("---- Valid Cures Processed ----")
         for _, cure in ipairs(validCures) do
@@ -16420,7 +16404,6 @@ function queue:process()
         end
     end
 
-    -- Process cures
     if #validCures &gt; 0 then
         if settings.batching then
             self:sendBatchCures(validCures)
@@ -16429,7 +16412,6 @@ function queue:process()
         end
     end
 end
-
 
 
 function queue:sendSingleCure(cure)
@@ -16443,111 +16425,89 @@ function queue:sendSingleCure(cure)
     local cureType = cure.type
     local command = cure.command
 
-    -- Adjust command for herb or smoke
     if cureType == "herb" or cureType == "smoke" then
         command = settings.cureMethod == "alchemical" and cure.command.alchemical or cure.command.herbal
     end
 
-    -- Skip if cure type is already in progress
     if pipelineAfflictions[affliction] then
         if settings.debug then self:echo("Cure type already in progress for: " .. affliction) end
         return
     end
 
-    -- Handle prioritization for nonPrioritizedCures
+    -- Server-side automated system priorities mapping
     if table.contains(nonPrioritizedCures, cureType) then
         local currentSlot1Aff = nil
 
-        -- Identify current slot 1 affliction
         for aff, prio in pairs(curingList) do
-            if prio == 1 then
+            if tonumber(prio) == 1 then
                 currentSlot1Aff = aff
                 break
             end
         end
 
-        -- Reset current slot 1 if necessary
         if currentSlot1Aff and currentSlot1Aff ~= affliction then
-            local defaultPriority = afflictionData[currentSlot1Aff] and afflictionData[currentSlot1Aff].priority or 25
-            if curingList[currentSlot1Aff] ~= defaultPriority then
-                --send("curing prio " .. currentSlot1Aff .. " " .. defaultPriority)
+            local defaultPriority = afflictionData[currentSlot1Aff] and tonumber(afflictionData[currentSlot1Aff].priority) or 25
+            if (tonumber(curingList[currentSlot1Aff]) or 25) ~= defaultPriority then
                 if settings.debug then
                    self:echo("Reset " .. currentSlot1Aff .. " to default priority " .. defaultPriority)
                 end
             end
         end
 
-        -- Set the new affliction to slot 1 if it's not already there
-        if (curingList[affliction] or 25) ~= 1 then
-            -- Before setting, check if the affliction is already at priority 1
+        if (tonumber(curingList[affliction]) or 25) ~= 1 then
             if not sentPriorityCommands[affliction] then
-                -- Mark as sent globally
                 sentPriorityCommands[affliction] = true
-
                 send("curing prio " .. affliction .. " 1")
                 if settings.debug then
                     self:echo("Set " .. affliction .. " to priority 1.")
                 end
-            else
-                -- Debugging output: Already processed affliction
-               -- cecho("&lt;yellow&gt;Affliction " .. affliction .. " already at priority 1, skipping command.\n")
             end
         end
     end
 
-    -- Send cure command if not non-prioritized
-    if not table.contains(nonPrioritizedCures, cureType) then
-	
-	
-		-- --- NEW SERVER-SIDE OPT-OUT CHECK ---
-        local cmd_str = tostring(command):lower()
-        
-        if (cmd_str == "touch tree" and settings.tree == true) or (cmd_str == "focus" and settings.focus == true) then
-            if settings.debug then self:echo("&lt;yellow&gt;Skipping client command: " .. command .. " (Server Opt-Out Active)&lt;/yellow&gt;") end
-            return -- Exit the function, do not send the command.
-        end
-        -- --- END NEW CHECK ---
-	
-	
-        -- Mark cure as in progress
-        pipelineAfflictions[affliction] = {
-            name = affliction,
-            command = command,
-            in_progress = true,
-            curetype = cureType,
-            cooldown_end = currentTime + self:getCureCooldown(cureType) + networkLatency,
-            priority = afflictionData[affliction] and afflictionData[affliction].priority or 25
-        }
-
-        if settings.debug then self:echo("Sending cure command: " .. command) end
-        send(command)
+    -- Opt-out check for automated native server rules
+    local cmd_str = tostring(command):lower()
+    if (cmd_str == "touch tree" and settings.tree == true) or (cmd_str == "focus" and settings.focus == true) then
+        if settings.debug then self:echo("&lt;yellow&gt;Skipping client command: " .. command .. " (Server Opt-Out Active)&lt;/yellow&gt;") end
+        return 
     end
+
+    -- ✅ FIXED: Pipeline tracking and sending execution block completely decoupled
+    -- This ensures commands like stand, writhe, and wake execute safely.
+    pipelineAfflictions[affliction] = {
+        name = affliction,
+        command = command,
+        in_progress = true,
+        curetype = cureType,
+        cooldown_end = currentTime + self:getCureCooldown(cureType) + networkLatency,
+        priority = afflictionData[affliction] and tonumber(afflictionData[affliction].priority) or 25
+    }
+
+    if settings.debug then self:echo("Sending cure command: " .. command) end
+    send(command)
 end
 
 
 function queue:sendBatchCures(validCures)
     local cs = settings.cmdsep
-    local serverCommands = {} -- Priority commands
-    local batchCommands = {} -- Cure commands
-    local seenBatchCommands = {} -- Track unique batch commands
-    local usedCureTypes = {} -- Track processed cure types
-    local pipelineAfflictions = pipeline.afflictions -- Localize global table
-    local curingList = curinglist -- Localize curinglist
-    local afflictionData = afflictions -- Localize affliction definitions
-    local currentTime = os.time() -- Cache current time
-    local networkLatency = getNetworkLatency() -- Cache network latency
+    local serverCommands = {} 
+    local batchCommands = {} 
+    local seenBatchCommands = {} 
+    local usedCureTypes = {} 
+    local pipelineAfflictions = pipeline.afflictions 
+    local curingList = curinglist 
+    local afflictionData = afflictions 
+    local currentTime = os.time() 
+    local networkLatency = getNetworkLatency() 
     local nonPrioritizedCures = { "herb", "salve", "smoke", "writhe", "wake", "balance" }
-    local highestPrioAff = nil -- Track highest-priority affliction
-    local highestPriority = 25 -- Start with the lowest priority
+    local highestPrioAff = nil 
+    local highestPriority = 25 
 
-
-    -- Step 1: Determine the highest-priority affliction
     for _, cure in ipairs(validCures) do
         local affliction = cure.name
         local cureType = cure.type
-        local affPriority = afflictionData[affliction] and afflictionData[affliction].priority or 25
+        local affPriority = afflictionData[affliction] and tonumber(afflictionData[affliction].priority) or 25
         
-        -- Skip already processed or irrelevant cures
         if not pipelineAfflictions[affliction] and not usedCureTypes[cureType] and table.contains(nonPrioritizedCures, cureType) then            
             if affPriority &lt; highestPriority then
                 highestPrioAff = affliction
@@ -16556,131 +16516,88 @@ function queue:sendBatchCures(validCures)
         end
     end
 
-    -- Step 2: Prioritize the highest-priority affliction
     if highestPrioAff then
         local command = "curing prio " .. highestPrioAff .. " 1"
-        
-        -- Check if this command has already been sent
         if not sentPriorityCommands[highestPrioAff] then
-            -- Check if the affliction is already at priority 1
-            if (curingList[highestPrioAff] or 25) ~= 1 then
-                -- Mark as sent and add the command
+            if (tonumber(curingList[highestPrioAff]) or 25) ~= 1 then
                 sentPriorityCommands[highestPrioAff] = true
                 table.insert(serverCommands, command)
-
-                -- Debug output for priority change
-              --  cecho("&lt;green&gt;Sent priority command for affliction: " .. highestPrioAff .. " to priority 1.\n")
-            else
-              --  cecho("&lt;yellow&gt;Affliction " .. highestPrioAff .. " is already at priority 1, skipping command.\n")
             end
         end
     end
 
-    -- Step 3: Send priority commands immediately
     if #serverCommands &gt; 0 then
         while #serverCommands &gt; 4 do
             table.remove(serverCommands)
         end
         send(table.concat(serverCommands, cs))
-        
         if settings.debug then
             self:echo("Sent priority commands: " .. table.concat(serverCommands, cs))
         end
     end
 
-    -- Step 4: Prepare and queue batch cure commands
     for _, cure in ipairs(validCures) do
         local affliction = cure.name
         local cureType = cure.type
         local command = cure.command
 
-        -- Adjust command based on type
         if cureType == "herb" or cureType == "smoke" then
             command = settings.cureMethod == "alchemical" and cure.command.alchemical or cure.command.herbal
         end
-		
-		-- --- NEW SERVER-SIDE OPT-OUT CHECK ---
+        
         local cmd_str = tostring(command):lower()
         
-	-- --- NEW SERVER-SIDE OPT-OUT CHECK ---
-		local cmd_str = tostring(command):lower()
-		
-		if (cmd_str == "touch tree" and settings.tree == true) or (cmd_str == "focus" and settings.focus == true) then
-			if settings.debug then self:echo("&lt;yellow&gt;Skipping batch command: " .. command .. " (Server Opt-Out Active)&lt;/yellow&gt;") end
-			-- Action: Do nothing (this effectively skips the rest of the loop iteration)
-		else
-        -- --- END NEW CHECK ---		
+        if (cmd_str == "touch tree" and settings.tree == true) or (cmd_str == "focus" and settings.focus == true) then
+            if settings.debug then self:echo("&lt;yellow&gt;Skipping batch command: " .. command .. " (Server Opt-Out Active)&lt;/yellow&gt;") end
+        else
+            if not pipelineAfflictions[affliction] and not usedCureTypes[cureType] and not seenBatchCommands[command] then
+                local affPriority = afflictionData[affliction] and tonumber(afflictionData[affliction].priority) or 25
 
-			-- Skip cures already processed or queued
-			if not pipelineAfflictions[affliction] and not usedCureTypes[cureType] and not seenBatchCommands[command] and not table.contains(nonPrioritizedCures, cureType) then
-				local affPriority = afflictionData[affliction] and afflictionData[affliction].priority or 25
+                pipelineAfflictions[affliction] = {
+                    name = affliction,
+                    command = command,
+                    in_progress = true,
+                    curetype = cureType,
+                    cooldown_end = currentTime + self:getCureCooldown(cureType) + networkLatency,
+                    priority = affPriority
+                }
 
-				-- Mark the cure as in progress
-				pipelineAfflictions[affliction] = {
-					name = affliction,
-					command = command,
-					in_progress = true,
-					curetype = cureType,
-					cooldown_end = currentTime + self:getCureCooldown(cureType) + networkLatency,
-					priority = affPriority
-				}
+                seenBatchCommands[command] = true
+                table.insert(batchCommands, command)
+                usedCureTypes[cureType] = true
+            end
+        end
+    end
 
-				-- Add the command to the batch if unique
-				seenBatchCommands[command] = true
-				table.insert(batchCommands, command)
-				if settings.debug then
-					self:echo("Added unique cure command: " .. command)
-				end
-
-				-- Track the cure type as processed
-				usedCureTypes[cureType] = true
-				
-			end
-		end
-	end
-
-    -- Step 5: Send batch cure commands
     if #batchCommands &gt; 0 then
         while #batchCommands &gt; 10 do
             table.remove(batchCommands)
         end
         send(table.concat(batchCommands, cs))
-        if settings.debug then
-            self:echo("Sent unique batch commands: " .. table.concat(batchCommands, cs))
-        end
     end
 end
 
 
-
 function queue:setAfflictionPriorities()
-    
-    local afflictionCommands = {}  -- Table to store the curing prio commands
-    local currentTime = os.time()
-    local networkLatency = getNetworkLatency()
+    local afflictionCommands = {}  
     local priority = 0
 
-    -- Iterate through each affliction in the afflictions table
     cecho("&lt;yellow&gt;\nStarting affliction iteration...&lt;reset&gt;")
     for affliction, data in pairs(afflictions) do
-        -- Assign a default priority in case data.priority is nil
         priority = 0
 
         if table.contains({"fear", "aeon", "entangled", "blackout", "bound", "daeggerimpale", "impaled", "sleeping", "transfixation", "voyria", "webbed", "prone", "disrupted"}, affliction) then
             priority = 2
         elseif data and data.priority then
-            priority = data.priority
+            priority = tonumber(data.priority) or 25
         else
             cecho("&lt;red&gt;Warning: No priority set for affliction '" .. affliction .. "'. Defaulting to 0.&lt;reset&gt;\n")
         end
 
-        -- Check if the first cure is of type "time"
-        if data.cures[1] and data.cures[1].type == "time" then
-            -- If the first cure is time, set the priority to 26
+        if data.cures and data.cures[1] and data.cures[1].type == "time" then
             table.insert(afflictionCommands, "curing prio " .. affliction .. " 26")
             afflictions[affliction].priority = 26
         else
-            -- Otherwise, use the affliction's priority for all other cures
             table.insert(afflictionCommands, "curing prio " .. affliction .. " " .. priority)
             afflictions[affliction].priority = priority
         end
@@ -16690,19 +16607,14 @@ function queue:setAfflictionPriorities()
 end
 
 
-
--- Create tempTimers to send batches
 function scheduleBatchProcessing(afflictionCommands)
     local maxCommandsPerBatch = 4
     local totalCommands = #afflictionCommands
     local delayStep = 1.3
     local sendTime = 0 
-    
-    -- Calculate total batches for the completion message
     local totalBatches = math.ceil(totalCommands / maxCommandsPerBatch)
     local currentBatch = 0
 
-    -- Process the commands in batches with timers
     for i = 1, totalCommands, maxCommandsPerBatch do
         local batchEndIndex = math.min(i + maxCommandsPerBatch - 1, totalCommands)
         local batch = {}
@@ -16713,19 +16625,12 @@ function scheduleBatchProcessing(afflictionCommands)
 
         sendTime = sendTime + delayStep
         currentBatch = currentBatch + 1
-        
-        -- Store batch number to use inside the closure
         local thisBatch = currentBatch
 
-        -- Inside the loop in scheduleBatchProcessing
         tempTimer(sendTime, function()
-            -- We pass the batch to be sent
             sendBatch(batch)
             
-            -- If this is the final batch, announce completion
             if thisBatch == totalBatches then
-                -- We wait 3 seconds after the last batch to ensure 
-                -- the gag is off and the server has processed everything
                 tempTimer(3, function()
                     cecho("\n&lt;green&gt;[SUCCESS]: &lt;white&gt;Hard Reset Complete.") 
                     cecho("\n&lt;white&gt;All &lt;yellow&gt;" .. totalCommands .. " &lt;white&gt;priorities are now synced to the server.")
@@ -16735,51 +16640,36 @@ function scheduleBatchProcessing(afflictionCommands)
                     cecho("&lt;white&gt; ]\n") 
                     
                     saveTableToJSON(curinglist, "curinglist")
-                                          
                 end)
             end
         end)
-
     end
     
-    cecho("\n&lt;white&gt;[&lt;yellow&gt;SYSTEM&lt;white&gt;]: Hard Reset initiated. (ETA: &lt;yellow&gt;" .. math.ceil(sendTime) .. "s) \n&lt;cyan&gt;Syncing &lt;white&gt;" .. totalBatches .. " &lt;cyan&gt;batches in background (Gagged). \n&lt;yellow&gt;Please wait for completion confirmation before any major actions!&lt;reset&gt;")
-    
+    cecho("\n&lt;white&gt;[&lt;yellow&gt;SYSTEM&lt;white&gt;]: Hard Reset initiated. (ETA: &lt;yellow&gt;" .. math.ceil(sendTime) .. "s) \n&lt;cyan&gt;Syncing &lt;white&gt;" .. totalBatches .. " &lt;cyan&gt;batches in background (Gagged).\n&lt;reset&gt;")
 end
 
--- Function to send the batch commands
+
 function sendBatch(batch)
-    --gagprios = true
     local cs = ";" 
     local batchString = table.concat(batch, cs)
 
     if batchString and batchString ~= "" then
         send(batchString, false)
     end
-    
-    -- We need to wait at least 2 seconds AFTER the batch is sent 
-    -- to ensure all 4 server messages are caught by the gag.
-    --tempTimer(2, function() 
-       -- gagprios = false 
-    --end)
 end
 
 
-	function updateCuringListPriorities()
-		-- Loop through each affliction in the afflictions table
-		for affliction, data in pairs(afflictions) do
-			-- Set the curinglist priority for each affliction to match the afflictions priority
-			if data.type == "time" then
-				curinglist[affliction] = 26
-			else
-				curinglist[affliction] = data.priority
-			end
-		end
-	end
+function updateCuringListPriorities()
+    for affliction, data in pairs(afflictions) do
+        if data.cures and data.cures[1] and data.cures[1].type == "time" then
+            curinglist[affliction] = 26
+        else
+            curinglist[affliction] = tonumber(data.priority) or 25
+        end
+    end
+end
 
 
-
-
--- Process and select the best cure for an affliction
 function queue:processCure(affliction, details)
     local prioritizedCures = self:priority(details.cures, affliction, details.priority)
 
@@ -16791,14 +16681,21 @@ function queue:processCure(affliction, details)
     return nil
 end
 
--- Trigger for successful cure of an affliction
+
 function onCureSuccess(affliction)
     if pipeline.afflictions[affliction] then
         pipeline.afflictions[affliction] = nil
     end
 end
 
--- Reset the curing process by clearing afflictions
+
+function onCureFail(affliction)
+    if pipeline.afflictions[affliction] then
+        pipeline.afflictions[affliction] = nil
+    end
+end
+
+
 function resetCuringProcess()
     pipeline.afflictions = {}
 
@@ -16808,9 +16705,7 @@ function resetCuringProcess()
             pipeline.afflictions[affliction].attempts = 0
         end
     end
-end
-
-</script>
+end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
@@ -16823,9 +16718,9 @@ queue.__index = queue
 
 -- Constructor for a new queue
 function queue:new()
-  local obj = {items = {}, heap = {}, nodes = {}}
-  setmetatable(obj, self)
-  return obj
+    local obj = {items = {}, heap = {}, nodes = {}}
+    setmetatable(obj, self)
+    return obj
 end
 
 -- Initialize 'defenses' with a new instance of 'queue' if 'defenses' is nil or false.
@@ -16833,30 +16728,30 @@ fortify = fortify or queue:new()
 
 -- Method to clear all items from the queue
 function queue:clear()
-  self.items = {}
-  self.heap = {}
-  self.nodes = {}
+    self.items = {}
+    self.heap = {}
+    self.nodes = {}
 end
 
 -- Method to get the size of the queue
 function queue:size()
-  return #self.items
+    return #self.items
 end
 
 -- Method to reset the queue
 function queue:reset()
-  self:clear()
+    self:clear()
 end
 
--- Echo next cure command queued.
+-- Print the defense command for debugging
 function queue:echo(command)
-  cecho("\n&lt;DarkSlateGray&gt;SENT COMMAND: &lt;white&gt;- &lt;PowderBlue&gt;" .. command:upper() .. "\n")
+    cecho("\n&lt;DarkSlateGray&gt;DEFENSE COMMAND: &lt;white&gt;- &lt;PowderBlue&gt;" .. command:upper() .. "\n")
 end
 
 -- Check if queue already contains special key in heap.
 function queue:contains(item)
-  local key = item.type .. "-" .. item.name
-  return self.nodes[key] ~= nil
+    local key = item.type .. "-" .. item.name
+    return self.nodes[key] ~= nil
 end
 
 -- Helper method to check if active afflictions block a new detail
@@ -16871,80 +16766,68 @@ function queue:blockers(blockers)
     return false
 end
 
-function queue:echo(command)
-    cecho("\n&lt;DarkSlateGray&gt;DEFENSE COMMAND: &lt;white&gt;- &lt;PowderBlue&gt;" .. command:upper() .. "\n")
-end
 
 function fortify:update(defense, value)
-
-  --if defense == "speed" then
-    --self:echo(" fortify:update() called for speed - value = " .. tostring(value))
-  --end
-
-  if defenses[defense] then
-    if settings.debug then self:echo("Updating defense: " .. defense) end
-  else
-	if defense == "tree" then
-		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-		if settings.debug then self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
-	else
-		if settings.debug then self:echo("No such defense found in defenses table: " .. tostring(defense))  end
-	end
-  end
-
-  if value then
-    -- Always add to mydefs if not present
-    if not table.contains(mydefs, defense) then
-      table.insert(mydefs, defense)
-    end
-
-    -- ✅ Always clear pipeline key regardless of mydefs state
-    pipeline.defenses[defense] = nil
-    pipeline.activeCommand = ""
-
     if defenses[defense] then
-      defenses[defense].active = value
-      defenses[defense].enabled = value
+        if settings.debug then self:echo("Updating defense: " .. defense) end
+    else
+        if defense == "tree" then
+            if settings.debug then 
+                self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") 
+            end
+        else
+            if settings.debug then self:echo("No such defense found in defenses table: " .. tostring(defense)) end
+        end
     end
 
-    if settings.debug then self:echo("Cleared pipeline key: " .. tostring(defense)) end
+    if value then
+        -- Always add to mydefs if not present
+        if not table.contains(mydefs, defense) then
+            table.insert(mydefs, defense)
+        end
 
-  else
-    if table.contains(mydefs, defense) then
-      table.remove(mydefs, table.index_of(mydefs, defense))
+        -- Always clear pipeline key regardless of mydefs state
+        pipeline.defenses[defense] = nil
+        pipeline.activeCommand = ""
+
+        if defenses[defense] then
+            defenses[defense].active = value
+            defenses[defense].enabled = value
+        end
+
+        if settings.debug then self:echo("Cleared pipeline key: " .. tostring(defense)) end
+    else
+        if table.contains(mydefs, defense) then
+            table.remove(mydefs, table.index_of(mydefs, defense))
+        end
+
+        -- FIXED: Specific key erasure instead of nuking the entire tracking table array
+        pipeline.defenses[defense] = nil
+
+        if defenses[defense] then
+            defenses[defense].active = value
+            defenses[defense].enabled = value
+            defenses[defense].keepup = value
+        end
     end
-
-    pipeline.defenses = {}
-
-    if defenses[defense] then
-      defenses[defense].active = value
-      defenses[defense].enabled = value
-      defenses[defense].keepup = value
-    end
-  end
 end
-
 
 
 function fortify:relax()
     local cs = settings.cmdsep
-	  local currentClassType = PLAYER:myclass()  -- Get the current class type
-    local validSkillTree = skillTreeList[currentClassType]  -- Get the skills for the current class
-    local list = table.n_union(validSkillTree, {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "yourMissingType1", "yourMissingType2"})  -- Add missing types
-    local relaxCommands = {}  -- Table to hold the relax commands
+    local currentClassType = PLAYER:myclass()  
+    local validSkillTree = skillTreeList[currentClassType]  
+    local list = table.n_union(validSkillTree, {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "yourMissingType1", "yourMissingType2"})  
+    local relaxCommands = {}  
 
     -- Iterate over each defense
     for defenseName, defense in pairs(defenses) do
-
-        -- Check the conditions
-        if defense.active and  -- Check if the defense is active
-           string.find(defense.relax, "relax") and  -- Check if "relax" is in the relax command
+        -- Check the conditions safely
+        if defense.active and  
+           string.find(defense.relax or "", "relax") and  
            table.contains(list, defense.type) and
            (defense.drain == "mana" or defense.drain == "endurance") and
-           not (defense.type == "blindness" or defense.type == "deafness" or defense.type == "insomnia") then  -- Exclude blindness and deafness
+           not (defense.type == "blindness" or defense.type == "deafness" or defense.type == "insomnia") then  
            
             -- Add the relax command to the list
             table.insert(relaxCommands, defense.relax)
@@ -16953,27 +16836,13 @@ function fortify:relax()
 
     -- Send all relax commands if any were found
     if #relaxCommands &gt; 0 then
-        local relaxCommandString = table.concat(relaxCommands, cs)  -- Concatenate the commands into a single string
-        send(relaxCommandString)  -- Send the concatenated relax commands
+        local relaxCommandString = table.concat(relaxCommands, cs)  
+        send(relaxCommandString)  
     else
         echo("No relax commands to send.")
     end
 end
 
--- Method to add an item to the queue
---function queue:push(item)
-  --  local key = item.type .. "-" .. item.name
-    --if not self:contains(item) then
-      --  self.items[#self.items + 1] = item
-        --self.nodes[key] = #self.items
-        
-        --table.sort(self.items, function(a, b)
-          --  return a.priority &lt; b.priority
-        --end)
-    --else
-      --  print("Item is already in the queue")
-    --end
---end
 
 -- Method to remove and return the highest priority item
 function queue:pop()
@@ -16996,6 +16865,7 @@ function queue:pop()
     return item
 end
 
+
 function queue:process()
     if not settings.systemLoaded or settings.systemPaused or balance_data.stunned.in_use then
         return 
@@ -17004,7 +16874,7 @@ function queue:process()
     fortify:reset()
 
     -- 1. Build the list of allowed skills based on class and fundamentals
-    local list = table.n_union(skillTreeList[PLAYER:myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo","resistance"})
+    local list = table.n_union(skillTreeList[PLAYER:myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "resistance"})
     local validDefenses = {}
 
     -- 2. Filter the global defenses table for candidates
@@ -17026,7 +16896,7 @@ function queue:process()
             local hasRequiredBalance, hasRequiredCooldown = true, true
 
             -- Balance Checks
-            for _, balance in ipairs(details.requires) do
+            for _, balance in ipairs(details.requires or {}) do
                 if not balance_data[balance] or balance_data[balance].in_use then
                     hasRequiredBalance = false
                     break
@@ -17034,7 +16904,7 @@ function queue:process()
             end
 
             -- Cooldown Checks
-            for _, cooldown in ipairs(details.cooldown) do
+            for _, cooldown in ipairs(details.cooldown or {}) do
                 if not balance_data[cooldown] or balance_data[cooldown].in_use then
                     hasRequiredCooldown = false
                     break
@@ -17043,8 +16913,6 @@ function queue:process()
 
             -- If balances are up, check if this defense is flagged to be queued
             if hasRequiredBalance and hasRequiredCooldown then
-                -- Logic: If DEFUP is on, include all enabled defs. 
-                -- If DEFUP is off, only include 'keepup' defs.
                 if ((details.enabled and defupmode) or (not defupmode and details.keepup)) and not details.active then
                     table.insert(validDefenses, details)
                 end
@@ -17052,20 +16920,19 @@ function queue:process()
         end
     end
 
-    -- 3. Sort candidates by priority
+    -- 3. Sort candidates safely to prevent invalid order function crashes
     table.sort(validDefenses, function(a, b)
-        return (a.priority or 0) &gt; (b.priority or 0)
+        local valA = tonumber(a.priority) or 25
+        local valB = tonumber(b.priority) or 25
+        return valA &lt; valB
     end)
 
     -- 4. THE PROMPT &amp; STATE SYNC
-    -- We only turn defupmode OFF if:
-    -- A) The pipeline is empty (no pending commands)
-    -- B) No new valid candidates were found in the check above
     if table.is_empty(pipeline.defenses) and #validDefenses == 0 then
         if defupmode then
             defupmode = false
             if settings.debug then cecho("\n&lt;green&gt;[SYSTEM]: All defenses active. DEFUP cleared.") end
-            updatePrompt() -- Force the prompt to remove the [DEFUP] tag immediately
+            updatePrompt() 
         end
     end
 
@@ -17101,7 +16968,7 @@ function queue:send(defense)
     local command = defense.command
 
     if not defense.name then
-        if settings.debug then  cecho("\n&lt;red&gt;[ERROR] Defense is missing name!") end
+        if settings.debug then cecho("\n&lt;red&gt;[ERROR] Defense is missing name!") end
         return
     end
 
@@ -17130,20 +16997,16 @@ function queue:send(defense)
             defenses[defense.name].active = true
             defenses[defense.name].enabled = true
         end
-		
-		-- ✅ Actually tell the system this was successfully applied
-		fortify:update(defense.name, true)
-		
-		--pipeline.defenses[defense.name] = nil
-        --pipeline.activeCommand = nil
-		  if settings.debug then self:echo("Marked delayed defense as active and cleared key:", defense.name) end
+        
+        -- Actually tell the system this was successfully applied
+        fortify:update(defense.name, true)
+        
+        if settings.debug then self:echo("Marked delayed defense as active and cleared key:", defense.name) end
     end
 
     self:debugPipeline()
-	return
+    return
 end
-
-
 
 
 -- Initialize cleanup timer once
@@ -17166,9 +17029,7 @@ function queue:cleanPipeline()
     if cleaned &gt; 0 then
         if settings.debug then self:echo("Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies.")) end
     end
-end
-
-</script>
+end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
@@ -24904,135 +24765,265 @@ registerAnonymousEventHandler("gmcp.Char.Afflictions.Add", handleAfflictionAdd)
 					<name>remove</name>
 					<packageName></packageName>
 					<script>-- Function to handle the removal of afflictions
+
 function handleAfflictionRemove()
+
     local cs = settings.cmdsep
+
     local affInfo = gmcp.Char.Afflictions.Remove
+
     local affInfoTable = {}  -- Create lookup table for affInfo
 
+
+
     -- Populate affInfoTable for O(1) lookups
+
     for _, aff in ipairs(affInfo) do
+
         affInfoTable[aff] = true
+
     end
 
+
+
     -- Iterate backwards through myaffs to safely remove items while looping
+
     for i = #myaffs, 1, -1 do
+
         local removal = myaffs[i]
 
+
+
         -- Check if the affliction exists in affInfoTable
+
         if affInfoTable[removal] then
+
             onCureSuccess(removal)  -- Handle curing success
+
             table.remove(myaffs, i)  -- Remove from myaffs directly
 
 
+
+
+
              if removal == "blackout" and hunting and autohunting then
+
                 commandSent = false
+
                 shieldCommandSent = false
+
                 huntNext()
+
                 huntNextRoom()
+
              end
 
 
+
+
+
             -- Check and reset priority in curinglist
+
             if afflictions and afflictions[removal] then
+
                 local defaultPriority = afflictions[removal].priority
 
+
+
                 -- Check if curinglist[removal] is set correctly before resetting
+
                 if curinglist[removal] then
+
                     -- Only reset if the current priority is not the same as the default
+
                     if curinglist[removal] ~= defaultPriority then
+
                         -- Generate priority command
+
                         local command = "curing prio " .. removal .. " " .. defaultPriority
 
+
+
                         -- Add to sentPriorityCommands if not already sent
+
                         if not sentPriorityCommands[removal] then
+
                             sentPriorityCommands[removal] = defaultPriority  -- Store the priority value
+
                             if tumbling then 
+
                                 -- do nothing
+
                             else
+
                               send(command)
+
                             end
+
                         end
+
                     end
+
                 end
+
             end
+
         end
+
     end
+
+
 
     -- **Failsafe check**: Ensure all afflictions in curinglist match their default priorities
+
     onCureFailsafe()
 
+
+
     -- Reset mystackableaffs if myaffs is empty
+
     if #myaffs == 0 then
+
         mystackableaffs = {
+
             torntendons = 0,
+
             skullfractures = 0,
+
             crackedribs = 0,
+
             wristfractures = 0,
+
             pressure = 0,
+
             burning = 0,
+
             temperedsanguine = 0,
+
             temperedmelancholic = 0,
+
             temperedphlegmatic = 0,
+
             temperedcholeric = 0,
+
             unweavingmind = 0,
+
             unweavingbody = 0,
+
             unweavingspirit = 0,
+
             horror = 0,
+
         }
+
     end
+
 end
+
+
+
+
+
 
 
 
 
 -- Function to handle failsafe check and ensure curinglist matches default priorities
+
 function onCureFailsafe()
+
     local cs = settings.cmdsep
+
     local priorityCommandList = {}  -- List to accumulate commands
 
+
+
     -- **Failsafe check**: Ensure all afflictions in curinglist match their default priorities
+
     for affliction, currentPriority in pairs(curinglist) do
+
         -- Make sure the affliction is not in the `myaffs` table (not already cured)
+
         if afflictions[affliction] and not table.contains(myaffs, affliction) then
+
             local defaultPriority = afflictions[affliction].priority
+
             -- If curinglist priority is not the same as the default, queue the reset command
+
             if currentPriority ~= defaultPriority then
+
                 local command = "curing prio " .. affliction .. " " .. defaultPriority
 
+
+
                 -- Only add the command if it hasn't been sent already
+
                 if not sentPriorityCommands[affliction] or sentPriorityCommands[affliction] ~= defaultPriority then
+
                     sentPriorityCommands[affliction] = defaultPriority  -- Mark as sent globally
+
                     table.insert(priorityCommandList, command)
+
                 end
 
+
+
             end
+
         end
+
     end
 
+
+
     -- Ensure we send all necessary commands
+
     if #priorityCommandList &gt; 0 then
+
         send(table.concat(priorityCommandList, cs))
+
     end
+
 end
+
+
+
+
+
 
 
 
 
 function onPriorityResetSent(affliction, priority)
+
     -- This function will be triggered once we receive confirmation that the priority has been set
+
     -- Example: "You have set the 'brokenrightarm' affliction to the 19 priority."
 
+
+
     -- Clear the affliction from the sentPriorityCommands table after confirmation
+
     if sentPriorityCommands[affliction] then
+
         --cecho("&lt;green&gt;Confirmed: " .. affliction .. " priority set to " .. priority .. "\n")
+
         sentPriorityCommands[affliction] = nil  -- Remove the affliction from the table after confirmation
+
     end
+
 end
 
 
 
+
+
+
+
 -- Register the GMCP event for removing afflictions
-registerAnonymousEventHandler("gmcp.Char.Afflictions.Remove", handleAfflictionRemove)
+
+registerAnonymousEventHandler("gmcp.Char.Afflictions.Remove", handleAfflictionRemove) 
+
 </script>
 					<eventHandlerList />
 				</Script>
@@ -25875,16 +25866,6 @@ end
     
     -- Target the defense data directly out of your master table
     local defData = defenses[targetName]
-    
-    -- Fallback handler: If table uses numeric indices instead of name keys, uncomment this block:
-    --[[
-    for _, v in pairs(defenses) do
-        if v.name and v.name:lower():trim() == targetName then
-            defData = v
-            break
-        end
-    end
-    --]]
 
     if not defData then
         -- Safe fallback value if the defense data block is corrupted or missing
@@ -25899,9 +25880,13 @@ end
 
     -- 2. Verify cooldown tracker sub-table exists to prevent nil string indexing errors
     if not defData.cooldown or type(defData.cooldown) ~= "table" then
-        defData.priority = 25 -- Bottom priority fallback if cooldown definition is missing
+        defData.priority = 25 
         return defData.priority
     end
+
+    -- Localize table hits to keep the execution blazing fast
+    local hasEq  = table.contains(defData.cooldown, "equilibrium")
+    local hasBal = table.contains(defData.cooldown, "balance")
 
     -- 3. Calculate server priority based on physical cooldown locks
     if table.contains(defData.cooldown, "free") or  
@@ -25910,10 +25895,15 @@ end
        table.contains(defData.cooldown, "smoke") 
     then
         defData.priority = 22
-    elseif table.contains(defData.cooldown, "equilibrium") and not table.contains(defData.cooldown, "balance") then
+        
+    -- PRIORITY 23: Requires EITHER equilibrium OR balance, but NOT BOTH
+    elseif (hasEq or hasBal) and not (hasEq and hasBal) then
         defData.priority = 23
-    elseif table.contains(defData.cooldown, "equilibrium") and table.contains(defData.cooldown, "balance") then
+        
+    -- PRIORITY 24: Requires BOTH equilibrium AND balance
+    elseif hasEq and hasBal then
         defData.priority = 24   
+        
     else
         defData.priority = 25 -- Catch-all baseline
     end 
