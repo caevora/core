@@ -17267,81 +17267,93 @@ end
 
 -- Main function to handle shield attacks.
 function handleShieldAttacks(target)
-    -- 🛡️ SPECIFIC SAFEGUARD GATE: Only blocks duplicate shield commands
-    if shieldCommandSent then
-        return
-    end
+  -- 🛡️ Safeguard Gate: Prevent duplicate execution spam
+  if shieldCommandSent then return end
 
-    local class = PLAYER:myclass()
-    local maxShieldAttackRetries = 10
-    local shieldAttackCounter = 1 
+  -- Normalize Class/Form Keys
+  local class = PLAYER:myclass()
+  if class == "dragon" and gmcp.Char.Status.race then
+    class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  end
 
-    if class == "dragon" then
-        class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
-    end
-
-    if shieldAttackCounter &gt; maxShieldAttackRetries then
-        debugEcho("red","Error: Shield attack function exceeded max retries.")
-        return
-    end
-
-    if not huntSettingsData[class] then
-        debugEcho("red","Error: Class not found in huntSettingsData: " .. class)
-        return
-    end
-
-    local currentTarget = type(target) == "string" and target or ""
-
-    -- ✅ BATTLE RAGE SHIELD BREAK (pure send)
-    if huntSettingsData[class]["rage shield break"] then
-        for skill, data in pairs(bragelist[class]) do
-            if data.enabled and data.type == "shield break" and battlerage() &gt;= data.rage then
-                if not balance_data.balance.in_use then
-                    local attackString = data.command
-                    
-                    if currentTarget ~= "" then
-                        attackString = string.gsub(attackString, "@tar", currentTarget)
-                    end              
-
-                    send(attackString)
-                    shieldCommandSent = true 
-                    debugEcho("green","[BRAGE] Sent pure shield break: " .. attackString)
-                else
-                    debugEcho("yellow","[BRAGE] Balance not ready for rage shield break.")
-                end
-                return
-            end
-        end
-    end
-
-    -- ✅ REGULAR SHIELD BREAKS (queued via addclear)
-    local regularCmd = huntSettingsData[class]["regular shield break"]
-
-    if regularCmd and regularCmd ~= "" then
-        if currentTarget ~= "" then
-            regularCmd = string.gsub(regularCmd, "@tar", currentTarget)
-        end
-
-        -- 🟢 THE FIX: Use queue addclear instead of separate clearqueue packets.
-        -- This forces the server to swap the attacks instantly, beating the balance tick.
-        if PLAYER:myclass() == "occultist" then
-            local targetCommand = "queue add eq " .. regularCmd
-            shieldCommandSent = true 
-            send(targetCommand)
-            debugEcho("green","Shield break replaced queue (addclear eq): " .. targetCommand)
-        else
-            local targetCommand = "queue add eqbal " .. regularCmd
-            shieldCommandSent = true 
-            send(targetCommand)
-            debugEcho("green","Shield break replaced queue (addclear eqbal): " .. targetCommand)
-        end
-    else
-        debugEcho("yellow","Shield break configuration missing or empty.")
-    end   
-
-    shieldAttackCounter = 0
+  if not huntSettingsData[class] then
+    debugEcho("red", "Error: Class not found in huntSettingsData: " .. class)
     return
+  end
+
+  local currentTarget = type(target) == "string" and target or ""
+
+  ---------------------------------------------------------
+  -- 🟢 FIXED GATEWAY: If true, try it. If it fails/doesn't fire, proceed downward!
+  ---------------------------------------------------------
+  if huntSettingsData[class]["rage shield break"] then
+    local rageFired = tryBattleRageShieldBreak(class, currentTarget)
+    if rageFired then 
+      return -- Exit completely because a rage break successfully fired!
+    end
+  end
+
+  -- Fallback: If rage wasn't enabled OR it was enabled but didn't fire, execute this:
+  tryRegularShieldBreak(class, currentTarget)
 end
+
+
+function tryRegularShieldBreak(class, currentTarget)
+  local regularCmd = huntSettingsData[class]["regular shield break"]
+
+  if not regularCmd or regularCmd == "" then
+    debugEcho("yellow", "Shield break configuration missing or empty.")
+    return false
+  end
+
+  -- Safely parse out the target wildcards (Identical to your working regular script)
+  local cleanTarget = type(currentTarget) == "string" and currentTarget or ""
+  if cleanTarget ~= "" then
+    regularCmd = string.gsub(regularCmd, "@tar", cleanTarget)
+  end
+
+  ---------------------------------------------------------
+  -- 🟢 THE ALIGNMENT FIX
+  ---------------------------------------------------------
+  -- Changed from "queue addclear eqbal " to match your working function's exact string composition!
+  local targetCommand = "queue add eqbal " .. regularCmd
+
+  -- Send the entire line down the network pipe at once
+  shieldCommandSent = true 
+  send(targetCommand)
+  debugEcho("green", "Shield break command sent successfully: " .. targetCommand)
+  return true
+end
+
+
+function tryBattleRageShieldBreak(class, currentTarget)
+  if not bragelist or not bragelist[class] then
+    return false
+  end
+
+  for skill, data in pairs(bragelist[class]) do
+    if data.enabled and data.type == "shield break" and battlerage() &gt;= data.rage then
+      if not balance_data.balance.in_use then
+        local attackString = data.command
+        
+        if currentTarget ~= "" then
+          attackString = string.gsub(attackString, "@tar", currentTarget)
+        end                     
+
+        send(attackString)
+        shieldCommandSent = true 
+        debugEcho("green", "[BRAGE] Sent pure shield break: " .. attackString)
+        return true
+      else
+        debugEcho("yellow", "[BRAGE] Balance not ready for rage shield break.")
+      end
+    end
+  end
+
+  return false
+end
+
+
 
 
 function handleBattlerageAttacks(target)
@@ -17351,7 +17363,7 @@ function handleBattlerageAttacks(target)
     end
 
     local class = PLAYER:myclass()
-    if class == "dragon" then
+    if class == "dragon" and gmcp.Char.Status.race then
         class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
     end
 
@@ -17384,11 +17396,6 @@ function handleBattlerageAttacks(target)
         end
     end
 end
-
-
-
-
-
 
 
 -- Main function to handle regular hunting attacks.
@@ -17724,48 +17731,92 @@ function updateDenizenPriorities()
   --targetPriorityList = targetMasterList[gmcp.Room.Info.area] or {}
 end
 
+function setHuntSettingsData()
+  -- 🟢 INCLUDED: Dynamically tracks your specific dragon type to load the right data keys
+  local class = PLAYER:myclass()
+  if class == "dragon" and gmcp.Char.Status.race then
+    class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  end
 
+  setTargetMasterList()
+  cecho("\n&lt;green&gt;Hunt Settings\n")
+
+  -- Configure regular attack
+  cechoLink(" &lt;cyan&gt;(+) ", function()
+    clearCmdLine()
+    appendCmdLine("hunt regular attack ")
+  end, "click to set regular hunt attack", true)
+  
+  local regularAttack = (huntSettingsData[class] and huntSettingsData[class]["regular attack"]) or "&lt;red&gt;{setup regular attack}"
+  cecho("Configure regular attack") 
+  cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularAttack .. "\n")
+
+  -- Configure regular shield break
+  cechoLink(" &lt;cyan&gt;(+) ", function()
+    clearCmdLine()
+    appendCmdLine("hunt regular shield break ")
+  end, "click to set regular shield break", true)
+  
+  local regularShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["regular shield break"]) or "&lt;red&gt;{setup shield break}"
+  cecho("Configure regular shield break")
+  cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularShieldBreak .. "\n")
+
+  -- Configure rage shield break
+  cechoLink(" &lt;cyan&gt;(+) ", function()
+    clearCmdLine()
+    appendCmdLine("hunt rage shield break ")
+  end, "click to set shield break with rage", true)
+  
+  local rageShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["rage shield break"]) and "&lt;green&gt;Yes." or "&lt;red&gt;No."
+  cecho("Configure rage shield break (yes or no)")
+  cecho("&lt;white&gt; - Current: " .. rageShieldBreak .. "\n")
+
+  echo("\n")
+  
+end
 
 function setHuntSettings(type, cmd)
-  -- Script body
-  local command = cmd
-  local class = gmcp.Char.Status.class:lower():trim()
-  -- Ensure lowercase for consistency
-  --if string.match(gmcp.Char.Status.race, "Dragon") then
-  -- class = "Dragon"
-  --end
-  -- Check if the class entry exists, if not, initialize it
+  local command = tostring(cmd):trim()
+  
+  -- Match the UI's specialized form tracking logic exactly
+  local class = PLAYER:myclass()
+  if class == "dragon" and gmcp.Char.Status.race then
+    class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  end
+
+  huntSettingsData = huntSettingsData or {}
   if not huntSettingsData[class] then
     huntSettingsData[class] = {}
   end
-  -- Check if @tar is at the end of the string
-  if string.match(command, "@tar$") then
-    -- Replace @tar with "..target"
-    attackCommand = string.gsub(command, "@tar$", '" .. target')
-  else
-    -- Replace @tar with "..target.." if it's followed by more characters
-    attackCommand = string.gsub(command, "@tar", '" .. target .. "')
-  end
-  -- Update the huntSettingsData
+
+  ---------------------------------------------------------
+  -- 🎯 FIXED: LITERAL PASSTHROUGH LAYER
+  ---------------------------------------------------------
+
+  -- Update the unified huntSettingsData keys
   if type == "regular attack" then
     huntSettingsData[class]["regular attack"] = command
-    cecho("\n&lt;green&gt;You set your regular attack command succesfully")
-  end
-  if type == "regular shield break" then
-    debugEcho("white", class)
-    debugEcho("white", command)
+    cecho("\n&lt;green&gt;You set your regular attack command successfully for " .. class:title())
+  
+  elseif type == "regular shield break" then
     huntSettingsData[class]["regular shield break"] = command
-    cecho("\n&lt;green&gt;You set your regular shield break command succesfully")
-  end
-  if type == "rage shield break" then
-    if command == "yes" then
+    cecho("\n&lt;green&gt;You set your regular shield break command successfully for " .. class:title())
+  
+  elseif type == "rage shield break" then
+    local checkCmd = command:lower():trim()
+    if checkCmd == "yes" or checkCmd == "true" then
       huntSettingsData[class]["rage shield break"] = true
     else
       huntSettingsData[class]["rage shield break"] = false
     end
-    cecho("\n&lt;green&gt;You set your hunt rage shield command succesfully")
+    cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
   end
-  saveHuntSettings()
+  
+  setHuntSettingsData()
+  
+  if type(saveHuntSettings) == "function" then
+    saveHuntSettings()
+  end
 end
 
 
