@@ -7203,13 +7203,12 @@ end</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded up</name>
-					<script>commandSent = true
-shieldCommandSent = false
+					<script>shieldCommandSent = false
 if hunting then
   shielded = true
   send("clearqueue all")
   if autohunting then
-    handleShieldAttacks()
+    handleShieldAttacks(hunttarget)
   end
 end</script>
 					<triggerType>0</triggerType>
@@ -7231,13 +7230,12 @@ end</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded up</name>
-					<script>commandSent = true
-shieldCommandSent = false
+					<script>shieldCommandSent = false
 if hunting then
   shielded = true
   send("clearqueue all")
   if autohunting then
-    handleShieldAttacks()
+    handleShieldAttacks(hunttarget)
   end
 end</script>
 					<triggerType>0</triggerType>
@@ -7259,8 +7257,7 @@ end</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded stripped</name>
-					<script>commandSent = false
-shieldCommandSent = true
+					<script>shieldCommandSent = true
 if hunting then
   shielded = false
   send("clearqueue all")
@@ -7361,15 +7358,18 @@ end</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>attack actions</name>
-					<script>if hunting and autohunting then
-    commandSent = false
-    huntNext()
-    tempTimer(1.8, [[ 
+					<script>if not shieldCommandSent and hunting and autohunting then
+  commandSent = false
+  huntNext()
+  tempTimer(
+    1.8,
+    [[ 
         if hunting and autohunting and not shielded then
             commandSent = false 
             huntNext() 
         end 
-    ]])
+    ]]
+  )
 end
 balanceStart("balance", false)</script>
 					<triggerType>0</triggerType>
@@ -7412,8 +7412,7 @@ balanceStart("balance", false)</script>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>other actions</name>
 					<script>commandSent = false
-shieldCommandSent = false
-if hunting and autohunting then
+if not shieldCommandSent and hunting and autohunting then
   huntNext()
 end</script>
 					<triggerType>0</triggerType>
@@ -17257,8 +17256,6 @@ function handleTargetsAndAttacks()
     -- ⚔️ COMBAT EXECUTION
     -- Ensure we aren't firing attacks into the ether if target is cleared to 'none'
     if target ~= "" and target ~= "none" and hasMoreHuntTargets(target) then
-        shieldCommandSent = false
-        
         handleRegularAttacks(target)
         handleBattlerageAttacks(target)
     end
@@ -17281,22 +17278,37 @@ function handleShieldAttacks(target)
     return
   end
 
-  local currentTarget = type(target) == "string" and target or ""
+  ---------------------------------------------------------
+  -- 🎯 TARGET FALLBACK SEQUENCE
+  ---------------------------------------------------------
+  -- 1. Check passed argument -&gt; 2. Check hunttarget -&gt; 3. Check legacy global target
+  local activeTarget = target
+  
+  if type(activeTarget) ~= "string" or activeTarget == "" then
+    activeTarget = (type(hunttarget) == "string" and hunttarget ~= "") and hunttarget or target
+  end
+
+  -- Clean up wrapping types safely
+  local currentTarget = type(activeTarget) == "string" and activeTarget or ""
+
+  -- Safeguard: If no target is tracked anywhere, abort to prevent bad command lines
+  if currentTarget == "" or currentTarget == "none" then
+    debugEcho("yellow", "Shield attack aborted: No active hunt target found.")
+    return
+  end
 
   ---------------------------------------------------------
-  -- 🟢 FIXED GATEWAY: If true, try it. If it fails/doesn't fire, proceed downward!
+  -- ⚔️ COMBAT FORK
   ---------------------------------------------------------
   if huntSettingsData[class]["rage shield break"] then
     local rageFired = tryBattleRageShieldBreak(class, currentTarget)
     if rageFired then 
-      return -- Exit completely because a rage break successfully fired!
+      return 
     end
   end
 
-  -- Fallback: If rage wasn't enabled OR it was enabled but didn't fire, execute this:
   tryRegularShieldBreak(class, currentTarget)
 end
-
 
 function tryRegularShieldBreak(class, currentTarget)
   local regularCmd = huntSettingsData[class]["regular shield break"]
