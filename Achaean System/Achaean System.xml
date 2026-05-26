@@ -7567,18 +7567,21 @@ end</script>
 						<name>ability regain</name>
 						<script>bragebalance = true
 local class = PLAYER:myclass()
-	if class == "dragon" then
-		class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
-	end
+
+-- If the core function tells us we are a dragon, expand it to match your bragelist keys
+if class == "dragon" then
+    local race = gmcp.Char.Status.race or ""
+    class = string.match(race:lower(), "%a+") .. " dragon"
+end
 
 bragelist[class][matches[2]:lower()].enabled = true
 
- if not(settings.debug) then 
-   deleteLine()
- else
-   cecho("\n&lt;orange&gt;"..class) 
-   cecho("\n&lt;orange&gt;"..matches[2])
- end </script>
+if not(settings.debug) then 
+    deleteLine()
+else
+    cecho("\n&lt;orange&gt;" .. class) 
+    cecho("\n&lt;orange&gt;" .. matches[2])
+end</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -8318,7 +8321,7 @@ resetFormat()
 						</Trigger>
 					</TriggerGroup>
 					<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>waterlord lady</name>
+						<name>water elemental</name>
 						<script></script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -8334,7 +8337,7 @@ resetFormat()
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>dehydrate</name>
-							<script>bragelist["water Elemental Lady"].dehydrate.enabled = false
+							<script>bragelist["water elemental"].dehydrate.enabled = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8357,7 +8360,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>icicles</name>
-							<script>bragelist["water Elemental Lady"].icicles.enabled = false
+							<script>bragelist["water elemental"].icicles.enabled = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8380,7 +8383,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>waterfall</name>
-							<script>bragelist["water Elemental Lady"].waterfall.enabled = false
+							<script>bragelist["water elemental"].waterfall.enabled = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8403,7 +8406,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>needlerain</name>
-							<script>bragelist["water Elemental Lady"].needlerain.enabled = false
+							<script>bragelist["water elemental"].needlerain.enabled = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8426,7 +8429,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>aquahammer</name>
-							<script>bragelist["water Elemental Lady"].needlerain.enabled = false
+							<script>bragelist["water elemental"].needlerain.enabled = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -11008,31 +11011,36 @@ end)
 
 
 function PLAYER:myclass(extract)
-  --if not settings.systemLoaded then return nil end
-  if not gmcp or not gmcp.Char or not gmcp.Char.Vitals then return nil end
+  -- Guard clause to prevent errors if GMCP data hasn't arrived yet
+  if not gmcp or not gmcp.Char or not gmcp.Char.Status then return "unknown" end
 
   local class = gmcp.Char.Status.class or ""
   local race = gmcp.Char.Status.race or ""
 
+  -- If you explicitly request the unedited data, bypass all logic
   if extract == "raw" then
     return class
   end
 
-  --local warriors = {"Paladin", "Runewarden", "Unnamable", "Infernal"}
+  -- 1. Force everything to lowercase right away for matching stability
+  local cleanClass = class:lower()
+  local cleanRace = race:lower()
 
-  -- Check for dragon
-  if race:lower():find("dragon") then
+  -- 2. Master Check: Dragon Forms override normal classes
+  if cleanRace:find("dragon") then
     return "dragon"
   end
 
-  -- Check for warrior classes
- -- for _, wclass in ipairs(warriors) do
- --   if class == wclass then
- --     return "warrior"
- --   end
- -- end
+  -- 3. Consolidated Elemental Check: Strip away random server suffix variations
+  if cleanClass:find("elemental") then
+    if cleanClass:find("water") then return "water elemental" end
+    if cleanClass:find("fire")  then return "fire elemental"  end
+    if cleanClass:find("earth") then return "earth elemental" end
+    if cleanClass:find("air")   then return "air elemental"   end
+  end
 
-  return class:lower()
+  -- 4. Default: Return standard class clean and lowercase (e.g., "serpent", "magi")
+  return cleanClass
 end
 
 function PLAYER:getAbilityType()
@@ -12129,16 +12137,20 @@ function systemLogin()
             {enabled = true, type = "shield break", rage = 17, command = "curse @tar vulnerability"},
           haemorrhage = {enabled = true, type = 1, rage = 36, command = "curse @tar haemorrhage"},
         },
-      ["water Elemental Lady"] = 
-        {
-          icicles = {enabled = true, type = 1, rage = 14, command = "manifest icicles @tar"},
-          dehydrate = {enabled = false, type = 2, rage = 14, command = "manifest dehydrate @tar"},
-          aquahammer = {enabled = true, type = "shield break", rage = 17, command = "manifest aquahammer @tar"},
-          needlerain = {enabled = true, type = 3, rage = 36, command = "manifest needlerain @tar"},
-          waterfall = {enabled = false, type = 4, rage = 25, command = "manifest waterfall @tar"},
-          swell = {enabled = false, type = 5, rage = 30, command = "manifest swell @tar"},
-        },
-    }
+      ["water elemental"] = {
+        icicles = {enabled = true, type = 1, rage = 14, command = "manifest icicles @tar"},
+        dehydrate = {enabled = false, type = 2, rage = 14, command = "manifest dehydrate @tar"},
+        aquahammer = {enabled = true, type = "shield break", rage = 17, command = "manifest aquahammer @tar"},
+        needlerain = {enabled = true, type = 3, rage = 36, command = "manifest needlerain @tar"},
+        waterfall = {enabled = false, type = 4, rage = 25, command = "manifest waterfall @tar"},
+        swell = {enabled = false, type = 5, rage = 30, command = "manifest swell @tar"},
+      },
+      ["air elemental"]   = {  },
+      ["fire elemental"]  = {  },
+      ["earth elemental"] = {  },
+      }
+      
+      
   inrift = inrift or {}
   allylist = allylist or {}
   enemylist = enemylist or {}
@@ -12200,74 +12212,67 @@ function systemLogin()
     }
   personalBalanceStartTimes = personalBalanceStartTimes or {}
   enemyBalanceStartTimes = enemyBalanceStartTimes or {}
-  enemyclass =
-    enemyclass or
-    {
-      ["alchemist"] = {["enabled"] = false},
-      ["apostate"] = {["enabled"] = false},
-      ["bard"] = {["enabled"] = false},
-      ["blademaster"] = {["enabled"] = false},
-      ["depthswalker"] = {["enabled"] = false},
-      ["dragon"] = {["enabled"] = false},
-      ["druid"] = {["enabled"] = false},
-      ["jester"] = {["enabled"] = false},
-      ["magi"] = {["enabled"] = false},
-      ["monk"] = {["enabled"] = false},
-      ["occultist"] = {["enabled"] = false},
-      ["pariah"] = {["enabled"] = false},
-      ["priest"] = {["enabled"] = false},
-      ["psion"] = {["enabled"] = false},
-      ["sentinel"] = {["enabled"] = false},
-      ["serpent"] = {["enabled"] = false},
-      ["shaman"] = {["enabled"] = false},
-      ["sylvan"] = {["enabled"] = false},
-      ["infernal"] = {["enabled"] = false},
-      ["unnamable"] = {["enabled"] = false},
-      ["paladin"] = {["enabled"] = false},
-      ["runewarden"] = {["enabled"] = false},
-      ["airlord"] = {["enabled"] = false},
-      ["waterlord"] = {["enabled"] = false},
-      ["firelord"] = {["enabled"] = false},
-      ["earthlord"] = {["enabled"] = false},
+  
+    enemyclass = enemyclass or {
+        ["alchemist"]    = {["enabled"] = false},
+        ["apostate"]     = {["enabled"] = false},
+        ["bard"]         = {["enabled"] = false},
+        ["blademaster"]  = {["enabled"] = false},
+        ["depthswalker"] = {["enabled"] = false},
+        ["dragon"]       = {["enabled"] = false},
+        ["druid"]        = {["enabled"] = false},
+        ["jester"]       = {["enabled"] = false},
+        ["magi"]         = {["enabled"] = false},
+        ["monk"]         = {["enabled"] = false},
+        ["occultist"]    = {["enabled"] = false},
+        ["pariah"]       = {["enabled"] = false},
+        ["priest"]       = {["enabled"] = false},
+        ["psion"]        = {["enabled"] = false},
+        ["sentinel"]     = {["enabled"] = false},
+        ["serpent"]      = {["enabled"] = false},
+        ["shaman"]       = {["enabled"] = false},
+        ["sylvan"]       = {["enabled"] = false},
+        ["infernal"]     = {["enabled"] = false},
+        ["unnamable"]    = {["enabled"] = false},
+        ["paladin"]      = {["enabled"] = false},
+        ["runewarden"]   = {["enabled"] = false},
+        
+        -- 🟢 ALIGNED FOR SYSTEM-WIDE CONSISTENCY
+        ["air elemental"]   = {["enabled"] = false},
+        ["water elemental"] = {["enabled"] = false},
+        ["fire elemental"]  = {["enabled"] = false},
+        ["earth elemental"] = {["enabled"] = false},
     }
-  -- Elemental Variants
-  skillTreeList =
-    skillTreeList or
-    {
-      ["alchemist"] = {"alchemy", "physiology", "formulation", "sublimation"},
-      ["apostate"] = {"evileye", "necromancy", "apostasy"},
-      ["bard"] = {"bladedance", "composition", "sagas", "woe"},
-      ["blademaster"] = {"twoarts", "striking", "shindo"},
-      ["depthswalker"] = {"aeonics", "shadowmancy", "terminus"},
-      ["dragon"] = {"dragoncraft"},
-      ["druid"] = {"groves", "metamorphosis", "reclamation"},
-      ["infernal"] = {"weaponmastery", "oppression", "malignity"},
-      ["jester"] = {"tarot", "pranks", "puppetry"},
-      ["magi"] = {"elementalism", "crystalism", "artificing"},
-      ["monk"] = {"tekura", "shikudo", "kaido", "telepathy"},
-      ["occultist"] = {"occultism", "tarot", "domination"},
-      ["paladin"] = {"weaponmastery", "excision", "valour"},
-      ["pariah"] = {"memorium", "pestilence", "charnel"},
-      ["priest"] = {"spirituality", "devotion", "zeal"},
-      ["psion"] = {"weaving", "psionics", "emulation"},
-      ["runewarden"] = {"weaponmastery", "runelore", "discipline"},
-      ["sentinel"] = {"metamorphosis", "woodlore", "skirmishing"},
-      ["serpent"] = {"subterfuge", "venom", "hypnosis"},
-      ["shaman"] = {"spiritlore", "curses", "vodun"},
-      ["sylvan"] = {"propagation", "groves", "weatherweaving"},
-      ["unnamable"] = {"weaponmastery", "anathema", "dominion"},
-      ["air elemental lord"] = {"duress"},
-      ["air elemental lady"] = {"duress"},
-      ["air elemental fae"] = {"duress"},
-      ["water elemental lord"] = {"pervasion"},
-      ["water elemental lady"] = {"pervasion"},
-      ["water elemental fae"] = {"pervasion"},
-      ["fire elemental lord"] = {"ignition"},
-      ["fire elemental lady"] = {"ignition"},
-      ["fire elemental fae"] = {"ignition"},
-      ["earth elemental lord"] = {"sculpting"},
-      ["earth elemental lady"] = {"sculpting"},
-      ["earth elemental fae"] = {"sculpting"},
+
+      skillTreeList = skillTreeList or {
+        ["alchemist"]     = {"alchemy", "physiology", "formulation", "sublimation"},
+        ["apostate"]      = {"evileye", "necromancy", "apostasy"},
+        ["bard"]          = {"bladedance", "composition", "sagas", "woe"},
+        ["blademaster"]   = {"twoarts", "striking", "shindo"},
+        ["depthswalker"]  = {"aeonics", "shadowmancy", "terminus"},
+        ["dragon"]        = {"dragoncraft"},
+        ["druid"]         = {"groves", "metamorphosis", "reclamation"},
+        ["infernal"]      = {"weaponmastery", "oppression", "malignity"},
+        ["jester"]        = {"tarot", "pranks", "puppetry"},
+        ["magi"]          = {"elementalism", "crystalism", "artificing"},
+        ["monk"]          = {"tekura", "shikudo", "kaido", "telepathy"},
+        ["occultist"]     = {"occultism", "tarot", "domination"},
+        ["paladin"]       = {"weaponmastery", "excision", "valour"},
+        ["pariah"]        = {"memorium", "pestilence", "charnel"},
+        ["priest"]        = {"spirituality", "devotion", "zeal"},
+        ["psion"]         = {"weaving", "psionics", "emulation"},
+        ["runewarden"]    = {"weaponmastery", "runelore", "discipline"},
+        ["sentinel"]      = {"metamorphosis", "woodlore", "skirmishing"},
+        ["serpent"]       = {"subterfuge", "venom", "hypnosis"},
+        ["shaman"]        = {"spiritlore", "curses", "vodun"},
+        ["sylvan"]        = {"propagation", "groves", "weatherweaving"},
+        ["unnamable"]     = {"weaponmastery", "anathema", "dominion"},
+        
+        -- 🟢 CONSOLIDATED ELEMENTAL KEYS MATCHING YOUR REFACTORED PLAYER:myclass()
+        ["air elemental"]   = {"duress"},
+        ["water elemental"] = {"pervasion"},
+        ["fire elemental"]  = {"ignition"},
+        ["earth elemental"] = {"sculpting"},
     }
   breath_types =
     breath_types or
@@ -14024,42 +14029,56 @@ end</script>
 					<Script isActive="yes" isFolder="no">
 						<name>resetVitals</name>
 						<packageName></packageName>
-						<script>function resetVitals()
-  vitals =
-    {
-      health =
-        {
-          max = tonumber(gmcp.Char.Vitals.maxhp),
-          current = tonumber(gmcp.Char.Vitals.hp),
-          previous = tonumber(gmcp.Char.Vitals.hp),          
-          halflife = tonumber(gmcp.Char.Vitals.maxhp) * 0.50,
-        },
-      
-      mana =
-        {
-          max = tonumber(gmcp.Char.Vitals.maxmp),
-          current = tonumber(gmcp.Char.Vitals.mp),
-          previous = tonumber(gmcp.Char.Vitals.mp),
-          halflife = tonumber(gmcp.Char.Vitals.maxmp) * 0.50,
-        },
-      ep =
-        {
-          max = tonumber(gmcp.Char.Vitals.maxep),
-          current = tonumber(gmcp.Char.Vitals.ep),
-          previous = tonumber(gmcp.Char.Vitals.ep),
-          halflife = tonumber(gmcp.Char.Vitals.maxep) * 0.50,
-        },
-      wp =
-        {
-          max = tonumber(gmcp.Char.Vitals.maxwp),
-          current = tonumber(gmcp.Char.Vitals.wp),
-          previous = tonumber(gmcp.Char.Vitals.wp),
-          halflife = tonumber(gmcp.Char.Vitals.maxwp) * 0.50,
-        },
+						<script>-- Initialize the base global table framework once at script load time
+vitals = vitals or { health = {}, mana = {}, ep = {}, wp = {}, rank = {} }
+interpolationState = interpolationState or { health = false, mana = false, ep = false, wp = false, rank = false }
 
-      rank = {max = 100, current = tonumber(string.cut(gmcp.Char.Status.xp, 2)), previous = tonumber(string.cut(gmcp.Char.Status.xp, 2)), halflife = 50},
-    }
-  interpolationState = {health = false, mana = false, ep = false, wp = false, rank = false}
+function resetVitals()
+  -- Safeguard: ensure GMCP data is physically present before processing updates
+  if not gmcp or not gmcp.Char or not gmcp.Char.Vitals then return end
+
+  -- 1. Mutate health properties in-place
+  local maxHP = tonumber(gmcp.Char.Vitals.maxhp) or 1
+  vitals.health.max      = maxHP
+  vitals.health.current  = tonumber(gmcp.Char.Vitals.hp) or maxHP
+  vitals.health.previous = tonumber(gmcp.Char.Vitals.hp) or maxHP
+  vitals.health.halflife = maxHP * 0.50
+
+  -- 2. Mutate mana properties in-place
+  local maxMP = tonumber(gmcp.Char.Vitals.maxmp) or 1
+  vitals.mana.max      = maxMP
+  vitals.mana.current  = tonumber(gmcp.Char.Vitals.mp) or maxMP
+  vitals.mana.previous = tonumber(gmcp.Char.Vitals.mp) or maxMP
+  vitals.mana.halflife = maxMP * 0.50
+
+  -- 3. Mutate endurance properties in-place
+  local maxEP = tonumber(gmcp.Char.Vitals.maxep) or 1
+  vitals.ep.max      = maxEP
+  vitals.ep.current  = tonumber(gmcp.Char.Vitals.ep) or maxEP
+  vitals.ep.previous = tonumber(gmcp.Char.Vitals.ep) or maxEP
+  vitals.ep.halflife = maxEP * 0.50
+
+  -- 4. Mutate willpower properties in-place
+  local maxWP = tonumber(gmcp.Char.Vitals.maxwp) or 1
+  vitals.wp.max      = maxWP
+  vitals.wp.current  = tonumber(gmcp.Char.Vitals.wp) or maxWP
+  vitals.wp.previous = tonumber(gmcp.Char.Vitals.wp) or maxWP
+  vitals.wp.halflife = maxWP * 0.50
+
+  -- 5. Safe Experience Parsing (Eliminates the 'string.cut' crash trap)
+  local rawXP = (gmcp.Char.Status and gmcp.Char.Status.xp) or "0"
+  -- Uses safe regex pattern matching to extract numbers, ignoring characters like '%'
+  local parsedXP = tonumber(string.match(tostring(rawXP), "%d+%.?%d*")) or 0
+
+  vitals.rank.max      = 100
+  vitals.rank.current  = math.floor(parsedXP)
+  vitals.rank.previous = math.floor(parsedXP)
+  vitals.rank.halflife = 50
+
+  -- 6. Clean Reset of Interpolation States
+  for k, _ in pairs(interpolationState) do
+    interpolationState[k] = false
+  end
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -14429,80 +14448,67 @@ end</script>
 						<packageName></packageName>
 						<script>function updateActiveCureData()
 
-  -- 1. Grab class safely. We check if the variable exists before calling :lower()
-  --PLAYER:myclass()
-  
+  -- 1. Grab class safely and immediately smash it to strict lowercase
   local rawClass = class or (gmcp and gmcp.Char and gmcp.Char.Status and gmcp.Char.Status.class) or "Unknown"
-  local gmcpClass = rawClass:lower()
+  local gmcpClass = tostring(rawClass):lower()
 
-  -- 2. Define the core data. 
-  -- Any class left as "" will simply be ignored by the engine until you fill it in.
+  -- 2. Define the core data. All lookup keys must be strictly lowercase.
   local coreCures = {
-    ["alchemist"]            = {type = "salt", command = "educe salt", cooldown = "salt", requires = "salt", blockers = {"stupidity","sleeping"}},
-    ["apostate"]             = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["bard"]                 = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["blademaster"]          = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
-    ["depthswalker"]         = {type = "chrono", command = "chrono", cooldown = "chrono", requires = "chrono", blockers = {"recklessness","sleeping"}},
-    ["dragon"]               = {type = "dragonheal", command = "dragonheal", cooldown = "dragonheal", requires = "dragonheal", blockers = {"weariness","recklessness","sleeping"}},
-    ["druid"]                = {type = "panacea", command = "evoke panacea", cooldown = "panacea", requires = "panacea", blockers = {"weariness","sleeping"}},
-    ["infernal"]             = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
-    ["jester"]               = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["magi"]                 = {type = "bloodboil", command = "cast bloodboil", cooldown = "bloodboil", requires = "bloodboil", blockers = {"brokenleftarm","brokenrightarm","sleeping"}},
-    ["monk"]                 = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["occultist"]            = {type = "fool", command = "fling fool at me", cooldown = "fool", requires = "fool", blockers = {"paralysis","sleeping"}},
-    ["paladin"]              = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
-    ["pariah"]               = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["priest"]               = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["psion"]                = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["runewarden"]           = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
-    ["sentinel"]             = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
-    ["serpent"]              = {type = "shrugging", command = "shrugging", cooldown = "shrugging", requires = {"balance","shrugging"}, blockers = {"weariness","sleeping"}},
-    ["shaman"]               = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["sylvan"]               = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["unnamable"]            = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["alchemist"]     = {type = "salt", command = "educe salt", cooldown = "salt", requires = "salt", blockers = {"stupidity","sleeping"}},
+    ["apostate"]      = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["bard"]          = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["blademaster"]   = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
+    ["depthswalker"]  = {type = "chrono", command = "chrono", cooldown = "chrono", requires = "chrono", blockers = {"recklessness","sleeping"}},
+    ["dragon"]        = {type = "dragonheal", command = "dragonheal", cooldown = "dragonheal", requires = "dragonheal", blockers = {"weariness","recklessness","sleeping"}},
+    ["druid"]         = {type = "panacea", command = "evoke panacea", cooldown = "panacea", requires = "panacea", blockers = {"weariness","sleeping"}},
+    ["infernal"]      = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
+    ["jester"]        = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["magi"]          = {type = "bloodboil", command = "cast bloodboil", cooldown = "bloodboil", requires = "bloodboil", blockers = {"brokenleftarm","brokenrightarm","sleeping"}},
+    ["monk"]          = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["occultist"]     = {type = "fool", command = "fling fool at me", cooldown = "fool", requires = "fool", blockers = {"paralysis","sleeping"}},
+    ["paladin"]       = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
+    ["pariah"]        = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["priest"]        = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["psion"]         = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["runewarden"]    = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
+    ["sentinel"]      = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
+    ["serpent"]       = {type = "shrugging", command = "shrugging", cooldown = "shrugging", requires = {"balance","shrugging"}, blockers = {"weariness","sleeping"}},
+    ["shaman"]        = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["sylvan"]        = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["unnamable"]     = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
 
-    -- Elemental Variants
-    ["air Elemental Lord"]   = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["water Elemental Lord"] = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["fire Elemental Lord"]  = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["earth Elemental Lord"] = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["air Elemental Lady"]   = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["water Elemental Lady"] = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["fire Elemental Lady"]  = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["earth Elemental Lady"] = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["air Elemental Fae"]    = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["water Elemental Fae"]  = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["fire Elemental Fae"]   = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-    ["earth Elemental Fae"]  = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
-}
+    -- 🟢 CONSOLIDATED ELEMENTAL VARIANTS
+    ["air elemental"]   = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["water elemental"] = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["fire elemental"]  = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["earth elemental"] = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+  }
 
-  -- Clear the table entirely before rebuilding
+  -- Clear engine data table before rebuilding
   activeCureData = {}
   
-  -- Populate from our known data first
+  -- Populate from our normalized data map
   for name, data in pairs(coreCures) do
     activeCureData[name] = data
   end
 
-  -- Create a safe dummy entry so the system doesn't crash
+  -- 3. Run Validation check against our lowercase baseline
   if not coreCures[gmcpClass] and gmcpClass ~= "unknown" then
-      cecho("\n&lt;red&gt;SYSTEM ALERT: &lt;white&gt;Class: [" .. rawClass:title() .. "] &lt;DarkSlateGrey&gt; -- is &lt;red&gt;NOT &lt;DarkSlateGrey&gt;in the ActiveCure table.")
+      local displayClass = rawClass:title() or "Unknown"
+
+      cecho("\n&lt;red&gt;SYSTEM ALERT: &lt;white&gt;Class: [" .. displayClass .. "] &lt;DarkSlateGrey&gt; -- is &lt;red&gt;NOT &lt;DarkSlateGrey&gt;in the ActiveCure table.")
       
-      -- Create the safe dummy entry
-        activeCureData[gmcpClass] = {
-          type = "none", 
-          command = "", 
-          cooldown = "none", 
-          requires = "none", 
-          blockers = {"sleeping"}
-        }
+      -- Create safe backup profile inside your engine tracking array
+      activeCureData[gmcpClass] = {
+        type = "none", 
+        command = "", 
+        cooldown = "none", 
+        requires = "none", 
+        blockers = {"sleeping"}
+      }
       
-      cecho("\n&lt;red&gt;!!! &lt;DarkSlateGrey&gt;Temporary dummy entry of &lt;white&gt;[" .. rawClass:title() .. "] &lt;DarkSlateGrey&gt;created so system doesnt crash! ")
-      
-    end
-     
-    
-    
+      cecho("\n&lt;red&gt;!!! &lt;DarkSlateGrey&gt;Temporary dummy entry of &lt;white&gt;[" .. displayClass .. "] &lt;DarkSlateGrey&gt;created so system doesnt crash! ")
+  end
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -17799,63 +17805,47 @@ end
 
 
 
-function setHuntSettingsData()
+function setHuntSettings(type, cmd)
+  local command = cmd
 
-	local class = PLAYER:myclass()
-	if class == "dragon" then
-		class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
-	end
+  -- 🟢 1. Align with your centralized system standard
+  local class = PLAYER:myclass()
+  
+  -- 🟢 2. Expand dragons to their color variations for distinct profile keys
+  if class == "dragon" then
+    class = string.match(gmcp.Char.Status.race or "", "%a+"):lower() .. " dragon"
+  end
 
-	setTargetMasterList()
-	-- Append the command to the command line for easy user configuration.
-	-- appendCmdLine(text)
-	cecho("\n&lt;green&gt;Hunt Settings\n")
+  -- Check if the class entry exists, if not, initialize it safely
+  if not huntSettingsData[class] then
+    huntSettingsData[class] = {}
+  end
 
-	-- Configure regular attack
-	cechoLink(
-	  " &lt;cyan&gt;(+) ",
-	  function()
-		clearCmdLine()
-		appendCmdLine("hunt regular attack")
-	  end,
-	  "click to set regular hunt attack",
-	  true
-	)
-	local regularAttack = (huntSettingsData[class] and huntSettingsData[class]["regular attack"]) or "&lt;red&gt;{setup regular attack}"
-	cecho("Configure regular attack") 
-	cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularAttack .. "\n")
+  -- Update the huntSettingsData using the structured class key
+  if type == "regular attack" then
+    huntSettingsData[class]["regular attack"] = command
+    cecho("\n&lt;green&gt;You set your regular attack command successfully for " .. class:title())
+  end
 
-	-- Configure regular shield break
-	cechoLink(
-	  " &lt;cyan&gt;(+) ",
-	  function()
-		clearCmdLine()
-		appendCmdLine("hunt regular shield break")
-	  end,
-	  "click to set regular shield break",
-	  true
-	)
-	local regularShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["regular shield break"]) or "&lt;red&gt;{setup shield break}"
-	cecho("Configure regular shield break")
-	cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularShieldBreak .. "\n")
+  if type == "regular shield break" then
+    debugEcho("white", class)
+    debugEcho("white", command)
+    huntSettingsData[class]["regular shield break"] = command
+    cecho("\n&lt;green&gt;You set your regular shield break command successfully for " .. class:title())
+  end
 
-	-- Configure rage shield break
-	cechoLink(
-	  " &lt;cyan&gt;(+) ",
-	  function()
-		clearCmdLine()
-		appendCmdLine("hunt rage shield break")
-	  end,
-	  "click to set shield break with rage",
-	  true
-	)
-	local rageShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["rage shield break"]) and "&lt;green&gt;Yes." or "&lt;red&gt;No."
-	cecho("Configure rage shield break (yes or no)")
-	cecho("&lt;white&gt; - Current: " .. rageShieldBreak .. "\n")
+  if type == "rage shield break" then
+    if command:lower() == "yes" or command:lower() == "true" then
+      huntSettingsData[class]["rage shield break"] = true
+    else
+      huntSettingsData[class]["rage shield break"] = false
+    end
+    cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
+  end
 
-	echo("\n")
+  -- Save out the updated table to JSON file
+  saveHuntSettings()
 end
-
 
 --return battlerage
 
@@ -23612,7 +23602,6 @@ function clotcalc()
     shaman = {bleed = 180, mana = 0.51, health = 0.66},
     apostate = {bleed = 220, mana = 0.51, health = 0.25},
     blademaster = {bleed = 90, mana = 0.00, health = 0.75},
-    waterlord = {bleed = 90, mana = 0.25, health = 0.75},
     depthswalker = {bleed = 90, mana = 0.61, health = 0.50},
     dragon = {bleed = 90, mana = 0.25, health = 0.50},
     druid = {bleed = 90, mana = 0.25, health = 0.50},
@@ -23627,9 +23616,12 @@ function clotcalc()
     runewarden = {bleed = 90, mana = 0.25, health = 0.50},
     infernal = {bleed = 90, mana = 0.25, health = 0.50},
     paladin = {bleed = 90, mana = 0.25, health = 0.50},
-    airlord = {bleed = 90, mana = 0.25, health = 0.75},
-    firelord = {bleed = 90, mana = 0.60, health = 0.66},
-    earthlord = {bleed = 90, mana = 0.25, health = 0.50},
+
+    -- 🟢 CONSOLIDATED SYSTEMS MATCHING REFACTORED STANDARD KEYS
+    ["air elemental"]   = {bleed = 90, mana = 0.25, health = 0.75},
+    ["water elemental"] = {bleed = 90, mana = 0.25, health = 0.75},
+    ["fire elemental"]  = {bleed = 90, mana = 0.60, health = 0.66},
+    ["earth elemental"] = {bleed = 90, mana = 0.25, health = 0.50},
   }
 
   local bleed = bleedcheck()
@@ -23645,7 +23637,6 @@ function clotcalc()
   local currentClock = os.clock()
   local storedCD = settings.clotcd or 0
 
-  -- If the stored CD is in the far future (more than 5s away), it's corrupt. Wipe it.
   if storedCD &gt; (currentClock + 5) then
     debugEcho("yellow","[CLOT WARNING] Corrupt timestamp detected in settings.clotcd! Resetting to 0.")
     settings.clotcd = 0
@@ -23670,7 +23661,6 @@ function clotcalc()
   clotsNeeded = math.min(clotsNeeded, MAX_CLOTS_PER_CALL)
   local totalClotCost = clotsNeeded * clotCostPer
 
-  -- Support profile fallback logic for bleeddanger
   local activeBleedConfig = tonumber(bleeddanger or settings.bleeddanger or 70)
   local activeEnemy = false
   local danger = {bleed = activeBleedConfig, mana = 0.25, health = 0.66}
@@ -23693,7 +23683,6 @@ function clotcalc()
 
   debugEcho("white",string.format("[CLOT DEBUG] Bleed: %d | Clots: %d | Cost: %d | HP: %d | MP: %d", bleed, clotsNeeded, totalClotCost, hp, mp))
   debugEcho("white",string.format("[CLOT DEBUG] HP danger: %.0f | MP danger: %.0f | Projected HP: %.0f | Projected MP: %.0f", settings.healthThreshold, settings.manaThreshold, projectedHP, projectedMP))
-  
 
   local targetDangerBleed = activeEnemy and danger.bleed or activeBleedConfig
   if bleed &lt; targetDangerBleed then
@@ -23709,7 +23698,7 @@ function clotcalc()
   ---------------------------------------------------------
   -- DECISION PIPELINE
   ---------------------------------------------------------
-  if projectedHP &lt; settings.healthThreshold then
+ if projectedHP &lt; settings.healthThreshold then
     settings.clotcd = os.clock() + 0.5
     debugEcho("green","[CLOT EXECUTION] Emergency HP threshold breached! Forcing command pipeline.")
     sendClots(clotsNeeded)
