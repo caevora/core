@@ -7257,7 +7257,8 @@ end</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded stripped</name>
-					<script>shieldCommandSent = true
+					<script>shieldCommandSent = false
+commandSent = false
 if hunting then
   shielded = false
   send("clearqueue all")
@@ -8444,6 +8445,29 @@ resetFormat()</script>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
 								<string>^(You form a giant hammer out of water and bring it crashing down upon the magical shield surrounding .+, destroying it.)$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>swell</name>
+							<script>bragelist["water elemental"].swell.enabled = false
+selectCaptureGroup(2)
+setFgColor(170, 255, 0)
+resetFormat()</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^(You begin to draw the fluid from .+, \w+ vitality draining even as your form becomes greater.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -9885,34 +9909,20 @@ printAreaHuntList()</script>
 					<regex>^area hunt list$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>hunt regular attack</name>
+					<name>hunt attack</name>
 					<script>--example: hunt regular attack wield lash shield"..settings.cmdsep.."garrote @tar
-setHuntSettings("regular attack", matches[2])
-
-
-
-
-
-</script>
+setHuntSettings("regular attack", matches[2])</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^hunt regular attack (.+)$</regex>
+					<regex>^hunt attack (.+)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>hunt regular shield break</name>
+					<name>hunt shield break</name>
 					<script>--example: hunt regular shield break wield lash shield"..settings.cmdsep.."garrote @tar
 setHuntSettings("regular shield break", matches[2])</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^hunt regular shield break (.+)$</regex>
-				</Alias>
-				<Alias isActive="yes" isFolder="no">
-					<name>hunt rage shield</name>
-					<script>--example: hunt rage shield (yes/no)
-setHuntSettings("rage shield break", matches[2])</script>
-					<command></command>
-					<packageName></packageName>
-					<regex>^hunt rage shield break (\w+)$</regex>
+					<regex>^hunt shield break (.+)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
 					<name>hunt toggle</name>
@@ -11268,6 +11278,7 @@ function jsonBackup()
     {name = "huntmasterlist", table = targetMasterList},
     {name = "areaignorelist", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
+    {name = "battlerage", table = bragelist},
     {name = "curinglist", table = curinglist},
     {name = "defenses", table = defenses},
     {name = "afflictions", table = afflictions},
@@ -11453,6 +11464,7 @@ function jsonManager(opts)
     {name = "huntmasterlist", ref = targetMasterList},
     {name = "areaignorelist", ref = areaIgnoreList},
     {name = "huntsettings", ref = huntSettingsData},
+    {name = "battlerage", ref = bragelist},
     {name = "curinglist", ref = curinglist},
     {name = "defenses", ref = defenses},             
     {name = "afflictions", ref = afflictions}, 
@@ -11508,6 +11520,7 @@ function loadAllTablesFromJSON()
       {name = "huntmasterlist", target = "targetMasterList"},
       {name = "areaignorelist", target = "areaIgnoreList"},
       {name = "huntsettings", target = "huntSettingsData"},
+      {name = "battlerage", target = "bragelist"},
       {name = "curinglist", target = "curinglist"},
       {name = "defenses", target = "defenses"},       -- 🟩 Aligned
       {name = "afflictions", target = "afflictions"},
@@ -11595,6 +11608,7 @@ function saveAllTablesAsJSON()
     {name = "huntmasterlist", table = targetMasterList},
     {name = "areaignorelist", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
+    {name = "battlerage", table = bragelist},
     {name = "curinglist", table = curinglist},
     {name = "defenses", table = defenses},             -- 🟩 Aligned naming convention
     {name = "afflictions", table = afflictions},
@@ -17756,8 +17770,8 @@ function setHuntSettingsData()
   -- Configure regular attack
   cechoLink(" &lt;cyan&gt;(+) ", function()
     clearCmdLine()
-    appendCmdLine("hunt regular attack ")
-  end, "click to set regular hunt attack", true)
+    appendCmdLine("hunt attack ")
+  end, "click to set hunt attack", true)
   
   local regularAttack = (huntSettingsData[class] and huntSettingsData[class]["regular attack"]) or "&lt;red&gt;{setup regular attack}"
   cecho("Configure regular attack") 
@@ -17766,23 +17780,37 @@ function setHuntSettingsData()
   -- Configure regular shield break
   cechoLink(" &lt;cyan&gt;(+) ", function()
     clearCmdLine()
-    appendCmdLine("hunt regular shield break ")
-  end, "click to set regular shield break", true)
+    appendCmdLine("hunt shield break ")
+  end, "click to set shield break", true)
   
   local regularShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["regular shield break"]) or "&lt;red&gt;{setup shield break}"
   cecho("Configure regular shield break")
   cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularShieldBreak .. "\n")
 
   -- Configure rage shield break
-  cechoLink(" &lt;cyan&gt;(+) ", function()
-    clearCmdLine()
-    appendCmdLine("hunt rage shield break ")
-  end, "click to set shield break with rage", true)
+ -- cechoLink(" &lt;cyan&gt;(+) ", function()
+   -- clearCmdLine()
+   -- appendCmdLine("hunt rage shield break ")
+ -- end, "click to set shield break with rage", true)
   
-  local rageShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["rage shield break"]) and "&lt;green&gt;Yes." or "&lt;red&gt;No."
-  cecho("Configure rage shield break (yes or no)")
-  cecho("&lt;white&gt; - Current: " .. rageShieldBreak .. "\n")
+ -- local rageShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["rage shield break"]) and "&lt;green&gt;Yes." or "&lt;red&gt;No."
+  --cecho("Configure rage shield break (yes or no)")
+  --cecho("&lt;white&gt; - Current: " .. rageShieldBreak .. "\n")
 
+  echo("\n")
+  
+  ---------------------------------------------------------
+  -- ⚡ INTERACTIVE BATTLERAGE LINK
+  ---------------------------------------------------------
+  cechoLink(
+    " &lt;orange&gt;[ VIEW BATTLERAGE PRIORITIES ]\n", 
+    function()
+      printBattleragePriorityList()
+    end, 
+    "Click to open the interactive Battlerage priority configuration window", 
+    true
+  )
+  
   echo("\n")
   
 end
@@ -17824,7 +17852,7 @@ function setHuntSettings(type, cmd)
     cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
   end
   
-  setHuntSettingsData()
+    setHuntSettingsData()
   
   if type(saveHuntSettings) == "function" then
     saveHuntSettings()
@@ -17865,52 +17893,6 @@ function saveHuntSettings()
   f:close()
   cecho("&lt;green&gt;✅ Hunting settings saved to: " .. savePath .. "\n")
 end
-
-
-
-function setHuntSettings(type, cmd)
-  local command = cmd
-
-  -- 🟢 1. Align with your centralized system standard
-  local class = PLAYER:myclass()
-  
-  -- 🟢 2. Expand dragons to their color variations for distinct profile keys
-  if class == "dragon" then
-    class = string.match(gmcp.Char.Status.race or "", "%a+"):lower() .. " dragon"
-  end
-
-  -- Check if the class entry exists, if not, initialize it safely
-  if not huntSettingsData[class] then
-    huntSettingsData[class] = {}
-  end
-
-  -- Update the huntSettingsData using the structured class key
-  if type == "regular attack" then
-    huntSettingsData[class]["regular attack"] = command
-    cecho("\n&lt;green&gt;You set your regular attack command successfully for " .. class:title())
-  end
-
-  if type == "regular shield break" then
-    debugEcho("white", class)
-    debugEcho("white", command)
-    huntSettingsData[class]["regular shield break"] = command
-    cecho("\n&lt;green&gt;You set your regular shield break command successfully for " .. class:title())
-  end
-
-  if type == "rage shield break" then
-    if command:lower() == "yes" or command:lower() == "true" then
-      huntSettingsData[class]["rage shield break"] = true
-    else
-      huntSettingsData[class]["rage shield break"] = false
-    end
-    cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
-  end
-
-  -- Save out the updated table to JSON file
-  saveHuntSettings()
-end
-
---return battlerage
 
 function battlerage()
   return tonumber(string.match(gmcp.Char.Vitals.charstats[2], "%d+"))
@@ -19317,6 +19299,153 @@ function addstuff()
     end
   end
 end
+
+
+function printBattleragePriorityList()
+  -- 1. Grab and normalize the active user's form/class
+  local class = PLAYER:myclass()
+  if class == "dragon" and gmcp.Char.Status.race then
+    class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  end
+
+  -- Validate the profile state has configured rage data
+  if not bragelist or not bragelist[class] then
+    cecho("\n&lt;red&gt;[BRAGE] No battlerage profile found for active class: " .. tostring(class))
+    return
+  end
+
+  cecho("\n&lt;green&gt;==================================================")
+  cecho("\n&lt;green&gt;⚡ " .. class:upper() .. " BATTLERAGE CONFIGURATION")
+  cecho("\n&lt;green&gt;==================================================")
+  echo("\n")
+
+  -- 2. Extract skills and separate normal priorities from static utility tags
+  local sortedSkills = {}
+  local staticSkills = {}
+
+  for skillName, data in pairs(bragelist[class]) do
+    if type(data.type) == "number" then
+      table.insert(sortedSkills, {
+        name = skillName,
+        priority = data.type,
+        enabled = data.enabled,
+        rage = data.rage
+      })
+    else
+      -- Isolate shield breaks or custom text descriptors
+      table.insert(staticSkills, {
+        name = skillName,
+        priorityType = data.type,
+        enabled = data.enabled,
+        rage = data.rage
+      })
+    end
+  end
+
+  -- 3. Sort standard skills numerically by priority (lowest number = highest priority)
+  table.sort(sortedSkills, function(a, b)
+    if a.priority == b.priority then
+      return a.name &lt; b.name
+    end
+    return a.priority &lt; b.priority
+  end)
+
+  ---------------------------------------------------------
+  -- 🔘 RENDER NUMBERED PRIORITY ABILITIES
+  ---------------------------------------------------------
+  for _, skill in ipairs(sortedSkills) do
+    local toggleText = skill.enabled and "&lt;green&gt;[ON] " or "&lt;red&gt;[OFF]"
+    
+    -- CLICK TO TOGGLE STATUS
+    cechoLink(
+      " " .. toggleText .. " ",
+      function()
+        bragelist[class][skill.name].enabled = not bragelist[class][skill.name].enabled
+        saveTableToJSON(bragelist, "battlerage") 
+        printBattleragePriorityList() -- Auto-refresh UI layout *after* disk write
+      end,
+      "Toggle " .. skill.name:upper() .. " State",
+      true
+    )
+
+    -- CLICK TO RAISE PRIORITY (Lowers the index number closer to 1)
+    cechoLink(
+      "&lt;cyan&gt;(▲) ",
+      function()
+        local currentPri = bragelist[class][skill.name].type
+        bragelist[class][skill.name].type = math.max(currentPri - 1, 1)
+        saveTableToJSON(bragelist, "battlerage")
+        printBattleragePriorityList()
+      end,
+      "Raise Priority (Move Up List)",
+      true
+    )
+
+    -- CLICK TO LOWER PRIORITY (Increases index value)
+    cechoLink(
+      "&lt;cyan&gt;(▼) ",
+      function()
+        local currentPri = bragelist[class][skill.name].type
+        bragelist[class][skill.name].type = currentPri + 1
+        saveTableToJSON(bragelist, "battlerage")
+        printBattleragePriorityList()
+      end,
+      "Lower Priority (Move Down List)",
+      true
+    )
+
+    -- Text Print Alignment
+    cecho(string.format(" &lt;white&gt;Prio: [&lt;yellow&gt;%d&lt;white&gt;]  Cost: [&lt;orange&gt;%2dr&lt;white&gt;]  &lt;white&gt;%s\n", 
+      skill.priority, 
+      skill.rage, 
+      skill.name:upper()
+    ))
+  end
+
+  ---------------------------------------------------------
+  -- 🛡️ RENDER SPECIAL STATIC ABILITIES (Shield Breaks)
+  ---------------------------------------------------------
+  if #staticSkills &gt; 0 then
+    echo("\n")
+    cecho("&lt;green&gt;--------------------------------------------------\n")
+    cecho("&lt;yellow&gt;🔧 SPECIAL/STATIC UTILITES:\n")
+    cecho("&lt;green&gt;--------------------------------------------------\n")
+    
+for _, skill in ipairs(staticSkills) do
+  local toggleText = skill.enabled and "&lt;green&gt;[ON] " or "&lt;red&gt;[OFF]"
+  
+  cechoLink(
+    " " .. toggleText .. " ",
+    function()
+      -- 1. Flip the status inside your bragelist table
+      bragelist[class][skill.name].enabled = not bragelist[class][skill.name].enabled
+      
+      -- 2. Map the state directly to your hunting gateway table
+      huntSettingsData[class] = huntSettingsData[class] or {}
+      huntSettingsData[class]["rage shield break"] = bragelist[class][skill.name].enabled
+      setHuntSettings("rage shield break", huntSettingsData[class]["rage shield break"])
+      
+      -- 3. Save BOTH data files immediately so they stay synced
+      saveTableToJSON(bragelist, "battlerage")
+      
+      -- 4. Cleanly redraw the interface
+      printBattleragePriorityList()
+    end,
+    "Toggle Special Utility " .. skill.name:upper(),
+    true
+  )
+      
+      -- Render trailing lines empty of prioritization buttons since these are controlled via gateways
+      cecho(string.format("  &lt;white&gt;Type: [&lt;yellow&gt;%s&lt;white&gt;] Cost: [&lt;orange&gt;%2dr&lt;white&gt;]  &lt;white&gt;%s\n", 
+        tostring(skill.priorityType):upper(), 
+        skill.rage, 
+        skill.name:upper()
+      ))
+    end
+  end
+  cecho("&lt;green&gt;==================================================\n")
+end
+
 
 -- Register the event handler
 registerAnonymousEventHandler("gmcp.Room.Info", updateAreaInfo)
