@@ -7289,6 +7289,7 @@ balanceStart("balance",false)</script>
 						<string>has no shield to shatter.</string>
 						<string>You conjure a blade of ice and drive it straight through the magical shield </string>
 						<string>The magical shield surrounding</string>
+						<string>Bracing your feet, you drive a</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -7300,6 +7301,7 @@ balanceStart("balance",false)</script>
 						<integer>1</integer>
 						<integer>2</integer>
 						<integer>0</integer>
+						<integer>2</integer>
 						<integer>2</integer>
 						<integer>2</integer>
 					</regexCodePropertyList>
@@ -7395,6 +7397,7 @@ balanceStart("balance", false)</script>
 						<string>You reach out and clench a fist</string>
 						<string>You call down a deluge to drench</string>
 						<string>You conjure a blade of ice and send it to lacerate</string>
+						<string>^(Whirling|Snapping|Bracing|Falling|You lash|Lunging|You whip|You drive)</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -7408,6 +7411,7 @@ balanceStart("balance", false)</script>
 						<integer>2</integer>
 						<integer>2</integer>
 						<integer>2</integer>
+						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -8474,6 +8478,303 @@ resetFormat()</script>
 							</regexCodePropertyList>
 						</Trigger>
 					</TriggerGroup>
+					<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>monk</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList />
+						<regexCodePropertyList />
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>tornado kick</name>
+							<script>bragelist.monk.tornadokick.enabled = false
+selectCaptureGroup(2)
+setFgColor(170, 255, 0)
+resetFormat()
+if hunting and autohunting then
+  huntNext()
+end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^(You leap and spin in the air, striking .+ repeatedly with an outstretched foot.)$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>spinning backfist</name>
+							<script>bragelist.monk.spinningbackfist.enabled = false
+selectCaptureGroup(2)
+setFgColor(170, 255, 0)
+resetFormat()
+if hunting and autohunting then
+  huntNext()
+end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^(You spin and strike .+ with the back of your fist.)$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>mind scramble</name>
+							<script>bragelist.monk.scramble.enabled = false
+selectCaptureGroup(2)
+setFgColor(170, 255, 0)
+resetFormat()
+if hunting and autohunting then
+  huntNext()
+end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^(You rummage quickly through .+ mind, finding the link to fine motor control before exerting a small amount of psychic force and deadening it.)$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>ripple strike</name>
+							<script>bragelist.monk.ripplestrike.enabled = false
+selectCaptureGroup(2)
+setFgColor(170, 255, 0)
+resetFormat()
+if hunting and autohunting then
+  huntNext()
+end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^(You quickly strike .+ with the tips of your fingers, targeting specific nerves.)$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>splinterkick - shield break</name>
+							<script>bragelist.monk.splinterkick.enabled = false
+selectCaptureGroup(2)
+setFgColor(170, 255, 0)
+resetFormat()
+if hunting and autohunting then
+  huntNext()
+end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^(You focus your rage in a single powerful sidekick, shattering .+ translucent shield.)$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</TriggerGroup>
+				</TriggerGroup>
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>shikudo</name>
+					<script></script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList />
+					<regexCodePropertyList />
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>attacks</name>
+						<script>kata = kata + 1
+cecho("\n&lt;yellow&gt;Kata: " .. kata .. " | Stance: " .. stance .. "\n")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^(Whirling|Snapping|Bracing|Falling|You lash|Lunging|You whip|You drive)</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>reset</name>
+						<script>kata = 0
+cecho("\n&lt;red&gt;Kata reset (ended)\n")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^You can no longer maintain your deadly kata\.$</string>
+							<string>^Rising onto the balls of your feet, you prepare to </string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>2</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>willow stance</name>
+						<script>stance = "willow"
+kata = 0
+cecho("\n&lt;green&gt;STANCE SET TO WILLOW\n")
+</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Twirling your staff, you sink into the calm required for</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>oak stance</name>
+						<script>stance = "oak"
+kata = 0
+cecho("\n&lt;green&gt;STANCE SET TO Oak\n")
+
+</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Rising onto the balls of your feet, you prepare to begin </string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>rain stance</name>
+						<script>stance = "rain"
+kata = 0
+cecho("\n&lt;green&gt;STANCE SET TO RAIN\n")
+</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Dropping into a lower stance, you snap your weapon into an</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>shielded up</name>
+						<script>cecho("\n&lt;cyan&gt;Shield detected → next attack will use SHATTER\n")
+</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>A nearly invisible magical shield forms</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+						</regexCodePropertyList>
+					</Trigger>
 				</TriggerGroup>
 			</TriggerGroup>
 			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -12039,6 +12340,15 @@ function systemLogin()
   bragelist =
     bragelist or
     {
+      monk =
+        {
+          spinningbackfist = {enabled = true, type = 1, rage = 14, command = "sbp @tar"},
+          scramble = {enabled = true, type = 4, rage = 22, command = "mind scramble @tar"},
+          splinterkick = {enabled = true, type = "shield break", rage = 17, command = "spk @tar"},
+          tornadokick = {enabled = true, type = 2, rage = 36, command = "tnk @tar"},
+          mindblast = {enabled = true, type = 3, rage = 25, command = "mind blast @tar"},
+          ripplestrike = {enabled = true, type = 5, rage = 25, command = "rpst @tar"},
+        },    
       serpent =
         {
           excoriate = {enabled = true, type = "shield break", rage = 16, command = "excoriate @tar"},
@@ -13902,15 +14212,25 @@ end</script>
       stonefist = { type = "crystalweaving", command = "stonefist", relax = "", active = false, enabled = true, keepup = false, name = "stonefist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- MONK
-      standingfirm = { type = "kai", command = "standingfirm", relax = "", active = false, enabled = true, keepup = false, name = "standingfirm", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      vitality = { type = "kai", command = "vitality", relax = "", active = false, enabled = true, keepup = false, name = "vitality", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      bodyblock = { type = "kai", command = "bodyblock", relax = "", active = false, enabled = true, keepup = false, name = "bodyblock", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      evadeblock = { type = "kai", command = "evadeblock", relax = "", active = false, enabled = true, keepup = false, name = "evadeblock", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      pinchblock = { type = "kai", command = "pinchblock", relax = "", active = false, enabled = true, keepup = false, name = "pinchblock", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      regeneration = { type = "kai", command = "regenerate", relax = "", active = false, enabled = true, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      splitmind = { type = "kai", command = "splitmind", relax = "", active = false, enabled = true, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      mindcloak = { type = "kai", command = "mindcloak", relax = "", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      kaitrance = { type = "kai", command = "trance", relax = "", active = false, enabled = true, keepup = false, name = "kaitrance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      standingfirm = { type = "kaido", command = "standingfirm", relax = "", active = false, enabled = true, keepup = false, name = "standingfirm", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      vitality = { type = "kaido", command = "vitality", relax = "", active = false, enabled = true, keepup = false, name = "vitality", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      weathering = { type = "kaido", command = "weathering", relax = "", active = false, enabled = true, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      toughness = { type = "kaido", command = "toughness", relax = "", active = false, enabled = true, keepup = false, name = "toughness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      resistance = { type = "kaido", command = "resistance", relax = "", active = false, enabled = true, keepup = false, name = "resistance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      nightsight = { type = "kaido", command = "nightsight on", relax = "relax nightsight", active = false, enabled = true, keepup = false, name = "nightsight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
+      projectiles = { type = "kaido", command = "projectiles on", relax = "relax projectiles", active = false, enabled = true, keepup = false, name = "projectiles", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
+      dodging = { type = "kaido", command = "dodging on", relax = "relax dodging", active = false, enabled = true, keepup = false, name = "dodging", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
+      constitution = { type = "kaido", command = "constitution", relax = "", active = false, enabled = true, keepup = false, name = "constitution", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      consciousness = { type = "kaido", command = "consciousness on", relax = "relax consciousness", active = false, enabled = true, keepup = false, name = "consciousness", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      boosting = { type = "kaido", command = "boost regeneration", relax = "", active = false, enabled = true, keepup = false, name = "boosting", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      regeneration = { type = "kaido", command = "regenerate", relax = "", active = false, enabled = true, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      splitmind = { type = "kaido", command = "splitmind", relax = "", active = false, enabled = true, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      kaitrance = { type = "kaido", command = "trance", relax = "", active = false, enabled = true, keepup = false, name = "kaitrance", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      mindcloak = { type = "telepathy", command = "mindcloak", relax = "", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      telesense = { type = "telepathy", command = "mind telesense on", relax = "mind telesense off", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      hypersense = { type = "telepathy", command = "mind hypersense on", relax = "mind hypersense off", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
+      gripping = { type = "shikudo", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+
 
       -- NATURE CLASSES (DRUID/SENTINEL/SYLVAN)
       evasion_druid = { type = "naturalism", command = "evasion", relax = "", active = false, enabled = true, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
@@ -14477,7 +14797,7 @@ end</script>
     ["infernal"]      = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
     ["jester"]        = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
     ["magi"]          = {type = "bloodboil", command = "cast bloodboil", cooldown = "bloodboil", requires = "bloodboil", blockers = {"brokenleftarm","brokenrightarm","sleeping"}},
-    ["monk"]          = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
+    ["monk"]          = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"paralysis","sleeping"}},
     ["occultist"]     = {type = "fool", command = "fling fool at me", cooldown = "fool", requires = "fool", blockers = {"paralysis","sleeping"}},
     ["paladin"]       = {type = "fitness", command = "fitness", cooldown = "fitness", requires = "fitness", blockers = {"weariness","sleeping"}},
     ["pariah"]        = {type = "", command = "", cooldown = "", requires = "", blockers = {"sleeping"}},
@@ -17283,19 +17603,25 @@ function handleShieldAttacks(target)
 
   -- Normalize Class/Form Keys
   local class = PLAYER:myclass()
+  if type(class) == "string" then
+    class = class:lower()
+  else
+    class = ""
+  end
+
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
   end
 
-  if not huntSettingsData[class] then
-    debugEcho("red", "Error: Class not found in huntSettingsData: " .. class)
+  -- Safeguard validation: Allow "monk" to slide past even if it has no database entry
+  if not huntSettingsData[class] and class ~= "monk" then
+    debugEcho("red", "Error: Class not found in huntSettingsData: " .. tostring(class))
     return
   end
 
   ---------------------------------------------------------
   -- 🎯 TARGET FALLBACK SEQUENCE
   ---------------------------------------------------------
-  -- 1. Check passed argument -&gt; 2. Check hunttarget -&gt; 3. Check legacy global target
   local activeTarget = target
   
   if type(activeTarget) ~= "string" or activeTarget == "" then
@@ -17314,34 +17640,94 @@ function handleShieldAttacks(target)
   ---------------------------------------------------------
   -- ⚔️ COMBAT FORK
   ---------------------------------------------------------
-  if huntSettingsData[class]["rage shield break"] then
+  -- Safely index huntSettingsData using short-circuiting to prevent nil errors for "monk"
+  if huntSettingsData[class] and huntSettingsData[class]["rage shield break"] then
     local rageFired = tryBattleRageShieldBreak(class, currentTarget)
     if rageFired then 
       return 
     end
   end
 
+  -- Passes "monk" down directly to your debugged tryRegularShieldBreak function
   tryRegularShieldBreak(class, currentTarget)
 end
 
+
+
 function tryRegularShieldBreak(class, currentTarget)
-  local regularCmd = huntSettingsData[class]["regular shield break"]
+  -- 🚨 DEBUG START
+  debugEcho("white", "Function tryRegularShieldBreak() called!")
+  debugEcho("white", "Raw 'class' passed: &lt;cyan&gt;" .. tostring(class) .. "&lt;white&gt; | Raw 'currentTarget': &lt;cyan&gt;" .. tostring(currentTarget))
+
+  -- Safely parse out the target wildcards
+  local cleanTarget = type(currentTarget) == "string" and currentTarget or ""
+  debugEcho("white", "Processed cleanTarget: &lt;cyan&gt;" .. tostring(cleanTarget))
+
+  -- 🥋 MONK SUBCLASS RECOGNITION CONVERSION
+  if class == "monk" then
+    debugEcho("yellow", "Raw class is 'monk'. Converting via monkSubclass...")
+    monkSubclass = monkSubclass or "shikudo"
+    class = monkSubclass
+    debugEcho("yellow", "Converted class result: &lt;cyan&gt;" .. tostring(class))
+  end
+
+  ---------------------------------------------------------
+  -- 🥋 SHIKUDO MONK SHIELD BREAK
+  ---------------------------------------------------------
+  if class == "shikudo" then
+    debugEcho("green", "Success! Entered the Shikudo conditional block.")
+    
+    -- Fallback initialization if variables are missing
+    stance = stance or "oak"
+    local targetCommand = ""
+    debugEcho("green", "Current tracked stance value: &lt;cyan&gt;" .. tostring(stance))
+
+    if cleanTarget == "" then
+      debugEcho("red", "Aborting: cleanTarget is an empty string!")
+      debugEcho("yellow", "Error: No valid target for Shikudo shield break.")
+      return false
+    end
+
+    -- Dynamically build the shield-breaking combo based on the current stance
+    if stance == "willow"  then
+      debugEcho("green", "Building Willow stance combo...")
+      targetCommand = "queue addclear eqbal combo " .. tostring(cleanTarget) .. " shatter flashheel left hiraku"
+    elseif stance == "rain" then
+      debugEcho("green", "Building Rain stance combo...")
+      targetCommand = "queue addclear eqbal combo " .. tostring(cleanTarget) .. " shatter frontkick left kuro right"
+    elseif stance == "oak" then
+      debugEcho("green", "Building Oak stance combo...")
+      targetCommand = "queue addclear eqbal combo " .. tostring(cleanTarget) .. " shatter nervestrike risingkick head"
+    else
+       debugEcho("red", "Error: Invalid stance value during shield break: " .. tostring(stance))
+      return false
+    end
+
+    debugEcho("white", "Target command built: &lt;cyan&gt;" .. tostring(targetCommand))
+
+    -- Send the command immediately down the pipe
+    shieldCommandSent = true 
+    send(targetCommand)
+    
+    -- Force a high-visibility line write to the main console screen
+    debugEcho("green", "SUCCESS GATE REACHED! Command sent to game: " .. targetCommand .. "\n")
+    return true
+  end
+
+  ---------------------------------------------------------
+  -- ⚔️ STANDARD CLASS LOGIC (Includes Tekura Monk branch)
+  ---------------------------------------------------------
+  local regularCmd = huntSettingsData[class] and huntSettingsData[class]["regular shield break"]
 
   if not regularCmd or regularCmd == "" then
-    debugEcho("yellow", "Shield break configuration missing or empty.")
+    debugEcho("yellow", "Shield break configuration missing or empty for " .. tostring(class))
     return false
   end
 
-  -- Safely parse out the target wildcards (Identical to your working regular script)
-  local cleanTarget = type(currentTarget) == "string" and currentTarget or ""
   if cleanTarget ~= "" then
     regularCmd = string.gsub(regularCmd, "@tar", cleanTarget)
   end
 
-  ---------------------------------------------------------
-  -- 🟢 THE ALIGNMENT FIX
-  ---------------------------------------------------------
-  -- Changed from "queue addclear eqbal " to match your working function's exact string composition!
   local targetCommand = "queue add eqbal " .. regularCmd
 
   -- Send the entire line down the network pipe at once
@@ -17426,54 +17812,133 @@ end
 
 -- Main function to handle regular hunting attacks.
 function handleRegularAttacks(target)
+    debugEcho("white","Entering handleRegularAttacks()...")
+    
     local class = PLAYER:myclass()
     local targetCommand = ""
+    
+    debugEcho("white","PLAYER:myclass() returned: &lt;cyan&gt;" .. tostring(class))
 
     if class == "dragon" then
         class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+        debugEcho("white","Evaluated Dragon subclass: &lt;cyan&gt;" .. tostring(class))
+    elseif class == "monk" then
+        monkSubclass = monkSubclass or "shikudo"
+        class = monkSubclass
+        debugEcho("white","Evaluated Monk Subclass: &lt;cyan&gt;" .. tostring(class))
     end
 
-    -- Debugging and safeguard
-    if not huntSettingsData[class] then
-        debugEcho("red","Error: Class not found in huntSettingsData: "..class)
-        return
-    end
+    -- Ensure 'target' is a clean string. If it's nil, missing, or a boolean, make it a safe empty string.
+    local currentTarget = type(target) == "string" and target or ""
+    debugEcho("white","Raw target passed: &lt;cyan&gt;" .. tostring(target) .. "&lt;white&gt; -&gt; Processed currentTarget: &lt;cyan&gt;" .. tostring(currentTarget))
 
-    -- Validate regular attack configuration
-    if huntSettingsData[class]["regular attack"] then
-        local attackString = huntSettingsData[class]["regular attack"]
+    ---------------------------------------------------------
+    -- 🥋 SHIKUDO MONK FORK
+    ---------------------------------------------------------
+    if class == "shikudo" then
+        debugEcho("green","Inside Shikudo Block.")
         
-        -- 🟢 THE STRIP-DOWN FIX:
-        -- Ensure 'target' is a clean string. If it's nil, missing, or a boolean, make it a safe empty string.
-        local currentTarget = type(target) == "string" and target or ""
+        -- Fallback initialization matching lowercase trigger states
+        stance = stance or "oak"
+        kata = kata or 0
         
-        -- Use Lua's built-in string utility directly on the text line
-        if currentTarget ~= "" then
-            attackString = string.gsub(attackString, "@tar", currentTarget)
+        cecho("\n&lt;green&gt;[DEBUG] Current Stance: &lt;cyan&gt;" .. tostring(stance) .. "&lt;green&gt; | Current Kata: &lt;cyan&gt;" .. tostring(kata))
+
+        if tostring(currentTarget) == "" then
+            debugEcho("yellow", "Error: No valid target for Shikudo combo.")
+            debugEcho("red","Aborting: currentTarget is empty.")
+            return
         end
-        
-        targetCommand = "queue add eqbal " .. attackString
+
+        -- WILLOW STANCE LOGIC
+        if stance == "willow" then
+            cecho("\n&lt;green&gt;[DEBUG] Processing Stance: willow")
+            if tonumber(kata) &lt; 9 then
+                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " hiru flashheel left hiraku"
+                debugEcho("green","Kata &lt; 9 combo built.")
+            else
+                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " hiru flashheel left hiraku transition rain"
+                debugEcho("green","Kata &gt;= 9 transition combo built.")
+            end
+
+        -- RAIN STANCE LOGIC
+        elseif stance == "rain" then
+            debugEcho("green","Processing Stance: rain")
+            if tonumber(kata) &lt; 6 then
+                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " frontkick left hiru kuro right"
+                debugEcho("green","Kata &lt; 6 combo built.")
+            else
+                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " frontkick left hiru kuro right transition oak"
+                debugEcho("green","Kata &gt;= 6 transition combo built.")
+            end
+
+        -- OAK STANCE LOGIC
+        elseif stance == "oak" then
+            debugEcho("green","Processing Stance: oak")
+            if tonumber(kata) &lt; 6 then
+                targetCommand = "queue addclear eqbal combo " .. currentTarget .. " livestrike nervestrike risingkick head"
+                debugEcho("green","Kata &lt; 6 combo built.")
+            else
+                targetCommand = "queue addclear eqbal combo " .. currentTarget .. " livestrike nervestrike risingkick head transition willow"
+                debugEcho("green","Kata &gt;= 6 transition combo built.")
+            end
+        else
+            debugEcho("red", "Error: Invalid stance value: " .. tostring(stance))
+            debugEcho("green","Aborting: Stance name matched nothing (" .. tostring(stance) .. "). Check string casing!")
+            return
+        end
+
+    ---------------------------------------------------------
+    -- ⚔️ STANDARD CLASS LOGIC (Includes Tekura Monk branch)
+    ---------------------------------------------------------
     else
-        cecho("\n&lt;cyan&gt;Configure Regular Hunt Attack (hunt configure)")
-        return
+        cecho("\n&lt;orange&gt;[DEBUG] Inside Standard Class/Tekura Block.")
+        
+        -- Debugging and safeguard
+        if not huntSettingsData[class] then
+            debugEcho("red","Error: Class not found in huntSettingsData: "..class)
+            debugEcho("red","Aborting: huntSettingsData[" .. tostring(class) .. "] is nil.")
+            return
+        end
+
+        -- Validate regular attack configuration
+        if huntSettingsData[class]["regular attack"] then
+            local attackString = huntSettingsData[class]["regular attack"]
+            
+            -- Use Lua's built-in string utility directly on the text line
+            if currentTarget ~= "" then
+                attackString = string.gsub(attackString, "@tar", currentTarget)
+            end
+            
+            targetCommand = "queue add eqbal " .. attackString
+            debugEcho("orange","Standard command successfully built from DB: " .. targetCommand)
+        else
+            debugEcho("cyan","Configure Regular Hunt Attack (hunt configure)")
+            debugEcho("red","Aborting: ['regular attack'] sub-key is missing in DB.")
+            return
+        end
     end
 
-    -- Check if the command has already been sent
+    ---------------------------------------------------------
+    -- 🚀 EXECUTION &amp; FLOOD GATES
+    ---------------------------------------------------------
+    debugEcho("red","Approaching floodgates. commandSent value: &lt;cyan&gt;" .. tostring(commandSent))
+    
     if commandSent then
-        return  -- Exit function to prevent sending the command again
+        debugEcho("red","Dropped at floodgate: commandSent is already true!")
+        return  
     end
 
-    -- Implement queue check
+    debugEcho("white","Final targetCommand evaluation value: &lt;cyan&gt;" .. tostring(targetCommand))
+
     if targetCommand and targetCommand ~= "" then
-        -- Mark the command as sent
         commandSent = true
-
-        -- Add the command to the queue and process it
         send(targetCommand)
-
         debugEcho("green","Command added to queue: "..targetCommand)
+        debugEcho("green","Success! Command pushed to game server network line.")
     else
         debugEcho("red","Command already in queue or invalid: ".. targetCommand)
+        debugEcho("red","Dropped at final check: command is blank or invalid.")
     end
 
     return
@@ -17757,47 +18222,81 @@ function updateDenizenPriorities()
   --targetPriorityList = targetMasterList[gmcp.Room.Info.area] or {}
 end
 
+
+
 function setHuntSettingsData()
-  -- 🟢 INCLUDED: Dynamically tracks your specific dragon type to load the right data keys
+  -- Dynamically tracks your specific dragon type to load the right data keys
   local class = PLAYER:myclass()
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
   end
 
+  -- 🥋 MONK SUBCLASS RECOGNITION
+  -- If they are a monk, append their selected subclass to differentiate settings keys
+  if class == "monk" then
+    monkSubclass = monkSubclass or "shikudo" -- Default fallback
+    class = monkSubclass
+  end
+
   setTargetMasterList()
   cecho("\n&lt;green&gt;Hunt Settings\n")
 
-  -- Configure regular attack
-  cechoLink(" &lt;cyan&gt;(+) ", function()
-    clearCmdLine()
-    appendCmdLine("hunt attack ")
-  end, "click to set hunt attack", true)
-  
-  local regularAttack = (huntSettingsData[class] and huntSettingsData[class]["regular attack"]) or "&lt;red&gt;{setup regular attack}"
-  cecho("Configure regular attack") 
-  cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularAttack .. "\n")
+  ---------------------------------------------------------
+  -- 🔘 INTERACTIVE MONK TOGGLE BUTTON
+  ---------------------------------------------------------
+  if PLAYER:myclass() == "monk" then
+    cecho("&lt;white&gt; Monk Spec: ")
+    cechoLink(
+      "&lt;yellow&gt;[" .. monkSubclass:title() .. "]",
+      function()
+        if monkSubclass == "shikudo" then
+          monkSubclass = "tekura"
+        else
+          monkSubclass = "shikudo"
+        end
+        -- Persist the change via your global saver if it exists
+        if type(saveHuntSettings) == "function" then
+          saveHuntSettings()
+        end
+        -- Refresh the menu window
+        setHuntSettingsData()
+      end,
+      "Click to toggle between Shikudo and Tekura specs",
+      true
+    )
+    echo("\n\n")
+  end
 
-  -- Configure regular shield break
-  cechoLink(" &lt;cyan&gt;(+) ", function()
-    clearCmdLine()
-    appendCmdLine("hunt shield break ")
-  end, "click to set shield break", true)
-  
-  local regularShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["regular shield break"]) or "&lt;red&gt;{setup shield break}"
-  cecho("Configure regular shield break")
-  cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularShieldBreak .. "\n")
+  ---------------------------------------------------------
+  -- ⚔️ STANDARD CONFIGURATION OPTIONS (Hidden for Shikudo)
+  ---------------------------------------------------------
+  if class ~= "shikudo" then
+    -- Configure regular attack
+    cechoLink(" &lt;cyan&gt;(+) ", function()
+      clearCmdLine()
+      appendCmdLine("hunt attack ")
+    end, "click to set hunt attack", true)
+    
+    local regularAttack = (huntSettingsData[class] and huntSettingsData[class]["regular attack"]) or "&lt;red&gt;{setup regular attack}"
+    cecho("Configure regular attack") 
+    cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularAttack .. "\n")
 
-  -- Configure rage shield break
- -- cechoLink(" &lt;cyan&gt;(+) ", function()
-   -- clearCmdLine()
-   -- appendCmdLine("hunt rage shield break ")
- -- end, "click to set shield break with rage", true)
-  
- -- local rageShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["rage shield break"]) and "&lt;green&gt;Yes." or "&lt;red&gt;No."
-  --cecho("Configure rage shield break (yes or no)")
-  --cecho("&lt;white&gt; - Current: " .. rageShieldBreak .. "\n")
+    -- Configure regular shield break
+    cechoLink(" &lt;cyan&gt;(+) ", function()
+      clearCmdLine()
+      appendCmdLine("hunt shield break ")
+    end, "click to set shield break", true)
+    
+    local regularShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["regular shield break"]) or "&lt;red&gt;{setup shield break}"
+    cecho("Configure regular shield break")
+    cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularShieldBreak .. "\n")
 
-  echo("\n")
+    echo("\n")
+  else
+    -- Clean UI placeholder letting the user know automation is in control
+    cecho("&lt;white&gt; Attacks:   &lt;green&gt;Fully Automated (Shikudo Combo Engine)\n")
+    cecho("&lt;white&gt; Defenses:  &lt;green&gt;Fully Automated (Stance Shatter Engine)\n\n")
+  end
   
   ---------------------------------------------------------
   -- ⚡ INTERACTIVE BATTLERAGE LINK
@@ -17812,7 +18311,6 @@ function setHuntSettingsData()
   )
   
   echo("\n")
-  
 end
 
 function setHuntSettings(type, cmd)
@@ -17822,6 +18320,15 @@ function setHuntSettings(type, cmd)
   local class = PLAYER:myclass()
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  elseif class == "monk" then
+    monkSubclass = monkSubclass or "shikudo"
+    class = monkSubclass
+  end
+
+  -- Prevent setting text commands via aliases if the user is running Shikudo
+  if class == "shikudo" and (type == "regular attack" or type == "regular shield break") then
+    cecho("\n&lt;yellow&gt;[SHIKUDO] Manual command bypassed. Your attacks are fully hardcoded and automated!")
+    return
   end
 
   huntSettingsData = huntSettingsData or {}
@@ -17830,18 +18337,16 @@ function setHuntSettings(type, cmd)
   end
 
   ---------------------------------------------------------
-  -- 🎯 FIXED: LITERAL PASSTHROUGH LAYER
+  -- 🎯 LITERAL PASSTHROUGH LAYER
   ---------------------------------------------------------
-
-  -- Update the unified huntSettingsData keys
   if type == "regular attack" then
     huntSettingsData[class]["regular attack"] = command
     cecho("\n&lt;green&gt;You set your regular attack command successfully for " .. class:title())
-  
+    setHuntSettingsData()
   elseif type == "regular shield break" then
     huntSettingsData[class]["regular shield break"] = command
     cecho("\n&lt;green&gt;You set your regular shield break command successfully for " .. class:title())
-  
+    setHuntSettingsData()
   elseif type == "rage shield break" then
     local checkCmd = command:lower():trim()
     if checkCmd == "yes" or checkCmd == "true" then
@@ -17849,11 +18354,60 @@ function setHuntSettings(type, cmd)
     else
       huntSettingsData[class]["rage shield break"] = false
     end
+    printBattleragePriorityList()
     cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
   end
+   
+  if type(saveHuntSettings) == "function" then
+    saveHuntSettings()
+  end
+end
+
+function setHuntSettings(type, cmd)
+  local command = tostring(cmd):trim()
   
+  -- Match the UI's specialized form tracking logic exactly
+  local class = PLAYER:myclass()
+  if class == "dragon" and gmcp.Char.Status.race then
+    class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  elseif class == "monk" then
+    monkSubclass = monkSubclass or "shikudo"
+    class = monkSubclass
+  end
+
+  -- Prevent setting text commands via aliases if the user is running Shikudo
+  if class == "shikudo" and (type == "regular attack" or type == "regular shield break") then
+    cecho("\n&lt;yellow&gt;[SHIKUDO] Manual command bypassed. Your attacks are fully hardcoded and automated!")
+    return
+  end
+
+  huntSettingsData = huntSettingsData or {}
+  if not huntSettingsData[class] then
+    huntSettingsData[class] = {}
+  end
+
+  ---------------------------------------------------------
+  -- 🎯 LITERAL PASSTHROUGH LAYER
+  ---------------------------------------------------------
+  if type == "regular attack" then
+    huntSettingsData[class]["regular attack"] = command
+    cecho("\n&lt;green&gt;You set your regular attack command successfully for " .. class:title())
     setHuntSettingsData()
-  
+  elseif type == "regular shield break" then
+    huntSettingsData[class]["regular shield break"] = command
+    cecho("\n&lt;green&gt;You set your regular shield break command successfully for " .. class:title())
+    setHuntSettingsData()
+  elseif type == "rage shield break" then
+    local checkCmd = command:lower():trim()
+    if checkCmd == "yes" or checkCmd == "true" then
+      huntSettingsData[class]["rage shield break"] = true
+    else
+      huntSettingsData[class]["rage shield break"] = false
+    end
+    printBattleragePriorityList()
+    cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
+  end
+   
   if type(saveHuntSettings) == "function" then
     saveHuntSettings()
   end
@@ -19303,7 +19857,14 @@ end
 
 function printBattleragePriorityList()
   -- 1. Grab and normalize the active user's form/class
+  
   local class = PLAYER:myclass()
+  if type(class) == "string" then
+    class = class:lower()
+  else
+    class = ""
+  end  
+  
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
   end
@@ -19408,7 +19969,7 @@ function printBattleragePriorityList()
   if #staticSkills &gt; 0 then
     echo("\n")
     cecho("&lt;green&gt;--------------------------------------------------\n")
-    cecho("&lt;yellow&gt;🔧 SPECIAL/STATIC UTILITES:\n")
+    cecho("&lt;yellow&gt;🔧 SHIELD BREAK:\n")
     cecho("&lt;green&gt;--------------------------------------------------\n")
     
 for _, skill in ipairs(staticSkills) do
