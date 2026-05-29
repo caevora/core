@@ -2601,6 +2601,584 @@ end</script>
 					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>monk</name>
+					<script></script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList />
+					<regexCodePropertyList />
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>boost regeneration</name>
+						<script>fortify:update("boosting",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your regeneration is already boosted.</string>
+							<string>You call upon your Kai power to boost your health regeneration.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>vitality</name>
+						<script>fortify:update("vitality",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your body positively glows with health and vitality.</string>
+							<string>Your body is already aglow with vitality.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>gripping</name>
+						<script>fortify:update("gripping",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You concentrate on gripping tightly with your hands.</string>
+							<string>You are already tightly gripping with your hands.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>standingfirm</name>
+						<script>fortify:update("standingfirm",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You cease to stand firm against attempts to move you.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>standingfirm</name>
+						<script>fortify:update("standingfirm",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You cross your arms, standing firm and resolute.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>toughness</name>
+						<script>fortify:update("toughness",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Flexing your muscles, you concentrate on forcing unnatural toughness over the surface of your skin.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>resistance</name>
+						<script>fortify:update("resistance",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You call aloud and feel an aura of resistance shroud itself silently about you.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>projectiles on</name>
+						<script>fortify:update("projectiles",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You look about sharply, poised to avoid all incoming projectiles.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>relax dodging</name>
+						<script>fortify:update("projectiles",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You cease your watch for projectiles.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>dodging</name>
+						<script>fortify:update("dodging",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You resolve to keep an eye on the skies for danger.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>relax dodging</name>
+						<script>fortify:update("dodging",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You cease watching the skies.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>constitution</name>
+						<script>fortify:update("constitution",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You clench the muscles in your stomach, determined to assert your superior constitution</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>relax consciousness</name>
+						<script>fortify:update("consciousness",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You will no longer concentrate on retaining full consciousness.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>consciousness on</name>
+						<script>fortify:update("consciousness",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You will remain conscious at all times.</string>
+							<string>You begin to concentrate on regeneration of your wounds.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>regeneration</name>
+						<script>fortify:update("regeneration",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You begin to concentrate on regeneration of your wounds.</string>
+							<string>Regeneration is already on.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>stop regeneration</name>
+						<script>fortify:update("regeneration",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You call a halt to the regenerative process.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>join mind</name>
+						<script>fortify:update("splitmind",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You cease the process of Kai meditation, joining the split segments of your mind once more.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>split mind</name>
+						<script>fortify:update("splitmind",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You begin to devote a portion of your Kaido-trained mind to constant, unconscious meditation.</string>
+							<string>Your mind is already split.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>kai trance</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList />
+						<regexCodePropertyList />
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>mindcloak on</name>
+						<script>fortify:update("mindcloak",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You will now begin to concentrate on cloaking your telepathy.</string>
+							<string>You are already cloaking your attempts at mindlocking.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>mindcloak off</name>
+						<script>fortify:update("mindcloak",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You allow the mindcloak to drop</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>telesense</name>
+						<script>fortify:update("telesense",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You attune your mind to tampering from telepathy.</string>
+							<string>Your mind is already attuned to mindlock attempts.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>telesense off</name>
+						<script>fortify:update("telesense",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You cease to concentrate your mind on mindlock attempts.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>hypersense on</name>
+						<script>fortify:update("hypersense",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You begin detecting mindlock attempts in your local area.</string>
+							<string>You are already detecting mindlock attempts in your local area.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>0</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>hypersense off</name>
+						<script>fortify:update("hypersense",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You relax your hypersense.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>bodyblock</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList />
+						<regexCodePropertyList />
+					</Trigger>
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>evadeblock</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList />
+						<regexCodePropertyList />
+					</Trigger>
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>pinchblock</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList />
+						<regexCodePropertyList />
+					</Trigger>
+				</TriggerGroup>
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>survival</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -7309,7 +7887,7 @@ balanceStart("balance",false)</script>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>rage wasted shield</name>
 					<script>commandSent = false
-shieldCommandSent = true
+shieldCommandSent = false
 if hunting then
   shielded = false
   send("clearqueue all")
@@ -7367,7 +7945,7 @@ end</script>
   tempTimer(
     1.8,
     [[ 
-        if hunting and autohunting and not shielded then
+        if hunting and autohunting and not shieldCommandSent then
             commandSent = false 
             huntNext() 
         end 
@@ -14150,12 +14728,17 @@ end</script>
     local cs = ";"
     defenses = {
 
+      -- APOSTATE
+      shroud = { type = "necromancy", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+
+
       --OCCULTIST
       astralvision = { type = "occultism", command = "astralvision", relax = "", active = false, enabled = true, keepup = false, name = "astralvision", cooldown = {"equilibrium"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       distortaura = { type = "occultism", command = "distortaura", relax = "normalaura", active = false, enabled = true, keepup = false, name = "distortaura", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       astralform = { type = "occultism", command = "astralform", relax = "", active = false, enabled = true, keepup = false, name = "astralform", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       devilmark = { type = "occultism", command = "devilmark", relax = "", active = false, enabled = true, keepup = false, name = "devilmark", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       tentacles = { type = "occultism", command = "tentacles", relax = "", active = false, enabled = true, keepup = false, name = "tentacles", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      shroud = { type = "occultism", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
       
       --RUNEWARDEN
       gripping = { type = "discipline", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
@@ -14223,14 +14806,16 @@ end</script>
       constitution = { type = "kaido", command = "constitution", relax = "", active = false, enabled = true, keepup = false, name = "constitution", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       consciousness = { type = "kaido", command = "consciousness on", relax = "relax consciousness", active = false, enabled = true, keepup = false, name = "consciousness", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
       boosting = { type = "kaido", command = "boost regeneration", relax = "", active = false, enabled = true, keepup = false, name = "boosting", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      regeneration = { type = "kaido", command = "regenerate", relax = "", active = false, enabled = true, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      splitmind = { type = "kaido", command = "splitmind", relax = "", active = false, enabled = true, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      regeneration = { type = "kaido", command = "regeneration", relax = "", active = false, enabled = true, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      splitmind = { type = "kaido", command = "split mind", relax = "join mind", active = false, enabled = true, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       kaitrance = { type = "kaido", command = "trance", relax = "", active = false, enabled = true, keepup = false, name = "kaitrance", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      mindcloak = { type = "telepathy", command = "mindcloak", relax = "", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      mindcloak = { type = "telepathy", command = "mindcloak on", relax = "mindcload off", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
       telesense = { type = "telepathy", command = "mind telesense on", relax = "mind telesense off", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      hypersense = { type = "telepathy", command = "mind hypersense on", relax = "mind hypersense off", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
+      hypersense = { type = "telepathy", command = "mind hypersense on", relax = "mind hypersense off", active = false, enabled = true, keepup = false, name = "hypersense", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
       gripping = { type = "shikudo", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-
+      bodyblock = { type = "tekura", command = "bdb", relax = "unblock bdb", active = false, enabled = true, keepup = false, name = "bodyblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      evadeblock = { type = "tekura", command = "evb", relax = "unblock evb", active = false, enabled = true, keepup = false, name = "evadeblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      pinchblock = { type = "tekura", command = "pnb", relax = "unblock pnb", active = false, enabled = true, keepup = false, name = "pinchblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- NATURE CLASSES (DRUID/SENTINEL/SYLVAN)
       evasion_druid = { type = "naturalism", command = "evasion", relax = "", active = false, enabled = true, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
@@ -14255,6 +14840,13 @@ end</script>
       enduranceblessing = { type = "devotion", command = "bless endurance", relax = "", active = false, enabled = true, keepup = false, name = "enduranceblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       frostshield = { type = "devotion", command = "frostshield", relax = "", active = false, enabled = true, keepup = false, name = "frostshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       willpowerblessing = { type = "devotion", command = "bless willpower", relax = "", active = false, enabled = true, keepup = false, name = "willpowerblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      benediction = { type = "zeal", command = "recite benediction on me", relax = "", active = false, enabled = true, keepup = false, name = "benediction", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },    
+
+
+
+      --PALADIN
+
+
 
       -- PSION
       secondskin = { type = "weaving", command = "secondskin", relax = "", active = false, enabled = true, keepup = false, name = "secondskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
@@ -14264,6 +14856,8 @@ end</script>
 
       -- INFERNAL
       deathaura = { type = "oppression", command = "deathaura", relax = "", active = false, enabled = true, keepup = false, name = "deathaura", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      shroud = { type = "necromancy", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+
 
       -- DRAGON 
       dragonarmour = { type = "dragoncraft", command = "dragonarmour on", relax = "relax dragonarmour", active = false, enabled = true, keepup = false, name = "dragonarmour", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
@@ -14277,7 +14871,7 @@ end</script>
       lipreading = { type = "subterfuge", command = "lipread", relax = "", active = false, enabled = true, keepup = false, name = "lipreading", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
       weaving = { type = "subterfuge", command = "weaving on", relax = "relax weaving", active = false, enabled = true, keepup = false, name = "weaving", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "mana", priority = 3, blockers = {"sleep"} },
       secondsight = { type = "subterfuge", command = "secondsight", relax = "", active = false, enabled = true, keepup = false, name = "secondsight", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
-      shroud = { type = PLAYER:getAbilityType(), command = PLAYER:getAbilityCommand("shroud"), relax = PLAYER:getAbilityCommand("relax"), active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      shroud = { type = "subterfuge", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
 
       -- WATERLORD
       cohesion = { type = "pervasion", command = "manifest cohesion", relax = "", active = false, enabled = true, keepup = false, name = "pervasion", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
@@ -14343,8 +14937,6 @@ end</script>
       belltattoo = { type = "tattoo", command = "touch bell", relax = "", active = false, enabled = true, keepup = false, name = "belltattoo", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
       cloak = { type = "tattoo", command = "touch cloak", relax = "", active = false, enabled = true, keepup = false, name = "cloak", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
 
-      --MISC
-      benediction = { type = PLAYER:getAbilityType(), command = "recite benediction on me", relax = "", active = false, enabled = true, keepup = false, name = "benediction", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },    
     
     }
 
@@ -17611,11 +18203,17 @@ function handleShieldAttacks(target)
 
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  elseif class == "monk" then
+    -- 🥋 Dynamically update tracking state to detect "shikudo" or "tekura"
+    updateMonkSubclass()
   end
 
-  -- Safeguard validation: Allow "monk" to slide past even if it has no database entry
-  if not huntSettingsData[class] and class ~= "monk" then
-    debugEcho("red", "Error: Class not found in huntSettingsData: " .. tostring(class))
+  -- Route database checks to the correct profile key while keeping 'class' as "monk"
+  local profileKey = (class == "monk") and (monkSubclass or "shikudo") or class
+
+  -- Safeguard validation: Tekura behaves like every normal class, Shikudo slides right past!
+  if not huntSettingsData[profileKey] and profileKey ~= "shikudo" then
+    debugEcho("red", "Error: Class profile not found in huntSettingsData: " .. tostring(profileKey))
     return
   end
 
@@ -17640,15 +18238,15 @@ function handleShieldAttacks(target)
   ---------------------------------------------------------
   -- ⚔️ COMBAT FORK
   ---------------------------------------------------------
-  -- Safely index huntSettingsData using short-circuiting to prevent nil errors for "monk"
-  if huntSettingsData[class] and huntSettingsData[class]["rage shield break"] then
-    local rageFired = tryBattleRageShieldBreak(class, currentTarget)
+  -- Standard database check for Battlerage shield breaks using our decoupled profileKey
+  if huntSettingsData[profileKey] and huntSettingsData[profileKey]["rage shield break"] then
+    local rageFired = tryBattleRageShieldBreak(profileKey, currentTarget)
     if rageFired then 
       return 
     end
   end
 
-  -- Passes "monk" down directly to your debugged tryRegularShieldBreak function
+  -- Passes your unmutated "monk" string downstream to your combo engine functions
   tryRegularShieldBreak(class, currentTarget)
 end
 
@@ -17663,18 +18261,21 @@ function tryRegularShieldBreak(class, currentTarget)
   local cleanTarget = type(currentTarget) == "string" and currentTarget or ""
   debugEcho("white", "Processed cleanTarget: &lt;cyan&gt;" .. tostring(cleanTarget))
 
-  -- 🥋 MONK SUBCLASS RECOGNITION CONVERSION
+  -- 🥋 MONK SUBCLASS RECOGNITION (Without modifying the 'class' variable)
   if class == "monk" then
-    debugEcho("yellow", "Raw class is 'monk'. Converting via monkSubclass...")
-    monkSubclass = monkSubclass or "shikudo"
-    class = monkSubclass
-    debugEcho("yellow", "Converted class result: &lt;cyan&gt;" .. tostring(class))
+    debugEcho("yellow", "Raw class is 'monk'. Refreshing tracker data...")
+    -- Dynamically update tracking state to detect "shikudo" or "tekura"
+    updateMonkSubclass()
+    -- Default to 'tekura' if tracking variable is missing/unset
+    monkSubclass = monkSubclass or "tekura" 
+    debugEcho("yellow", "Active Monk Subclass evaluated as: &lt;cyan&gt;" .. tostring(monkSubclass))
   end
 
   ---------------------------------------------------------
   -- 🥋 SHIKUDO MONK SHIELD BREAK
   ---------------------------------------------------------
-  if class == "shikudo" then
+  -- Check explicitly against the tracking variable instead of class
+  if class == "monk" and monkSubclass == "shikudo" then
     debugEcho("green", "Success! Entered the Shikudo conditional block.")
     
     -- Fallback initialization if variables are missing
@@ -17717,10 +18318,12 @@ function tryRegularShieldBreak(class, currentTarget)
   ---------------------------------------------------------
   -- ⚔️ STANDARD CLASS LOGIC (Includes Tekura Monk branch)
   ---------------------------------------------------------
-  local regularCmd = huntSettingsData[class] and huntSettingsData[class]["regular shield break"]
+  -- Route database checks to the correct profile key while keeping 'class' pristine
+  local lookupKey = (class == "monk") and monkSubclass or class
+  local regularCmd = huntSettingsData[lookupKey] and huntSettingsData[lookupKey]["regular shield break"]
 
   if not regularCmd or regularCmd == "" then
-    debugEcho("yellow", "Shield break configuration missing or empty for " .. tostring(class))
+    debugEcho("yellow", "Shield break configuration missing or empty for " .. tostring(lookupKey))
     return false
   end
 
@@ -17819,13 +18422,15 @@ function handleRegularAttacks(target)
     
     debugEcho("white","PLAYER:myclass() returned: &lt;cyan&gt;" .. tostring(class))
 
-    if class == "dragon" then
+    if class == "dragon" and gmcp.Char.Status.race then
         class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
         debugEcho("white","Evaluated Dragon subclass: &lt;cyan&gt;" .. tostring(class))
     elseif class == "monk" then
-        monkSubclass = monkSubclass or "shikudo"
-        class = monkSubclass
-        debugEcho("white","Evaluated Monk Subclass: &lt;cyan&gt;" .. tostring(class))
+        -- 🥋 Dynamically update tracking state to detect "shikudo" or "tekura"
+        updateMonkSubclass()
+        -- Default to 'tekura' if tracking variable is missing/unset
+        monkSubclass = monkSubclass or "tekura"
+        debugEcho("white","Evaluated Monk Subclass: &lt;cyan&gt;" .. tostring(monkSubclass))
     end
 
     -- Ensure 'target' is a clean string. If it's nil, missing, or a boolean, make it a safe empty string.
@@ -17835,16 +18440,17 @@ function handleRegularAttacks(target)
     ---------------------------------------------------------
     -- 🥋 SHIKUDO MONK FORK
     ---------------------------------------------------------
-    if class == "shikudo" then
+    -- Leave 'class' as "monk" and explicitly check the subclass variable instead
+    if class == "monk" and monkSubclass == "shikudo" then
         debugEcho("green","Inside Shikudo Block.")
         
         -- Fallback initialization matching lowercase trigger states
         stance = stance or "oak"
         kata = kata or 0
         
-        cecho("\n&lt;green&gt;[DEBUG] Current Stance: &lt;cyan&gt;" .. tostring(stance) .. "&lt;green&gt; | Current Kata: &lt;cyan&gt;" .. tostring(kata))
+        debugEcho("green","Current Stance: &lt;cyan&gt;" .. tostring(stance) .. "&lt;green&gt; | Current Kata: &lt;cyan&gt;" .. tostring(kata))
 
-        if tostring(currentTarget) == "" then
+        if currentTarget == "" then
             debugEcho("yellow", "Error: No valid target for Shikudo combo.")
             debugEcho("red","Aborting: currentTarget is empty.")
             return
@@ -17854,10 +18460,10 @@ function handleRegularAttacks(target)
         if stance == "willow" then
             cecho("\n&lt;green&gt;[DEBUG] Processing Stance: willow")
             if tonumber(kata) &lt; 9 then
-                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " hiru flashheel left hiraku"
+                targetCommand = "queue addclear eqbal combo " .. currentTarget .. " hiru flashheel left hiraku"
                 debugEcho("green","Kata &lt; 9 combo built.")
             else
-                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " hiru flashheel left hiraku transition rain"
+                targetCommand = "queue addclear eqbal combo " .. currentTarget .. " hiru flashheel left hiraku transition rain"
                 debugEcho("green","Kata &gt;= 9 transition combo built.")
             end
 
@@ -17865,10 +18471,10 @@ function handleRegularAttacks(target)
         elseif stance == "rain" then
             debugEcho("green","Processing Stance: rain")
             if tonumber(kata) &lt; 6 then
-                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " frontkick left hiru kuro right"
+                targetCommand = "queue addclear eqbal combo " .. currentTarget .. " frontkick left hiru kuro right"
                 debugEcho("green","Kata &lt; 6 combo built.")
             else
-                targetCommand = "queue addclear eqbal combo " .. tostring(currentTarget) .. " frontkick left hiru kuro right transition oak"
+                targetCommand = "queue addclear eqbal combo " .. currentTarget .. " frontkick left hiru kuro right transition oak"
                 debugEcho("green","Kata &gt;= 6 transition combo built.")
             end
 
@@ -17894,16 +18500,19 @@ function handleRegularAttacks(target)
     else
         cecho("\n&lt;orange&gt;[DEBUG] Inside Standard Class/Tekura Block.")
         
+        -- Use an isolated key for data parsing so 'class' remains unmutated
+        local lookupKey = (class == "monk") and monkSubclass or class
+
         -- Debugging and safeguard
-        if not huntSettingsData[class] then
-            debugEcho("red","Error: Class not found in huntSettingsData: "..class)
-            debugEcho("red","Aborting: huntSettingsData[" .. tostring(class) .. "] is nil.")
+        if not huntSettingsData[lookupKey] then
+            debugEcho("red","Error: Class profile not found in huntSettingsData: " .. tostring(lookupKey))
+            debugEcho("red","Aborting: huntSettingsData[" .. tostring(lookupKey) .. "] is nil.")
             return
         end
 
         -- Validate regular attack configuration
-        if huntSettingsData[class]["regular attack"] then
-            local attackString = huntSettingsData[class]["regular attack"]
+        if huntSettingsData[lookupKey]["regular attack"] then
+            local attackString = huntSettingsData[lookupKey]["regular attack"]
             
             -- Use Lua's built-in string utility directly on the text line
             if currentTarget ~= "" then
@@ -17937,7 +18546,7 @@ function handleRegularAttacks(target)
         debugEcho("green","Command added to queue: "..targetCommand)
         debugEcho("green","Success! Command pushed to game server network line.")
     else
-        debugEcho("red","Command already in queue or invalid: ".. targetCommand)
+        debugEcho("red","Command already in queue or invalid: ".. tostring(targetCommand))
         debugEcho("red","Dropped at final check: command is blank or invalid.")
     end
 
@@ -18232,9 +18841,11 @@ function setHuntSettingsData()
   end
 
   -- 🥋 MONK SUBCLASS RECOGNITION
-  -- If they are a monk, append their selected subclass to differentiate settings keys
+  -- If they are a monk, ensure we grab the tracking variable state
   if class == "monk" then
-    monkSubclass = monkSubclass or "shikudo" -- Default fallback
+    -- Run our engine check first, but respect the existing manual toggle/fallback state
+    updateMonkSubclass()
+    monkSubclass = monkSubclass or "shikudo" 
     class = monkSubclass
   end
 
@@ -18242,7 +18853,7 @@ function setHuntSettingsData()
   cecho("\n&lt;green&gt;Hunt Settings\n")
 
   ---------------------------------------------------------
-  -- 🔘 INTERACTIVE MONK TOGGLE BUTTON
+  -- 🔘 INTERACTIVE MONK TOGGLE BUTTON (Preserved)
   ---------------------------------------------------------
   if PLAYER:myclass() == "monk" then
     cecho("&lt;white&gt; Monk Spec: ")
@@ -18321,58 +18932,9 @@ function setHuntSettings(type, cmd)
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
   elseif class == "monk" then
-    monkSubclass = monkSubclass or "shikudo"
-    class = monkSubclass
-  end
-
-  -- Prevent setting text commands via aliases if the user is running Shikudo
-  if class == "shikudo" and (type == "regular attack" or type == "regular shield break") then
-    cecho("\n&lt;yellow&gt;[SHIKUDO] Manual command bypassed. Your attacks are fully hardcoded and automated!")
-    return
-  end
-
-  huntSettingsData = huntSettingsData or {}
-  if not huntSettingsData[class] then
-    huntSettingsData[class] = {}
-  end
-
-  ---------------------------------------------------------
-  -- 🎯 LITERAL PASSTHROUGH LAYER
-  ---------------------------------------------------------
-  if type == "regular attack" then
-    huntSettingsData[class]["regular attack"] = command
-    cecho("\n&lt;green&gt;You set your regular attack command successfully for " .. class:title())
-    setHuntSettingsData()
-  elseif type == "regular shield break" then
-    huntSettingsData[class]["regular shield break"] = command
-    cecho("\n&lt;green&gt;You set your regular shield break command successfully for " .. class:title())
-    setHuntSettingsData()
-  elseif type == "rage shield break" then
-    local checkCmd = command:lower():trim()
-    if checkCmd == "yes" or checkCmd == "true" then
-      huntSettingsData[class]["rage shield break"] = true
-    else
-      huntSettingsData[class]["rage shield break"] = false
-    end
-    printBattleragePriorityList()
-    cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
-  end
-   
-  if type(saveHuntSettings) == "function" then
-    saveHuntSettings()
-  end
-end
-
-function setHuntSettings(type, cmd)
-  local command = tostring(cmd):trim()
-  
-  -- Match the UI's specialized form tracking logic exactly
-  local class = PLAYER:myclass()
-  if class == "dragon" and gmcp.Char.Status.race then
-    class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
-  elseif class == "monk" then
-    monkSubclass = monkSubclass or "shikudo"
-    class = monkSubclass
+    -- 🥋 Dynamically check GMCP for Monk specs (shikudo vs tekura)
+    updateMonkSubclass()
+    class = monkSubclass or "shikudo"
   end
 
   -- Prevent setting text commands via aliases if the user is running Shikudo
@@ -19867,6 +20429,10 @@ function printBattleragePriorityList()
   
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  elseif class == "monk" then
+    -- 🥋 Dynamically check GMCP for Monk specs (shikudo vs tekura)
+    updateMonkSubclass()
+    class = monkSubclass or "shikudo"
   end
 
   -- Validate the profile state has configured rage data
@@ -19972,30 +20538,30 @@ function printBattleragePriorityList()
     cecho("&lt;yellow&gt;🔧 SHIELD BREAK:\n")
     cecho("&lt;green&gt;--------------------------------------------------\n")
     
-for _, skill in ipairs(staticSkills) do
-  local toggleText = skill.enabled and "&lt;green&gt;[ON] " or "&lt;red&gt;[OFF]"
-  
-  cechoLink(
-    " " .. toggleText .. " ",
-    function()
-      -- 1. Flip the status inside your bragelist table
-      bragelist[class][skill.name].enabled = not bragelist[class][skill.name].enabled
+    for _, skill in ipairs(staticSkills) do
+      local toggleText = skill.enabled and "&lt;green&gt;[ON] " or "&lt;red&gt;[OFF]"
       
-      -- 2. Map the state directly to your hunting gateway table
-      huntSettingsData[class] = huntSettingsData[class] or {}
-      huntSettingsData[class]["rage shield break"] = bragelist[class][skill.name].enabled
-      setHuntSettings("rage shield break", huntSettingsData[class]["rage shield break"])
-      
-      -- 3. Save BOTH data files immediately so they stay synced
-      saveTableToJSON(bragelist, "battlerage")
-      
-      -- 4. Cleanly redraw the interface
-      printBattleragePriorityList()
-    end,
-    "Toggle Special Utility " .. skill.name:upper(),
-    true
-  )
-      
+      cechoLink(
+        " " .. toggleText .. " ",
+        function()
+          -- 1. Flip the status inside your bragelist table
+          bragelist[class][skill.name].enabled = not bragelist[class][skill.name].enabled
+          
+          -- 2. Map the state directly to your hunting gateway table
+          huntSettingsData[class] = huntSettingsData[class] or {}
+          huntSettingsData[class]["rage shield break"] = bragelist[class][skill.name].enabled
+          setHuntSettings("rage shield break", huntSettingsData[class]["rage shield break"])
+          
+          -- 3. Save BOTH data files immediately so they stay synced
+          saveTableToJSON(bragelist, "battlerage")
+          
+          -- 4. Cleanly redraw the interface
+          printBattleragePriorityList()
+        end,
+        "Toggle Special Utility " .. skill.name:upper(),
+        true
+      )
+          
       -- Render trailing lines empty of prioritization buttons since these are controlled via gateways
       cecho(string.format("  &lt;white&gt;Type: [&lt;yellow&gt;%s&lt;white&gt;] Cost: [&lt;orange&gt;%2dr&lt;white&gt;]  &lt;white&gt;%s\n", 
         tostring(skill.priorityType):upper(), 
@@ -26464,8 +27030,33 @@ end</script>
     local columnCount = 3 -- Number of columns to display
     local rowIndex = 0 -- Tracks the current row index
 
-    -- List of defense categories to display
-    local list = table.n_union(skillTreeList[PLAYER:myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "resistance"}) --'tattoo'
+    ---------------------------------------------------------
+    -- 🥋 DYNAMIC MONK SUBCLASS SKILL FILTER
+    ---------------------------------------------------------
+    local currentClass = PLAYER:myclass()
+    local baseSkills = {}
+
+    if currentClass == "monk" then
+        -- Refresh subclass detection state ("tekura" or "shikudo")
+        updateMonkSubclass() 
+        
+        -- Pull your core monk skills (kaido, telepathy) if they are registered in skillTreeList
+        if skillTreeList["monk"] then
+            for _, skill in ipairs(skillTreeList["monk"]) do
+                if skill ~= "tekura" and skill ~= "shikudo" then
+                    table.insert(baseSkills, skill)
+                end
+            end
+        end
+        -- Inject the isolated valid subclass tree type dynamically
+        table.insert(baseSkills, monkSubclass)
+    else
+        -- Default behavior for all other classes
+        baseSkills = skillTreeList[currentClass] or {}
+    end
+
+    -- Combine the filtered base class skills with generic defenses
+    local list = table.n_union(baseSkills, {"vision", "free", "survival", "herb", "salve", "smoke", "resistance"})
 
     -- Create tables to store defenses categorized by their types
     local categorizedDefenses = {}
@@ -26548,11 +27139,10 @@ end</script>
                 echo(string.rep(" ", math.max(padding, 0)))
 
                 -- Increment row index
-                rowIndex = rowIndex + 1
+                rowIndex = 1 + rowIndex
             end
 
             -- Ensure proper spacing between sections
-            --if rowIndex % columnCount ~= 0 then
             if getCurrentLine ~= "" then
                 echo("\n") -- Add a new line at the end of a section
             end
@@ -26561,6 +27151,7 @@ end</script>
     end
     echo"\n"
 end
+
 
 function executeDefenseFunction(details, displayType)
     local data = details
@@ -26596,7 +27187,27 @@ function executeDefenseFunction(details, displayType)
         cecho(logMsg .. "\n")
     end
 end
-</script>
+
+
+function updateMonkSubclass()
+  if not (gmcp and gmcp.Char and gmcp.Char.Vitals and gmcp.Char.Vitals.charstats) then
+    return
+  end
+
+  local foundKata = false
+  for _, statLine in ipairs(gmcp.Char.Vitals.charstats) do
+    if string.find(statLine, "Kata:") then
+      foundKata = true
+      break
+    end
+  end
+
+  if foundKata then
+    monkSubclass = "shikudo"
+  else
+    monkSubclass = "tekura"
+  end
+end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
