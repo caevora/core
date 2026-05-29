@@ -3197,7 +3197,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>insomnia relax</name>
-						<script>fortify:update("insomnia",false)</script>
+						<script>fortify:update("insomnia_survival",false)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3241,7 +3241,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>generosity</name>
-						<script>fortify:update("selfishness",false)</script>
+						<script>fortify:update("selfishness_survival",false)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3285,7 +3285,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>metawake relax</name>
-						<script>fortify:update("metawake",false)</script>
+						<script>fortify:update("metawake_survival",false)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3327,7 +3327,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>curseward lost</name>
-						<script>fortify:update("curseward",false)</script>
+						<script>fortify:update("curseward_survival",false)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3434,7 +3434,7 @@ fortify:update("thirdeye_vision",true)</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>nightsight</name>
-						<script>fortify:update("nightsight",true)</script>
+						<script>fortify:update("nightsight_vision",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3845,14 +3845,16 @@ fortify:update("thirdeye_vision",true)</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>Tiny tremours spread through your body as the world seems to slow down.</string>
+							<string>Your sense of time is heightened, and your reactions are speeded.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>levitation</name>
-						<script>fortify:update("levitation_free",true)</script>
+						<script>fortify:update("levitating_free",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3966,28 +3968,6 @@ fortify:update("thirdeye_vision",true)</script>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>sileris (fangbarrier)</name>
-						<script>fortify:update("fangbarrier_free",true)</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You apply a quicksilver droplet to yourself.</string>
-							<string>You apply a sileris berry to yourself.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>herbs</name>
@@ -4020,8 +4000,10 @@ fortify:update("thirdeye_vision",true)</script>
 						<regexCodeList>
 							<string>Your eyes dim as you lose your sight.</string>
 							<string>The arsenic has no effect. You are already blind.</string>
+							<string>The bayberry has no effect. You are already blind.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
@@ -4061,8 +4043,10 @@ fortify:update("thirdeye_vision",true)</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>The aural world fades to silence.</string>
+							<string>You eat a hawthorn berry.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
@@ -4083,6 +4067,28 @@ fortify:update("thirdeye_vision",true)</script>
 							<string>You are no longer deaf.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>sileris (fangbarrier)</name>
+						<script>fortify:update("fangbarrier_free",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You apply a quicksilver droplet to yourself.</string>
+							<string>You apply a sileris berry to yourself.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
@@ -4560,7 +4566,7 @@ fortify:process()</script>
 					<regexCodePropertyList />
 					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>unshroud</name>
-						<script>fortify:update("shroud",false)</script>
+						<script>fortify:update("shroud_occultism",false)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4580,7 +4586,7 @@ fortify:process()</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>astral vision</name>
-						<script>fortify:update("astralvision",true)</script>
+						<script>fortify:update("astralvision_occultism",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4592,15 +4598,21 @@ fortify:process()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
+							<string>Gritting your teeth, you focus your will and expand your aura throughout the surroundings about you, seeking out the aura of others.</string>
 							<string>Gritting your teeth, you focus your will and expand your aura</string>
+							<string>You have enhanced your vision to be able to see traces of lifeforce.</string>
+							<string>Your mind has been attuned to the realm of Death.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>2</integer>
+							<integer>3</integer>
+							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>mask</name>
-						<script>fortify:update("mask",true)</script>
+						<script>fortify:update("mask_occultism",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4620,7 +4632,7 @@ fortify:process()</script>
 					</Trigger>
 					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>unmask</name>
-						<script>fortify:update("mask",false)</script>
+						<script>fortify:update("mask_occultism",false)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4640,7 +4652,7 @@ fortify:process()</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>distortaura</name>
-						<script>fortify:update("distortaura",true)</script>
+						<script>fortify:update("distortaura_occultism",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4652,17 +4664,19 @@ fortify:process()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>Clenching your fists, you focus your will on distorting your own aura.</string>
+							<string>Clenching your fists, you focus your will on distorting your own aura. Your mind reels as your aura twists the very air around you.</string>
 							<string>Your aura is already distorted, Occultist.</string>
+							<string>You have distorted your own aura.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>2</integer>
+							<integer>3</integer>
+							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>shroud</name>
-						<script>fortify:update("shroud",true)</script>
+						<script>fortify:update("shroud_occultism",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4844,7 +4858,7 @@ end</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList />
 					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>gripping</name>
 						<script>fortify:update("gripping_shikudo",true)
 fortify:update("gripping_twoarts",true)</script>
@@ -17659,101 +17673,167 @@ end</script>
 					<packageName></packageName>
 					<script>-- Initialize an empty table to serve as the prototype for the queue.
 local queue = {}
+
 -- Set the metatable index to allow 'queue' to serve as its own prototype.
 queue.__index = queue
 
+
 -- Constructor for a new queue
+
 function queue:new()
     local obj = {items = {}, heap = {}, nodes = {}}
     setmetatable(obj, self)
     return obj
+
 end
+
+
 
 -- Initialize 'defenses' with a new instance of 'queue' if 'defenses' is nil or false.
 fortify = fortify or queue:new()
 
+
 -- Method to clear all items from the queue
+
 function queue:clear()
     self.items = {}
     self.heap = {}
     self.nodes = {}
 end
 
+
+
 -- Method to get the size of the queue
+
 function queue:size()
     return #self.items
 end
 
+
+
 -- Method to reset the queue
+
 function queue:reset()
     self:clear()
 end
 
+
+
 -- Print the defense command for debugging
+
 function queue:echo(command)
+
     cecho("\n&lt;DarkSlateGray&gt;DEFENSE COMMAND: &lt;white&gt;- &lt;PowderBlue&gt;" .. command:upper() .. "\n")
+
 end
+
+
 
 -- Check if queue already contains special key in heap.
+
 function queue:contains(item)
+
     local key = item.type .. "-" .. item.name
+
     return self.nodes[key] ~= nil
+
 end
 
+
+
 -- Helper method to check if active afflictions block a new detail
+
 function queue:blockers(blockers)
+
     for _, blocker in ipairs(blockers) do
+
         for _, aff in ipairs(myaffs) do
+
             if aff == blocker then
+
                 return true
+
             end
+
         end
+
     end
+
     return false
-end
+
+end 
+
+
 
 
 function fortify:update(defense, value)
-    if defenses[defense] then
-        if settings.debug then self:echo("Updating defense: " .. defense) end
+    -- 1. Track down the true unique table key and clean name matching this defense identifier
+    local targetKey = nil
+    local plainName = nil
+    local currentClass = PLAYER:myclass()
+    local baseSkills = skillTreeList[currentClass] or {}
+
+    for key, details in pairs(defenses) do
+        -- FIX: Check if the incoming string matches the plain name OR the literal table key
+        if details.name == defense or key == defense then
+            targetKey = key 
+            plainName = details.name -- Pull the true clean name (e.g., "astralvision")
+            
+            -- If it belongs to one of our active class skill groups, we found our perfect match!
+            if table.contains(baseSkills, details.type) then
+                targetKey = key
+                plainName = details.name
+                break -- Exit early, we have our exact class-specific skill match
+            end
+        end
+    end
+
+    -- Fallbacks to maintain system stability if no match was found in the table data
+    local activeKey = targetKey or defense
+    local trackingName = plainName or defense
+
+    if defenses[activeKey] then
+        if settings.debug then queue:echo("Updating defense: " .. activeKey) end
     else
         if defense == "tree" then
             if settings.debug then 
-                self:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") 
+                queue:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") 
             end
         else
-            if settings.debug then self:echo("No such defense found in defenses table: " .. tostring(defense)) end
+            if settings.debug then queue:echo("No such defense found in defenses table: " .. tostring(defense)) end
         end
     end
 
     if value then
-        -- Always add to mydefs if not present
-        if not table.contains(mydefs, defense) then
-            table.insert(mydefs, defense)
+        -- FIXED: Always use the clean name (e.g., "astralvision") for tracking array synchronization
+        if not table.contains(mydefs, trackingName) then
+            table.insert(mydefs, trackingName)
         end
 
-        -- Always clear pipeline key regardless of mydefs state
+        -- FIXED: Clears BOTH the raw input string AND the resolved tracking name from the pipeline
         pipeline.defenses[defense] = nil
+        pipeline.defenses[trackingName] = nil
         pipeline.activeCommand = ""
 
-        if defenses[defense] then
-            defenses[defense].active = value
-            defenses[defense].enabled = value
+        if defenses[activeKey] then
+            defenses[activeKey].active = value
+            defenses[activeKey].enabled = value
         end
 
-        if settings.debug then self:echo("Cleared pipeline key: " .. tostring(defense)) end
+        if settings.debug then queue:echo("Cleared pipeline key: " .. tostring(trackingName)) end
     else
-        if table.contains(mydefs, defense) then
-            table.remove(mydefs, table.index_of(mydefs, defense))
+        -- FIXED: Removes the clean tracking name from active array records when dropped
+        if table.contains(mydefs, trackingName) then
+            table.remove(mydefs, table.index_of(mydefs, trackingName))
         end
 
-        -- FIXED: Specific key erasure instead of nuking the entire tracking table array
+        -- FIXED: Clears BOTH variations from the pipeline table on negative updates
         pipeline.defenses[defense] = nil
+        pipeline.defenses[trackingName] = nil
 
-        if defenses[defense] then
-            defenses[defense].active = value
-            defenses[defense].enabled = value
-            defenses[defense].keepup = value
+        if defenses[activeKey] then
+            defenses[activeKey].active = value
+            defenses[activeKey].enabled = value
         end
     end
 end
@@ -17819,26 +17899,43 @@ function queue:process()
 
     fortify:reset()
 
-    -- 1. Build the list of allowed skills based on class and fundamentals
-    local list = table.n_union(skillTreeList[PLAYER:myclass()], {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "resistance"})
+    -- 1. Build the list of allowed skills dynamically based on class
+    local currentClassType = PLAYER:myclass()
+    local baseSkills = {}
+
+    if currentClassType == "monk" then
+        if type(updateMonkSubclass) == "function" then updateMonkSubclass() end
+        if skillTreeList["monk"] then
+            for _, skill in ipairs(skillTreeList["monk"]) do
+                if skill ~= "tekura" and skill ~= "shikudo" then
+                    table.insert(baseSkills, skill)
+                end
+            end
+        end
+        if monkSubclass then table.insert(baseSkills, monkSubclass) end
+    else
+        baseSkills = skillTreeList[currentClassType] or {}
+    end
+
+    local list = table.n_union(baseSkills, {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "resistance"})
     local validDefenses = {}
 
     -- 2. Filter the global defenses table for candidates
-    for defense, details in pairs(defenses) do
+    for defenseKey, details in pairs(defenses) do
         local defenseType = details.type
         
         -- Handle multi-type defenses (e.g. skills that belong to multiple trees)
         if type(defenseType) == "table" then
             for _, v in ipairs(defenseType) do
-                if table.contains(skillTreeList[PLAYER:myclass()], v) then
+                if table.contains(baseSkills, v) then
                     defenseType = v
                     break
                 end
             end
         end
 
-        -- Check if we can use this defense and if we don't already have it active
-        if table.contains(list, defenseType) and not table.contains(mydefs, defense) then
+        -- FIXED: Check details.name against mydefs instead of the unique table key string
+        if table.contains(list, defenseType) and not table.contains(mydefs, details.name) then
             local hasRequiredBalance, hasRequiredCooldown = true, true
 
             -- Balance Checks
@@ -17900,7 +17997,6 @@ function queue:process()
         end
     end
 end
-
 
 function queue:debugPipeline()
     if settings.debug then self:echo("Pipeline contents:") end
@@ -17964,8 +18060,23 @@ function queue:cleanPipeline()
     lastPipelineCleanup = now
 
     local cleaned = 0
+    local currentClass = PLAYER:myclass()
+    local baseSkills = skillTreeList[currentClass] or {}
+
     for name, _ in pairs(pipeline.defenses) do
-        local def = defenses[name]
+        -- 🔍 Look up the true tracking entry by details.name and class matching
+        local def = nil
+        for _, details in pairs(defenses) do
+            if details.name == name then
+                def = details -- Fallback match
+                if table.contains(baseSkills, details.type) then
+                    def = details
+                    break -- Exact class skill found
+                end
+            end
+        end
+
+        -- FIXED: Successfully validates the active status of class-appended keys
         if def and not def.active and not table.contains(mydefs, name) then
             pipeline.defenses[name] = nil
             cleaned = cleaned + 1
