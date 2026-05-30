@@ -13056,10 +13056,6 @@ function initializeFileLoads()
 end
 
 function initializeFileSaves()
-  settings = settings or {}
-  if not settings.systemLoaded then
-    return
-  end
 
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local ndbPath = getNDBPath()
@@ -13115,6 +13111,31 @@ function initializeFileSaves()
   end
 
   debugEcho("green","✔ All system data safely synced to disk.")
+end
+
+
+
+function systemOnDeath()
+  if not settings.systemPaused then
+    myaffs = {}
+    send("stop")
+    expandAlias("mstop")
+    settings.systemPaused = true
+    resetCuringList()
+    LimbTrackerReset()
+    cecho("\n&lt;red&gt;[BRAIN] We died. Disengaging.\n")
+    if hunting then
+      tempAreaList = {}
+      huntloop = false
+      hunting = false
+      autohunting = false
+      toggleHuntingMode("manual")
+    end
+    cecho("System has been &lt;red&gt;paused.\n")
+    if settings.autoEmbrace then
+      send("embrace death")
+    end
+  end
 end
 
 function systemOnDeath()
@@ -13237,7 +13258,6 @@ function systemExit()
     if GUI and GUI.roomwindow then GUI.roomwindow:save() end
     if GUI and GUI.affwindow then GUI.affwindow:save() end
     if GUI and GUI.datawindow then GUI.datawindow:save() end
-    saveTableToJSON(settings, "settings")
   end
 end
 
@@ -13253,7 +13273,6 @@ function systemLogout()
     if GUI and GUI.roomwindow then GUI.roomwindow:save() end
     if GUI and GUI.affwindow then GUI.affwindow:save() end
     if GUI and GUI.datawindow then GUI.datawindow:save() end
-    saveTableToJSON(settings, "settings")
   end
 end
 
