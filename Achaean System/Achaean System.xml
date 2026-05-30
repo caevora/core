@@ -10000,6 +10000,58 @@ end</script>
 						<packageName></packageName>
 						<regex>^ndbinstall$</regex>
 					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>set person city</name>
+						<script>local person = matches[2]:title()
+local city = matches[3]:title()
+
+-- Enforce valid city names or let "(none)" / "Rogues" slide
+local validCities = {Ashtan=true, Eleusis=true, Hashan=true, Mhaldor=true, Cyrene=true, Targossas=true, Underworld=true}
+
+if not NDB or not NDB.players then
+    cecho("\n&lt;red&gt;NDB: Database not loaded.")
+    return
+end
+
+-- If they aren't in memory yet, initialize a bare minimum table for them
+if not NDB.players[person] then
+    NDB.players[person] = {
+        name = person,
+        level = 0,
+        class = "Unknown",
+        house = "None",
+        pks = 0,
+        xp_rank = 0,
+        title = person
+    }
+end
+
+-- Force the manual city assignment
+NDB.players[person].city = city
+NDB.players[person].lastUpdate = os.date("%m/%d/%y %H:%M:%S")
+
+-- 💾 Save the file right now so it survives logouts!
+if type(NDB_SavePlayerFile) == "function" then
+    NDB_SavePlayerFile(person)
+else
+    -- Fallback to direct jsonManager if your helper function isn't in scope
+    jsonManager({
+        write = true,
+        path = getNDBPath() .. "/" .. person .. ".json",
+        data = NDB.players[person]
+    })
+end
+
+-- Update their active text trigger color in Mudlet
+if type(NDB_highlightName) == "function" then
+    NDB_highlightName(person, "nil")
+end
+
+cecho(string.format("\n&lt;green&gt;NDB Override: %s's city has been manually set to &lt;yellow&gt;%s&lt;green&gt; and saved to disk.", person, city))</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^set (\w+) (\w+)$</regex>
+					</Alias>
 				</AliasGroup>
 				<AliasGroup isActive="yes" isFolder="yes">
 					<name>actions</name>
@@ -10061,13 +10113,33 @@ send(" ")
 					</Alias>
 					<Alias isActive="yes" isFolder="no">
 						<name>re-honours everyone.</name>
-						<script>local count = 0
-cecho("\nUpdating everyone who's currently in the database.")
-for i,v in pairs(NDB.players) do
-	count = count + 1
-	NDB_Acquire(v.name:title(),false)
+						<script>local queue = {}
+for name, _ in pairs(NDB.players) do
+    table.insert(queue, name:title())
 end
-cecho("\nUpdate complete. Total of "..count.." people have been re-checked.")</script>
+
+local total = #queue
+if total == 0 then
+    cecho("\n&lt;red&gt;Error: No players found in memory database to update.")
+    return
+end
+
+cecho(string.format("\n&lt;yellow&gt;Starting live API sync for %d players. Staggering downloads to prevent connection drops...", total))
+
+local delay = 0
+local processed = 0
+
+for _, personName in ipairs(queue) do
+    -- Stagger each download request by 0.5 seconds so it doesn't flood the network
+    tempTimer(delay, function()
+        NDB_Acquire(personName)
+        processed = processed + 1
+        if processed == total then
+            cecho("\n&lt;green&gt;✔ Global API synchronization sequence complete!")
+        end
+    end)
+    delay = delay + 0.5
+end</script>
 						<command></command>
 						<packageName></packageName>
 						<regex>^an recreate$</regex>
@@ -10301,15 +10373,39 @@ send("city enemies")</script>
 					</Alias>
 					<Alias isActive="yes" isFolder="no">
 						<name>re-honours from specific cities</name>
-						<script>local count = 0
-cecho("Re-checking everyone matching the '"..matches[2].."' city.")
-for i,v in pairs(NDB.players) do
-  if v.city:lower() == matches[2]:lower() then
-	 NDB_Acquire(v.name:title(),false)
-   count = count + 1
-  end
+						<script>local targetCity = matches[2]:lower()
+local queue = {}
+
+-- Step 1: Gather everyone matching the city into a temporary list
+for name, data in pairs(NDB.players) do
+    local currentCity = data.city or "Unknown"
+    if currentCity:lower() == targetCity then
+        table.insert(queue, name:title())
+    end
 end
-cecho("Update complete. Total of "..count.." people have been re-checked.")</script>
+
+local total = #queue
+if total == 0 then
+    cecho("\n&lt;red&gt;No tracked players found in memory for the city of: " .. matches[2]:title())
+    return
+end
+
+cecho(string.format("\n&lt;yellow&gt;Found %d players in %s. Starting staggered live API downloads...", total, matches[2]:title()))
+
+local delay = 0
+local processed = 0
+
+-- Step 2: Loop through the list with a safe, paced timer cascade
+for _, personName in ipairs(queue) do
+    tempTimer(delay, function()
+        NDB_Acquire(personName)
+        processed = processed + 1
+        if processed == total then
+            cecho("\n&lt;green&gt;✔ Live API sync for " .. matches[2]:title() .. " has completed successfully!")
+        end
+    end)
+    delay = delay + 0.5 -- Adds a safe 500ms delay between each download request
+end</script>
 						<command></command>
 						<packageName></packageName>
 						<regex>^an redo (\w+)$</regex>
@@ -12021,56 +12117,97 @@ registerAnonymousEventHandler("gmcp.IRE.Time.Update", function() PLAYER:parseTim
 					<name>json</name>
 					<packageName></packageName>
 					<script>--[[
-
-Fully recoverable, auto-backup-capable JSON persistence system:
-
-✅ Live save/load with failover
-
-🔁 .bak fallback
-
-🕰️ Timestamped backups
-
-🗃️ Auto-archival of old backups
-
-🧭 ZIP archive recovery suggestion
-
-🧼 Corruption-handling and clean fallback
-
-🧪 Debug hooks and testing support
-
-
+Fully recoverable, auto-backup-capable JSON persistence system
+with Deep Key Union Engine for update safe delivery.
 ]]
 
-
 function fetchDKJSON()
-
-  opts = opts or {}
-  local fallback = opts.fallback
   local libsDir = getMudletHomeDir() .. "/Achaean System/system/libs/"
-  local jsonDir = libsDir .. "json/"
-
-    ---------------------------------------------------------
-    -- 📦 DKJSON LIBRARY LOADER
-    ---------------------------------------------------------
-    if not dkjson then
-      local dkjsonPath = libsDir .. "dkjson.lua"
-      
-      if fileExists(dkjsonPath) then
-        return dofile(dkjsonPath)
-      else
-        debugEcho("red","CRITICAL: dkjson.lua missing from " .. libsDir .. "")
-        return fallback or {}
-      end
-    end
-    ---------------------------------------------------------
+  
+  ---------------------------------------------------------
+  -- 📦 DKJSON LIBRARY LOADER
+  ---------------------------------------------------------
+  if not dkjson then
+    local dkjsonPath = libsDir .. "dkjson.lua"
     
+    if fileExists(dkjsonPath) then
+      return dofile(dkjsonPath)
+    else
+      debugEcho("red","CRITICAL: dkjson.lua missing from " .. libsDir)
+      return {}
+    end
+  end
 end
 
 dkjson = dkjson or fetchDKJSON()
 
--- load data from JSON
-function loadTableFromJSON(tblRef, filename)
+-- Helper function to deeply copy a table (decouples from global memory tracking)
+local function deepCopyTable(orig)
+  local orig_type = type(orig)
+  local copy
+  if orig_type == 'table' then
+    copy = {}
+    for orig_key, orig_value in pairs(orig) do
+      if type(orig_value) == 'table' then
+        copy[orig_key] = deepCopyTable(orig_value)
+      else
+        copy[orig_key] = orig_value
+      end
+    end
+  else
+    copy = orig
+  end
+  return copy
+end
 
+-- Helper function to deeply union missing system keys into saved user data structures
+local function deepKeyUnion(userData, systemDefaults)
+  if type(systemDefaults) ~= "table" then return userData end
+  if type(userData) ~= "table" then userData = {} end
+
+  for key, value in pairs(systemDefaults) do
+    if userData[key] == nil then
+      -- The user completely lacks this new feature or structure from the update. Graft it in!
+      if type(value) == "table" then
+        userData[key] = deepCopyTable(value)
+      else
+        userData[key] = value
+      end
+    elseif type(value) == "table" and type(userData[key]) == "table" then
+      -- If both contain a sub-table, recursively union their keys down the tree
+      deepKeyUnion(userData[key], value)
+    end
+  end
+  return userData
+end
+
+-- Helper function to safely resolve nested global variables from string keys
+local function getGlobalValue(targetStr)
+  local parts = string.split(targetStr, ".")
+  local current = _G
+  for _, part in ipairs(parts) do
+    if type(current) ~= "table" then return nil end
+    current = current[part]
+  end
+  return current
+end
+
+-- Helper function to safely write nested global variables from string keys
+local function setGlobalValue(targetStr, val)
+  local parts = string.split(targetStr, ".")
+  local current = _G
+  for i = 1, #parts - 1 do
+    local part = parts[i]
+    if current[part] == nil or type(current[part]) ~= "table" then
+      current[part] = {}
+    end
+    current = current[part]
+  end
+  current[parts[#parts]] = val
+end
+
+-- Load data from JSON
+function loadTableFromJSON(tblRef, filename)
   if not dkjson then
     debugEcho("red","Cannot load: dkjson not loaded.")
     return
@@ -12094,7 +12231,7 @@ function loadTableFromJSON(tblRef, filename)
 
   local decoded, _, err = dkjson.decode(contents, 1, nil)
   if err or type(decoded) ~= "table" then
-    debugEcho("red","Error decoding " .. filename .. ": " .. (err or "invalid format") .. "")
+    debugEcho("red","Error decoding " .. filename .. ": " .. (err or "invalid format"))
     return
   end
 
@@ -12105,11 +12242,8 @@ function loadTableFromJSON(tblRef, filename)
   debugEcho("green",string.format("Loaded data from '%s.json'.", filename))
 end
 
-
-
 -- Save data to JSON with directory verification
 function saveTableToJSON(tbl, filename, directory)
-
   if not dkjson then
     debugEcho("red","Cannot save: dkjson not loaded.")
     return
@@ -12120,18 +12254,14 @@ function saveTableToJSON(tbl, filename, directory)
     return
   end
 
-  -- 📁 Define default path and ensure directories exist
   local baseDir = getMudletHomeDir() .. "/Achaean System"
   local subDirs = {"/system", "/system/libs", "/system/libs/json"}
   
-  -- Create the folder tree if it doesn't exist
   local currentPath = baseDir
   for _, sub in ipairs(subDirs) do
     if not lfs.attributes(currentPath, "mode") then
       lfs.mkdir(currentPath)
     end
-    -- We append the next piece for the next loop iteration
-    -- (Note: subDirs already contains the full nested path for simplicity)
     currentPath = getMudletHomeDir() .. sub
   end
 
@@ -12140,13 +12270,13 @@ function saveTableToJSON(tbl, filename, directory)
 
   local file, err = io.open(path, "w")
   if not file then
-    debugEcho("red","Error saving " .. filename .. ": " .. (err or "unknown error") .. "")
+    debugEcho("red","Error saving " .. filename .. ": " .. (err or "unknown error"))
     return
   end
 
   local ok, jsonString = pcall(dkjson.encode, tbl, { indent = true })
   if not ok then
-    debugEcho("red","Error encoding JSON for " .. filename .. "")
+    debugEcho("red","Error encoding JSON for " .. filename)
     file:close()
     return
   end
@@ -12157,10 +12287,7 @@ function saveTableToJSON(tbl, filename, directory)
   debugEcho("green",string.format("&lt;green&gt;Saved '%s' to %s", filename, path))
 end
 
-
-
 function jsonBackup()
-
   if not dkjson then
     debugEcho("red","Cannot create backups: dkjson not loaded.")
     return
@@ -12169,13 +12296,11 @@ function jsonBackup()
   local cutoffSeconds = BACKUP_RETENTION_DAYS * 24 * 60 * 60
   local now = os.time()
 
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local backupDir = getMudletHomeDir() .. "/Achaean System/system/libs/backup"
   local timestamp = os.date("%Y-%m-%d_%H-%M-%S")
 
   if not lfs.attributes(backupDir, "mode") then lfs.mkdir(backupDir) end
 
-  -- 🔄 Create new backups
   local filesToBackup = {
     {name = "settings", table = settings},
     {name = "lustlist", table = lustlist},
@@ -12187,6 +12312,7 @@ function jsonBackup()
     {name = "areaignorelist", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
     {name = "battlerage", table = bragelist},
+    {name = "balance_data", table = balance_data},
     {name = "curinglist", table = curinglist},
     {name = "defenses", table = defenses},
     {name = "afflictions", table = afflictions},
@@ -12205,7 +12331,6 @@ function jsonBackup()
     end
   end
 
-  -- 🧹 Delete old backups
   for file in lfs.dir(backupDir) do
     if file:match("_backup_.*%.json$") then
       local fullPath = backupDir .. "/" .. file
@@ -12218,10 +12343,7 @@ function jsonBackup()
   end
 end
 
-
-
 function loadJsonWithBackup(primaryPath, label)
-
   local function decodeJsonFile(path)
     local f = io.open(path, "r")
     if not f then return nil, "File not found" end
@@ -12241,7 +12363,6 @@ function loadJsonWithBackup(primaryPath, label)
   local bakPath = primaryPath .. ".bak"
   local bakDecoded, _, bakErr = decodeJsonFile(bakPath)
   if not bakErr and type(bakDecoded) == "table" then
-    -- Restore .bak to primary
     local jsonString = dkjson.encode(bakDecoded, { indent = true })
     local out = io.open(primaryPath, "w")
     if out then
@@ -12252,30 +12373,55 @@ function loadJsonWithBackup(primaryPath, label)
     return bakDecoded
   else
     cecho(string.format("&lt;red&gt;[FAILURE] Could not load %s or its backup.\n", label))
-    local profileName = gmcp.Char.Status and gmcp.Char.Status.name or "your profile"
-    local backupDir = string.format("C:\\Users\\Owner\\.config\\mudlet\\profiles\\%s\\Achaean System\\system\\libs\\backup", profileName)
-    cecho(string.format("&lt;yellow&gt;Try restoring %s manually from:\n&lt;white&gt;%s\n", label, backupDir))
+    local crossPlatformBackupDir = getMudletHomeDir() .. "/Achaean System/system/libs/backup"
+    cecho(string.format("&lt;yellow&gt;Try restoring %s manually from:\n&lt;white&gt;%s\n", label, crossPlatformBackupDir))
   end
 
   return nil
 end
 
-
---MAIN JSON FUNCTION
+-- MAIN JSON FUNCTION (Supports Safe Read, Deep Reports, and Secure Pointer Writes)
 function jsonManager(opts)
-
   opts = opts or {}
   local safe = opts.safe
   local diff = opts.diff
   local path = opts.path
   local fallback = opts.fallback
+  
+  local writeMode = opts.write
+  local writeData = opts.data
+
   local libsDir = getMudletHomeDir() .. "/Achaean System/system/libs/"
   local jsonDir = libsDir .. "json/"
 
+  ---------------------------------------------------------
+  -- ACTION BLOCK: SECURE WRITE MODE
+  ---------------------------------------------------------
+  if writeMode and path and writeData then
+    local f = io.open(path, "w")
+    if f then
+      f:write(dkjson.encode(writeData, { indent = true }))
+      f:close()
+      
+      local bakPath = path .. ".bak"
+      local bFile = io.open(bakPath, "w")
+      if bFile then
+        bFile:write(dkjson.encode(writeData, { indent = true }))
+        bFile:close()
+      end
+      return true
+    else
+      debugEcho("red", "JSON Save Failure: Direct file pointer access denied for path: " .. path)
+      return false
+    end
+  end
+
+  ---------------------------------------------------------
+  -- ACTION BLOCK: SAFE READ MODE
+  ---------------------------------------------------------
   if safe and path and fallback then
-    
     if not fileExists(path) then
-      debugEcho("yellow","JSON not found, creating empty: " .. path .. "")
+      debugEcho("yellow","JSON not found, creating empty: " .. path)
       local f = io.open(path, "w")
       if f then
         f:write(dkjson.encode(fallback or {}, { indent = true }))
@@ -12329,7 +12475,7 @@ function jsonManager(opts)
       if f then f:close() end
       local decoded = dkjson.decode(contents or "", 1, nil)
       if decoded and type(decoded) == "table" then
-        debugEcho("green","✔ Loaded latest backup: " .. latestBackup .. "")
+        debugEcho("green","✔ Loaded latest backup: " .. latestBackup)
         return decoded
       end
     end
@@ -12360,7 +12506,9 @@ function jsonManager(opts)
     return fallback or {}
   end
 
-  -- 🔍 Standard Report Mode
+  ---------------------------------------------------------
+  -- ACTION BLOCK: STANDARD REPORT MODE
+  ---------------------------------------------------------
   local LAST_LOADED = {}
   local files = {
     {name = "settings", ref = settings},
@@ -12373,8 +12521,9 @@ function jsonManager(opts)
     {name = "areaignorelist", ref = areaIgnoreList},
     {name = "huntsettings", ref = huntSettingsData},
     {name = "battlerage", ref = bragelist},
+    {name = "balance_data", ref = balance_data},
     {name = "curinglist", ref = curinglist},
-    {name = "defenses", ref = defenses},             
+    {name = "defenses", ref = defenses},              
     {name = "afflictions", ref = afflictions}, 
   }
 
@@ -12407,10 +12556,8 @@ function jsonManager(opts)
   end
 end
 
-
---main load function
+-- Main load function (Updated with Deep Key Union Data Protection)
 function loadAllTablesFromJSON()
-
   if not dkjson then
     debugEcho("green","Cannot load JSON: dkjson not loaded.")
     return
@@ -12429,75 +12576,53 @@ function loadAllTablesFromJSON()
       {name = "areaignorelist", target = "areaIgnoreList"},
       {name = "huntsettings", target = "huntSettingsData"},
       {name = "battlerage", target = "bragelist"},
+      {name = "balance_data", target = "balance_data"},
       {name = "curinglist", target = "curinglist"},
-      {name = "defenses", target = "defenses"},       -- 🟩 Aligned
+      {name = "defenses", target = "defenses"},       
       {name = "afflictions", target = "afflictions"},
   }
 
   for _, file in ipairs(filesToLoad) do
     local path = string.format("%s/%s.json", jsonDir, file.name)
-    local data = jsonManager({ safe = true, path = path, fallback = {} })
+    local savedData = jsonManager({ safe = true, path = path, fallback = {} })
 
-    data = (type(data) == "table") and data or {}
+    savedData = (type(savedData) == "table") and savedData or {}
 
     if file.target == "NDB.cityList" then
-      if next(data) then
+      if next(savedData) then
         NDB = NDB or {}
-        NDB.cityList = data
-        for _, name in ipairs(data) do NDB_Acquire(name) end
+        NDB.cityList = savedData
+        for _, name in ipairs(savedData) do NDB_Acquire(name) end
       end
     elseif file.target == "NDB.cityEnemies" then
-      if next(data) then
+      if next(savedData) then
         NDB = NDB or {}
-        NDB.cityEnemies = data
-        for _, name in ipairs(data) do NDB_Acquire(name) end
-      end
-    elseif file.target == "TAROT.DECK.cards" then
-      if next(data) then
-        TAROT = TAROT or {}
-        TAROT.DECK = TAROT.DECK or {}
-        TAROT.DECK.cards = data
+        NDB.cityEnemies = savedData
+        for _, name in ipairs(savedData) do NDB_Acquire(name) end
       end
     else
-      -- If it's a standard table and the file is empty, protect memory defaults
-      if next(data) == nil and type(_G[file.target]) == "table" then
-        -- Skip assignment to protect memory defaults
+      local currentLiveTable = getGlobalValue(file.target)
+
+      if currentLiveTable and type(currentLiveTable) == "table" then
+        if next(savedData) == nil then
+          debugEcho("yellow", string.format("ℹ️ %s.json empty, maintaining update defaults.", file.name))
+        else
+          local unionedData = deepKeyUnion(savedData, currentLiveTable)
+          
+          for k in pairs(currentLiveTable) do currentLiveTable[k] = nil end
+          for k, v in pairs(unionedData) do currentLiveTable[k] = v end
+        end
       else
-        _G[file.target] = data
+        setGlobalValue(file.target, savedData)
       end
     end
 
-    debugEcho("green", string.format("&lt;green&gt;✔ Loaded %s → %s", file.name, file.target))
-
+    debugEcho("green", string.format("&lt;green&gt;✔ Loaded &amp; Unioned %s → %s", file.name, file.target))
   end
 end
 
-
-
---DEPRECATED [[ WILL WORK BACK IN LATER ]]
-function loadClassSpecificData()
-
-  local class = (gmcp and gmcp.Char and gmcp.Char.Status and gmcp.Char.Status.class)
-  if not class then return end
-  
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-  local classKey = class:lower() .. "prios" -- e.g., "monkprios"
-  local path = jsonDir .. classKey .. ".json"
-  
-  -- 1. Load into your standard 'afflictions' table for the system to use
-  afflictions = jsonManager({ safe = true, path = path, fallback = {} })
-  
-  -- 2. DYNAMICALLY assign it to a global variable named after your class
-  -- This turns _G["monkprios"] = { ... }
-  _G[classKey] = afflictions
-  
-    debugEcho("green","✔ Loaded priorities into both 'afflictions' and '" .. classKey .. "'.") 
-
-end
-
---main save function
+-- Main save function
 function saveAllTablesAsJSON()
-
   if not dkjson then
     cecho("&lt;red&gt;Cannot save JSON: dkjson not loaded.\n")
     return
@@ -12505,7 +12630,6 @@ function saveAllTablesAsJSON()
 
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
 
-  -- Consolidated Single Source of Truth for Data Persistence
   local filesToConvert = {
     {name = "settings", table = settings},
     {name = "lustlist", table = lustlist},
@@ -12517,10 +12641,10 @@ function saveAllTablesAsJSON()
     {name = "areaignorelist", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
     {name = "battlerage", table = bragelist},
+    {name = "balance_data", table = balance_data},
     {name = "curinglist", table = curinglist},
-    {name = "defenses", table = defenses},             -- 🟩 Aligned naming convention
+    {name = "defenses", table = defenses},             
     {name = "afflictions", table = afflictions},
-    {name = "ragecommands", table = bragelist or {}},  -- 🟩 Added so rage commands aren't dropped
   }
 
   for _, file in ipairs(filesToConvert) do
@@ -12530,7 +12654,6 @@ function saveAllTablesAsJSON()
     if not success then
       cecho(string.format("&lt;red&gt;Error encoding %s to JSON: %s\n", file.name, result))
     else
-      -- 💾 Create client side backup rollback points (.bak)
       if fileExists(jsonPath) then
         local bakPath = jsonPath .. ".bak"
         local oldFile = io.open(jsonPath, "r")
@@ -12541,32 +12664,28 @@ function saveAllTablesAsJSON()
           if bakFile then
             bakFile:write(oldContents)
             bakFile:close()
-            debugEcho("yellow","↩ Created .bak: " .. bakPath .. "")
+            debugEcho("yellow","↩ Created .bak: " .. bakPath)
           end
         end
       end
 
-      -- 📝 Commit serialized engine state data to file system
       local f, err = io.open(jsonPath, "w")
       if f then
         f:write(result)
         f:close()
-        debugEcho("green","Saved JSON: " .. jsonPath .. "")
+        debugEcho("green","Saved JSON: " .. jsonPath)
       else
         debugEcho("green",string.format("&lt;red&gt;Failed to write %s.json: %s", file.name, err or "unknown error"))
       end
     end
   end
 
-  -- 🔁 Global long-term archive snapshot backup execution
   if not SAVE_ALREADY_BACKED_UP then
     jsonBackup()
     SAVE_ALREADY_BACKED_UP = true
   end
 end
 
-
---archive backups
 function simulateArchiveOldBackups()
   local backupDir = getMudletHomeDir() .. "/Achaean System/system/libs/backup"
   local archiveDir = getMudletHomeDir() .. "/Achaean System/system/libs/archived"
@@ -12595,53 +12714,259 @@ function simulateArchiveOldBackups()
   end
 
   cecho("&lt;cyan&gt;✅ Simulation complete.\n")
-end
-</script>
+end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
 					<name>login</name>
 					<packageName></packageName>
-					<script>function initializeFileLoads()
-  -- 🛡️ CHICKEN-AND-EGG GUARD: Ensure settings exists so settings.debug doesn't crash!
-  settings = settings or {}
-  if settings.debug == nil then
-    settings.debug = false
-  end
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-  local ndbPath = getNDBPath()
-  -- 1. Ensure dkjson library is loaded
-  if not dkjson then
-    local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
-    if fileExists(dkjsonPath) then
-      dkjson = dofile(dkjsonPath)
-      debugEcho("green","Loaded dkjson library.")
-     else
-      debugEcho("green","dkjson.lua not found at: " .. dkjsonPath .. "")
-      return
+					<script>-------------------------------------------------------------------------------
+-- 📦 GLOBAL SYSTEM STRUCTURES (Instantly accessible on Mudlet Boot)
+-------------------------------------------------------------------------------
+
+-- If balance_data already exists in memory, keep it! 
+-- If it doesn't exist (or a new update adds keys), we build/merge it safely.
+balance_data = balance_data or {}
+
+local boot_balances = {
+  free = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "free" },
+  time = { in_use = true, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "time" },
+  wake = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "wake" },
+  writhe = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "writhe" },
+  balance = { in_use = false, avg_time = 1.65, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "balance" },
+  equilibrium = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "equilibrium"},
+  antidote = {in_use = false, avg_time = 8.0, aff_modifiers = {}, echo_title = "antidote"},
+  tree = {in_use = false, avg_time = 16.0, aff_modifiers = {}, echo_title = "tree"},
+  herb = { in_use = false, avg_time = 2.3, aff_modifiers = { homunculusmercury = {multiplier = 1.0, offset = 0.5}, earthdisrupt = {multiplier = 1.0, offset = 0.5} }, echo_title = "herb" },
+  salve = {in_use = false, avg_time = 5.0, aff_modifiers = {}, echo_title = "salve"},
+  smoke = {in_use = false, avg_time = 1.55, aff_modifiers = {}, echo_title = "smoke"},
+  focus = {in_use = false, avg_time = 2.6, aff_modifiers = {}, echo_title = "focus"},
+  health = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "health"},
+  mana = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "mana"},
+  stunned = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "stunned"},
+  fitness = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fitness"},
+  shrugging = {in_use = false, avg_time = 13.0, aff_modifiers = {}, echo_title = "shrugging"},
+  fool = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fool"},
+  dragonheal = {in_use = false, avg_time = 23.0, aff_modifiers = {}, echo_title = "dragonheal"},
+  salt = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "salt"},
+  bloodboil = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "bloodboil"},
+  panacea = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "panacea"},
+  accelerate = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "accelerate"},
+}
+
+-- Populate missing balance templates right on boot without overwriting custom numbers
+for k, v in pairs(boot_balances) do
+  if balance_data[k] == nil then balance_data[k] = v end
+end
+
+
+bragelist = bragelist or {}
+
+local boot_rage = {
+  monk = {
+    spinningbackfist = {enabled = true, type = 1, rage = 14, command = "sbp @tar"},
+    scramble = {enabled = true, type = 4, rage = 22, command = "mind scramble @tar"},
+    splinterkick = {enabled = true, type = "shield break", rage = 17, command = "spk @tar"},
+    tornadokick = {enabled = true, type = 2, rage = 36, command = "tnk @tar"},
+    mindblast = {enabled = true, type = 3, rage = 25, command = "mind blast @tar"},
+    ripplestrike = {enabled = true, type = 5, rage = 25, command = "rpst @tar"},
+  },     
+  serpent = {
+    excoriate = {enabled = true, type = "shield break", rage = 16, command = "excoriate @tar"},
+    thrash = {enabled = true, type = 1, rage = 13, command = "thrash @tar"},
+    throatrip = {enabled = true, type = 3, rage = 35, command = "throatrip @tar"},
+    flagellate = {enabled = true, type = 2, rage = 24, command = "flagellate @tar"},
+    snare = {enabled = false, type = 4, rage = 25, command = "snare @tar"},
+    obliviate = {enabled = false, type = 5, rage = 41, command = "obliviate @tar"},
+  },
+  apostate = {
+    burrow = {enabled = true, type = 1, rage = 35, command = "daegger burrow @tar"},
+    convulsions = {enabled = true, type = 2, rage = 6, command = "stare @tar convulsions"},
+    horrify = {enabled = false, type = 4, rage = 10, command = "stare @tar horrify"},
+    piece = {enabled = true, type = "shield break", rage = 20, command = "daegger pierce @tar"},
+    bloodlet = {enabled = false, type = 3, rage = 50, command = "bloodlet @tar"},
+    possess = {enabled = false, type = 5, rage = 65, command = "possess @tar"},
+  },
+  blademaster = {
+    leapstrike = {enabled = true, type = 2, rage = 14, command = "leapstrike @tar"},
+    daze = {enabled = true, type = 1, rage = 26, command = "shin daze @tar"},
+    shatter = {enabled = false, type = "shield break", rage = 17, command = "shin shatter @tar"},
+    spinslash = {enabled = true, type = 3, rage = 36, command = "spinslash @tar"},
+    nerveslash = {enabled = false, type = 4, rage = 22, command = "nerveslash @tar"},
+  },
+  occultist = {
+    harry = {enabled = true, type = 1, rage = 14, command = "harry @tar"},
+    temperance = {enabled = true, type = 4, rage = 32, command = "temper @tar"},
+    ruin = {enabled = false, type = "shield break", rage = 17, command = "ruin shatter @tar"},
+    chaosgate = {enabled = true, type = 5, rage = 36, command = "chaosgate @tar"},
+    fluctuate = {enabled = false, type = 3, rage = 25, command = "fluctuate @tar"},
+    stagnate = {enabled = false, type = 2, rage = 24, command = "stagnate @tar"},
+  },
+  runewarden = {
+    collide = {enabled = true, type = 1, rage = 14, command = "collide @tar"},
+    bulwark = {enabled = false, type = 3, rage = 28, command = "bulwark"},
+    fragment = {enabled = true, type = "shield break", rage = 17, command = "fragment @tar"},
+    onslaught = {enabled = true, type = 2, rage = 36, command = "onslaught @tar"},
+    etch = {enabled = false, type = 4, rage = 25, command = "etch rune at @tar"},
+  },
+  ["black dragon"] = {
+    dragonspit = {enabled = false, type = 1, rage = 14, command = "dragonspit @tar"},
+    dragonsting = {enabled = false, type = "affliction", rage = 25, command = "dragonsting @tar"},
+    dissolve = {enabled = false, type = "shield break", rage = 17, command = "dissolve @tar"},
+    override = {enabled = false, type = 2, rage = 36, command = "override @tar"},
+    corrode = {enabled = false, type = 3, rage = 25, command = "corrode @tar"},
+    dragonfear = {enabled = false, type = 4, rage = 29, command = "dragonfear @tar"},
+  },
+  ["blue dragon"] = {
+    dragonchill = {enabled = false, type = 1, rage = 14, command = "dragonchill @tar"},
+    glaciate = {enabled = false, type = 3, rage = 26, command = "glaciate @tar"},
+    frostrive = {enabled = false, type = "shield break", rage = 17, command = "frostrive @tar"},
+    override = {enabled = false, type = 2, rage = 36, command = "override @tar"},
+    frostwave = {enabled = false, type = 4, rage = 25, command = "frostwave @tar"},
+    ague = {enabled = false, type = 5, rage = 14, command = "ague @tar"},
+  },
+  ["gold dragon"] = {
+    overwhelm = {enabled = false, type = 1, rage = 14, command = "overwhelm @tar"},
+    deaden = {enabled = false, type = 3, rage = 24, command = "deaden @tar"},
+    psishatter = {enabled = false, type = "shield break", rage = 17, command = "psishatter @tar"},
+    psiblast = {enabled = false, type = 2, rage = 36, command = "psiblast @tar"},
+    psistorm = {enabled = false, type = 4, rage = 25, command = "psistorm @tar"},
+    psidaze = {enabled = false, type = 5, rage = 31, command = "psidaze @tar"},
+  },
+  ["green dragon"] = {
+    dragonspit = {enabled = false, type = 1, rage = 14, command = "dragonspit @tar"},
+    scour = {enabled = false, type = 2, rage = 18, command = "scour @tar"},
+    deteriorate = {enabled = false, type = "shield break", rage = 17, command = "deteriorate @tar"},
+    override = {enabled = false, type = 1, rage = 36, command = "override @tar"},
+    slaver = {enabled = false, type = 3, rage = 25, command = "slaver on @tar"},
+    dragonsap = {enabled = false, type = 4, rage = 22, command = "dragonsap @tar"},
+  },
+  ["red dragon"] = {
+    overwhelm = {enabled = false, type = 1, rage = 14, command = "overwhelm @tar"},
+    dragontaunt = {enabled = false, type = 2, rage = 18, command = "dragontaunt @tar"},
+    melt = {enabled = false, type = "shield break", rage = 17, command = "melt @tar"},
+    dragonblaze = {enabled = false, type = 1, rage = 36, command = "dragonblaze @tar"},
+    flamebath = {enabled = false, type = 3, rage = 25, command = "flamebath @tar"},
+    scorch = {enabled = false, type = 4, rage = 18, command = "scorch @tar"},
+  },
+  ["silver dragon"] = {
+    overwhelm = {enabled = true, type = 1, rage = 14, command = "overwhelm @tar"},
+    sizzle = {enabled = false, type = 2, rage = 25, command = "sizzle @tar"},
+    splinter = {enabled = true, type = "shield break", rage = 17, command = "splinter @tar"},
+    dragonspark = {enabled = true, type = 3, rage = 36, command = "dragonspark @tar"},
+    stormflare = {enabled = false, type = 4, rage = 25, command = "stormflare @tar"},
+    galvanize = {enabled = false, type = 5, rage = 18, command = "galvanize @tar"},
+  },
+  shaman = {
+    corruption = {enabled = true, type = 1, rage = 14, command = "curse @tar corruption"},
+    korkma = {enabled = false, type = 2, rage = 29, command = "invoke korkma @tar"},
+    vulnerability = {enabled = true, type = "shield break", rage = 17, command = "curse @tar vulnerability"},
+    haemorrhage = {enabled = true, type = 1, rage = 36, command = "curse @tar haemorrhage"},
+  },
+  ["water elemental"] = {
+    icicles = {enabled = true, type = 1, rage = 14, command = "manifest icicles @tar"},
+    dehydrate = {enabled = false, type = 2, rage = 14, command = "manifest dehydrate @tar"},
+    aquahammer = {enabled = true, type = "shield break", rage = 17, command = "manifest aquahammer @tar"},
+    needlerain = {enabled = true, type = 3, rage = 36, command = "manifest needlerain @tar"},
+    waterfall = {enabled = false, type = 4, rage = 25, command = "manifest waterfall @tar"},
+    swell = {enabled = false, type = 5, rage = 30, command = "manifest swell @tar"},
+  },
+  ["air elemental"]   = {},
+  ["fire elemental"]  = {},
+  ["earth elemental"] = {},
+}
+
+-- Populate missing classes safely right on boot
+for cls, skills in pairs(boot_rage) do
+  if bragelist[cls] == nil then
+    bragelist[cls] = skills
+  else
+    for sk, data in pairs(skills) do
+      if bragelist[cls][sk] == nil then bragelist[cls][sk] = data end
     end
   end
-  -- 2. Ensure NDB directory and doesnotexist.json exist
-  if not lfs.attributes(ndbPath, "mode") then
-    lfs.mkdir(ndbPath)
-  end
-  local doesNotExistFile = ndbPath .. "/doesnotexist.json"
-  if not fileExists(doesNotExistFile) then
-    local f = io.open(doesNotExistFile, "w")
-    if f then
-      f:write(dkjson.encode({}, {indent = true}))
-      f:close()
-      debugEcho("green","Created missing doesnotexist.json")
+end
+
+-- Lookups (Global constants)
+breath_types = { ["Black"] = "Acid", ["Blue"] = "Ice", ["Gold"] = "Psi", ["Green"] = "Venom", ["Red"] = "Dragonfire", ["Silver"] = "Lightning" }
+elixirs = {"frost", "health", "immunity", "levitation", "mana", "speed", "venom"}
+salves = {"caloric", "epidermal", "mass", "mending", "restoration"}
+inks = {"blue ink", "gold ink", "green ink", "purple ink", "red ink", "yellow ink"}
+humourafftable = {"nausea", "sensitivity", "slickness", "stupidity", "anorexia", "impatience", "clumsiness", "weariness", "asthma", "haemophilia", "recklessness", "paralysis"}
+limbDamageTypes = {"mangledhead", "mangledleftleg", "mangledrightleg", "mangledleftarm", "mangledrightarm", "damagedhead", "damagedleftleg", "damagedrightleg", "damagedleftarm", "damagedrightarm", "mildtrauma", "serioustrauma", "brokenleftleg", "brokenrightleg", "brokenleftarm", "brokenrightarm"}
+crucialVials = {"caloric", "epidermal", "frost", "health", "immunity", "levitation", "mana", "mass", "mending", "restoration", "speed", "venom"}
+crucialVenoms = {"aconite", "curare", "digitalis", "epteth", "epseth", "eurypteria", "gecko", "kalmia", "larkspur", "monkshood", "prefarar", "slike", "vardrax", "vernalius", "voyria", "xentio"}
+
+enemyclass = {
+  ["alchemist"] = {["enabled"] = false}, ["apostate"] = {["enabled"] = false}, ["bard"] = {["enabled"] = false}, ["blademaster"] = {["enabled"] = false}, ["depthswalker"] = {["enabled"] = false}, ["dragon"] = {["enabled"] = false}, ["druid"] = {["enabled"] = false}, ["jester"] = {["enabled"] = false}, ["magi"] = {["enabled"] = false}, ["monk"] = {["enabled"] = false}, ["occultist"] = {["enabled"] = false}, ["pariah"] = {["enabled"] = false}, ["priest"] = {["enabled"] = false}, ["psion"] = {["enabled"] = false}, ["sentinel"] = {["enabled"] = false}, ["serpent"] = {["enabled"] = false}, ["shaman"] = {["enabled"] = false}, ["sylvan"] = {["enabled"] = false}, ["infernal"] = {["enabled"] = false}, ["unnamable"] = {["enabled"] = false}, ["paladin"] = {["enabled"] = false}, ["runewarden"] = {["enabled"] = false},
+  ["air elemental"] = {["enabled"] = false}, ["water elemental"] = {["enabled"] = false}, ["fire elemental"] = {["enabled"] = false}, ["earth elemental"] = {["enabled"] = false},
+}
+
+skillTreeList = {
+  ["alchemist"]     = {"alchemy", "physiology", "formulation", "sublimation"}, ["apostate"]      = {"evileye", "necromancy", "apostasy"}, ["bard"]          = {"bladedance", "composition", "sagas", "woe"}, ["blademaster"]   = {"twoarts", "striking", "shindo"}, ["depthswalker"]  = {"aeonics", "shadowmancy", "terminus"}, ["dragon"]        = {"dragoncraft"}, ["druid"]         = {"groves", "metamorphosis", "reclamation"}, ["infernal"]      = {"weaponmastery", "oppression", "malignity"}, ["jester"]        = {"tarot", "pranks", "puppetry"}, ["magi"]          = {"elementalism", "crystalism", "artificing"}, ["monk"]          = {"tekura", "shikudo", "kaido", "telepathy"}, ["occultist"]     = {"occultism", "tarot", "domination"}, ["paladin"]       = {"weaponmastery", "excision", "valour"}, ["pariah"]        = {"memorium", "pestilence", "charnel"}, ["priest"]        = {"spirituality", "devotion", "zeal"}, ["psion"]         = {"weaving", "psionics", "emulation"}, ["runewarden"]    = {"weaponmastery", "runelore", "discipline"}, ["sentinel"]      = {"metamorphosis", "woodlore", "skirmishing"}, ["serpent"]       = {"subterfuge", "venom", "hypnosis"}, ["shaman"]        = {"spiritlore", "curses", "vodun"}, ["sylvan"]        = {"propagation", "groves", "weatherweaving"}, ["unnamable"]     = {"weaponmastery", "anathema", "dominion"},
+  ["air elemental"]   = {"duress"}, ["water elemental"] = {"pervasion"}, ["fire elemental"]  = {"ignition"}, ["earth elemental"] = {"sculpting"},
+}
+
+-------------------------------------------------------------------------------
+-- 🛡️ INSTANT BOOT-LEVEL OBJECT CACHES
+-- (Fixes 'attempt to index global ... a nil value' for external scripts)
+-------------------------------------------------------------------------------
+GUI = GUI or {}
+inrift = inrift or {}
+pipes = pipes or {name = {}, refill = 3}
+
+
+function initializeFileLoads()
+    -- 🛡️ CHICKEN-AND-EGG GUARD: Ensure settings exists so settings.debug doesn't crash!
+    settings = settings or {}
+    if settings.debug == nil then
+        settings.debug = false
     end
-  end
-  -- 3. Protective NDB Skeleton Init
-  -- We initialize defaults only if NDB is empty or missing
-  if not NDB or not NDB.players or next(NDB.players) == nil then
+
+    local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
+    local ndbPath = getNDBPath()
+
+    -- 1. Ensure dkjson library is loaded
+    if not dkjson then
+        local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
+        if fileExists(dkjsonPath) then
+            dkjson = dofile(dkjsonPath)
+            debugEcho("green","Loaded dkjson library.")
+        else
+            debugEcho("red","dkjson.lua not found at: " .. dkjsonPath)
+            return
+        end
+    end
+
+    -- 2. Ensure NDB directory and doesnotexist.json exist
+    if not lfs.attributes(ndbPath, "mode") then
+        lfs.mkdir(ndbPath)
+    end
+    
+    local doesNotExistFile = ndbPath .. "/doesnotexist.json"
+    if not fileExists(doesNotExistFile) then
+        jsonManager({
+            write = true,
+            path = doesNotExistFile,
+            data = {}
+        })
+        debugEcho("green","Created missing doesnotexist.json")
+    end
+
+    -- 3. Protective NDB Skeleton Init (Safely constructs options without erasing memory)
     NDB = NDB or {}
     NDB.players = NDB.players or {}
-    NDB.highlightNames = true
-    NDB.highlighting =
-      {
+    NDB.highlightNames = (NDB.highlightNames ~= nil) and NDB.highlightNames or true
+    NDB.highlightPriority = NDB.highlightPriority or "city"
+    
+    NDB.special = NDB.special or {}
+    NDB.player_Notes = NDB.player_Notes or {}
+    NDB.cityEnemies = NDB.cityEnemies or {}
+    NDB.cityList = NDB.cityList or {}
+    NDB.doesNotExist = NDB.doesNotExist or {}
+    NDB.enemySettings = NDB.enemySettings or {bold = false, italics = false, underline = false}
+
+    NDB.highlighting = NDB.highlighting or {
         Ashtan = "purple",
         Cyrene = "CornflowerBlue",
         Eleusis = "green",
@@ -12651,104 +12976,88 @@ end
         Enemies = "red",
         Rogues = "brown",
         Underworld = "brown",
-      }
-    NDB.special = NDB.special or {}
-    NDB.player_Notes = NDB.player_Notes or {}
-    NDB.divine =
-      {
-        "Aegis",
-        "Artemis",
-        "Aurora",
-        "Babel",
-        "Deucalion",
-        "Gaia",
-        "Lorielan",
-        "Lupus",
-        "Neraeos",
-        "Ourania",
-        "Pandora",
-        "Phaestus",
-        "Prospero",
-        "Sartan",
-        "Scarlatti",
-        "Twilight",
-        "Valnurana",
-        "Vastar",
-        "Tlalaiad",
-        "Romeo",
-        "Juliet",
-      }
-    NDB.cityEnemies = NDB.cityEnemies or {}
-    NDB.cityList = NDB.cityList or {}
-    NDB.doesNotExist = NDB.doesNotExist or {}
-    NDB.highlightPriority = "city"
-    NDB.enemySettings = {bold = false, italics = false, underline = false}
-  end
-  -- 4. Load individual NDB player files
-  for file in lfs.dir(ndbPath) do
-    if file:match("%.json$") and file ~= "doesnotexist.json" then
-      local name = file:gsub("%.json$", "")
-      local fullPath = ndbPath .. "/" .. file
-      local data = jsonManager({safe = true, path = fullPath, fallback = {}})
-      if data and data.name then
-        NDB.players[data.name] = data
-      end
-    end
-  end
-  debugEcho("green","✔ Loaded all NDB player files from /ndb/")
+    }
 
-  -- 5. Load 'Does Not Exist' list
-  NDB.doesNotExist = loadJsonWithBackup(doesNotExistFile, "doesnotexist") or {}
-  -- 6. Load City Ally List (Consolidated to avoid double-loading)
-  local allyPath = jsonDir .. "cityallylist.json"
-  if fileExists(allyPath) then
-    local cityList = loadJsonWithBackup(allyPath, "cityallylist")
-    if type(cityList) == "table" then
-      NDB.cityList = cityList
-      for _, ally in ipairs(NDB.cityList) do
-        NDB_Acquire(ally)
-      end
-      debugEcho("green","Loaded cityallylist from JSON.")
+    NDB.divine = {
+        "Aegis", "Artemis", "Aurora", "Babel", "Deucalion", "Gaia", "Lorielan", "Lupus", "Neraeos",
+        "Ourania", "Pandora", "Phaestus", "Prospero", "Sartan", "Scarlatti", "Twilight", "Valnurana",
+        "Vastar", "Tlalaiad", "Romeo", "Juliet"
+    }
+
+    -- 4. Load individual NDB player files cleanly via your optimized local loader function
+    if type(loadAllNDBPlayers) == "function" then
+        loadAllNDBPlayers()
+    else
+        -- Fallback loop if the loading block function is isolated elsewhere
+        for file in lfs.dir(ndbPath) do
+            if file:match("%.json$") and file ~= "doesnotexist.json" and file ~= "Online.json" then
+                local fullPath = ndbPath .. "/" .. file
+                local data = jsonManager({safe = true, path = fullPath, fallback = {}})
+                if data and data.name then
+                    NDB.players[data.name:title()] = data
+                end
+            end
+        end
+        debugEcho("green","✔ Loaded all NDB player files from disk storage directories.")
     end
-  end
-  -- 7. Load City Enemy List (Consolidated to avoid double-loading)
-  local enemyPath = jsonDir .. "cityenemylist.json"
-  if fileExists(enemyPath) then
-    local cityEnemies = loadJsonWithBackup(enemyPath, "cityenemylist")
-    if type(cityEnemies) == "table" then
-      NDB.cityEnemies = cityEnemies
-      for _, enemy in ipairs(NDB.cityEnemies) do
-        NDB_Acquire(enemy)
-      end
-      debugEcho("green","Loaded cityenemylist from JSON.")
+
+    -- 5. Load 'Does Not Exist' list via jsonManager
+    local dneData = jsonManager({safe = true, path = doesNotExistFile, fallback = {}})
+    NDB.doesNotExist = dneData or {}
+
+    -- 6. Load City Ally List safely without firing destructive internet floods
+    local allyPath = jsonDir .. "cityallylist.json"
+    if fileExists(allyPath) then
+        local cityList = jsonManager({safe = true, path = allyPath, fallback = {}})
+        if type(cityList) == "table" then
+            NDB.cityList = cityList
+            debugEcho("green","Loaded cityallylist from JSON records.")
+        end
     end
-  end
-  -- 8. Load additional tables
-  if type(loadAllTablesFromJSON) == "function" then
-    loadAllTablesFromJSON()
-  end
-  -- 9. Load Lua files (Combat, Curing, etc.)
-  -- Pointing to the actual directory from your image
-  local depsDir = getMudletHomeDir() .. "/Achaean System/system/libs/deps"
+
+    -- 7. Load City Enemy List safely
+    local enemyPath = jsonDir .. "cityenemylist.json"
+    if fileExists(enemyPath) then
+        local cityEnemies = jsonManager({safe = true, path = enemyPath, fallback = {}})
+        if type(cityEnemies) == "table" then
+            NDB.cityEnemies = cityEnemies
+            debugEcho("green","Loaded cityenemylist from JSON records.")
+        end
+    end
+
+    -- 8. Load additional system data tables
+    if type(loadAllTablesFromJSON) == "function" then
+        loadAllTablesFromJSON()
+    end
+
+    -- 9. Load Core System Dependencies (Combat, Curing, Core Scripts)
+    local depsDir = getMudletHomeDir() .. "/Achaean System/system/libs/deps"
     if lfs.attributes(depsDir, "mode") == "directory" then
-      local filesToLoad = {}
-      for file in lfs.dir(depsDir) do
-        if file:match("%.lua$") and file ~= "dkjson.lua" then
-          table.insert(filesToLoad, file)
+        local filesToLoad = {}
+        for file in lfs.dir(depsDir) do
+            if file:match("%.lua$") and file ~= "dkjson.lua" then
+                table.insert(filesToLoad, file)
+            end
         end
-      end
-      table.sort(filesToLoad) -- Guarantees identical execution sequence across all OS platforms
-      for _, file in ipairs(filesToLoad) do
-        local success, err = pcall(dofile, depsDir .. "/" .. file)
-        if not success then
-          cecho("&lt;red&gt;Error loading dependency " .. file .. ": " .. err .. "\n")
+        table.sort(filesToLoad) -- Guarantees identical execution sequence across all client profiles
+        
+        for _, file in ipairs(filesToLoad) do
+            local success, err = pcall(dofile, depsDir .. "/" .. file)
+            if not success then
+                cecho("&lt;red&gt;Error loading dependency file (" .. file .. "): " .. err .. "\n")
+            end
         end
-      end
     end
-  NDB_loadHighlights()
+
+    -- 10. ENGAGE HIGHLIGHT ENGINE
+    if type(NDB_loadHighlights) == "function" then
+        NDB_loadHighlights()
+        debugEcho("green", "✔ Name database highlighting system activated and running.")
+    end
 end
 
 function initializeFileSaves()
+  settings = settings or {}
   if not settings.systemLoaded then
     return
   end
@@ -12756,13 +13065,13 @@ function initializeFileSaves()
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local ndbPath = getNDBPath()
 
-  -- 1. Essential Library Check
+  -- 1. Essential Library Check via native Mudlet fileExists
   if not dkjson then
     local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
     if fileExists(dkjsonPath) then
       dkjson = dofile(dkjsonPath)
     else
-      cecho("&lt;red&gt;Cannot save files: dkjson not found.\n")
+      cecho("&lt;red&gt;Cannot save files: dkjson library file not found at dependency path.\n")
       return
     end
   end
@@ -12771,30 +13080,43 @@ function initializeFileSaves()
   if not lfs.attributes(jsonDir, "mode") then lfs.mkdir(jsonDir) end
   if not lfs.attributes(ndbPath, "mode") then lfs.mkdir(ndbPath) end
 
-  -- 3. 🔄 Save Per-Player NDB Data (Keep here since it loops dynamic player names)
+  -- 3. 🔄 Save Per-Player NDB Data cleanly via your robust jsonManager
+  local savedCount = 0
   if NDB and NDB.players and next(NDB.players) then
     for name, data in pairs(NDB.players) do
-      if type(data) == "table" then
-        saveTableToJSON(data, name, ndbPath)
+      if type(data) == "table" and name and name ~= "" then
+        local safeName = name:title()
+        local fullPath = ndbPath .. "/" .. safeName .. ".json"
+        
+        jsonManager({
+          write = true,
+          path = fullPath,
+          data = data
+        })
+        savedCount = savedCount + 1
       end
     end
-    debugEcho("green","" .. table.size(NDB.players) .. " NDB player files.")
+    debugEcho("green", string.format("✔ Successfully archived %d separate NDB player profiles.", savedCount))
   end
+  
 
-  -- 4. Save NDB "Does Not Exist" tracking file
+  -- 4. Save NDB "Does Not Exist" tracking file via jsonManager
   if NDB and NDB.doesNotExist then
-    saveTableToJSON(NDB.doesNotExist, "doesnotexist", ndbPath)
+    jsonManager({
+      write = true,
+      path = ndbPath .. "/doesnotexist.json",
+      data = NDB.doesNotExist
+    })
   end
 
-  -- 5. Execute Master Table Core Save
+  -- 5. Execute Master Table Core Save (City enemy lists, ally lists, system options)
   if type(saveAllTablesAsJSON) == "function" then
     saveAllTablesAsJSON()
   else
     debugEcho("yellow","Note: saveAllTablesAsJSON() skipped (not defined).")
   end
 
-  debugEcho("green","✔ All system data synced to disk.")
-  
+  debugEcho("green","✔ All system data safely synced to disk.")
 end
 
 function systemOnDeath()
@@ -12811,13 +13133,12 @@ function systemOnDeath()
       huntloop = false
       hunting = false
       autohunting = false
-      -- Explicitly set engine to manual mode so auto stops polling targets
       toggleHuntingMode("manual")
     end
     cecho("System has been &lt;red&gt;paused.\n")
-      if settings.autoEmbrace then
-        send("embrace death")
-      end
+    if settings.autoEmbrace then
+      send("embrace death")
+    end
   end
 end
 
@@ -12838,9 +13159,14 @@ function systemOnRespawn()
 end
 
 
+-------------------------------------------------------------------------------
+-- 🏁 SYSTEM LOGIN EVENT ROUTINE
+-------------------------------------------------------------------------------
 function systemLogin()
   SAVE_ALREADY_BACKED_UP = false
   BACKUP_RETENTION_DAYS = BACKUP_RETENTION_DAYS or 1
+  
+  -- Reset volatile timer tracking markers
   balance_start_time = 0
   equilibrium_start_time = 0
   health_start_time = 0
@@ -12852,236 +13178,25 @@ function systemLogin()
   salve_start_time = 0
   shrugging_start_time = 0
   stunned_start_time = 0
-  balance_data =
-    balance_data or
-    {
-      free =
-        {
-          in_use = false,
-          avg_time = 99,
-          aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}},
-          echo_title = "free",
-        },
-      time =
-        {
-          in_use = true,
-          avg_time = 99,
-          aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}},
-          echo_title = "time",
-        },
-      wake =
-        {
-          in_use = false,
-          avg_time = 99,
-          aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}},
-          echo_title = "wake",
-        },
-      writhe =
-        {
-          in_use = false,
-          avg_time = 99,
-          aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}},
-          echo_title = "writhe",
-        },
-      balance =
-        {
-          in_use = false,
-          avg_time = 1.65,
-          aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}},
-          echo_title = "balance",
-        },
-      equilibrium = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "equilibrium"},
-      antidote = {in_use = false, avg_time = 8.0, aff_modifiers = {}, echo_title = "antidote"},
-      tree = {in_use = false, avg_time = 16.0, aff_modifiers = {}, echo_title = "tree"},
-      herb =
-        {
-          in_use = false,
-          avg_time = 2.3,
-          aff_modifiers =
-            {
-              homunculusmercury = {multiplier = 1.0, offset = 0.5},
-              earthdisrupt = {multiplier = 1.0, offset = 0.5},
-            },
-          echo_title = "herb",
-        },
-      salve = {in_use = false, avg_time = 5.0, aff_modifiers = {}, echo_title = "salve"},
-      smoke = {in_use = false, avg_time = 1.55, aff_modifiers = {}, echo_title = "smoke"},
-      focus = {in_use = false, avg_time = 2.6, aff_modifiers = {}, echo_title = "focus"},
-      health = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "health"},
-      mana = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "mana"},
-      stunned = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "stunned"},
-      fitness = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fitness"},
-      shrugging = {in_use = false, avg_time = 13.0, aff_modifiers = {}, echo_title = "shrugging"},
-      fool = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fool"},
-      dragonheal = {in_use = false, avg_time = 23.0, aff_modifiers = {}, echo_title = "dragonheal"},
-      salt = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "salt"},
-      bloodboil = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "bloodboil"},
-      panacea = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "panacea"},
-      accelerate = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "accelerate"},
-    }
-    
+
+  -- Initialize base objects safely
   pingCalculation = pingCalculation or {}
-  
-  --Initialize global NDB
   NDB = NDB or {}
-  
-  -- Initialize global runtime tracking structures
-  GUI = GUI or {}
-  
-  -- LOCATION INFO
   inv = inv or {}
   inv_room = inv_room or {}
   roomstufflist = roomstufflist or {}
   jane = jane or {target = {}}
   
-  --HUNTING
+  -- Reset active state flags
   hunting = false
   autohunting = false
   partysize = 1
+  
+  -- Tracking vectors
   areaIgnoreList = areaIgnoreList or {}
   targetMasterList = targetMasterList or {}
-  --targetPriorityList = targetPriorityList or {}
   huntSettingsData = huntSettingsData or {}
   extermlist = extermlist or {}
-
-  bragelist =
-    bragelist or
-    {
-      monk =
-        {
-          spinningbackfist = {enabled = true, type = 1, rage = 14, command = "sbp @tar"},
-          scramble = {enabled = true, type = 4, rage = 22, command = "mind scramble @tar"},
-          splinterkick = {enabled = true, type = "shield break", rage = 17, command = "spk @tar"},
-          tornadokick = {enabled = true, type = 2, rage = 36, command = "tnk @tar"},
-          mindblast = {enabled = true, type = 3, rage = 25, command = "mind blast @tar"},
-          ripplestrike = {enabled = true, type = 5, rage = 25, command = "rpst @tar"},
-        },    
-      serpent =
-        {
-          excoriate = {enabled = true, type = "shield break", rage = 16, command = "excoriate @tar"},
-          thrash = {enabled = true, type = 1, rage = 13, command = "thrash @tar"},
-          throatrip = {enabled = true, type = 3, rage = 35, command = "throatrip @tar"},
-          flagellate = {enabled = true, type = 2, rage = 24, command = "flagellate @tar"},
-          snare = {enabled = false, type = 4, rage = 25, command = "snare @tar"},
-          obliviate = {enabled = false, type = 5, rage = 41, command = "obliviate @tar"},
-        },
-      apostate =
-        {
-          burrow = {enabled = true, type = 1, rage = 35, command = "daegger burrow @tar"},
-          convulsions = {enabled = true, type = 2, rage = 6, command = "stare @tar convulsions"},
-          horrify = {enabled = false, type = 4, rage = 10, command = "stare @tar horrify"},
-          pierce =
-            {enabled = true, type = "shield break", rage = 20, command = "daegger pierce @tar"},
-          bloodlet = {enabled = false, type = 3, rage = 50, command = "bloodlet @tar"},
-          possess = {enabled = false, type = 5, rage = 65, command = "possess @tar"},
-        },
-      blademaster =
-        {
-          leapstrike = {enabled = true, type = 2, rage = 14, command = "leapstrike @tar"},
-          daze = {enabled = true, type = 1, rage = 26, command = "shin daze @tar"},
-          shatter =
-            {enabled = false, type = "shield break", rage = 17, command = "shin shatter @tar"},
-          spinslash = {enabled = true, type = 3, rage = 36, command = "spinslash @tar"},
-          nerveslash = {enabled = false, type = 4, rage = 22, command = "nerveslash @tar"},
-        },
-      occultist =
-        {
-          harry = {enabled = true, type = 1, rage = 14, command = "harry @tar"},
-          temperance = {enabled = true, type = 4, rage = 32, command = "temper @tar"},
-          ruin = {enabled = false, type = "shield break", rage = 17, command = "ruin shatter @tar"},
-          chaosgate = {enabled = true, type = 5, rage = 36, command = "chaosgate @tar"},
-          fluctuate = {enabled = false, type = 3, rage = 25, command = "fluctuate @tar"},
-          stagnate = {enabled = false, type = 2, rage = 24, command = "stagnate @tar"},
-        },
-      runewarden =
-        {
-          collide = {enabled = true, type = 1, rage = 14, command = "collide @tar"},
-          bulwark = {enabled = false, type = 3, rage = 28, command = "bulwark"},
-          fragment = {enabled = true, type = "shield break", rage = 17, command = "fragment @tar"},
-          onslaught = {enabled = true, type = 2, rage = 36, command = "onslaught @tar"},
-          etch = {enabled = false, type = 4, rage = 25, command = "etch rune at @tar"},
-        },
-      ["black dragon"] =
-        {
-          dragonspit = {enabled = false, type = 1, rage = 14, command = "dragonspit @tar"},
-          dragonsting =
-            {enabled = false, type = "affliction", rage = 25, command = "dragonsting @tar"},
-          dissolve = {enabled = false, type = "shield break", rage = 17, command = "dissolve @tar"},
-          override = {enabled = false, type = 2, rage = 36, command = "override @tar"},
-          corrode = {enabled = false, type = 3, rage = 25, command = "corrode @tar"},
-          dragonfear = {enabled = false, type = 4, rage = 29, command = "dragonfear @tar"},
-        },
-      ["blue dragon"] =
-        {
-          dragonchill = {enabled = false, type = 1, rage = 14, command = "dragonchill @tar"},
-          glaciate = {enabled = false, type = 3, rage = 26, command = "glaciate @tar"},
-          frostrive =
-            {enabled = false, type = "shield break", rage = 17, command = "frostrive @tar"},
-          override = {enabled = false, type = 2, rage = 36, command = "override @tar"},
-          frostwave = {enabled = false, type = 4, rage = 25, command = "frostwave @tar"},
-          ague = {enabled = false, type = 5, rage = 14, command = "ague @tar"},
-        },
-      ["gold dragon"] =
-        {
-          overwhelm = {enabled = false, type = 1, rage = 14, command = "overwhelm @tar"},
-          deaden = {enabled = false, type = 3, rage = 24, command = "deaden @tar"},
-          psishatter =
-            {enabled = false, type = "shield break", rage = 17, command = "psishatter @tar"},
-          psiblast = {enabled = false, type = 2, rage = 36, command = "psiblast @tar"},
-          psistorm = {enabled = false, type = 4, rage = 25, command = "psistorm @tar"},
-          psidaze = {enabled = false, type = 5, rage = 31, command = "psidaze @tar"},
-        },
-      ["green dragon"] =
-        {
-          dragonspit = {enabled = false, type = 1, rage = 14, command = "dragonspit @tar"},
-          scour = {enabled = false, type = 2, rage = 18, command = "scour @tar"},
-          deteriorate =
-            {enabled = false, type = "shield break", rage = 17, command = "deteriorate @tar"},
-          override = {enabled = false, type = 1, rage = 36, command = "override @tar"},
-          slaver = {enabled = false, type = 3, rage = 25, command = "slaver on @tar"},
-          dragonsap = {enabled = false, type = 4, rage = 22, command = "dragonsap @tar"},
-        },
-      ["red dragon"] =
-        {
-          overwhelm = {enabled = false, type = 1, rage = 14, command = "overwhelm @tar"},
-          dragontaunt = {enabled = false, type = 2, rage = 18, command = "dragontaunt @tar"},
-          melt = {enabled = false, type = "shield break", rage = 17, command = "melt @tar"},
-          dragonblaze = {enabled = false, type = 1, rage = 36, command = "dragonblaze @tar"},
-          flamebath = {enabled = false, type = 3, rage = 25, command = "flamebath @tar"},
-          scorch = {enabled = false, type = 4, rage = 18, command = "scorch @tar"},
-        },
-      ["silver dragon"] =
-        {
-          overwhelm = {enabled = true, type = 1, rage = 14, command = "overwhelm @tar"},
-          sizzle = {enabled = false, type = 2, rage = 25, command = "sizzle @tar"},
-          splinter = {enabled = true, type = "shield break", rage = 17, command = "splinter @tar"},
-          dragonspark = {enabled = true, type = 3, rage = 36, command = "dragonspark @tar"},
-          stormflare = {enabled = false, type = 4, rage = 25, command = "stormflare @tar"},
-          galvanize = {enabled = false, type = 5, rage = 18, command = "galvanize @tar"},
-        },
-      shaman =
-        {
-          corruption = {enabled = true, type = 1, rage = 14, command = "curse @tar corruption"},
-          korkma = {enabled = false, type = 2, rage = 29, command = "invoke korkma @tar"},
-          vulnerability =
-            {enabled = true, type = "shield break", rage = 17, command = "curse @tar vulnerability"},
-          haemorrhage = {enabled = true, type = 1, rage = 36, command = "curse @tar haemorrhage"},
-        },
-      ["water elemental"] = {
-        icicles = {enabled = true, type = 1, rage = 14, command = "manifest icicles @tar"},
-        dehydrate = {enabled = false, type = 2, rage = 14, command = "manifest dehydrate @tar"},
-        aquahammer = {enabled = true, type = "shield break", rage = 17, command = "manifest aquahammer @tar"},
-        needlerain = {enabled = true, type = 3, rage = 36, command = "manifest needlerain @tar"},
-        waterfall = {enabled = false, type = 4, rage = 25, command = "manifest waterfall @tar"},
-        swell = {enabled = false, type = 5, rage = 30, command = "manifest swell @tar"},
-      },
-      ["air elemental"]   = {  },
-      ["fire elemental"]  = {  },
-      ["earth elemental"] = {  },
-      }
-      
-      
-  inrift = inrift or {}
   allylist = allylist or {}
   enemylist = enemylist or {}
   afflictions = afflictions or {}
@@ -13090,335 +13205,28 @@ function systemLogin()
   sentPriorityCommands = sentPriorityCommands or {}
   defenses = defenses or {}
   mydefs = mydefs or {}
-  pipes = pipes or {name = {}, refill = 3}
   pipes_to_light = pipes_to_light or {}
   lustlist = lustlist or {}
   predictions = predictions or {}
   limbdamage = limbdamage or {}
   slainPlayers = slainPlayers or {}
-  mystackableaffs =
-    mystackableaffs or
-    {
-      torntendons = 0,
-      skullfractures = 0,
-      crackedribs = 0,
-      wristfractures = 0,
-      pressure = 0,
-      burning = 0,
-      temperedsanguine = 0,
-      temperedmelancholic = 0,
-      temperedphlegmatic = 0,
-      temperedcholeric = 0,
-      unweavingmind = 0,
-      unweavingbody = 0,
-      unweavingspirit = 0,
-      horror = 0,
-    }
-  tattoos =
-    tattoos or
-    {
-      mindseye = {artefact = true, inked = true},
-      boar = {artefact = true, inked = true},
-      tree = {artefact = true, inked = true},
-      feather = {artefact = false, inked = false},
-      megalith = {artefact = false, inked = false},
-      cloak = {artefact = false, inked = false},
-      brazier = {artefact = false, inked = false},
-      tentacle = {artefact = false, inked = false},
-      web = {artefact = false, inked = false},
-      bell = {artefact = false, inked = false},
-      prism = {artefact = false, inked = false},
-      shield = {artefact = false, inked = false},
-      firefly = {artefact = false, inked = false},
-      moss = {artefact = false, inked = false},
-      hammer = {artefact = false, inked = false},
-      crystal = {artefact = false, inked = false},
-      moon = {artefact = false, inked = false},
-      starburst = {artefact = false, inked = false},
-      hourglass = {artefact = false, inked = false},
-      ox = {artefact = false, inked = false},
-      chameleon = {artefact = false, inked = false},
-      talon = {artefact = false, inked = false},
-    }
   personalBalanceStartTimes = personalBalanceStartTimes or {}
   enemyBalanceStartTimes = enemyBalanceStartTimes or {}
-  
-    enemyclass = enemyclass or {
-        ["alchemist"]    = {["enabled"] = false},
-        ["apostate"]     = {["enabled"] = false},
-        ["bard"]         = {["enabled"] = false},
-        ["blademaster"]  = {["enabled"] = false},
-        ["depthswalker"] = {["enabled"] = false},
-        ["dragon"]       = {["enabled"] = false},
-        ["druid"]        = {["enabled"] = false},
-        ["jester"]       = {["enabled"] = false},
-        ["magi"]         = {["enabled"] = false},
-        ["monk"]         = {["enabled"] = false},
-        ["occultist"]    = {["enabled"] = false},
-        ["pariah"]       = {["enabled"] = false},
-        ["priest"]       = {["enabled"] = false},
-        ["psion"]        = {["enabled"] = false},
-        ["sentinel"]     = {["enabled"] = false},
-        ["serpent"]      = {["enabled"] = false},
-        ["shaman"]       = {["enabled"] = false},
-        ["sylvan"]       = {["enabled"] = false},
-        ["infernal"]     = {["enabled"] = false},
-        ["unnamable"]    = {["enabled"] = false},
-        ["paladin"]      = {["enabled"] = false},
-        ["runewarden"]   = {["enabled"] = false},
-        
-        -- 🟢 ALIGNED FOR SYSTEM-WIDE CONSISTENCY
-        ["air elemental"]   = {["enabled"] = false},
-        ["water elemental"] = {["enabled"] = false},
-        ["fire elemental"]  = {["enabled"] = false},
-        ["earth elemental"] = {["enabled"] = false},
-    }
-
-      skillTreeList = skillTreeList or {
-        ["alchemist"]     = {"alchemy", "physiology", "formulation", "sublimation"},
-        ["apostate"]      = {"evileye", "necromancy", "apostasy"},
-        ["bard"]          = {"bladedance", "composition", "sagas", "woe"},
-        ["blademaster"]   = {"twoarts", "striking", "shindo"},
-        ["depthswalker"]  = {"aeonics", "shadowmancy", "terminus"},
-        ["dragon"]        = {"dragoncraft"},
-        ["druid"]         = {"groves", "metamorphosis", "reclamation"},
-        ["infernal"]      = {"weaponmastery", "oppression", "malignity"},
-        ["jester"]        = {"tarot", "pranks", "puppetry"},
-        ["magi"]          = {"elementalism", "crystalism", "artificing"},
-        ["monk"]          = {"tekura", "shikudo", "kaido", "telepathy"},
-        ["occultist"]     = {"occultism", "tarot", "domination"},
-        ["paladin"]       = {"weaponmastery", "excision", "valour"},
-        ["pariah"]        = {"memorium", "pestilence", "charnel"},
-        ["priest"]        = {"spirituality", "devotion", "zeal"},
-        ["psion"]         = {"weaving", "psionics", "emulation"},
-        ["runewarden"]    = {"weaponmastery", "runelore", "discipline"},
-        ["sentinel"]      = {"metamorphosis", "woodlore", "skirmishing"},
-        ["serpent"]       = {"subterfuge", "venom", "hypnosis"},
-        ["shaman"]        = {"spiritlore", "curses", "vodun"},
-        ["sylvan"]        = {"propagation", "groves", "weatherweaving"},
-        ["unnamable"]     = {"weaponmastery", "anathema", "dominion"},
-        
-        -- 🟢 CONSOLIDATED ELEMENTAL KEYS MATCHING YOUR REFACTORED PLAYER:myclass()
-        ["air elemental"]   = {"duress"},
-        ["water elemental"] = {"pervasion"},
-        ["fire elemental"]  = {"ignition"},
-        ["earth elemental"] = {"sculpting"},
-    }
-  breath_types =
-    breath_types or
-    {
-      ["Black"] = "Acid",
-      ["Blue"] = "Ice",
-      ["Gold"] = "Psi",
-      ["Green"] = "Venom",
-      ["Red"] = "Dragonfire",
-      ["Silver"] = "Lightning",
-    }
-  interpolationState =
-    interpolationState or {health = false, mana = false, ep = false, wp = false, rank = false}
-
-  minables =
-    minables or
-    {
-      antimony = {amount = 0},
-      argentum = {amount = 0},
-      arsenic = {amount = 0},
-      aurum = {amount = 0},
-      azurite = {amount = 0},
-      bisemutum = {amount = 0},
-      calamine = {amount = 0},
-      calcite = {amount = 0},
-      cinnabar = {amount = 0},
-      cuprum = {amount = 0},
-      dolomite = {amount = 0},
-      ferrum = {amount = 0},
-      gypsum = {amount = 0},
-      magnesium = {amount = 0},
-      malachite = {amount = 0},
-      plumbum = {amount = 0},
-      potash = {amount = 0},
-      quartz = {amount = 0},
-      quicksilver = {amount = 0},
-      realgar = {amount = 0},
-      stannum = {amount = 0},
-    }
-  herbables =
-    herbables or
-    {
-      ash = {amount = 0},
-      bayberry = {amount = 0},
-      bellwort = {amount = 0},
-      bloodroot = {amount = 0},
-      cohosh = {amount = 0},
-      echinacea = {amount = 0},
-      elm = {amount = 0},
-      ginger = {amount = 0},
-      ginseng = {amount = 0},
-      goldenseal = {amount = 0},
-      hawthorn = {amount = 0},
-      kelp = {amount = 0},
-      kola = {amount = 0},
-      kuzu = {amount = 0},
-      lobelia = {amount = 0},
-      moss = {amount = 0},
-      myrrh = {amount = 0},
-      pear = {amount = 0},
-      sileris = {amount = 0},
-      skullcap = {amount = 0},
-      slipper = {amount = 0},
-      valerian = {amount = 0},
-    }
-  herbs =
-    herbs or
-    {
-      "ash",
-      "bayberry",
-      "bellwort",
-      "bloodroot",
-      "burdock",
-      "cohosh",
-      "echinacea",
-      "elm",
-      "ginger",
-      "ginseng",
-      "goldenseal",
-      "hawthorn",
-      "kelp",
-      "kola",
-      "kuzu",
-      "lobelia",
-      "moss",
-      "myrrh",
-      "pear",
-      "sileris",
-      "skullcap",
-      "slipper",
-      "valerian",
-      "weed",
-    }
-  minerals =
-    minerals or
-    {
-      "antimony",
-      "argentum",
-      "arsenic",
-      "aurum",
-      "azurite",
-      "bisemutum",
-      "calamine",
-      "calcite",
-      "cinnabar",
-      "cuprum",
-      "dolomite",
-      "ferrum",
-      "gypsum",
-      "magnesium",
-      "malachite",
-      "plumbum",
-      "potash",
-      "quartz",
-      "quicksilver",
-      "realgar",
-      "stannum",
-    }
-  elixirs = elixirs or {"frost", "health", "immunity", "levitation", "mana", "speed", "venom"}
-  salves = salves or {"caloric", "epidermal", "mass", "mending", "restoration"}
-  inks = inks or {"blue ink", "gold ink", "green ink", "purple ink", "red ink", "yellow ink"}
-  humourafftable =
-    humourafftable or
-    {
-      "nausea",
-      "sensitivity",
-      "slickness",
-      "stupidity",
-      "anorexia",
-      "impatience",
-      "clumsiness",
-      "weariness",
-      "asthma",
-      "haemophilia",
-      "recklessness",
-      "paralysis",
-    }
-  limbDamageTypes =
-    limbDamageTypes or
-    {
-      "mangledhead",
-      "mangledleftleg",
-      "mangledrightleg",
-      "mangledleftarm",
-      "mangledrightarm",
-      "damagedhead",
-      "damagedleftleg",
-      "damagedrightleg",
-      "damagedleftarm",
-      "damagedrightarm",
-      "mildtrauma",
-      "serioustrauma",
-      "brokenleftleg",
-      "brokenrightleg",
-      "brokenleftarm",
-      "brokenrightarm",
-    }
-  LimbTracker = LimbTracker or {}
-  LimbTracker.percentages =
-    {
-      ["head"] = 0,
-      ["torso"] = 0,
-      ["left arm"] = 0,
-      ["right arm"] = 0,
-      ["left leg"] = 0,
-      ["right leg"] = 0,
-    }
-  LimbTracker.data =
-    {
-      ["head"] = 0,
-      ["torso"] = 0,
-      ["left arm"] = 0,
-      ["right arm"] = 0,
-      ["left leg"] = 0,
-      ["right leg"] = 0,
-    }
-  crucialVials =
-    {
-      "caloric",
-      "epidermal",
-      "frost",
-      "health",
-      "immunity",
-      "levitation",
-      "mana",
-      "mass",
-      "mending",
-      "restoration",
-      "speed",
-      "venom",
-    }
-  crucialVenoms =
-    {
-      "aconite",
-      "curare",
-      "digitalis",
-      "epteth",
-      "epseth",
-      "eurypteria",
-      "gecko",
-      "kalmia",
-      "larkspur",
-      "monkshood",
-      "prefarar",
-      "slike",
-      "vardrax",
-      "vernalius",
-      "voyria",
-      "xentio",
-    }
   pipeline = pipeline or {defenses = {}, afflictions = {}}
-  --My defenses pipeline checker
   lastPipelineCleanup = lastPipelineCleanup or 0
+
+  -- Volatile trackers
+  mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crackedribs = 0, wristfractures = 0, pressure = 0, burning = 0, temperedmodifying = 0, temperedmelancholic = 0, temperedphlegmatic = 0, temperedcholeric = 0, unweavingmind = 0, unweavingbody = 0, unweavingspirit = 0, horror = 0 }
+  tattoos = tattoos or { mindseye = {artefact = true, inked = true}, boar = {artefact = true, inked = true}, tree = {artefact = true, inked = true}, feather = {artefact = false, inked = false}, megalith = {artefact = false, inked = false}, cloak = {artefact = false, inked = false}, brazier = {artefact = false, inked = false}, tentacle = {artefact = false, inked = false}, web = {artefact = false, inked = false}, bell = {artefact = false, inked = false}, prism = {artefact = false, inked = false}, shield = {artefact = false, inked = false}, firefly = {artefact = false, inked = false}, moss = {artefact = false, inked = false}, hammer = {artefact = false, inked = false}, crystal = {artefact = false, inked = false}, moon = {artefact = false, inked = false}, starburst = {artefact = false, inked = false}, hourglass = {artefact = false, inked = false}, ox = {artefact = false, inked = false}, chameleon = {artefact = false, inked = false}, talon = {artefact = false, inked = false} }
+  
+  LimbTracker = LimbTracker or {}
+  LimbTracker.percentages = LimbTracker.percentages or { ["head"] = 0, ["torso"] = 0, ["left arm"] = 0, ["right arm"] = 0, ["left leg"] = 0, ["right leg"] = 0 }
+  LimbTracker.data = LimbTracker.data or { ["head"] = 0, ["torso"] = 0, ["left arm"] = 0, ["right arm"] = 0, ["left leg"] = 0, ["right leg"] = 0 }
+  
+  interpolationState = interpolationState or {health = false, mana = false, ep = false, wp = false, rank = false}
 end
 
---failsafe save on system kick.
+-- Failsafe save on system kick
 function systemExit()
   if settings and settings.systemLoaded then
     settings.systemLoaded = false
@@ -13434,7 +13242,7 @@ function systemExit()
   end
 end
 
---on manual logout.
+-- On manual logout
 function systemLogout()
   if settings and settings.systemLoaded then
     settings.systemLoaded = false
@@ -13471,7 +13279,7 @@ function loadGMCPIRE()
 end
 
 function onProtocolEnabled(event, protocol)
-    -- This event passes arguments, but we look directly at Mudlet's internal GMCP cache
+    -- Protect against half-formed early login packets
     if not gmcp or not gmcp.Char or not gmcp.Char.Status or not gmcp.Char.Status.class then
         return
     end
@@ -13486,21 +13294,18 @@ function onProtocolEnabled(event, protocol)
         -- Explicitly flip this to true in memory right now!
         settings.systemInstalled = true
         
-        -- If your installer created default file structures, run file load now 
-        -- so the initialization variables are filled and ready for the next tick.
+        -- Load file structures immediately so dynamic values are ready for the next tick
         if initializeFileLoads then initializeFileLoads() end
         
         cecho("\n&lt;green&gt;[SYSTEM] Installation complete! Core structures initialized. Configuring layout on next vitals update...")
-        return -- Exit this single packet pass cleanly.
+        return 
     end
     
-    
-    -- 🟢 RUNS AUTOMATICALLY ON THE VERY NEXT PACKET (No restart required!)
+    -- 🟢 RUNS AUTOMATICALLY ON THE VERY NEXT PACKET
     if not settings.systemLoaded then
         settings.systemLoaded = true
         
         loadGMCPIRE()
-        --loadClassSpecificData() --[[DEPRECATED]]
         initializeSettings() 
 
         initializeGUIContainers()
@@ -13515,11 +13320,11 @@ function onProtocolEnabled(event, protocol)
         
         startGameFeedPolling() 
         
-          send("inv reset")
-          send("plist")
-          send("date")
+        send("inv reset")
+        send("plist")
+        send("date")
 
-        -- 💣 THE PERMANENT KILL SWITCH:
+        -- 💣 THE PERMANENT KILL SWITCH
         if guiInitHandlerID then
             killAnonymousEventHandler(guiInitHandlerID)
             guiInitHandlerID = nil
@@ -13542,13 +13347,11 @@ function arenaEvent()
 end
 
 function systemConnected()
-
- settings = settings or {}
- settings.systemLoaded = false
- 
- initializeFileLoads()
- systemLogin()
- 
+  settings = settings or {}
+  settings.systemLoaded = false
+  
+  initializeFileLoads()
+  systemLogin()
 end
 
 -- Register core system event handlers cleanly
@@ -14322,6 +14125,7 @@ end</script>
   settings.systemInstalled = true   
   saveTableToJSON(settings, "settings")
 
+
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -14838,7 +14642,7 @@ end</script>
       regeneration_kaido = { type = "kaido", command = "regeneration", relax = "", active = false, enabled = true, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
       splitmind_kaido = { type = "kaido", command = "split mind", relax = "join mind", active = false, enabled = true, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       kaitrance_kaido = { type = "kaido", command = "trance", relax = "", active = false, enabled = true, keepup = false, name = "kaitrance", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      mindcloak_telepathy = { type = "telepathy", command = "mindcloak on", relax = "mindcload off", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      mindcloak_telepathy = { type = "telepathy", command = "mindcloak on", relax = "mindcloak off", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
       telesense_telepathy = { type = "telepathy", command = "mind telesense on", relax = "mind telesense off", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
       hypersense_telepathy = { type = "telepathy", command = "mind hypersense on", relax = "mind hypersense off", active = false, enabled = true, keepup = false, name = "hypersense", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
       gripping_shikudo = { type = "shikudo", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
@@ -15481,107 +15285,136 @@ end</script>
 						<name>NDB settings</name>
 						<packageName></packageName>
 						<script>function NDB_Install()
-    -- Initialize the NDB table
-    NDB = {
-        installed = true,
-        players = {},
-        highlightNames = true,
-        highlighting = {
-            Ashtan = "purple",
-            Cyrene = "CornflowerBlue",
-            Eleusis = "green",
-            Hashan = "orange",
-            Mhaldor = "red",
-            Targossas = "cyan",
-            Enemies = "red",
-            Rogues = "DarkSlateGrey",
-            Underworld = "brown",
-        },
-        special = {},
-        player_Notes = {},
-        divine = {
-            "Aegis", "Artemis", "Aurora", "Babel", "Deucalion", "Gaia", "Lorielan", "Lupus", "Neraeos",
-            "Ourania", "Pandora", "Phaestus", "Prospero", "Sartan", "Scarlatti", "Twilight", "Valnurana",
-            "Vastar", "Tlalaiad", "Romeo", "Juliet"
-        },
-        cityEnemies = {},
-        cityList = {},
-        doesNotExist = {},
-        highlightPriority = "city",
-        enemySettings = {bold = false, italics = false, underline = false},
+    -- Initialize the global container safely without obliterating existing data
+    NDB = NDB or {}
+    
+    -- Preserve or set foundational attributes safely
+    NDB.installed = true
+    NDB.highlightNames = (NDB.highlightNames ~= nil) and NDB.highlightNames or true
+    NDB.highlightPriority = NDB.highlightPriority or "city"
+    
+    -- Populate memory containers if they aren't already initialized
+    NDB.players = NDB.players or {}
+    NDB.special = NDB.special or {}
+    NDB.player_Notes = NDB.player_Notes or {}
+    NDB.cityEnemies = NDB.cityEnemies or {}
+    NDB.cityList = NDB.cityList or {}
+    NDB.doesNotExist = NDB.doesNotExist or {}
+    
+    -- Hardcoded base tables can be declared if missing
+    NDB.highlighting = NDB.highlighting or {
+        Ashtan = "purple",
+        Cyrene = "CornflowerBlue",
+        Eleusis = "green",
+        Hashan = "orange",
+        Mhaldor = "red",
+        Targossas = "cyan",
+        Enemies = "red",
+        Rogues = "DarkSlateGrey",
+        Underworld = "brown",
+    }
+    
+    NDB.enemySettings = NDB.enemySettings or {bold = false, italics = false, underline = false}
+    
+    NDB.divine = {
+        "Aegis", "Artemis", "Aurora", "Babel", "Deucalion", "Gaia", "Lorielan", "Lupus", "Neraeos",
+        "Ourania", "Pandora", "Phaestus", "Prospero", "Sartan", "Scarlatti", "Twilight", "Valnurana",
+        "Vastar", "Tlalaiad", "Romeo", "Juliet"
     }
 
-    cecho("\n&lt;green&gt;Systems have been Installed and are ready to go.\n")
+    -- 🔄 FIX REDUNDANCY: Call your local file loader straight from the installer!
+    loadAllNDBPlayers()
+
+    cecho("\n&lt;green&gt;Systems have been Installed and profiles populated from disk.\n")
     NDB_Unhighlight()
-
-     -- Save city ally list
-    --if NDB and NDB.cityList then
-    --  saveTableToJSON(NDB.cityList, "cityallylist")
-    --end    
-
-    
 end
 
 
 function loadAllNDBPlayers()
-  local path = getNDBPath()
-  NDB = NDB or {}
-  NDB.players = {}
+    local path = getNDBPath()
+    NDB = NDB or {}
+    
+    -- FIXED: Changed from NDB.players = {} to ensuring it exists. 
+    -- This stops it from flashing empty if called multiple times.
+    NDB.players = NDB.players or {}
 
-  -- Ensure the directory exists before we try to read it
-  if not lfs.attributes(path, "mode") then
-    debugEcho("yellow","NDB directory not found, skipping player load.")
-    return
-  end
-
-  for file in lfs.dir(path) do
-    -- Filter for JSON files and ignore the special exclusion list
-    if file:match("%.json$") and file ~= "doesnotexist.json" then
-      local fullPath = path .. "/" .. file
-      
-      -- 🔄 Swapping safeJSONLoad for the new jsonManager
-      local data = jsonManager({ 
-        safe = true, 
-        path = fullPath, 
-        fallback = {} 
-      })
-
-      -- Only insert if the data is valid and has a name key
-      if data and data.name then
-        NDB.players[data.name] = data
-      end
+    if not lfs.attributes(path, "mode") then
+        debugEcho("yellow","NDB directory not found, skipping player load.")
+        return
     end
-  end
 
-     debugEcho("green",string.format("✔ Loaded %d individual NDB player files.", table.size(NDB.players))) 
+    local loadedCount = 0
 
+    for file in lfs.dir(path) do
+        if file:match("%.json$") and file ~= "doesnotexist.json" and file ~= "Online.json" then
+            local fullPath = path .. "/" .. file
+            
+            local data = jsonManager({ 
+                safe = true, 
+                path = fullPath, 
+                fallback = {} 
+            })
+
+            if data and data.name then
+                NDB.players[data.name:title()] = data
+                loadedCount = loadedCount + 1
+            end
+        end
+    end
+
+    debugEcho("green", string.format("✔ Loaded %d individual NDB player files.", loadedCount)) 
 end</script>
 						<eventHandlerList />
 					</Script>
 					<Script isActive="yes" isFolder="no">
 						<name>NDB_Failed</name>
 						<packageName></packageName>
-						<script>function NDB_Failed(_, filepath)
-    debugEcho("red","Error downloading information.")
+						<script>-- Make sure this function is hooked up to the Mudlet event: sysDownloadError
+function NDB_Failed(event, filepath)
+    debugEcho("red", "Error downloading information.")
     
-    -- Define the base directory for the C: drive    
     local tablesDir = getNDBPath()
 
     if filepath:match("server replied: Not Found") then
-        debugEcho("yellow","" .. filepath)
-        local person = filepath:match("/(%w+).json")
-        local fpr = tablesDir .. "/" .. person .. ".json"
+        debugEcho("yellow", "API Error: " .. filepath)
+        
+        -- FIXED: Robust pattern matching that strips out the name regardless of \ or / slashes
+        local person = filepath:match("([^/\\]+)%.json")
+        
+        if person and person ~= "Online" then
+            person = person:title()
+            local fpr = tablesDir .. "/" .. person .. ".json"
 
-        NDB.doesNotExist[person] = true
-        debugEcho("red","This person does not exist: " .. person)
-        NDB_Remove(person)
-        saveTableToJSON(NDB.doesNotExist, "doesnotexist")
-        os.remove(fpr)
+            -- Track them in your memory table so your system doesn't query them again
+            NDB = NDB or {}
+            NDB.doesNotExist = NDB.doesNotExist or {}
+            NDB.doesNotExist[person] = true
+            
+            debugEcho("red", "This person does not exist on the Achaea server: " .. person)
+            
+            -- If NDB_Remove exists in your system, let it clean up memory anchors
+            if type(NDB_Remove) == "function" then
+                NDB_Remove(person)
+            else
+                if NDB.players then NDB.players[person] = nil end
+            end
+            
+            -- FIXED: Swapped out legacy saveTableToJSON for your standard robust jsonManager interface
+            jsonManager({
+                write = true,
+                path = tablesDir .. "/doesnotexist.json",
+                data = NDB.doesNotExist
+            })
+            
+            -- Clean up the empty/broken file Mudlet might have initialized on the hard drive
+            if lfs.attributes(fpr, "mode") then
+                os.remove(fpr)
+            end
+        end
     else
-        debugEcho("red","Unknown error while downloading: " .. filepath)
+        debugEcho("red", "Unknown network/server error while downloading: " .. filepath)
     end
-end
-</script>
+end</script>
 						<eventHandlerList>
 							<string>sysDownloadError</string>
 						</eventHandlerList>
@@ -15611,22 +15444,56 @@ end
     local ok, t = pcall(yajl.to_value, s)
     if not ok then return end
 
-    local name = t.name
+    local name = t.name:title()
     
-    -- Table Construction
+    ---------------------------------------------------------
+    -- 🛡️ PROTECTIVE OVERRIDE GUARDS
+    ---------------------------------------------------------
+    -- 1. Check City: If API returns hidden but you have a manual city set, preserve yours!
+    local incomingCity = t.city and t.city:title() or "None"
+    local finalCity = incomingCity
+
+    if (incomingCity == "Hidden" or incomingCity == "(hidden)") and NDB and NDB.players and NDB.players[name] then
+      local currentStoredCity = NDB.players[name].city or "None"
+      if currentStoredCity ~= "None" and currentStoredCity ~= "Hidden" and currentStoredCity ~= "(hidden)" then
+        finalCity = currentStoredCity
+      end
+    end
+
+    -- 2. Check House: If API returns hidden but you have a manual house set, preserve yours!
+    local incomingHouse = t.house and t.house:title() or "None"
+    local finalHouse = incomingHouse
+
+    if (incomingHouse == "Hidden" or incomingHouse == "(hidden)") and NDB and NDB.players and NDB.players[name] then
+      local currentStoredHouse = NDB.players[name].house or "None"
+      if currentStoredHouse ~= "None" and currentStoredHouse ~= "Hidden" and currentStoredHouse ~= "(hidden)" then
+        finalHouse = currentStoredHouse
+      end
+    end
+    ---------------------------------------------------------
+
+    -- Table Construction using protected city and house values
     NDB.players[name] = {
       name = name,
       title = t.fullname or name,
-      house = t.house and t.house:title() or "None",
+      house = finalHouse,
       xp_rank = tonumber(t.xp_rank) or 0,
-      city = t.city and t.city:title() or "None",
+      city = finalCity,
       level = tonumber(t.level) or 0,
       class = t.class and t.class:title() or "Unknown",
       pks = tonumber(t.player_kills) or 0,
-      lastUpdate = os.date(),
+      lastUpdate = os.date("%m/%d/%y %H:%M:%S"),
     }
 
-    saveTableToJSON(NDB.players[name], name, getNDBPath())
+    -- 💾 SECURE OVERWRITE: Save via your newly fixed write engine!
+    local safeName = name:title()
+    jsonManager({
+      write = true,
+      path = getNDBPath() .. "/" .. safeName .. ".json",
+      data = NDB.players[name]
+    })
+
+    -- Clean up the temporary API download file from your system
     os.remove(filepath)
     
     -- TRACKER LOGIC
@@ -15640,17 +15507,16 @@ end
     end
 
     -- HONOURS DISPLAY LOGIC
-    -- If we flagged this as a 'check', show the big display now
     if NDB.checking then 
       NDB_displayWho(name) 
-      NDB.checking = false -- Reset the flag so it doesn't pop up randomly later
+      NDB.checking = false 
     end
     
     raiseEvent("NDB Check Highlight", name)
   end)
 
   if not success then
-    cecho("\n&lt;red&gt;CRITICAL ERROR: " .. tostring(errorMsg))
+    cecho("\n&lt;red&gt;CRITICAL ERROR IN NDB_SUCCESS: " .. tostring(errorMsg))
   end
 end
 
@@ -15688,6 +15554,15 @@ function NDB_ProcessOnlineList(filepath)
         cecho("\n&lt;white&gt; - New: " .. name)
         NDB_Acquire(name)
         newCount = newCount + 1
+      else
+        -- 🟢 ADD THIS ELSE BLOCK: 
+        -- If they are already tracked in memory, ensure their hard drive file exists or overwrite it fresh!
+        local safeName = name:title()
+        jsonManager({
+          write = true,
+          path = getNDBPath() .. "/" .. safeName .. ".json",
+          data = NDB.players[safeName]
+        })
       end
     end
     
@@ -15753,59 +15628,81 @@ end</script>
   debugEcho("yellow","Syncing with Achaea API... ")
 end
 
-function handleNDBDownload(event, filename)
-  -- Only trigger if the file that finished is our Online.json
-  if not filename:find("Online.json") then return end
 
-  cecho("\n&lt;green&gt;Download complete. Parsing online players...")
-  
-  local ndbPath = getNDBPath()
-  local file = io.open(filename, "r")
-  if not file then return end
-  
-  local contents = file:read("*a")
-  file:close()
-  
-  local data = dkjson.decode(contents)
-  
-  if data and data.characters then
-    for _, char in ipairs(data.characters) do
-      -- Logic to check if they are in your NDB or need Acquire
-      local name = char.name
-      -- If they aren't in your database yet, Acquire them
-      if not NDB.players[name] then
-        NDB_Acquire(name)
-      end
+function handleNDBDownload(event, filename)
+    local ndbPath = getNDBPath()
+
+    ---------------------------------------------------------
+    -- CASE 1: GLOBAL ONLINE LIST DOWNLOADED
+    ---------------------------------------------------------
+    if filename:find("Online.json", 1, true) then
+        -- Route directly to your high-efficiency, clean decoder function
+        NDB_SortOnline(filename)
+        return
     end
-    cecho("\n&lt;green&gt;NDB Sync Complete: " .. #data.characters .. " players online.")
-  end
-  
-  -- Reset your parsing flags
-  parsingQW = false
-  parsingCity = nil
+
+    ---------------------------------------------------------
+    -- CASE 2: INDIVIDUAL CHARACTER DATA DOWNLOADED
+    ---------------------------------------------------------
+    local personName = filename:match("([^/\\]+)%.json$")
+    
+    -- Ensure the file is inside our NDB folder and matches an individual download
+    if personName and filename:find(ndbPath, 1, true) and personName ~= "Online" and personName ~= "doesnotexist" then
+        
+        -- Use jsonManager to safely pull the freshly downloaded person data from the API stream
+        local data = jsonManager({
+            safe = true,
+            path = filename,
+            fallback = {}
+        })
+
+        if data and data.name then
+            NDB = NDB or {}
+            NDB.players = NDB.players or {}
+            local name = data.name:title()
+            
+            -- Construct the structured player layout profile cleanly
+            NDB.players[name] = {
+                name = name,
+                title = data.fullname or name,
+                house = data.house and data.house:title() or "None",
+                xp_rank = tonumber(data.xp_rank) or 0,
+                city = data.city and data.city:title() or "None",
+                level = tonumber(data.level) or 0,
+                class = data.class and data.class:title() or "Unknown",
+                pks = tonumber(data.player_kills) or 0,
+                lastUpdate = os.date("%m/%d/%y %H:%M:%S"),
+            }
+            
+            -- 💾 Force write the individual player profile to your hard drive securely!
+            NDB_SavePlayerFile(name)
+            
+            -- HONOURS DISPLAY HOOK (For individual manual inspect lookups)
+            if NDB.checking then 
+                NDB_displayWho(name) 
+                NDB.checking = false 
+            end
+            
+            raiseEvent("NDB Check Highlight", name)
+            
+            if settings.debug then 
+                cecho("\n&lt;cyan&gt;[NDB]: Automatically updated and saved profile for: " .. name) 
+            end
+        end
+    end
 end
 
+
 function NDB_Acquire(person)
-    -- 1. Safety Check
     if not person or person == "" then return end
     local person = person:title()
 
-    -- 2. Skip if known to not exist (Check if NDB exists first!)
     if NDB and NDB.doesNotExist and NDB.doesNotExist[person] then
         debugEcho("yellow","Skipping " .. person .. " — known invalid.\n")
         return
     end
 
-    -- 3. Use your existing path helper
-    -- This avoids the gmcp.Char.Status.name error
     local ndbPath = getNDBPath()
-
-    -- 4. Ensure the NDB directory exists
-    if not lfs.attributes(ndbPath, "mode") then
-        lfs.mkdir(ndbPath)
-    end
-
-    -- 5. Download character data
     local savePath = ndbPath .. "/" .. person .. ".json"
     local url = "http://api.achaea.com/characters/" .. person .. ".json"
     
@@ -15813,14 +15710,32 @@ function NDB_Acquire(person)
 end
 
 
+function NDB_SavePlayerFile(name)
+    if not name or name == "" then return end
+    local name = name:title()
+
+    if not NDB or not NDB.players or not NDB.players[name] then
+        return
+    end
+
+    local ndbPath = getNDBPath()
+    local fullPath = ndbPath .. "/" .. name .. ".json"
+    local playerData = NDB.players[name]
+
+    jsonManager({
+        write = true,
+        path = fullPath,
+        data = playerData
+    })
+end
+
+
 function NDB_NameList(names)
-	--Parse list to see who isn't tracked.
-	for _, name in pairs(names) do
-		if not NDB_Exists(name) and not table.contains(NDB.divine, name) then
-			NDB_Acquire(name)
-		end
-	end
-	cecho("\n&lt;green&gt;Database has been fully updated, thank you.")
+    for _, name in pairs(names) do
+        if not NDB_Exists(name) and not table.contains(NDB.divine, name) then
+            NDB_Acquire(name)
+        end
+    end
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -15836,196 +15751,193 @@ end</script>
   return base
 end
 
-
+function NDB_Exists(name)
+  if not NDB or not NDB.players or not name then return false end
+  return NDB.players[name:title()] ~= nil
+end
 
 function NDB_isMark(name)
-  if not NDB_Exists(name) then return false end
-  if NDB.players[name].mark then
-    return NDB.players[name].mark
-  else
-    return false
-  end
+  if not name or not NDB_Exists(name) then return false end
+  local person = name:title()
+  return NDB.players[person].mark or false
 end
 
 function NDB_armyRank(name)
-  if not NDB_Exists(name) then return 0 end
-  if NDB.players[name].armyRank then
-    return NDB.players[name].armyRank
-  else
-    return 0
-  end
+  if not name or not NDB_Exists(name) then return 0 end
+  local person = name:title()
+  return NDB.players[person].armyRank or 0
 end
 
 function NDB_isEnemy(name)
-	if table.contains(NDB.cityEnemies, name) then
-		return true
-	else
-		return false
-	end
+  if not name or not NDB or not NDB.cityEnemies then return false end
+  return table.contains(NDB.cityEnemies, name:title())
 end
 
 function NDB_getHouse(name)
-  if not NDB_Exists(name) then
+  if not name or not NDB_Exists(name) then
     return "Unknown"
   else
-    return NDB.players[name:title()].house 
+    return NDB.players[name:title()].house or "None"
+  end
+end
+
+function NDB_getClass(name)
+  if not name or not NDB_Exists(name) then
+    return "Unknown"
+  else
+    return NDB.players[name:title()].class or "Unknown"
+  end
+end
+
+function NDB_getCitizenship(name)
+  if not name or not NDB_Exists(name) then return "Unknown" end
+  local person = name:title()
+  local city = NDB.players[person].city or "None"
+  
+  if city:lower() == "none" or city:lower() == "(hidden)" or city:lower() == "underworld" then
+    return "Rogues"
+  else
+    return city
   end
 end
 
 function NDB_getColour(name)
-    if not NDB_Exists(name) then
-        return "white"  -- Return white if player data doesn't exist
+  if not name or not NDB_Exists(name) then
+    return "white" 
+  else
+    local citizenship = NDB_getCitizenship(name)
+    
+    if citizenship == "Unknown" or citizenship == "None" or citizenship == "Rogues" then
+      return NDB.highlighting.Rogues or "white"  
+    elseif citizenship:lower() == "underworld" then
+      return NDB.highlighting.Underworld or "white" 
     else
-        local citizenship = NDB_getCitizenship(name:title())
-        
-        -- If the citizenship is Unknown or None, return the color for Rogues
-        if citizenship == "Unknown" or citizenship == "None" then
-            return NDB.highlighting.Rogues or "white"  -- Ensure it returns a color
-        elseif citizenship == "underworld" then
-            return NDB.highlighting.Underworld or "white"  -- Ensure it returns a color
-        else
-            -- Check for the city in the highlighting table
-            return NDB.highlighting[citizenship] or "white"  -- Return white if city is not found
-        end
+      return NDB.highlighting[citizenship] or "white"  
     end
+  end
 end
-
-
-
-function NDB_getClass(name)
-	if NDB_Exists(name:title()) then
-		return NDB.players[name:title()].class
-    --return NDB.players[name].class
-	else
-		return "Unknown"
-	end
-end
-
-function NDB_Exists(name)
-  if not NDB or not NDB.players then return false end
-  return NDB.players[name:title()] ~= nil
-end
-
 
 function NDB_isCitizenOf(city, name)
-	if NDB_Exists(name:title()) then
-		return (NDB.players[name:title()].city == city:title() and true or false)
-	else
-		debugEcho("red","That person's information has not yet been gathered.")
-		return false
-	end
-end
-
-function NDB_getCitizenship(name)
-	if NDB_Exists(name:title()) then
-		if NDB.players[name].city:lower() == "none" or NDB.players[name].city:lower() == "(hidden)" or NDB.players[name].city:lower() == "underworld" then
-			return "Rogues"
-		else
-			return NDB.players[name].city
-		end
-	else
-		return "Unknown"
-	end
+  if not name or not city then return false end
+  if NDB_Exists(name) then
+    return NDB.players[name:title()].city == city:title()
+  else
+    debugEcho("red","That person's information has not yet been gathered.")
+    return false
+  end
 end
 
 function NDB_Ignore(name)
+  if not name or name == "" then return end
   local person = name:title()
+  
+  NDB = NDB or {}
+  NDB.doesNotExist = NDB.doesNotExist or {}
   NDB.doesNotExist[person] = true
-  saveTableToJSON(NDB.doesNotExist, "doesnotexist")
+  
+  -- FIXED: Unified legacy saveTableToJSON with your robust jsonManager
+  jsonManager({
+    write = true,
+    path = getNDBPath() .. "/doesnotexist.json",
+    data = NDB.doesNotExist
+  })
   debugEcho("yellow","Added " .. person .. " to ignore list.")
 end
 
-
 function NDB_Remove(name)
-	local person = name:title()
-	if NDB_Exists(person) then
-		NDB.players[person] = nil
-		--If any highlight available, then clear it.
-		if NDB.highlightTriggers and NDB.highlightTriggers[person] then
-			killTrigger(NDB.highlightTriggers[person])
-		end
-		debugEcho("red",""..person.." has been removed from the database.")
-	else
-		debugEcho("red",""..person.." is not in the database, anyway.")
-	end
+  if not name or name == "" then return end
+  local person = name:title()
+  
+  if NDB_Exists(person) then
+    NDB.players[person] = nil
+    
+    if NDB.highlightTriggers and NDB.highlightTriggers[person] then
+      killTrigger(NDB.highlightTriggers[person])
+      NDB.highlightTriggers[person] = nil
+    end
+    
+    -- Clean up the file from your computer's hard drive as well
+    local fullPath = getNDBPath() .. "/" .. person .. ".json"
+    if lfs.attributes(fullPath, "mode") then
+      os.remove(fullPath)
+    end
+    
+    debugEcho("red", person .. " has been fully purged from memory and disk storage.")
+  else
+    debugEcho("red", person .. " is not tracked in the system database.")
+  end
 end
 
 function NDB_SortOnline(filepath)
-  local f = io.open(filepath, "r")
-  local s
-  if f then
-    s = f:read("*a") -- read full file content instead of just one line
-    f:close()
-  end
+    -- Safely decode using your active system jsonManager
+    local data = jsonManager({ safe = true, path = filepath, fallback = {} })
+    if not data or not data.characters then
+        debugEcho("red","[JSON ERROR] Incomplete or malformed global data stream parsed.")
+        return
+    end
 
-	-- didn't get JSON data? 
-	if s:find("Internal error", 1, true) or s:find("DOCTYPE html PUBLIC", 1, true) then
-		debugEcho("red","Data Acquisition Failed!")
-		return 
-	end
+    apiOnlineFound = {}
+    local apiNeedUpdate = {}
+    
+    -- Parse active characters out of the downloaded server file
+    for _, tab in ipairs(data.characters) do
+        local cName = tab.name:title()
+        if not tab.name:find("masked") and not table.contains(NDB.divine, cName) then
+            table.insert(apiOnlineFound, cName)
+        end
+    end
 
-  -- Optional: save raw string to debug file for inspection
-  local debug = io.open(getMudletHomeDir().."/last_json_incomplete.txt", "w")
-  debug:write(s or "nil")
-  debug:close()
-  
-  -- Trim trailing whitespace
-  s = s and s:match("^(.-)%s*$") or ""
-  
-  -- Check for a valid ending character before parsing
-  if not s:match("[%]%}]$") then
-    debugEcho("red","[JSON ERROR] Incomplete or malformed JSON — see last_json_incomplete.txt")
-    return
-  end
-  
-  -- Attempt to parse JSON safely
-  local ok, t = pcall(yajl.to_value, s)
-  if not ok then
-    debugEcho("red","[JSON ERROR] Failed to parse JSON — see last_json_incomplete.txt")
-    return
-  end
+    -- Sync and cross-reference against your live Mudlet GMCP player channel feeds
+    if gmcp and gmcp.Comm and gmcp.Comm.Channel and gmcp.Comm.Channel.Players then
+        for _, tab in ipairs(gmcp.Comm.Channel.Players) do
+            local name = tab.name:title()
+            if not name:find("masked") and not table.contains(NDB.divine, name) and not table.contains(apiOnlineFound, name) then
+                table.insert(apiOnlineFound, name)
+            end
+        end
+    end
 
-	apiOnlineFound = {}
-	apiNeedUpdate = {}
-	for ind, tab in pairs(t.characters) do
-		if not tab.name:find("masked") and not table.contains(NDB.divine, tab.name) then
-			table.insert(apiOnlineFound, tab.name)
-		end
-	end
+    -- Clean up the temporary online file wrapper
+    if lfs.attributes(filepath, "mode") then os.remove(filepath) end
+    table.sort(apiOnlineFound)
 
-	for ind, tab in pairs(gmcp.Comm.Channel.Players) do
-		if not table.contains(apiOnlineFound, tab.name) and not tab.name:find("masked") and not table.contains(NDB.divine, tab.name) then
-			table.insert(apiOnlineFound, tab.name)
-		end
-	end
+    -- Detect who is completely missing from your computer folders
+    local count = 0
+    for _, name in ipairs(apiOnlineFound) do
+        if not NDB_Exists(name) and not table.contains(NDB.divine, name) then
+            count = count + 1
+            table.insert(apiNeedUpdate, name)
+        end
+    end
 
-	os.remove(filepath)
-	table.sort(apiOnlineFound)
+    if count &gt; 0 then
+        cecho(string.format("\n&lt;yellow&gt;%d new names identified, acquiring profiles...", count))
+        cecho("\n&lt;DarkSlateGray&gt; Downloading missing logs: " .. table.concat(apiNeedUpdate, ", ") .. ".")
+        NDB_NameList(apiNeedUpdate)
+    else
+        -- 🟢 THE MISSING PIECE: If everyone is already tracked in memory, make sure their individual 
+        -- files are actually backed up on the hard drive right now instead of skipping them entirely!
+        for _, name in ipairs(apiOnlineFound) do
+            local safePath = getNDBPath() .. "/" .. name .. ".json"
+            if not io.exists(safePath) then
+                NDB_SavePlayerFile(name)
+            end
+        end
 
-	--Parse the list to see who needs to be added.
-	local count = 0
-	for index, name in pairs(apiOnlineFound) do
-		if not NDB_Exists(name) and not table.contains(NDB.divine, name) then
-			count = count + 1
-			table.insert(apiNeedUpdate, name)
-		end
-	end
-
-	if count &gt; 0 then
-		cecho(count.." new names identified, grabbing their info.")
-		cecho("\n&lt;DarkSlateGray&gt; - "..table.concat(apiNeedUpdate, ", ")..".")
-		NDB_NameList(apiNeedUpdate)
-	else
-		if parsingCity then
-			if parsingCity:lower() == "classes" then
-				NDB_displayOnlineClass(apiOnlineFound)
-			else
-				NDB_displayOnlineCity(apiOnlineFound)
-			end
-		else
-			NDB_displayOnline(apiOnlineFound)
-		end
-	end
+        -- Render your newly streamlined UI layouts!
+        if parsingCity and parsingCity ~= "All" then
+            if parsingCity:lower() == "classes" then
+                NDB_displayOnlineClass(apiOnlineFound)
+            else
+                NDB_displayOnlineCity(apiOnlineFound)
+            end
+        else
+            NDB_RenderDisplay(apiOnlineFound)
+        end
+    end
+    
+    parsingQW = false
+    parsingCity = nil
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -16033,38 +15945,44 @@ end</script>
 						<name>NDB highlighting</name>
 						<packageName></packageName>
 						<script>function NDB_Unhighlight()
-	if not NDB.highlightTriggers or not next(NDB.highlightTriggers) then return end
+    if not NDB or not NDB.highlightTriggers or not next(NDB.highlightTriggers) then return end
 
-  	for k,v in pairs(NDB.highlightTriggers) do
-    	killTrigger(v)
-  	end
+    for k, v in pairs(NDB.highlightTriggers) do
+        killTrigger(v)
+    end
 
-  	NDB.highlightTriggers = {}
+    NDB.highlightTriggers = {}
 end
 
 function NDB_enemyHighlights()
-	cecho("Clearing all highlights to prevent errors. One moment, please.")
-	NDB_Unhighlight()
-	tempTimer(2, [[ cecho("&lt;DarkSlateGray&gt;Loading new highlights now."); NDB_loadHighlights() ]])	
+    cecho("\n&lt;DarkSlateGray&gt;Clearing all highlights to prevent errors. One moment, please...")
+    NDB_Unhighlight()
+    tempTimer(1.5, function()
+        cecho("\n&lt;DarkSlateGray&gt;Loading new highlights now.")
+        NDB_loadHighlights()
+    end)    
 end
 
 function NDB_loadHighlights()
-	NDB.highlightTriggers = NDB.highlightTriggers or {}
-	collectgarbage("stop")
+    NDB = NDB or {}
+    NDB.highlightTriggers = NDB.highlightTriggers or {}
+    collectgarbage("stop")
 
-	NDB_Unhighlight()
+    NDB_Unhighlight()
 
-	if NDB.highlightNames then
-		for index, person in pairs(NDB.players) do
-			NDB_highlightName( person.name, person.city )
-		end
-	elseif NDB.special then
-		for person, colour in pairs(NDB.special) do
-			NDB_highlightName( person, "nil" )
-		end		
-	end
+    if NDB.highlightNames and NDB.players then
+        for _, person in pairs(NDB.players) do
+            if person.name then
+                NDB_highlightName(person.name:title(), person.city)
+            end
+        end
+    elseif NDB.special then
+        for person, colour in pairs(NDB.special) do
+            NDB_highlightName(person:title(), "None")
+        end     
+    end
 
-	collectgarbage()
+    collectgarbage()
 end
 
 function NDB_addHighlight(_, name)
@@ -16100,63 +16018,62 @@ end
 
 
 function NDB_highlightName(who, city)
-	--If any highlight available, then clear it.
-	if NDB.highlightTriggers and NDB.highlightTriggers[who] then
-		killTrigger(NDB.highlightTriggers[who])
-	end
+    if not who or who == "" then return end
+    local person = who:title()
 
-	local colour = NDB.highlighting.Rogues
+    NDB.highlightTriggers = NDB.highlightTriggers or {}
+    
+    -- Clear out existing triggers tracking this exact player name first
+    if NDB.highlightTriggers[person] then
+        killTrigger(NDB.highlightTriggers[person])
+        NDB.highlightTriggers[person] = nil
+    end
 
-	--Get the necessary colour.
-		--Check specials first, then enemy list
-	if NDB.special and NDB.special[who] then
-		colour = NDB.special[who]	
-	elseif NDB.highlightPriority == "enemies" then
-		if table.contains(NDB.cityEnemies, who) then
-			colour = NDB.highlighting.Enemies
-		else
-			if city == "None" or city == "(hidden)" then
-				colour = NDB.highlighting.Rogues
-			else
-				colour = NDB.highlighting[city]
-			end
-		end
-	else
-		if city == "None" or city == "(hidden)" then
-			colour = NDB.highlighting.Rogues
-		else
-			colour = NDB.highlighting[city]
-		end
-	end
+    -- FIXED: Leverage your custom color system function instead of repeating manual color logic chains!
+    local colour = NDB_getColour(person)
 
-	NDB.highlightTriggers = NDB.highlightTriggers or {}
-	NDB.highlightTriggers[who] = tempTrigger(who, ([[NDB_highlight("%s", %s)]]):format(who,
-		(colour and '"' .. colour .. '"' or "false")
-	))
+    -- Override with explicit enemy settings if highlight priority demands it
+    if NDB.highlightPriority == "enemies" and NDB_isEnemy(person) then
+        colour = NDB.highlighting.Enemies or "red"
+    end
+
+    -- Overwrite with explicit manual special colors if present
+    if NDB.special and NDB.special[person] then
+        colour = NDB.special[person]
+    end
+
+    -- Construct the exact dynamic tempTrigger anchor
+    NDB.highlightTriggers[person] = tempTrigger(person, string.format([[NDB_highlight("%s", "%s")]], person, colour or "white"))
 end
 
 function NDB_highlight(name, colour)
-	local c, k = 1, 1
-	while k &gt; 0 do
-		k = line:find(name, k)
-		if k == nil then return end
-		c = c + 1
+    if not name or name == "" then return end
+    local person = name:title()
+    
+    local c, k = 1, 1
+    while k &gt; 0 do
+        k = line:find(person, k)
+        if k == nil then return end
+        c = c + 1
 
-		if k == line:find("%f[%a]"..name.."%f[%A]", k) then
-			if selectString(name, c-1) &gt; -1 then
-				if colour then fg(colour) end
-				if NDB.highlightPriority == "enemies" and table.contains(NDB.cityEnemies, name) then
-					if NDB.enemySettings.bold then setBold(true) end
-					if NDB.enemySettings.underline then setUnderline(true) end
-					if NDB.enemySettings.italics then setItalics(true) end
-				end
-				resetFormat()
-			else 
-				return 
-			end
-    		end
-		k = k + 1
-	end
+        -- Verify alphanumeric boundary structures strictly
+        if k == line:find("%f[%a]" .. person .. "%f[%A]", k) then
+            if selectString(person, c - 1) &gt; -1 then
+                if colour then fg(colour) end
+                
+                -- Inject extra enemy format decorations safely
+                if NDB.highlightPriority == "enemies" and NDB_isEnemy(person) and NDB.enemySettings then
+                    if NDB.enemySettings.bold then setBold(true) end
+                    if NDB.enemySettings.underline then setUnderline(true) end
+                    if NDB.enemySettings.italics then setItalics(true) end
+                end
+                resetFormat()
+            else 
+                return 
+            end
+        end
+        k = k + 1
+    end
 end
 
 registerAnonymousEventHandler("NDB Check Highlight", "NDB_addHighlight")
@@ -16174,33 +16091,33 @@ registerAnonymousEventHandler("NDB Check Highlight", "NDB_addHighlight")
     return
   end
 
-  -- 2. Setup Buckets
+  -- 2. Setup Buckets (Standardized keys to Match the Display Order Array)
   local onlinePeople = {
     Ashtan = {}, Cyrene = {}, Eleusis = {}, Hashan = {}, 
-    Mhaldor = {}, Targossas = {}, Rogues = {}, underworld = {}, Untracked = {}
+    Mhaldor = {}, Targossas = {}, Rogues = {}, Underworld = {}, Untracked = {}
   }
 
   for _, person in ipairs(players) do
-    if not NDB_Exists(person) then
-      table.insert(onlinePeople.Untracked, person)
+    local name = person:title()
+    if not NDB_Exists(name) then
+      table.insert(onlinePeople.Untracked, name)
     else
-      local city = NDB_getCitizenship(person)
-      local lowerCity = city:lower()
-      if lowerCity == "none" or lowerCity == "unknown" or lowerCity == "(hidden)" then
-        table.insert(onlinePeople.Rogues, person)
-      elseif lowerCity == "underworld" then
-        table.insert(onlinePeople.underworld, person)
+      local city = NDB_getCitizenship(name)
+      -- Use our unified getCitizenship function to filter into the exact bucket names
+      if city == "Rogues" or city == "Unknown" or city == "None" then
+        table.insert(onlinePeople.Rogues, name)
+      elseif city:lower() == "underworld" then
+        table.insert(onlinePeople.Underworld, name)
       elseif onlinePeople[city] then
-        table.insert(onlinePeople[city], person)
+        table.insert(onlinePeople[city], name)
       else
-        table.insert(onlinePeople.Rogues, person)
+        table.insert(onlinePeople.Rogues, name)
       end
     end
   end
 
   -- 3. UI Config
   local lineWidth = 80 
-  -- nameIndent = City(10) + Space(1) + Colon(1) + Space(1) + Count(6) + Space(2)
   local nameIndent = 21 
   local headerLine = "&lt;white&gt;+" .. string.rep("-", lineWidth - 2) .. "+"
   local divider = "\n&lt;DarkSlateGray&gt;" .. string.rep(".", lineWidth)
@@ -16214,7 +16131,8 @@ registerAnonymousEventHandler("NDB Check Highlight", "NDB_addHighlight")
     local currentLine = prefix
     local currentLen = nameIndent
     
-    for i, word in ipairs(words) do
+    for _, word in ipairs(words) do
+      -- Strip any internal tags to calculate clean horizontal visual character spacing
       local cleanWord = word:gsub("&lt;[^&gt;]+&gt;", "")
       if currentLen + #cleanWord &gt; lineWidth then
         cecho("\n" .. currentLine)
@@ -16228,25 +16146,22 @@ registerAnonymousEventHandler("NDB Check Highlight", "NDB_addHighlight")
     cecho("\n" .. currentLine)
   end
 
-  -- 5. The Output
+  -- 5. The Output Header Display
   cecho("\n" .. headerLine)
   local headerText = string.format("| &lt;gold&gt;WHO IS ONLINE &lt;white&gt;| &lt;green&gt;Total Tracked: &lt;white&gt;%d", #players)
   local cleanHeader = headerText:gsub("&lt;[^&gt;]+&gt;", "")
   cecho("\n&lt;white&gt;" .. headerText .. string.rep(" ", lineWidth - #cleanHeader - 1) .. "|")
   cecho("\n" .. headerLine)
 
-  local displayOrder = {"Ashtan", "Cyrene", "Eleusis", "Hashan", "Mhaldor", "Targossas", "Rogues", "underworld"}
+  local displayOrder = {"Ashtan", "Cyrene", "Eleusis", "Hashan", "Mhaldor", "Targossas", "Rogues", "Underworld"}
   
   for _, cityKey in ipairs(displayOrder) do
     local list = onlinePeople[cityKey]
-    if #list &gt; 0 then
+    if list and #list &gt; 0 then
       table.sort(list)
-      local displayName = (cityKey == "underworld" and "Underworld" or cityKey)
-      local color = (NDB.highlighting and NDB.highlighting[displayName]) or "white"
+      local color = (NDB.highlighting and NDB.highlighting[cityKey]) or "white"
       
-      -- Moved the colon back: Name is padded to 10, then the colon
-      local prefix = string.format("&lt;white&gt;%-10s &lt;%s&gt;: &lt;white&gt;(&lt;orange&gt;%d&lt;white&gt;)  ", displayName:sub(1,10), color, #list)
-      
+      local prefix = string.format("&lt;white&gt;%-10s &lt;%s&gt;: &lt;white&gt;(&lt;orange&gt;%d&lt;white&gt;)  ", cityKey:sub(1,10), color, #list)
       cechoWrappedNames(prefix, list, color)
       cecho(divider)
     end
@@ -16254,6 +16169,7 @@ registerAnonymousEventHandler("NDB Check Highlight", "NDB_addHighlight")
 
   -- 6. Untracked
   if #onlinePeople.Untracked &gt; 0 then
+    table.sort(onlinePeople.Untracked)
     local prefix = string.format("&lt;grey&gt;%-10s &lt;grey&gt;: &lt;white&gt;(&lt;orange&gt;%d&lt;white&gt;)  ", "Untracked", #onlinePeople.Untracked)
     cechoWrappedNames(prefix, onlinePeople.Untracked, "grey")
     cecho(divider)
@@ -16263,57 +16179,80 @@ registerAnonymousEventHandler("NDB Check Highlight", "NDB_addHighlight")
   send(" ", false) 
 end
 
-
-function NDB_displayOnlineCity(players)
-	local peopleFound = {}
-
-cecho("Data acqusition completed and analysed. Showing online players from &lt;"..NDB.highlighting[parsingCity:title()].."&gt;"..parsingCity:title()..".")
-
-	for _, person in pairs(players) do
-		if NDB_isCitizenOf(parsingCity:title(), person) then
-			cecho("\n &lt;"..NDB.highlighting[parsingCity:title()].."&gt;"..person..string.rep(" ", 13-string.len(person)).."- &lt;NavajoWhite&gt;"..NDB_getClass(person))
-		end
-	end
-	send(" ")
-	parsingCity = nil
+-- Fallback alias mapper in case your engine loops redirect here
+function NDB_displayOnline(players)
+    NDB_RenderDisplay(players)
 end
 
+function NDB_displayOnlineCity(players)
+  if not parsingCity then return end
+  local targetCity = parsingCity:title()
+  local color = (NDB.highlighting and NDB.highlighting[targetCity]) or "white"
 
+  cecho(string.format("\n&lt;green&gt;Data acquisition completed. Showing online players from &lt;%s&gt;%s&lt;reset&gt;.\n", color, targetCity))
+
+  for _, person in pairs(players) do
+    local name = person:title()
+    if NDB_isCitizenOf(targetCity, name) then
+      local pClass = NDB_getClass(name)
+      cecho(string.format("\n &lt;%s&gt;%-13s&lt;reset&gt; - &lt;NavajoWhite&gt;%s", color, name, pClass))
+    end
+  end
+  echo("\n")
+  send(" ")
+  parsingCity = nil
+end
 
 function NDB_displayWho(person)
+  if not person or person == "" then return end
   NDB.checking = nil
   local name = person:title()
-  local x, c, u
+  
   if not NDB_Exists(name) then
-  	cecho(name.." is not yet tracked!")
+    cecho("\n&lt;red&gt;" .. name .. " is not yet tracked in the database!")
   else
-  	x = NDB.players[name]
-  	c = NDB_getColour(name)
-  	u = "Checked: "..(x.lastUpdate and x.lastUpdate or "n/a")
-  	
-  	cecho("\n\n&lt;blue&gt;- &lt;"..c.."&gt;"..x.title.." &lt;blue&gt;"..string.rep("-", 70-(string.len(x.title)+3)).."\n")
-  	cecho("\n&lt;cyan&gt; City :   &lt;NavajoWhite&gt;"..x.city..string.rep(" ", 31-string.len(x.city)).."  &lt;cyan&gt; Level:   &lt;NavajoWhite&gt;"..x.level)
-  	cecho("\n&lt;cyan&gt; House:   &lt;NavajoWhite&gt;"..x.house..string.rep(" ", 31-string.len(x.house)).."  &lt;cyan&gt; Rank :   &lt;NavajoWhite&gt;"..x.xp_rank)
-  	cecho("\n&lt;cyan&gt; Class:   &lt;NavajoWhite&gt;"..x.class..string.rep(" ", 31-string.len(x.class)).."  &lt;cyan&gt; Kills:   &lt;NavajoWhite&gt;"..(x.pks or "n/a"))
+    local x = NDB.players[name]
+    local c = NDB_getColour(name)
+    
+    -- Safety string casts to prevent length calculation errors on nil fields
+    local pTitle = tostring(x.title or name)
+    local pCity = tostring(x.city or "Unknown")
+    local pLevel = tostring(x.level or "Unknown")
+    local pHouse = tostring(x.house or "None")
+    local pRank = tostring(x.xp_rank or "Unknown")
+    local pClass = tostring(x.class or "Unknown")
+    local pKills = tostring(x.pks or "0")
+    local u = "Checked: " .. tostring(x.lastUpdate or "n/a")
+    
+    cecho("\n\n&lt;blue&gt;- &lt;" .. c .. "&gt;" .. pTitle .. " &lt;blue&gt;" .. string.rep("-", math.max(5, 70 - (#pTitle + 3))) .. "\n")
+    cecho(string.format("\n&lt;cyan&gt; City :   &lt;NavajoWhite&gt;%-31s  &lt;cyan&gt; Level:   &lt;NavajoWhite&gt;%s", pCity, pLevel))
+    cecho(string.format("\n&lt;cyan&gt; House:   &lt;NavajoWhite&gt;%-31s  &lt;cyan&gt; Rank :   &lt;NavajoWhite&gt;%s", pHouse, pRank))
+    cecho(string.format("\n&lt;cyan&gt; Class:   &lt;NavajoWhite&gt;%-31s  &lt;cyan&gt; Kills:   &lt;NavajoWhite&gt;%s", pClass, pKills))
+    
     if NDB_armyRank(name) &gt; 0 then
-      cecho("\n&lt;cyan&gt; Army :   &lt;"..(NDB_armyRank(name) &gt; 3 and "red" or "NavajoWhite").."&gt;"..NDB_armyRank(name))
+      local rankColor = NDB_armyRank(name) &gt; 3 and "red" or "NavajoWhite"
+      cecho(string.format("\n&lt;cyan&gt; Army :   &lt;%s&gt;%s", rankColor, NDB_armyRank(name)))
     end
+    
     if NDB_isMark(name) then
-      cecho("\n&lt;cyan&gt; Mark :   &lt;"..(NDB_isMark(name) == "Ivory" and "NavajoWhite" or "purple").."&gt;"..NDB_isMark(name))
+      local markColor = NDB_isMark(name) == "Ivory" and "NavajoWhite" or "purple"
+      cecho(string.format("\n&lt;cyan&gt; Mark :   &lt;%s&gt;%s", markColor, NDB_isMark(name)))
     end
+    
     echo("\n ")
-    if NDB.player_Notes[name] and #NDB.player_Notes[name] &gt; 0 then
+    if NDB.player_Notes and NDB.player_Notes[name] and #NDB.player_Notes[name] &gt; 0 then
       cecho("\n&lt;cyan&gt; Notes:")
       for num, note in pairs(NDB.player_Notes[name]) do
-        cecho("\n  &lt;DarkSlateBlue&gt;"..num..") &lt;reset&gt;"..note)
+        cecho(string.format("\n  &lt;DarkSlateBlue&gt;%d) &lt;reset&gt;%s", num, note))
       end
       echo("\n ")
     end
-  	cecho("\n &lt;green&gt;"..string.rep(" ", 69-string.len(u))..u)
-  	cecho("\n&lt;blue&gt;"..string.rep("-", 70))
-  	cecho("\n ")
-  	send(" ",false)
-  end	
+    
+    cecho("\n &lt;green&gt;" .. string.rep(" ", math.max(1, 69 - #u)) .. u)
+    cecho("\n&lt;blue&gt;" .. string.rep("-", 70))
+    cecho("\n ")
+    send(" ", false)
+  end 
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -27288,6 +27227,7 @@ function executeDefenseFunction(details, displayType)
             data[displayType] = false
             send("CURING PRIORITY DEFENCE " .. data.name .. " RESET")
             logMsg = string.format("\n&lt;white&gt;%s removed for %s (Server-side Reset Sent)", displayType:title(), data.name)
+            send(data.relax) 
         else
             data.keepup = true
             data.enabled = true
