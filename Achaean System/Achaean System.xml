@@ -11531,16 +11531,19 @@ function myTimerEcho(dbug, balanceType, string, color)
 end
 
 function debugEcho(color, string)
+  -- Exit immediately if debug is off
+  if not settings.debug then return end
+
   local nextline = ""
-  local debug = settings.debug
   moveCursorEnd("main")
+  
   if getCurrentLine() ~= "" then
     nextline = "\n"
   end
-  if debug then
-    cecho("" .. nextline .. "&lt;" .. color .. "&gt;" .. string)
-  end
+  
+  cecho(nextline .. "&lt;" .. color .. "&gt;" .. string)
 end
+
 
 function tryingtodo(what)
   -- Removing trailing semicolon
@@ -14500,7 +14503,7 @@ end</script>
     ["pressure"] = { name = "pressure", priority = 1, prompt = "&lt;deep_sky_blue&gt;prs(&lt;white&gt;" .. mystackableaffs.pressure .. "&lt;deep_sky_blue&gt;)", requires = "herb", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },
     ["pyramides"] = { name = "pyramides", priority = 1, prompt = "&lt;red&gt;pyra", cures = { {type = "herb", command = {herbal = "outr bloodroot"..cs.."eat bloodroot", alchemical = "outr magnesium"..cs.."eat magnesium"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
     ["pyre"] = { name = "pyre", priority = 1, prompt = "&lt;deep_sky_blue&gt;pyre", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },
-    ["prone"] = { name = "prone", priority = 1, prompt = "&lt;red&gt;PRNE", cures = { {type = "stand", command = "stand", cooldown = "free", requires = "balance", handle = 1, blockers = {"paralysis", "sleeping", "brokenleftleg", "brokenrightleg", "dizziness", "hunger", "webbed", "damagedleftleg", "damagedrightleg", "mangledleftleg", "mangledrightleg", "bound", "daeggerimpale", "impale", "transfixation", "entangled"}} } },          
+    ["prone"] = { name = "prone", priority = 1, prompt = "&lt;red&gt;PRONE", cures = { {type = "stand", command = "stand", cooldown = "free", requires = "balance", handle = 1, blockers = {"paralysis", "sleeping", "brokenleftleg", "brokenrightleg", "dizziness", "hunger", "webbed", "damagedleftleg", "damagedrightleg", "mangledleftleg", "mangledrightleg", "bound", "daeggerimpale", "impale", "transfixation", "entangled"}} } },          
     ["rebbies"] = { name = "rebbies", priority = 1, prompt = "&lt;cyan&gt;rebb", cures = { {type = "herb", command = {herbal = "outr kelp"..cs.."eat kelp", alchemical = "outr aurum"..cs.."eat aurum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}} } },
     ["recklessness"] = { name = "recklessness", priority = 1, prompt = "&lt;light_slate_blue&gt;reck", cures = { {type = "focus", command = "focus", cooldown = "focus", requires = "focus", handle = 1, blockers = {"impatience", "guilt", "fulminated", "sleeping"}}, {type = "herb", command = {herbal = "outr lobelia"..cs.."eat lobelia", alchemical = "outr argentum"..cs.."eat argentum"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
     ["retribution"] = { name = "retribution", priority = 1, prompt = "&lt;deep_sky_blue&gt;retr", cures = { {type = "herb", command = {herbal = "outr bellwort"..cs.."eat bellwort", alchemical = "outr cuprum"..cs.."eat cuprum"}, cooldown = "herb", requires = "herb", handle = 1, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 2, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 3} } },
@@ -14518,7 +14521,7 @@ end</script>
     ["silver"] = { name = "silver", priority = 1, prompt = "&lt;white&gt;slvr", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 180.0} } },
     ["skullfractures"] = { name = "skullfractures", priority = 1, prompt = "&lt;cyan&gt;sku(&lt;white&gt;" .. mystackableaffs.skullfractures .. "&lt;cyan&gt;)", cures = { {type = "sip", command = "apply health to head", cooldown = "sip", requires = "sip", handle = 1, blockers = {"slickness", "sleeping"}} } },
     ["slashedthroat"] = { name = "slashedthroat", priority = 1, prompt = "&lt;red&gt;slth", cures = { {type = "salve", command = "apply epidermal to head", cooldown = "salve", requires = "salve", handle = 1, blockers = {"slickness", "sleeping"}} } },
-    ["sleeping"] = { name = "sleeping", priority = 1, prompt = "&lt;red&gt;ZZZ", cures = { {type = "free", command = "wake", cooldown = "wake", requires = "free", blockers = {""}} } },
+    ["sleeping"] = { name = "sleeping", priority = 1, prompt = "&lt;red&gt;ASLEEP", cures = { {type = "free", command = "wake", cooldown = "wake", requires = "free", blockers = {""}} } },
     ["slickness"] = { name = "slickness", priority = 1, prompt = "&lt;red&gt;SLICK", cures = { {type = "smoke", command = {herbal = "light valerian"..cs.."smoke valerian", alchemical = "light realgar"..cs.."smoke realgar"}, cooldown = "smoke", requires = "smoke", handle = 1, blockers = {"asthma", "sleeping"}}, {type = "herb", command = {herbal = "outr bloodroot"..cs.."eat bloodroot", alchemical = "outr magnesium"..cs.."eat magnesium"}, cooldown = "herb", requires = "herb", handle = 2, blockers = {"anorexia", "sleeping"}}, {type = "tree", command = "touch tree", cooldown = "tree", requires = "tree", handle = 3, blockers = {"paralysis", "sleeping"}}, {type = data.type, command = data.command, cooldown = data.cooldown, requires = safeFlatten(data.requires), blockers = safeFlatten(data.blockers), handle = 4} } },      
     ["slimeobscure"] = { name = "slimeobscure", priority = 1, prompt = "&lt;green&gt;slimed", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 60.0} } },
     ["solarburn"] = { name = "solarburn", priority = 1, prompt = "&lt;orange&gt;sburn", cures = { {type = "time", command = "", cooldown = "time", requires = "time", handle = 1, blockers = {""}, seconds = 5.0} } },
@@ -18535,7 +18538,7 @@ function handleRegularAttacks(target)
 
         -- WILLOW STANCE LOGIC
         if stance == "willow" then
-            cecho("\n&lt;green&gt;[DEBUG] Processing Stance: willow")
+            debugEcho("\n&lt;green&gt;[DEBUG] Processing Stance: willow")
             if tonumber(kata) &lt; 9 then
                 targetCommand = "queue addclear eqbal combo " .. currentTarget .. " hiru flashheel left hiraku"
                 debugEcho("green","Kata &lt; 9 combo built.")
@@ -18910,62 +18913,44 @@ end
 
 
 function setHuntSettingsData()
-  -- Dynamically tracks your specific dragon type to load the right data keys
-  local class = PLAYER:myclass()
-  if class == "dragon" and gmcp.Char.Status.race then
-    class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
+  -- 1. Determine the base class
+  local baseClass = PLAYER:myclass() or ""
+  local displayClass = baseClass
+  
+  if baseClass == "dragon" and gmcp.Char.Status.race then
+    displayClass = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
   end
 
-  -- 🥋 MONK SUBCLASS RECOGNITION
-  -- If they are a monk, ensure we grab the tracking variable state
-  if class == "monk" then
-    -- Run our engine check first, but respect the existing manual toggle/fallback state
+  -- 2. Determine Subclass
+  local isMonk = (baseClass == "monk")
+  if isMonk then
     updateMonkSubclass()
-    monkSubclass = monkSubclass or "shikudo" 
-    class = monkSubclass
+    monkSubclass = monkSubclass or "shikudo"
   end
 
   setTargetMasterList()
   cecho("\n&lt;green&gt;Hunt Settings\n")
 
-  ---------------------------------------------------------
-  -- 🔘 INTERACTIVE MONK TOGGLE BUTTON (Preserved)
-  ---------------------------------------------------------
-  if PLAYER:myclass() == "monk" then
-    cecho("&lt;white&gt; Monk Spec: ")
-    cechoLink(
-      "&lt;yellow&gt;[" .. monkSubclass:title() .. "]",
-      function()
-        if monkSubclass == "shikudo" then
-          monkSubclass = "tekura"
-        else
-          monkSubclass = "shikudo"
-        end
-        -- Persist the change via your global saver if it exists
-        if type(saveHuntSettings) == "function" then
-          saveHuntSettings()
-        end
-        -- Refresh the menu window
-        setHuntSettingsData()
-      end,
-      "Click to toggle between Shikudo and Tekura specs",
-      true
-    )
-    echo("\n\n")
+  -- 3. Display Spec Info
+  if isMonk then
+    cecho("&lt;white&gt; Monk Spec: &lt;yellow&gt;[" .. monkSubclass:title() .. "]\n\n")
   end
 
-  ---------------------------------------------------------
-  -- ⚔️ STANDARD CONFIGURATION OPTIONS (Hidden for Shikudo)
-  ---------------------------------------------------------
-  if class ~= "shikudo" then
+  -- 4. Logic gate: Show menu if NOT a Shikudo Monk
+  -- This allows: Tekura Monks, Occultists, Serpents, etc.
+  if not (isMonk and monkSubclass == "shikudo") then
+    
+    -- Use the base class as the key for non-monks, "monk" for all monks
+    local dataKey = isMonk and "monk" or displayClass
+    
     -- Configure regular attack
     cechoLink(" &lt;cyan&gt;(+) ", function()
       clearCmdLine()
       appendCmdLine("hunt attack ")
     end, "click to set hunt attack", true)
     
-    local regularAttack = (huntSettingsData[class] and huntSettingsData[class]["regular attack"]) or "&lt;red&gt;{setup regular attack}"
-    cecho("Configure regular attack") 
+    local regularAttack = (huntSettingsData[dataKey] and huntSettingsData[dataKey]["regular attack"]) or "&lt;red&gt;{setup regular attack}"
+    cecho(" Configure regular attack") 
     cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularAttack .. "\n")
 
     -- Configure regular shield break
@@ -18974,20 +18959,18 @@ function setHuntSettingsData()
       appendCmdLine("hunt shield break ")
     end, "click to set shield break", true)
     
-    local regularShieldBreak = (huntSettingsData[class] and huntSettingsData[class]["regular shield break"]) or "&lt;red&gt;{setup shield break}"
-    cecho("Configure regular shield break")
+    local regularShieldBreak = (huntSettingsData[dataKey] and huntSettingsData[dataKey]["regular shield break"]) or "&lt;red&gt;{setup shield break}"
+    cecho(" Configure regular shield break")
     cecho("&lt;white&gt; - Current: &lt;cyan&gt;" .. regularShieldBreak .. "\n")
 
     echo("\n")
   else
-    -- Clean UI placeholder letting the user know automation is in control
+    -- Only shown for Shikudo Monks
     cecho("&lt;white&gt; Attacks:   &lt;green&gt;Fully Automated (Shikudo Combo Engine)\n")
     cecho("&lt;white&gt; Defenses:  &lt;green&gt;Fully Automated (Stance Shatter Engine)\n\n")
   end
   
-  ---------------------------------------------------------
-  -- ⚡ INTERACTIVE BATTLERAGE LINK
-  ---------------------------------------------------------
+  -- 5. Interactive Battlerage Link
   cechoLink(
     " &lt;orange&gt;[ VIEW BATTLERAGE PRIORITIES ]\n", 
     function()
@@ -20505,10 +20488,6 @@ function printBattleragePriorityList()
   
   if class == "dragon" and gmcp.Char.Status.race then
     class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
-  elseif class == "monk" then
-    -- 🥋 Dynamically check GMCP for Monk specs (shikudo vs tekura)
-    updateMonkSubclass()
-    class = monkSubclass or "shikudo"
   end
 
   -- Validate the profile state has configured rage data
