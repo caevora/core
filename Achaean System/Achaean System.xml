@@ -9361,27 +9361,6 @@ cecho("\n&lt;green&gt;STANCE SET TO RAIN\n")
 							<integer>2</integer>
 						</regexCodePropertyList>
 					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>shielded up</name>
-						<script>cecho("\n&lt;cyan&gt;Shield detected → next attack will use SHATTER\n")
-</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>A nearly invisible magical shield forms</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-						</regexCodePropertyList>
-					</Trigger>
 				</TriggerGroup>
 			</TriggerGroup>
 			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -9680,9 +9659,13 @@ else
   settings[key] = finalValue
 end
 
+if matches[2] == "CMDSEP" then 
+  key = "CommandSeparator"
+end
+
 -- 3. Direct Server Pass-Through
 -- We send exactly what was typed (as uppercase) to the game
-send("CONFIG " .. matches[2]:upper() .. " " .. value:upper())
+send("CONFIG " .. key .. " " .. value:upper())
 
 -- 4. Global Maintenance
 saveTableToJSON(settings, "settings")
@@ -12802,7 +12785,7 @@ local boot_rage = {
   occultist = {
     harry = {enabled = true, type = 1, rage = 14, command = "harry @tar"},
     temperance = {enabled = true, type = 4, rage = 32, command = "temper @tar"},
-    ruin = {enabled = false, type = "shield break", rage = 17, command = "ruin shatter @tar"},
+    ruin = {enabled = false, type = "shield break", rage = 17, command = "ruin @tar"},
     chaosgate = {enabled = true, type = 5, rage = 36, command = "chaosgate @tar"},
     fluctuate = {enabled = false, type = 3, rage = 25, command = "fluctuate @tar"},
     stagnate = {enabled = false, type = 2, rage = 24, command = "stagnate @tar"},
@@ -13684,117 +13667,96 @@ end</script>
 					<name>prompt</name>
 					<packageName></packageName>
 					<script>function prompt()
-    -- 1. Immediate Exit Conditions
     if table.contains(myaffs, "blackout") then return end 
-    if not settings.systemLoaded then return end
-    if not settings.promptEnabled then return end
+    if not settings.systemLoaded or not settings.promptEnabled then return end
 
-    local promptstring = ""
-    
-    -- 2. Line-Start Status Overlays
-    if settings.systemPaused then
-        moveCursor(0, getLineNumber())
-        cinsertText("&lt;red&gt;[P] ")
-        moveCursorEnd()
-    end
-    
-    if settings and settings.defupmode then
-        moveCursor(0, getLineNumber())
-        cinsertText("&lt;red&gt;[DEFMODE] ")
-        moveCursorEnd()
-    end               
+    -- Handle Line-Start Status Overlays
+    if settings.systemPaused then cinsertText("&lt;red&gt;[P] "); moveCursorEnd() end
+    if settings.defupmode then cinsertText("&lt;red&gt;[DEFMODE] "); moveCursorEnd() end
 
-    -- 3. Calculate Vitals Differentials (All 4 Stats)
-    local currentHP = tonumber(vitals.health.current) or 0
-    local prevHP    = tonumber(vitals.health.previous) or currentHP
-    local currentMP = tonumber(vitals.mana.current) or 0
-    local prevMP    = tonumber(vitals.mana.previous) or currentMP
-    local currentEP = tonumber(vitals.ep.current) or 0
-    local prevEP    = tonumber(vitals.ep.previous) or currentEP
-    local currentWP = tonumber(vitals.wp.current) or 0
-    local prevWP    = tonumber(vitals.wp.previous) or currentWP
-
-    local hpDiff = currentHP - prevHP
-    local mpDiff = currentMP - prevMP
-    local epDiff = currentEP - prevEP
-    local wpDiff = currentWP - prevWP
+    local items = {}
 
     -- 4. Status &amp; Environment
     if settings.showSelfishness then
-        local sl_color = (defenses.selfishness and defenses.selfishness.keepup) and "&lt;green&gt;" or "&lt;red&gt;"
-        promptstring = promptstring .. sl_color .. " SL&lt;white&gt; "
+        local sl_color = (defenses.selfishness_survival and defenses.selfishness_survival.keepup) and "&lt;green&gt;" or "&lt;red&gt;"
+        table.insert(items, sl_color .. " SL")
     end
           
-    if settings.showTargetClass then
-        local cur_target = target or "none"
-        local prompt_target = NDB_getClass(cur_target):lower()
-        promptstring = promptstring .. "&lt;white&gt;Class:[&lt;orange&gt;" .. prompt_target:lower() .. "&lt;white&gt;] "
+    if settings.showTargetClass and target ~= "none" then
+        local prompt_target = NDB_getClass(target):lower()
+        table.insert(items, "&lt;white&gt;Class:[&lt;orange&gt;" .. prompt_target .. "&lt;white&gt;]")
     end
 
-    if settings.showMonolithSigils then
-       if table.contains(inv_room, "a monolith sigil") then promptstring = promptstring .. "&lt;purple&gt;MONO&lt;white&gt; " end              
+    if settings.showMonolithSigils and table.contains(inv_room, "a monolith sigil") then 
+        table.insert(items, "&lt;purple&gt;MONO") 
     end
     
-    if settings.showLightWall then
-       if table.contains(inv_room, "a lightwall") then promptstring = promptstring .. "&lt;yellow&gt;LW&lt;white&gt; " end
+    if settings.showLightWall and table.contains(inv_room, "a lightwall") then 
+        table.insert(items, "&lt;yellow&gt;LW") 
     end
 
-    -- 5. Vitals Flux (Single Unified Client-Calculated Toggle)
+    -- 5. Vitals Flux
     if settings.showVitalsFlux then
-        if hpDiff ~= 0 then promptstring = promptstring .. (hpDiff &gt; 0 and "&lt;green&gt;+" or "&lt;red&gt;") .. hpDiff .. "h " end
-        if mpDiff ~= 0 then promptstring = promptstring .. (mpDiff &gt; 0 and "&lt;cyan&gt;+" or "&lt;red&gt;") .. mpDiff .. "m " end
-        if epDiff ~= 0 then promptstring = promptstring .. (epDiff &gt; 0 and "&lt;yellow&gt;+" or "&lt;red&gt;") .. epDiff .. "e " end
-        if wpDiff ~= 0 then promptstring = promptstring .. (wpDiff &gt; 0 and "&lt;magenta&gt;+" or "&lt;red&gt;") .. wpDiff .. "w " end
+        local hpDiff = (tonumber(vitals.health.current) or 0) - (tonumber(vitals.health.previous) or tonumber(vitals.health.current) or 0)
+        local mpDiff = (tonumber(vitals.mana.current) or 0) - (tonumber(vitals.mana.previous) or tonumber(vitals.mana.current) or 0)
+        if hpDiff ~= 0 then table.insert(items, (hpDiff &gt; 0 and "&lt;green&gt;+" or "&lt;red&gt;") .. hpDiff .. "h") end
+        if mpDiff ~= 0 then table.insert(items, (mpDiff &gt; 0 and "&lt;cyan&gt;+" or "&lt;red&gt;") .. mpDiff .. "m") end
     end
 
-    -- 6. Class-Specific Resources
-    if settings.showClassStats then
-        local myClass = gmcp.Char.Status.class
+    -- 6. RESTORED: Class-Specific Resources
+    if settings.showClassStats and gmcp.Char and gmcp.Char.Status then
         local classMap = {
-            ["Occultist"]   = { label = "Karma",   key = "Karma" },
-            ["Apostate"]   = { label = "Essence", key = "Essence" },
-            ["Paladin"]    = { label = "Wrath",   key = "Wrath" },
-            ["Monk"]       = { label = "Kai",     key = "Kai" },
-            ["Serpent"]    = { label = "Venom",   key = "Venom" },
-            ["Unnamable"]  = { label = "Karma",   key = "Karma" },
-            ["Priest"]     = { label = "Conv",    key = "conviction" },
-            ["Blademaster"]= { label = "Shin",    key = "Shin" }
+            ["Occultist"]   = { label = "Krm", key = "Karma" },
+            ["Apostate"]    = { label = "Ess", key = "Essence" },
+            ["Paladin"]     = { label = "Wrt", key = "Wrath" },
+            ["Monk"]        = { label = "Kai", key = "Kai" },
+            ["Serpent"]     = { label = "Ven", key = "Venom" },
+            ["Unnamable"]   = { label = "Krm", key = "Karma" },
+            ["Priest"]      = { label = "Cnv", key = "conviction" },
+            ["Blademaster"] = { label = "Shn", key = "Shin" }
         }
-
+        local myClass = gmcp.Char.Status.class
         local config = classMap[myClass]
         if config then
-            local val = getCharStat(config.key)
-            promptstring = promptstring .. string.format("&lt;white&gt;[&lt;ansi_yellow&gt;%s:&lt;white&gt;%s] ", config.label, val)
+            table.insert(items, string.format("&lt;white&gt;[&lt;ansi_yellow&gt;%s:&lt;white&gt;%s]", config.label, getCharStat(config.key)))
         end
     end
 
-    -- 7. Hitcount (LimbTracker)
+    -- 7. Hitcount
     if settings.showHitCount then 
-        promptstring = promptstring .. "&lt;white&gt;|" ..
-            LimbTrackerGetColor("head") .. LimbTracker.data["head"] .. "&lt;white&gt;|" ..
-            LimbTrackerGetColor("torso") .. LimbTracker.data["torso"] .. "&lt;white&gt;|" ..
-            LimbTrackerGetColor("left leg") .. LimbTracker.data["left leg"] .. "&lt;white&gt;|" ..
-            LimbTrackerGetColor("right leg") .. LimbTracker.data["right leg"] .. "&lt;white&gt;|" ..
-            LimbTrackerGetColor("left arm") .. LimbTracker.data["left arm"] .. "&lt;white&gt;|" ..
-            LimbTrackerGetColor("right arm") .. LimbTracker.data["right arm"] .. "&lt;white&gt;| "
+        local h = LimbTracker.data
+        table.insert(items, string.format("&lt;white&gt;|%s%s|%s%s|%s%s|%s%s|%s%s|%s%s|", 
+            LimbTrackerGetColor("head"), h["head"],
+            LimbTrackerGetColor("torso"), h["torso"],
+            LimbTrackerGetColor("left leg"), h["left leg"],
+            LimbTrackerGetColor("right leg"), h["right leg"],
+            LimbTrackerGetColor("left arm"), h["left arm"],
+            LimbTrackerGetColor("right arm"), h["right arm"]))
     end
+
+    -- Render the string built from items
+    cecho(table.concat(items, " "))
     
-    -- ⛵ 8. CLICKABLE EXITS APPENDED LAST
+    -- 8. Append Exits
     if settings.showExits and gmcp.Room and gmcp.Room.Info.exits then
-        cecho(" &lt;ansi_yellow&gt;[")
+        -- Convert exits dictionary to a list to easily track indices
+        local exitList = {}
         for dir, _ in pairs(gmcp.Room.Info.exits) do
-            cechoLink("&lt;white&gt;" .. dir:upper(), function() send("go " .. dir) end, "Click to go " .. dir, true)
-            cecho("&lt;DimGrey&gt;|")
+            table.insert(exitList, dir)
+        end
+        
+        cecho(" &lt;ansi_yellow&gt;[")
+        for i, dir in ipairs(exitList) do
+            -- Create the link
+            cechoLink("&lt;white&gt;" .. dir:upper(), function() send("go " .. dir) end, "Go " .. dir, true)
+            
+            -- Only add the separator if this is NOT the last item in the list
+            if i &lt; #exitList then
+                cecho("&lt;DimGrey&gt;|")
+            end
         end
         cecho("&lt;ansi_yellow&gt;]")
     end
-
-    -- 🟢 9. RENDER BUILT BASE STRING FIRST
-    -- This appends your custom trackers perfectly along the original server text frame
-    cecho(promptstring)
-
-    -- 10. Affliction list debug tracking
-    if settings.debug then afflictionlist() end
 end</script>
 					<eventHandlerList />
 				</Script>
@@ -16768,9 +16730,9 @@ end</script>
 					<name>Client Settings</name>
 					<packageName></packageName>
 					<script>function menuClientSettings()
-    cecho("&lt;white&gt; ========================================================================")
-    cecho("\n&lt;white&gt; ---------------------CLIENT SPECIFIC SETTINGS---------------------------")
-    cecho("\n&lt;white&gt; ========================================================================")
+    cecho("&lt;white&gt;========================================================================\n")
+    cecho("&lt;white&gt;--------------------- CLIENT SPECIFIC SETTINGS -------------------------\n")
+    cecho("&lt;white&gt;========================================================================\n")
     
     local function col2()
         moveCursor("main", 0, getLastLineNumber() - 1)
@@ -16782,122 +16744,89 @@ end</script>
         cecho("&lt;white&gt;|| ") 
     end    
     
-    cecho("\n")
-    -- Using "Client" as typeHandler so it hits your clientinput alias
+    -- Compact Client Settings
+    cecho("\n&lt;cyan&gt;Client Settings\n")
     addToggle("Debug Mode", "debug", "Client")
     col2()
     addToggle("Inventory", "showInventory", "Client")
     cecho("\n")
-    
-    -- For special cases like Scrollbar (which needs a UI command), keep the custom function
     addToggle("Scrollbar", "showScrollbar", "Client")
     col2()
     addToggle("Auto Embrace", "autoEmbrace", "Client")
     cecho("\n")
-    
     addToggle("Auto Allies", "autoAllyManagement", "Client")
     col2()
-    
     addToggle("Auto Enemies", "autoEnemyManagement", "Client")
     cecho("\n")
     
-    -- Class Logic (Self-contained clickable)
+    -- Class Settings
     cechoLink(" &lt;white&gt;(click) ", function()
         settings.myclass = (PLAYER and PLAYER:myclass()) or "None"
         saveTableToJSON(settings, "settings")
         menuClientSettings()
     end, "Set Class", true)
-    
     local classColor = (settings.myclass and settings.myclass ~= "") and "&lt;green&gt;" or "&lt;DarkSlateGray&gt;"
     local classVal = (settings.myclass and settings.myclass ~= "") and settings.myclass:title() or "Not Set"
     cecho(" &lt;white&gt;(+) Class: " .. classColor .. classVal .. "\n")
 
-
     -- --- PROMPT SETTINGS ---
-    cecho("&lt;cyan&gt;\n Prompt Settings\n")
-    
-    -- Master Toggle
+    cecho("\n&lt;cyan&gt;Prompt Settings\n")
     addToggle("Enable Prompt", "promptEnabled", "Client", "", "", updatePrompt)
     cecho("\n")
-
-    -- ⚔️ Core Server Status Systems
     addToggle("Show Balances", "showCoreBalances", "Client", "", "", updatePrompt)
     col2()
     addToggle("Show Defences", "showCoreDefences", "Client", "", "", updatePrompt)
     cecho("\n")
-    
-    -- 🩸 Health Configurations
     addToggle("Health", "showHealth", "Client", "", "", updatePrompt)
     col2()
     addToggle("Health %", "showHealthPercentages", "Client", "", "", updatePrompt)
     cecho("\n")
-    
-    -- 💧 Mana Configurations
     addToggle("Mana", "showMana", "Client", "", "", updatePrompt)
     col2()
     addToggle("Mana %", "showManaPercentages", "Client", "", "", updatePrompt)
     cecho("\n")
-    
-    -- 🧠 Willpower Configurations
     addToggle("Willpower", "showWillpower", "Client", "", "", updatePrompt)
     col2()
     addToggle("Willpower %", "showWillpowerPercentages", "Client", "", "", updatePrompt)
     cecho("\n")
-    
-    -- 🏃 Endurance Configurations
     addToggle("Endurance", "showEndurance", "Client", "", "", updatePrompt)
     col2()
     addToggle("Endurance %", "showEndurancePercentages", "Client", "", "", updatePrompt)
     cecho("\n")
-    
-    -- 🎯 Target/Enemy Configurations
     addToggle("Enemy Name", "showEnemyName", "Client", "", "", updatePrompt)
     col2()
     addToggle("Enemy HP", "showEnemyHealth", "Client", "", "", updatePrompt)
     cecho("\n")
 
--- --- ADVANCED CLIENT PROMPT EXTENSIONS ---
-    cecho("&lt;cyan&gt;\n Prompt Status &amp; Environment Extensions\n")
-
-    -- Selfishness Flag &amp; Target's Class Archetype
+    -- --- ADVANCED PROMPT EXTENSIONS ---
+    cecho("\n&lt;cyan&gt;Prompt Status &amp; Environment Extensions\n")
     addToggle("Selfishness", "showSelfishness", "Client", "", "", updatePrompt)
     col2()
     addToggle("Target Class", "showTargetClass", "Client", "", "", updatePrompt)
     cecho("\n")
-
-    -- Room Threat Objects (Lightwalls/Monoliths) &amp; Clickable Exit Lists
     addToggle("Monoliths", "showMonolithSigils", "Client", "", "", updatePrompt)
     col2()
     addToggle("Lightwall", "showLightWall", "Client", "", "", updatePrompt)
     cecho("\n")
     addToggle("Clickable Exits", "showExits", "Client", "", "", updatePrompt)
     col2()
-
-    -- Real-time HP/MP Differentials per tick &amp; Class GMCP Resources (Karma/Kai/Venom)
     addToggle("Vitals Flux", "showVitalsFlux", "Client", "", "", updatePrompt)
     cecho("\n")
     addToggle("Class Resource", "showClassStats", "Client", "", "", updatePrompt)
     col2()
-
-    -- Miscellaneous
     addToggle("Hit Count", "showHitCount", "Client", "", "", toggleHitCount)
     cecho("\n")
     
-    cecho("&lt;cyan&gt;\n Prompt Ship Options\n")
+    cecho("\n&lt;cyan&gt;Ship Options\n")
     addToggle("Ship Prompt", "shipprompt", "Client", "CONFIG SHIPPROMPT ON", "CONFIG SHIPPROMPT OFF")
     col2()
     addToggle("Ship Race", "shiprace", "Client", "CONFIG SHIPRACE ON", "CONFIG SHIPRACE OFF")
     cecho("\n")    
 
-
--- --- PROMPT SERVER &amp; ENVIRONMENT EXTRAS ---
-    cecho("&lt;cyan&gt;\n Prompt Server &amp; Environment Extras\n")
-    
-    -- Real-time Tick Deltas &amp; Class Balances
+    -- --- SERVER &amp; ENVIRONMENT EXTRAS ---
+    cecho("\n&lt;cyan&gt;Prompt Server &amp; Environment Extras\n")
     addToggle("Class Balances", "showClassBalances", "Client", "", "", updatePrompt)
     col2()
-    
-    -- Knight Resources &amp; Experience Ranking
     addToggle("Knight Resources", "showKnightResources", "Client", "", "", updatePrompt)
     cecho("\n")
     addToggle("Morph", "showMorph", "Client", "", "", updatePrompt)
@@ -16906,146 +16835,109 @@ end</script>
     cecho("\n")    
     addToggle("Experience Rank", "showExpRank", "Client", "", "", updatePrompt)
     col2()
-    
-    -- World Environment Details &amp; GMT Server Clock
     addToggle("Environment", "showEnvironment", "Client", "", "", updatePrompt)
     cecho("\n")
     addToggle("Server Time", "showServerTime", "Client", "", "", updatePrompt)
     cecho("\n")
 
     -- --- PIPE REFILLS ---
-    cecho("&lt;cyan&gt;\n Pipe Refills\n")
+    cecho("&lt;cyan&gt;\nPipe Refills\n")
     addInput("refill skullcap", "refill_skullcap_at", "3", "Client")
     col2()
     addInput("refill elm", "refill_elm_at", "1", "Client")
-    cecho("\n") -- This safely steps down a line for the next input pairing
-    
+    cecho("\n")
     addInput("refill valerian", "refill_valerian_at", "1", "Client")
-    cecho("\n") -- Closes out the valerian line completely
+    cecho("\n")
 
-    cecho("&lt;white&gt; ------------------------------------------------------------------------")
+    cecho("&lt;white&gt;========================================================================\n")
+    send("")
 end
-
 
 ------------------------------------
 -----------FUNCTION CALLS-----------
 ------------------------------------
-
 function updatePrompt()
-    -- 1. If the prompt is disabled entirely, kill it immediately and exit
     if not settings.promptEnabled then
         send("CONFIG PROMPT OFF")
         return
     end
 
-    -- Create an array to collect our active prompt chunks
-    local chunks = {}
+    local chunks = {"#W"}
 
     -- 🕒 SERVER TIME
     if settings.showServerTime then
         table.insert(chunks, "#Y[*s]")
     end
 
-    -- 🩸 HEALTH SECTOR
+    -- 🩸 VITAL SECTORS (Compact/Flush)
     if settings.showHealth then
-        if settings.showHealthPercentages then
-            table.insert(chunks, "*h#W(#G*%h#W)#Gh#W")
-        else
-            table.insert(chunks, "*h#Gh")
-        end
+        table.insert(chunks, settings.showHealthPercentages and "[*h#W(#G*%h#W)#Gh#W]" or "[*h#Gh#W]")
     end
-
-    -- 💧 MANA SECTOR
     if settings.showMana then
-        if settings.showManaPercentages then
-            table.insert(chunks, "*m#W(#G*%m#W)#Cm#G#W")
-        else
-            table.insert(chunks, "*m#Cm")
-        end
+        table.insert(chunks, settings.showManaPercentages and "[*m#W(#G*%m#W)#Cm#G#W]" or "[*m#Cm#W]")
     end
-
-    -- 🧠 WILLPOWER SECTOR
     if settings.showWillpower then
-        if settings.showWillpowerPercentages then
-            table.insert(chunks, "#W(#G*%w#W)#Mw#G#W")
-        else
-            table.insert(chunks, "*w#Mw")
-        end
+        table.insert(chunks, settings.showWillpowerPercentages and "[*w#W(#G*%w#W)#Mw#G#W]" or "[*w#Mw#W]")
     end
-
-    -- 🏃 ENDURANCE SECTOR
     if settings.showEndurance then
-        if settings.showEndurancePercentages then
-            table.insert(chunks, "#W(#G*%e#W)#Ye#G#W")
-        else
-            table.insert(chunks, "*e#Ye")
-        end
+        table.insert(chunks, settings.showEndurancePercentages and "[*e#W(#G*%e#W)#Ye#G#W]" or "[*e#Ye#W]")
     end
 
-    -- ⚔️ SYSTEM CORE STATUS (Balances, defenses, and custom profession resources)
+    -- ⚔️ CORE STATUS
     local coreTokens = ""
-    
-    if settings.showCoreBalances then 
-        coreTokens = coreTokens .. "#w*b" -- "e" (Equilibrium) and "x" (Physical Balance)
-    end
-    
-    if settings.showCoreDefences then 
-        coreTokens = coreTokens .. "*d"   -- "b" (Blind), "d" (Deaf), "k" (Kola), "c" (Cloak)
-    end
+    if settings.showCoreBalances then coreTokens = coreTokens .. " #w*b" end
+    if settings.showCoreDefences then coreTokens = coreTokens .. " *d" end
     
     if settings.showClassBalances then 
-        coreTokens = coreTokens .. "*c" 
+       if PLAYER:myclass() == "occultist" then
+         coreTokens = coreTokens .. " #WEnt:[#Y*c#W]" 
+       elseif PLAYER:myclass() == "bard" then
+         coreTokens = coreTokens .. " #WSong:[#Y*c#W]"
+       else
+         coreTokens = coreTokens .. " *c" 
+       end
     end
     
-    if settings.showKnightResources then 
-        coreTokens = coreTokens .. "*k" 
-    end
-    
-    if #coreTokens &gt; 0 then
-        table.insert(chunks, coreTokens)
-    end
+    if settings.showKnightResources then coreTokens = coreTokens .. " *k" end
+    if coreTokens ~= "" then table.insert(chunks, coreTokens) end
 
-    -- 🌋 CLASS RESOURCES &amp; COOLDOWNS (Like Rage)
-    if settings.showBattleRage then 
-        table.insert(chunks, "#R*R")
-    end
+    -- 🌋 CLASS RESOURCES &amp; COOLDOWNS
+    if settings.showBattleRage then table.insert(chunks, " #R*R") end
+    if settings.showMorph then table.insert(chunks, " #m*a") end
 
-    if settings.showMorph then
-        table.insert(chunks, "#m*a")     -- Tracks current transformation morph state
-    end
-
-    -- 🌍 ENVIRONMENT &amp; LOCATION DATA
+    -- 🌍 ENVIRONMENT &amp; LOCATION
     if settings.showEnvironment then
-        -- Displays indoors/outdoors (*i) and elevation level (*v)
-        table.insert(chunks, "#wLoc:#G*i #wElv:#c*v")
+        table.insert(chunks, " #W[#wLoc:#G*i#W] [#wElev:#c*v#W]")
     end
 
     -- 📊 PROGRESS TRACKING
     if settings.showExpRank then
-        table.insert(chunks, "#g[Rank:*x]")
+        table.insert(chunks, " #W[#wRank:#Y*x#W]")
     end
 
-    -- 🎯 ENEMY TRACKING SECTOR
-    -- Only inserts tracking formatting if an active target exists to prevent empty empty strings like '-(())-'
-
-    if settings.showEnemyName then
-        table.insert(chunks, "#W*t")
+    -- 🎯 TARGET SECTOR
+    -- We check if we have a target using your client's existing 'target' variable.
+    -- If 'target' is "none" or nil, we simply don't insert the target chunk at all.
+    if (settings.showEnemyName or settings.showEnemyHealth) and (target and target ~= "none") then
+        local targetContent = ""
+        if settings.showEnemyName then targetContent = targetContent .. "*t" end
+        if settings.showEnemyHealth then 
+            targetContent = targetContent .. (targetContent ~= "" and " " or "") .. "*T" 
+        end
+        
+        -- Insert ONLY if we have a target AND targetContent is not empty
+        if targetContent ~= "" then
+            table.insert(chunks, " #W[" .. targetContent .. "]")
+        end
     end
 
-    if settings.showEnemyHealth then
-        table.insert(chunks, "#W*T")
-    end
-
-    -- 2. Stitch and send to the server
-    local promptstring = table.concat(chunks, " ")
+    -- CONCATENATE
+    local promptstring = table.concat(chunks, "")
     send("CONFIG PROMPT CUSTOM " .. promptstring)
     
-    -- 3. AUTOMATED HOUSEKEEPING
     saveTableToJSON(settings, "settings")
     if menuServerSettings then menuServerSettings() end
-    
     debugEcho("yellow","[PROMPT ENGINE] Sent Layout: " .. promptstring)
-
 end
 </script>
 					<eventHandlerList />
@@ -18263,7 +18155,9 @@ function handleTargetsAndAttacks()
     -- Ensure we aren't firing attacks into the ether if target is cleared to 'none'
     if target ~= "" and target ~= "none" and hasMoreHuntTargets(target) then
         handleRegularAttacks(target)
-        handleBattlerageAttacks(target)
+        if not table.contains(myaffs, "blackout") and not balance_data.stunned_in_use then
+          handleBattlerageAttacks(target)
+        end
     end
 end
 
