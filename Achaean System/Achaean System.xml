@@ -10752,11 +10752,11 @@ menuAdvancedCuringSettings()</script>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
 					<name>toggle selfishness</name>
-					<script>if defenses.selfishness.keepup then
-   defenses.selfishness.keepup = false
+					<script>if defenses.selfishness_survival.keepup then
+   defenses.selfishness_survival.keepup = false
    send("generosity")
 else
-   defenses.selfishness.keepup = true
+   defenses.selfishness_survival.keepup = true
    send("selfishness")
 end
   </script>
