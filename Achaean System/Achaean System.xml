@@ -12558,67 +12558,59 @@ end
 
 -- Main load function (Updated with Deep Key Union Data Protection)
 function loadAllTablesFromJSON()
-  if not dkjson then
-    debugEcho("green","Cannot load JSON: dkjson not loaded.")
-    return
-  end
-
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-
-  local filesToLoad = {
-      {name = "settings", target = "settings"},
-      {name = "lustlist", target = "lustlist"},
-      {name = "enemylist", target = "enemylist"},
-      {name = "allylist", target = "allylist"},
-      {name = "cityallylist", target = "NDB.cityList"},
-      {name = "cityenemylist", target = "NDB.cityEnemies"},
-      {name = "huntmasterlist", target = "targetMasterList"},
-      {name = "areaignorelist", target = "areaIgnoreList"},
-      {name = "huntsettings", target = "huntSettingsData"},
-      {name = "battlerage", target = "bragelist"},
-      {name = "balance_data", target = "balance_data"},
-      {name = "curinglist", target = "curinglist"},
-      {name = "defenses", target = "defenses"},       
-      {name = "afflictions", target = "afflictions"},
-  }
-
-  for _, file in ipairs(filesToLoad) do
-    local path = string.format("%s/%s.json", jsonDir, file.name)
-    local savedData = jsonManager({ safe = true, path = path, fallback = {} })
-
-    savedData = (type(savedData) == "table") and savedData or {}
-
-    if file.target == "NDB.cityList" then
-      if next(savedData) then
-        NDB = NDB or {}
-        NDB.cityList = savedData
-        for _, name in ipairs(savedData) do NDB_Acquire(name) end
-      end
-    elseif file.target == "NDB.cityEnemies" then
-      if next(savedData) then
-        NDB = NDB or {}
-        NDB.cityEnemies = savedData
-        for _, name in ipairs(savedData) do NDB_Acquire(name) end
-      end
-    else
-      local currentLiveTable = getGlobalValue(file.target)
-
-      if currentLiveTable and type(currentLiveTable) == "table" then
-        if next(savedData) == nil then
-          debugEcho("yellow", string.format("ℹ️ %s.json empty, maintaining update defaults.", file.name))
-        else
-          local unionedData = deepKeyUnion(savedData, currentLiveTable)
-          
-          for k in pairs(currentLiveTable) do currentLiveTable[k] = nil end
-          for k, v in pairs(unionedData) do currentLiveTable[k] = v end
-        end
-      else
-        setGlobalValue(file.target, savedData)
-      end
+    if not dkjson then
+        debugEcho("red", "Cannot load JSON: dkjson not loaded.")
+        return
     end
 
-    debugEcho("green", string.format("&lt;green&gt;✔ Loaded &amp; Unioned %s → %s", file.name, file.target))
-  end
+    local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
+
+    -- Mapping names to actual table references
+    local fileMap = {
+        settings = settings,
+        lustlist = lustlist,
+        enemylist = enemylist,
+        allylist = allylist,
+        huntmasterlist = targetMasterList,
+        areaignorelist = areaIgnoreList,
+        huntsettings = huntSettingsData,
+        battlerage = bragelist,
+        balance_data = balance_data,
+        curinglist = curinglist,
+        defenses = defenses,        
+        afflictions = afflictions,
+    }
+
+    -- 1. Load standard tables
+    for filename, tableRef in pairs(fileMap) do
+        local path = string.format("%s/%s.json", jsonDir, filename)
+        local savedData = jsonManager({ safe = true, path = path, fallback = {} })
+
+        if type(savedData) == "table" and next(savedData) then
+            local unionedData = deepKeyUnion(savedData, tableRef)
+            -- Clear and re-fill the table safely
+            for k in pairs(tableRef) do tableRef[k] = nil end
+            for k, v in pairs(unionedData) do tableRef[k] = v end
+            debugEcho("green", "&lt;green&gt;✔ Loaded &amp; Unioned " .. filename)
+        end
+    end
+
+    -- 2. Handle NDB specifically (since they are nested)
+    local ndbFiles = {
+        {name = "cityallylist", target = "cityList"},
+        {name = "cityenemylist", target = "cityEnemies"}
+    }
+
+    for _, file in ipairs(ndbFiles) do
+        local path = string.format("%s/%s.json", jsonDir, file.name)
+        local savedData = jsonManager({ safe = true, path = path, fallback = {} })
+
+        if type(savedData) == "table" and next(savedData) then
+            NDB[file.target] = savedData
+            for _, name in ipairs(savedData) do NDB_Acquire(name) end
+            debugEcho("green", "&lt;green&gt;✔ Loaded NDB: " .. file.name)
+        end
+    end
 end
 
 -- Main save function
@@ -12723,10 +12715,19 @@ end</script>
 					<script>-------------------------------------------------------------------------------
 -- 📦 GLOBAL SYSTEM STRUCTURES (Instantly accessible on Mudlet Boot)
 -------------------------------------------------------------------------------
-
--- If balance_data already exists in memory, keep it! 
--- If it doesn't exist (or a new update adds keys), we build/merge it safely.
+-- 📦 MANDATORY GLOBAL DEFINITIONS
+settings = settings or {}
 balance_data = balance_data or {}
+bragelist = bragelist or {}
+lustlist = lustlist or {}
+enemylist = enemylist or {}
+allylist = allylist or {}
+targetMasterList = targetMasterList or {}
+areaIgnoreList = areaIgnoreList or {}
+huntSettingsData = huntSettingsData or {}
+curinglist = curinglist or {}
+defenses = defenses or {}
+afflictions = afflictions or {}
 
 local boot_balances = {
   free = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "free" },
@@ -12759,6 +12760,7 @@ for k, v in pairs(boot_balances) do
   if balance_data[k] == nil then balance_data[k] = v end
 end
 
+mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crackedribs = 0, wristfractures = 0, pressure = 0, burning = 0, temperedmodifying = 0, temperedmelancholic = 0, temperedphlegmatic = 0, temperedcholeric = 0, unweavingmind = 0, unweavingbody = 0, unweavingspirit = 0, horror = 0 }
 
 bragelist = bragelist or {}
 
@@ -12909,7 +12911,6 @@ skillTreeList = {
 
 -------------------------------------------------------------------------------
 -- 🛡️ INSTANT BOOT-LEVEL OBJECT CACHES
--- (Fixes 'attempt to index global ... a nil value' for external scripts)
 -------------------------------------------------------------------------------
 GUI = GUI or {}
 inrift = inrift or {}
@@ -12917,7 +12918,6 @@ pipes = pipes or {name = {}, refill = 3}
 
 
 function initializeFileLoads()
-    -- 🛡️ CHICKEN-AND-EGG GUARD: Ensure settings exists so settings.debug doesn't crash!
     settings = settings or {}
     if settings.debug == nil then
         settings.debug = false
@@ -12953,7 +12953,7 @@ function initializeFileLoads()
         debugEcho("green","Created missing doesnotexist.json")
     end
 
-    -- 3. Protective NDB Skeleton Init (Safely constructs options without erasing memory)
+    -- 3. Protective NDB Skeleton Init
     NDB = NDB or {}
     NDB.players = NDB.players or {}
     NDB.highlightNames = (NDB.highlightNames ~= nil) and NDB.highlightNames or true
@@ -12984,11 +12984,10 @@ function initializeFileLoads()
         "Vastar", "Tlalaiad", "Romeo", "Juliet"
     }
 
-    -- 4. Load individual NDB player files cleanly via your optimized local loader function
+    -- 4. Load individual NDB player files
     if type(loadAllNDBPlayers) == "function" then
         loadAllNDBPlayers()
     else
-        -- Fallback loop if the loading block function is isolated elsewhere
         for file in lfs.dir(ndbPath) do
             if file:match("%.json$") and file ~= "doesnotexist.json" and file ~= "Online.json" then
                 local fullPath = ndbPath .. "/" .. file
@@ -13001,11 +13000,11 @@ function initializeFileLoads()
         debugEcho("green","✔ Loaded all NDB player files from disk storage directories.")
     end
 
-    -- 5. Load 'Does Not Exist' list via jsonManager
+    -- 5. Load 'Does Not Exist' list
     local dneData = jsonManager({safe = true, path = doesNotExistFile, fallback = {}})
     NDB.doesNotExist = dneData or {}
 
-    -- 6. Load City Ally List safely without firing destructive internet floods
+    -- 6. Load City Ally List safely
     local allyPath = jsonDir .. "cityallylist.json"
     if fileExists(allyPath) then
         local cityList = jsonManager({safe = true, path = allyPath, fallback = {}})
@@ -13026,11 +13025,11 @@ function initializeFileLoads()
     end
 
     -- 8. Load additional system data tables
-    if type(loadAllTablesFromJSON) == "function" then
+    --if type(loadAllTablesFromJSON) == "function" then
         loadAllTablesFromJSON()
-    end
+    --end
 
-    -- 9. Load Core System Dependencies (Combat, Curing, Core Scripts)
+    -- 9. Load Core System Dependencies
     local depsDir = getMudletHomeDir() .. "/Achaean System/system/libs/deps"
     if lfs.attributes(depsDir, "mode") == "directory" then
         local filesToLoad = {}
@@ -13039,7 +13038,7 @@ function initializeFileLoads()
                 table.insert(filesToLoad, file)
             end
         end
-        table.sort(filesToLoad) -- Guarantees identical execution sequence across all client profiles
+        table.sort(filesToLoad)
         
         for _, file in ipairs(filesToLoad) do
             local success, err = pcall(dofile, depsDir .. "/" .. file)
@@ -13065,7 +13064,7 @@ function initializeFileSaves()
   local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
   local ndbPath = getNDBPath()
 
-  -- 1. Essential Library Check via native Mudlet fileExists
+  -- 1. Essential Library Check
   if not dkjson then
     local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
     if fileExists(dkjsonPath) then
@@ -13080,7 +13079,7 @@ function initializeFileSaves()
   if not lfs.attributes(jsonDir, "mode") then lfs.mkdir(jsonDir) end
   if not lfs.attributes(ndbPath, "mode") then lfs.mkdir(ndbPath) end
 
-  -- 3. 🔄 Save Per-Player NDB Data cleanly via your robust jsonManager
+  -- 3. Save Per-Player NDB Data
   local savedCount = 0
   if NDB and NDB.players and next(NDB.players) then
     for name, data in pairs(NDB.players) do
@@ -13099,8 +13098,7 @@ function initializeFileSaves()
     debugEcho("green", string.format("✔ Successfully archived %d separate NDB player profiles.", savedCount))
   end
   
-
-  -- 4. Save NDB "Does Not Exist" tracking file via jsonManager
+  -- 4. Save NDB "Does Not Exist" tracking file
   if NDB and NDB.doesNotExist then
     jsonManager({
       write = true,
@@ -13109,7 +13107,7 @@ function initializeFileSaves()
     })
   end
 
-  -- 5. Execute Master Table Core Save (City enemy lists, ally lists, system options)
+  -- 5. Execute Master Table Core Save
   if type(saveAllTablesAsJSON) == "function" then
     saveAllTablesAsJSON()
   else
@@ -13163,67 +13161,68 @@ end
 -- 🏁 SYSTEM LOGIN EVENT ROUTINE
 -------------------------------------------------------------------------------
 function systemLogin()
-  SAVE_ALREADY_BACKED_UP = false
-  BACKUP_RETENTION_DAYS = BACKUP_RETENTION_DAYS or 1
-  
-  -- Reset volatile timer tracking markers
-  balance_start_time = 0
-  equilibrium_start_time = 0
-  health_start_time = 0
-  mana_start_time = 0
-  herb_start_time = 0
-  focus_start_time = 0
-  tree_start_time = 0
-  smoke_start_time = 0
-  salve_start_time = 0
-  shrugging_start_time = 0
-  stunned_start_time = 0
+    SAVE_ALREADY_BACKED_UP = false
+    BACKUP_RETENTION_DAYS = BACKUP_RETENTION_DAYS or 1
+    
+    -- Reset volatile timer tracking markers (These should reset on every login)
+    balance_start_time = 0
+    equilibrium_start_time = 0
+    health_start_time = 0
+    mana_start_time = 0
+    herb_start_time = 0
+    focus_start_time = 0
+    tree_start_time = 0
+    smoke_start_time = 0
+    salve_start_time = 0
+    shrugging_start_time = 0
+    stunned_start_time = 0
 
-  -- Initialize base objects safely
-  pingCalculation = pingCalculation or {}
-  NDB = NDB or {}
-  inv = inv or {}
-  inv_room = inv_room or {}
-  roomstufflist = roomstufflist or {}
-  jane = jane or {target = {}}
-  
-  -- Reset active state flags
-  hunting = false
-  autohunting = false
-  partysize = 1
-  
-  -- Tracking vectors
-  areaIgnoreList = areaIgnoreList or {}
-  targetMasterList = targetMasterList or {}
-  huntSettingsData = huntSettingsData or {}
-  extermlist = extermlist or {}
-  allylist = allylist or {}
-  enemylist = enemylist or {}
-  afflictions = afflictions or {}
-  curinglist = curinglist or {}
-  myaffs = myaffs or {}
-  sentPriorityCommands = sentPriorityCommands or {}
-  defenses = defenses or {}
-  mydefs = mydefs or {}
-  pipes_to_light = pipes_to_light or {}
-  lustlist = lustlist or {}
-  predictions = predictions or {}
-  limbdamage = limbdamage or {}
-  slainPlayers = slainPlayers or {}
-  personalBalanceStartTimes = personalBalanceStartTimes or {}
-  enemyBalanceStartTimes = enemyBalanceStartTimes or {}
-  pipeline = pipeline or {defenses = {}, afflictions = {}}
-  lastPipelineCleanup = lastPipelineCleanup or 0
+    -- Initialize base objects safely
+    pingCalculation = pingCalculation or {}
+    NDB = NDB or {}
+    inv = inv or {}
+    inv_room = inv_room or {}
+    roomstufflist = roomstufflist or {}
+    jane = jane or {target = {}}
+    
+    -- Reset active state flags
+    hunting = false
+    autohunting = false
+    partysize = 1
+    
+    -- TRACKING VECTORS (Preserve existing data if present)
+    areaIgnoreList = areaIgnoreList or {}
+    targetMasterList = targetMasterList or {}
+    huntSettingsData = huntSettingsData or {}
+    extermlist = extermlist or {}
+    allylist = allylist or {}
+    enemylist = enemylist or {}
+    afflictions = afflictions or {}
+    curinglist = curinglist or {}
+    myaffs = myaffs or {}
+    sentPriorityCommands = sentPriorityCommands or {}
+    defenses = defenses or {}
+    mydefs = mydefs or {}
+    pipes_to_light = pipes_to_light or {}
+    lustlist = lustlist or {}
+    predictions = predictions or {}
+    limbdamage = limbdamage or {}
+    slainPlayers = slainPlayers or {}
+    personalBalanceStartTimes = personalBalanceStartTimes or {}
+    enemyBalanceStartTimes = enemyBalanceStartTimes or {}
+    
+    -- Preserve pipeline or reset to default structure if nil
+    pipeline = pipeline or {defenses = {}, afflictions = {}}
+    lastPipelineCleanup = lastPipelineCleanup or 0
 
-  -- Volatile trackers
-  mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crackedribs = 0, wristfractures = 0, pressure = 0, burning = 0, temperedmodifying = 0, temperedmelancholic = 0, temperedphlegmatic = 0, temperedcholeric = 0, unweavingmind = 0, unweavingbody = 0, unweavingspirit = 0, horror = 0 }
-  tattoos = tattoos or { mindseye = {artefact = true, inked = true}, boar = {artefact = true, inked = true}, tree = {artefact = true, inked = true}, feather = {artefact = false, inked = false}, megalith = {artefact = false, inked = false}, cloak = {artefact = false, inked = false}, brazier = {artefact = false, inked = false}, tentacle = {artefact = false, inked = false}, web = {artefact = false, inked = false}, bell = {artefact = false, inked = false}, prism = {artefact = false, inked = false}, shield = {artefact = false, inked = false}, firefly = {artefact = false, inked = false}, moss = {artefact = false, inked = false}, hammer = {artefact = false, inked = false}, crystal = {artefact = false, inked = false}, moon = {artefact = false, inked = false}, starburst = {artefact = false, inked = false}, hourglass = {artefact = false, inked = false}, ox = {artefact = false, inked = false}, chameleon = {artefact = false, inked = false}, talon = {artefact = false, inked = false} }
-  
-  LimbTracker = LimbTracker or {}
-  LimbTracker.percentages = LimbTracker.percentages or { ["head"] = 0, ["torso"] = 0, ["left arm"] = 0, ["right arm"] = 0, ["left leg"] = 0, ["right leg"] = 0 }
-  LimbTracker.data = LimbTracker.data or { ["head"] = 0, ["torso"] = 0, ["left arm"] = 0, ["right arm"] = 0, ["left leg"] = 0, ["right leg"] = 0 }
-  
-  interpolationState = interpolationState or {health = false, mana = false, ep = false, wp = false, rank = false}
+    -- Volatile trackers
+    tattoos = tattoos or { mindseye = {artefact = true, inked = true}, boar = {artefact = true, inked = true}, tree = {artefact = true, inked = true}, feather = {artefact = false, inked = false}, megalith = {artefact = false, inked = false}, cloak = {artefact = false, inked = false}, brazier = {artefact = false, inked = false}, tentacle = {artefact = false, inked = false}, web = {artefact = false, inked = false}, bell = {artefact = false, inked = false}, prism = {artefact = false, inked = false}, shield = {artefact = false, inked = false}, firefly = {artefact = false, inked = false}, moss = {artefact = false, inked = false}, hammer = {artefact = false, inked = false}, crystal = {artefact = false, inked = false}, moon = {artefact = false, inked = false}, starburst = {artefact = false, inked = false}, hourglass = {artefact = false, inked = false}, ox = {artefact = false, inked = false}, chameleon = {artefact = false, inked = false}, talon = {artefact = false, inked = false} }
+    
+    LimbTracker = LimbTracker or {}
+    LimbTracker.percentages = LimbTracker.percentages or { ["head"] = 0, ["torso"] = 0, ["left arm"] = 0, ["right arm"] = 0, ["left leg"] = 0, ["right leg"] = 0 }
+    LimbTracker.data = LimbTracker.data or { ["head"] = 0, ["torso"] = 0, ["left arm"] = 0, ["right arm"] = 0, ["left leg"] = 0, ["right leg"] = 0 }
+    
+    interpolationState = interpolationState or {health = false, mana = false, ep = false, wp = false, rank = false}
 end
 
 -- Failsafe save on system kick
@@ -13264,7 +13263,6 @@ function loadGMCPIRE()
   gmcp.IRE.Target.Info = gmcp.IRE.Target.Info or {}
   gmcp.IRE.Target.Info.hpperc = "-1"
   
-  -- Send Core Handshake Requests
   sendGMCP("Char.Items.Inv")
   sendGMCP("IRE.Rift.Request")
   sendGMCP("Comm.Channel.Players")
@@ -13278,67 +13276,56 @@ function loadGMCPIRE()
   if vitalsGMCP then vitalsGMCP() end           
 end
 
-function onProtocolEnabled(event, protocol)
-    -- Protect against half-formed early login packets
-    if not gmcp or not gmcp.Char or not gmcp.Char.Status or not gmcp.Char.Status.class then
-        return
-    end
+-------------------------------------------------------------------------------
+-- 🏁 BOOT ROUTINE
+-------------------------------------------------------------------------------
+-- 1. KILL EXISTING HANDLERS
+if guiInitHandlerID then killAnonymousEventHandler(guiInitHandlerID) end
+
+-- 2. THIS HANDLER ONLY RUNS ONCE TO BOOT GUI AND DATA
+guiInitHandlerID = registerAnonymousEventHandler("sysLoadEvent", function()
+    initializeFileLoads()
     
-    settings = settings or {}
-    if settings.systemInstalled == nil then settings.systemInstalled = false end
-    
-    -- 🛡️ SEAMLESS INSTALLATION GATE FOR NEW USERS
     if not settings.systemInstalled then
         installSystem()
-        
-        -- Explicitly flip this to true in memory right now!
-        settings.systemInstalled = true
-        
-        -- Load file structures immediately so dynamic values are ready for the next tick
-        if initializeFileLoads then initializeFileLoads() end
-        
-        cecho("\n&lt;green&gt;[SYSTEM] Installation complete! Core structures initialized. Configuring layout on next vitals update...")
-        return 
-    end
-    
-    -- 🟢 RUNS AUTOMATICALLY ON THE VERY NEXT PACKET
-    if not settings.systemLoaded then
-        settings.systemLoaded = true
-        
-        loadGMCPIRE()
-        initializeSettings() 
-
+    else
+        -- Initialize the UI and local Data immediately (No GMCP needed yet)
+        systemLogin()
+        initializeSettings()
         initializeGUIContainers()
         initializeGUIWindows()
         initializeGUIGauges()
-
-        updateCharStats() 
-        updateActiveCureData() 
         
-        updateCurativeTable() 
+        -- Start the "GMCP Watcher" to wait for the game to be ready
+        enableGmcpWatcher()
+    end
+end)
+
+-- 3. THIS FUNCTION WAITS FOR THE GAME TO ACTUALLY TALK TO US
+function enableGmcpWatcher()
+    -- We register a one-time event that waits for the game to send vitals
+    registerAnonymousEventHandler("gmcp.Char.Vitals", function()
+        if settings.systemLoaded then return end -- Don't run twice
+
+        cecho("\n&lt;green&gt;[SYSTEM] GMCP active. Finalizing game-specific data...")
+        
+        loadGMCPIRE()
+        updateCharStats()
+        updateActiveCureData()
+        updateCurativeTable()
         updateDefensiveTable()
         
-        startGameFeedPolling() 
+        startGameFeedPolling()
         
         send("inv reset")
         send("plist")
         send("date")
-
-        -- 💣 THE PERMANENT KILL SWITCH
-        if guiInitHandlerID then
-            killAnonymousEventHandler(guiInitHandlerID)
-            guiInitHandlerID = nil
-            cecho("\n&lt;green&gt;[SYSTEM] UI Layout completely rendered and initialized successfully.")
-        end
-    end
+        
+        settings.systemLoaded = true
+        cecho("\n&lt;green&gt;[SYSTEM] All systems ready.")
+    end)
 end
 
-
--- Clear out any lingering duplicate event hook bindings
-if guiInitHandlerID then killAnonymousEventHandler(guiInitHandlerID) end
-
--- Register the clean, unified anonymous handler
-guiInitHandlerID = registerAnonymousEventHandler("gmcp.Char.Vitals", onProtocolEnabled)
 
 function arenaEvent()
   systemOnRespawn()
@@ -14113,19 +14100,27 @@ end</script>
 						<name>installSystem</name>
 						<packageName></packageName>
 						<script>function installSystem()
-
-  systemLogin()
-  initializeSettings()    
-  initializeGUIContainers()
-  initializeGUIWindows()
-  initializeGUIGauges()
-  initializeCurativeTable()        
-  initializeDefensiveTable() 
-  
-  settings.systemInstalled = true   
-  saveTableToJSON(settings, "settings")
-
-
+    -- 1. Get the foundation ready
+    systemLogin()
+    
+    -- 2. CRITICAL: Load files BEFORE initializing logic
+    initializeFileLoads() 
+    
+    -- 3. Now that files are loaded, setup the logic
+    initializeSettings()       
+    initializeGUIContainers()
+    initializeGUIWindows()
+    initializeGUIGauges()
+    
+    -- These now have actual data to work with because initializeFileLoads() finished
+    initializeCurativeTable()         
+    initializeDefensiveTable() 
+    
+    -- 4. Finalize
+    settings.systemInstalled = true    
+    saveTableToJSON(settings, "settings")
+    
+    cecho("\n&lt;green&gt;[SYSTEM] Installation and Data Synchronization complete.")
 end</script>
 						<eventHandlerList />
 					</Script>
@@ -25960,7 +25955,7 @@ end
 </script>
 					<eventHandlerList />
 				</Script>
-				<Script isActive="no" isFolder="no">
+				<Script isActive="yes" isFolder="no">
 					<name>transmute</name>
 					<packageName></packageName>
 					<script>
