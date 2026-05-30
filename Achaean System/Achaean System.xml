@@ -18033,14 +18033,12 @@ end</script>
         hunting = not hunting
 
         if hunting then
-            defenses.hiding.keepup = false
             if PLAYER:myclass() == "serpent" then send("emerge") end
             GUI.datawindow:activateTab("Room")
             huntTargetCooldown = false
             huntStart()
             cecho("\n&lt;white&gt;(&lt;gold&gt;Hunt&lt;white&gt;): &lt;green&gt;Hunting Enabled")
         else
-            defenses.hiding.keepup = true
             cecho("\n&lt;white&gt;(&lt;gold&gt;Hunt&lt;white&gt;): &lt;red&gt;Hunting Disabled")
         end
 
@@ -18558,7 +18556,6 @@ function handleRegularAttacks(target)
     -- ⚔️ STANDARD CLASS LOGIC (Includes Tekura Monk branch)
     ---------------------------------------------------------
     else
-        cecho("\n&lt;orange&gt;[DEBUG] Inside Standard Class/Tekura Block.")
         
         -- Use an isolated key for data parsing so 'class' remains unmutated
         local lookupKey = (class == "monk") and monkSubclass or class
