@@ -3360,9 +3360,13 @@ end</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>You feel an aura of rebounding surround you.</string>
+							<string>You take a long drag of skullcap off your pipe.</string>
+							<string>You take a long drag of malachite off your pipe.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>0</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -4096,7 +4100,7 @@ fortify:update("thirdeye_vision",true)</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>sileris (fangbarrier)</name>
-						<script>fortify:update("fangbarrier_free",true)</script>
+						<script>fortify:update("fangbarrier_herb",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4110,10 +4114,12 @@ fortify:update("thirdeye_vision",true)</script>
 						<regexCodeList>
 							<string>You apply a quicksilver droplet to yourself.</string>
 							<string>You apply a sileris berry to yourself.</string>
+							<string>The sileris berry juice hardens into a supple purple shell.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
 							<integer>3</integer>
+							<integer>0</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -13312,7 +13318,7 @@ function systemLogin()
     enemyBalanceStartTimes = enemyBalanceStartTimes or {}
     
     -- Preserve pipeline or reset to default structure if nil
-    pipeline = pipeline or {defenses = {}, afflictions = {}}
+    pipeline = pipeline or {defenses = {}, afflictions = {}, activeCommand = "", timestamps = {}}
     lastPipelineCleanup = lastPipelineCleanup or 0
 
     -- Volatile trackers
@@ -17730,66 +17736,60 @@ function fortify:update(defense, value)
     local baseSkills = skillTreeList[currentClass] or {}
 
     for key, details in pairs(defenses) do
-        -- FIX: Check if the incoming string matches the plain name OR the literal table key
         if details.name == defense or key == defense then
             targetKey = key 
-            plainName = details.name -- Pull the true clean name (e.g., "astralvision")
+            plainName = details.name 
             
-            -- If it belongs to one of our active class skill groups, we found our perfect match!
             if table.contains(baseSkills, details.type) then
                 targetKey = key
                 plainName = details.name
-                break -- Exit early, we have our exact class-specific skill match
+                break 
             end
         end
     end
 
-    -- Fallbacks to maintain system stability if no match was found in the table data
     local activeKey = targetKey or defense
     local trackingName = plainName or defense
 
-    if defenses[activeKey] then
-        if settings.debug then queue:echo("Updating defense: " .. activeKey) end
-    else
+    -- Debug output for missing defenses
+    if not defenses[activeKey] then
         if defense == "tree" then
-            if settings.debug then 
-                queue:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") 
-            end
-        else
-            if settings.debug then queue:echo("No such defense found in defenses table: " .. tostring(defense)) end
+            if settings.debug then queue:echo("TREE GONE - &lt;white&gt;GET A PERMA TATTOO!!!") end
+        elseif settings.debug then 
+            queue:echo("No such defense found in defenses table: " .. tostring(defense)) 
         end
     end
 
     if value then
-        -- FIXED: Always use the clean name (e.g., "astralvision") for tracking array synchronization
+        -- Add to active registry
         if not table.contains(mydefs, trackingName) then
             table.insert(mydefs, trackingName)
         end
 
-        -- FIXED: Clears BOTH the raw input string AND the resolved tracking name from the pipeline
+        -- NEW: Clears BOTH variations AND the "pending" status from the pipeline
         pipeline.defenses[defense] = nil
         pipeline.defenses[trackingName] = nil
         pipeline.activeCommand = ""
 
         if defenses[activeKey] then
-            defenses[activeKey].active = value
-            defenses[activeKey].enabled = value
+            defenses[activeKey].active = true
+            defenses[activeKey].enabled = true
         end
 
-        if settings.debug then queue:echo("Cleared pipeline key: " .. tostring(trackingName)) end
+        if settings.debug then queue:echo("Confirmed and cleared pipeline for: " .. tostring(trackingName)) end
     else
-        -- FIXED: Removes the clean tracking name from active array records when dropped
+        -- Remove from active registry
         if table.contains(mydefs, trackingName) then
             table.remove(mydefs, table.index_of(mydefs, trackingName))
         end
 
-        -- FIXED: Clears BOTH variations from the pipeline table on negative updates
+        -- Clear pipeline on drop
         pipeline.defenses[defense] = nil
         pipeline.defenses[trackingName] = nil
 
         if defenses[activeKey] then
-            defenses[activeKey].active = value
-            defenses[activeKey].enabled = value
+            defenses[activeKey].active = false
+            defenses[activeKey].enabled = false
         end
     end
 end
@@ -17799,7 +17799,7 @@ function fortify:relax()
     local cs = settings.cmdsep
     local currentClassType = PLAYER:myclass()  
     local validSkillTree = skillTreeList[currentClassType]  
-    local list = table.n_union(validSkillTree, {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "yourMissingType1", "yourMissingType2"})  
+    local list = table.n_union(validSkillTree, {"vision", "elixir", "survival", "herb", "resistance"})  
     local relaxCommands = {}  
 
     -- Iterate over each defense
@@ -17855,7 +17855,6 @@ function queue:process()
 
     fortify:reset()
 
-    -- 1. Build the list of allowed skills dynamically based on class
     local currentClassType = PLAYER:myclass()
     local baseSkills = {}
 
@@ -17873,14 +17872,12 @@ function queue:process()
         baseSkills = skillTreeList[currentClassType] or {}
     end
 
-    local list = table.n_union(baseSkills, {"vision", "free", "survival", "herb", "salve", "smoke", "tattoo", "resistance"})
+    local list = table.n_union(baseSkills, {"vision", "elixir", "survival", "herb", "resistance"})
     local validDefenses = {}
 
-    -- 2. Filter the global defenses table for candidates
     for defenseKey, details in pairs(defenses) do
         local defenseType = details.type
         
-        -- Handle multi-type defenses (e.g. skills that belong to multiple trees)
         if type(defenseType) == "table" then
             for _, v in ipairs(defenseType) do
                 if table.contains(baseSkills, v) then
@@ -17890,27 +17887,30 @@ function queue:process()
             end
         end
 
-        -- FIXED: Check details.name against mydefs instead of the unique table key string
         if table.contains(list, defenseType) and not table.contains(mydefs, details.name) then
             local hasRequiredBalance, hasRequiredCooldown = true, true
 
-            -- Balance Checks
+            -- Debug Balance/Cooldown
             for _, balance in ipairs(details.requires or {}) do
                 if not balance_data[balance] or balance_data[balance].in_use then
                     hasRequiredBalance = false
+                    if settings.debug and details.name == "rebounding" then
+                        self:echo("SKIPPING REBOUNDING: Missing balance/req: " .. balance)
+                    end
                     break
                 end
             end
 
-            -- Cooldown Checks
             for _, cooldown in ipairs(details.cooldown or {}) do
                 if not balance_data[cooldown] or balance_data[cooldown].in_use then
                     hasRequiredCooldown = false
+                    if settings.debug and details.name == "rebounding" then
+                        self:echo("SKIPPING REBOUNDING: Cooldown active: " .. cooldown)
+                    end
                     break
                 end
             end
 
-            -- If balances are up, check if this defense is flagged to be queued
             if hasRequiredBalance and hasRequiredCooldown then
                 if ((details.enabled and defupmode) or (not defupmode and details.keepup)) and not details.active then
                     table.insert(validDefenses, details)
@@ -17919,37 +17919,29 @@ function queue:process()
         end
     end
 
-    -- 3. Sort candidates safely to prevent invalid order function crashes
     table.sort(validDefenses, function(a, b)
         local valA = tonumber(a.priority) or 25
         local valB = tonumber(b.priority) or 25
         return valA &lt; valB
     end)
 
-    -- 4. THE PROMPT &amp; STATE SYNC
-    if table.is_empty(pipeline.defenses) and #validDefenses == 0 then
-        if defupmode then
-            defupmode = false
-            if settings.debug then cecho("\n&lt;green&gt;[SYSTEM]: All defenses active. DEFUP cleared.") end
-            updatePrompt() 
-        end
-    end
-
-    -- 5. Execution Logic
     if #validDefenses &gt; 0 then
         local bestDefense = validDefenses[1]
 
-        -- If we aren't already waiting for this specific defense to land on the server...
-        if not pipeline.defenses[bestDefense.name] then
-             pipeline.defenses[bestDefense.name] = true
-             pipeline.activeCommand = bestDefense.command 
-             
-             if settings.debug then 
+        -- DEBUG: Check pipeline state
+        if pipeline.defenses[bestDefense.name] then
+            if settings.debug then
+                self:echo("Pipeline blocked for: " .. bestDefense.name .. " (Status: " .. tostring(pipeline.defenses[bestDefense.name]) .. ")")
+            end
+        else
+            pipeline.defenses[bestDefense.name] = "pending"
+            pipeline.activeCommand = bestDefense.command 
+            
+            if settings.debug then 
                 self:echo("Sending Defense: " .. bestDefense.name) 
-             end
-             
-             -- Send to the server via your system's sender
-             self:send(bestDefense) 
+            end
+            
+            self:send(bestDefense) 
         end
     end
 end
@@ -17964,83 +17956,83 @@ end
 
 function queue:send(defense)
     local command = defense.command
-
+    
     if not defense.name then
         if settings.debug then cecho("\n&lt;red&gt;[ERROR] Defense is missing name!") end
         return
     end
 
-    -- Adjust command if herbal/alchemical
-    if defense.type == "herb" or defense.type == "smoke" then
-        command = settings.cureMethod == "alchemical" and defense.command.alchemical or defense.command.herbal
+    -- If command is a table, resolve it based on cureMethod. 
+    -- If it's a string, use it as-is.
+    if type(command) == "table" then
+        command = (settings.cureMethod == "alchemical" and command.alchemical) or command.herbal
     end
 
-    send(command)
-
-    -- Defenses that are delayed in confirming
-    local delayed = {
-        "levitating", "insulation", "speed", "poisonresist",
-        "fangbarrier", "rebounding", "density", "dragonbreath"
-    }
-
-    local isDelayed = table.contains(delayed, defense.name)
-
-    if isDelayed then
-        -- Manually simulate GMCP
-        if not table.contains(mydefs, defense.name) then
-            table.insert(mydefs, defense.name)
-        end
-
-        if defenses[defense.name] then
-            defenses[defense.name].active = true
-            defenses[defense.name].enabled = true
-        end
-        
-        -- Actually tell the system this was successfully applied
-        fortify:update(defense.name, true)
-        
-        if settings.debug then self:echo("Marked delayed defense as active and cleared key:", defense.name) end
+    -- Safety: Ensure command is a valid string before sending
+    if type(command) == "string" and command ~= "" then
+        send(command)
+    else
+        if settings.debug then self:echo("Error: Invalid command for " .. defense.name) end
+        return
     end
 
-    self:debugPipeline()
-    return
+    -- Mark as "pending"
+    pipeline.defenses[defense.name] = "pending"
+    
+    pipeline.timestamps = pipeline.timestamps or {}
+    pipeline.timestamps[defense.name] = os.time()
+    
+    if settings.debug then 
+        self:echo("Defense sent: " .. defense.name .. " [" .. command .. "]") 
+    end
 end
 
 
 -- Initialize cleanup timer once
 lastPipelineCleanup = lastPipelineCleanup or 0
 
+-- Ensure this exists in your global space or script initialization
+pipeline = pipeline or {defenses = {}, afflictions = {}, activeCommand = "", timestamps = {}}
+
 function queue:cleanPipeline()
     local now = os.clock()
-    if now - lastPipelineCleanup &lt; 2 then return end  -- throttle to every 2 seconds
+    -- Throttle to every 2 seconds
+    if now - lastPipelineCleanup &lt; 2 then return end 
     lastPipelineCleanup = now
 
     local cleaned = 0
-    local currentClass = PLAYER:myclass()
-    local baseSkills = skillTreeList[currentClass] or {}
+    local timeoutThreshold = 5 -- Seconds to wait for server confirmation
 
-    for name, _ in pairs(pipeline.defenses) do
-        -- 🔍 Look up the true tracking entry by details.name and class matching
-        local def = nil
-        for _, details in pairs(defenses) do
-            if details.name == name then
-                def = details -- Fallback match
-                if table.contains(baseSkills, details.type) then
+    for name, status in pairs(pipeline.defenses) do
+        -- 1. If it's "pending", check if it has timed out
+        if status == "pending" then
+            local sentTime = pipeline.timestamps[name] or 0
+            if (os.time() - sentTime) &gt; timeoutThreshold then
+                pipeline.defenses[name] = nil
+                pipeline.timestamps[name] = nil
+                if settings.debug then self:echo("Timeout: Pipeline entry for " .. name .. " cleared for retry.") end
+                cleaned = cleaned + 1
+            end
+        else
+            -- 2. If it's just a regular entry, perform the standard active-status check
+            local def = nil
+            for _, details in pairs(defenses) do
+                if details.name == name then
                     def = details
-                    break -- Exact class skill found
+                    break
                 end
             end
-        end
 
-        -- FIXED: Successfully validates the active status of class-appended keys
-        if def and not def.active and not table.contains(mydefs, name) then
-            pipeline.defenses[name] = nil
-            cleaned = cleaned + 1
+            -- If the defense is not active in our records, clear it
+            if def and not def.active and not table.contains(mydefs, name) then
+                pipeline.defenses[name] = nil
+                cleaned = cleaned + 1
+            end
         end
     end
 
-    if cleaned &gt; 0 then
-        if settings.debug then self:echo("Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies.")) end
+    if cleaned &gt; 0 and settings.debug then 
+        self:echo("Cleaned " .. cleaned .. " stale pipeline entr" .. (cleaned == 1 and "y." or "ies.")) 
     end
 end</script>
 					<eventHandlerList />
