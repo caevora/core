@@ -5069,8 +5069,10 @@ send("curing predict impatience")</script>
   settings.systemPaused=false
   cecho("\n&lt;green&gt;System Unpaused")
 end
+settings.meditating = false
+settings.meditatebreak = false
 settings.fullwillandmana = true
-send("curing insomnia on")  
+send("stand"..settings.cmdsep.."look"..settings.cmdsep.."curing insomnia on")
 </script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -5091,7 +5093,10 @@ send("curing insomnia on")
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>meditate interrupted</name>
-						<script>if settings.meditating then
+						<script>if settings.meditatebreak then
+  settings.meditating=false
+  settings.meditatebreak = false
+elseif settings.meditating and not settings.meditatebreak then
   send("queue addclear eqbal meditate")
 end</script>
 						<triggerType>0</triggerType>
@@ -5565,7 +5570,7 @@ refill_pipes()</script>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="yes" isColorTriggerFg="no" isColorTriggerBg="no">
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="yes" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>pipelist start</name>
 						<script>
 </script>
@@ -5581,11 +5586,9 @@ refill_pipes()</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>Status  Pipe         Contents                       Puffs Months</string>
-							<string>FG8BG2</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>0</integer>
-							<integer>6</integer>
 						</regexCodePropertyList>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>end (pipelist)</name>
@@ -9525,7 +9528,7 @@ currentTat = matches[2]</script>
 </script>
 				<command></command>
 				<packageName></packageName>
-				<regex>^logout$</regex>
+				<regex>^(logout|qq)$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>pause</name>
@@ -9534,15 +9537,17 @@ currentTat = matches[2]</script>
   send("curing on")
   echo"\n"
   remedy:process()
-  if not settings.meditating then 
+  if settings.meditating then
+    settings.meditatebreak = true
+  end
     fortify:process()
-  end    
 else
   settings.systemPaused=true
   send("curing off")
 end
 
-cecho("\nSystem has been "..(settings.systemPaused and "&lt;red&gt;paused." or "&lt;green&gt;unpaused."))  </script>
+cecho("\nSystem has been "..(settings.systemPaused and "&lt;red&gt;paused." or "&lt;green&gt;unpaused."))  
+saveTableToJSON(settings, "settings")</script>
 				<command></command>
 				<packageName></packageName>
 				<regex>^pp$</regex>
@@ -10469,7 +10474,7 @@ cecho("\n ")</script>
 					<name>who groups</name>
 					<script>if not(defenses.thirdeye_vision.active) or not (defenses.thirdeye_herb.active) then
   
-  cecho("\n PUT UP THIRD EYE FOR QWHOM")
+  cecho("\n&lt;gray&gt;[" .. "&lt;red&gt;SYSTEM" .. "&lt;gray&gt;] &lt;white&gt;Third Eye needed for QWHOM. &lt;gray&gt;(Action required)")
   
   return
 else
@@ -10520,11 +10525,19 @@ precacheCheck()</script>
 					<name>meditate</name>
 					<script>if not(settings.meditating) then
   settings.meditating = true
-  fullwillandmana = false
-  send("queue addclear eqbal meditate")
+  settings.meditatebreak = false
+  settings.fullwillandmana = false
+  if not systemPaused then
+    expandAlias("pp")
+  end
+  send("queue addclear eqbal sit"..settings.cmdsep.."meditate")
 else
-  settings.meditating=false
-  fullwillandmana = true
+  if systemPaused then
+    expandAlias("pp")
+  end
+  settings.meditatebreak = true
+  settings.fullwillandmana = true
+  send("look")
   send("stand")
   send("curing insomnia on")
 end
@@ -12875,7 +12888,60 @@ for cls, skills in pairs(boot_rage) do
   end
 end
 
+
 -- Lookups (Global constants)
+minables = {
+  -- MINERALS
+  antimony = {amount = 0, buyname = "antimony"},     -- an antimony flake
+  argentum = {amount = 0, buyname = "argentum"},     -- an argentum flake
+  arsenic = {amount = 0, buyname = "arsenic"},      -- an arsenic pellet
+  aurum = {amount = 0, buyname = "aurum"},        -- an aurum flake
+  azurite = {amount = 0, buyname = "azurite"},      -- an azurite mote
+  bisemutum = {amount = 0, buyname = "bisemutum"},    -- a bisemutum chip
+  calamine = {amount = 0, buyname = "calamine"},     -- a calamine crystal
+  calcite = {amount = 0, buyname = "calcite"},      -- a calcite mote
+  cinnabar = {amount = 0, buyname = "cinnabar"},     -- a pinch of ground cinnabar
+  cuprum = {amount = 0, buyname = "cuprum"},       -- a cuprum flake
+  dolomite = {amount = 0, buyname = "dolomite"},     -- a dolomite grain
+  ferrum = {amount = 0, buyname = "ferrum"},       -- a ferrum flake
+  gypsum = {amount = 0, buyname = "gypsum"},       -- a gypsum crystal
+  magnesium = {amount = 0, buyname = "magnesium"},    -- a magnesium chip
+  malachite = {amount = 0, buyname = "malachite"},    -- a pinch of ground malachite
+  plumbum = {amount = 0, buyname = "plumbum"},      -- a plumbum flake
+  potash = {amount = 0, buyname = "potash"},       -- a potash crystal
+  quartz = {amount = 0, buyname = "quartz"},       -- a quartz grain
+  quicksilver = {amount = 0, buyname = "quicksilver"},  -- a quicksilver droplet
+  realgar = {amount = 0, buyname = "realgar"},      -- a pinch of realgar
+  stannum = {amount = 0, buyname = "stannum"},      -- a stannum flake
+}
+
+herbables = {
+  -- HERBS
+  ash = {amount = 0, buyname = "ash"},         -- some prickly ash bark
+  bayberry = {amount = 0, buyname = "bayberry"},    -- some bayberry bark
+  bellwort = {amount = 0, buyname = "bellwort"},    -- a bellwort flower
+  bloodroot = {amount = 0, buyname = "bloodroot"},   -- a bloodroot leaf
+  cohosh = {amount = 0, buyname = "cohosh"},      -- a black cohosh root
+  echinacea = {amount = 0, buyname = "echinacea"},   -- an echinacea root
+  elm = {amount = 0, buyname = "elm"},         -- slippery elm
+  ginger = {amount = 0, buyname = "ginger"},      -- a ginger root
+  ginseng = {amount = 0, buyname = "ginseng"},     -- a ginseng root
+  goldenseal = {amount = 0, buyname = "goldenseal"},  -- a goldenseal root
+  hawthorn = {amount = 0, buyname = "hawthorn"},    -- a hawthorn berry
+  kelp = {amount = 0, buyname = "kelp"},        -- a piece of kelp
+  kola = {amount = 0, buyname = "kola"},        -- a kola nut
+  kuzu = {amount = 0, buyname = "kuzu"},        -- a kuzu root
+  lobelia = {amount = 0, buyname = "lobelia"},     -- a lobelia seed
+  moss = {amount = 0, buyname = "irid"},        -- some irid moss
+  myrrh = {amount = 0, buyname = "myrrh"},       -- a ball of myrrh gum
+  pear = {amount = 0, buyname = "pear"},        -- a prickly pear
+  sileris = {amount = 0, buyname = "sileris"},     -- a sileris berry
+  skullcap = {amount = 0, buyname = "skullcap"},    -- a skullcap flower
+  slipper = {amount = 0, buyname = "slipper"},     -- a lady's slipper root
+  valerian = {amount = 0, buyname = "valerian"},    -- a valerian leaf
+  --weed = {amount = 0},        -- a sprig of cactus weed
+}
+
 breath_types = { ["Black"] = "Acid", ["Blue"] = "Ice", ["Gold"] = "Psi", ["Green"] = "Venom", ["Red"] = "Dragonfire", ["Silver"] = "Lightning" }
 elixirs = {"frost", "health", "immunity", "levitation", "mana", "speed", "venom"}
 salves = {"caloric", "epidermal", "mass", "mending", "restoration"}
@@ -13107,6 +13173,7 @@ function systemOnDeath()
     send("stop")
     expandAlias("mstop")
     settings.systemPaused = true
+    settings.meditating = false
     resetCuringList()
     LimbTrackerReset()
     cecho("\n&lt;red&gt;[BRAIN] We died. Disengaging.\n")
@@ -13130,6 +13197,7 @@ function systemOnDeath()
     send("stop")
     expandAlias("mstop")
     settings.systemPaused = true
+    settings.meditating = false
     resetCuringList()
     LimbTrackerReset()
     cecho("\n&lt;red&gt;[BRAIN] We died. Disengaging.\n")
@@ -13151,6 +13219,7 @@ function systemOnRespawn()
   local currentCuringSet = settings.curingset or "default"
   if settings.systemPaused then
     settings.systemPaused = false
+    settings.meditating = false
     cecho("\nSystem has been " .. (settings.systemPaused and "&lt;red&gt;paused." or "&lt;green&gt;unpaused."))
     myaffs = {}
     fortify:reset()
@@ -13236,6 +13305,7 @@ end
 function systemExit()
   if settings and settings.systemLoaded then
     settings.systemLoaded = false
+    settings.meditating = false
     resetActiveDefenses()
     initializeFileSaves()
     if GUI and GUI.scorewindow then GUI.scorewindow:save() end
@@ -13251,6 +13321,7 @@ end
 function systemLogout()
   if settings and settings.systemLoaded then
     settings.systemLoaded = false
+    settings.meditating = false
     resetActiveDefenses()
     initializeFileSaves()
     if GUI and GUI.scorewindow then GUI.scorewindow:save() end
@@ -14142,6 +14213,7 @@ end</script>
             vitalsChange = true, 
             damageTracking = {},
             meditating = false,
+            meditatebreak = false,            
             dead = false,
             sipbalance = true,
             fullwillandmana = false,
@@ -15283,15 +15355,16 @@ end</script>
     -- Hardcoded base tables can be declared if missing
     NDB.highlighting = NDB.highlighting or {
         Ashtan = "purple",
-        Cyrene = "CornflowerBlue",
-        Eleusis = "green",
-        Hashan = "orange",
+        Cyrene = "cyan",
+        Eleusis = "lime_green",
+        Hashan = "gold",
         Mhaldor = "red",
-        Targossas = "cyan",
+        Targossas = "white",
         Enemies = "red",
-        Rogues = "DarkSlateGrey",
+        Rogues = "gray",
         Underworld = "brown",
     }
+    
     
     NDB.enemySettings = NDB.enemySettings or {bold = false, italics = false, underline = false}
     
@@ -15845,6 +15918,18 @@ function NDB_Remove(name)
   else
     debugEcho("red", person .. " is not tracked in the system database.")
   end
+end
+
+function NDB_isOnline(name)
+    -- Normalize the name for comparison
+    local targetName = name:title()
+    
+    -- apiOnlineFound is the table populated by your NDB_SortOnline function
+    if apiOnlineFound and table.contains(apiOnlineFound, targetName) then
+        return true
+    end
+    
+    return false
 end
 
 function NDB_SortOnline(filepath)
@@ -16936,7 +17021,7 @@ function updatePrompt()
     send("CONFIG PROMPT CUSTOM " .. promptstring)
     
     saveTableToJSON(settings, "settings")
-    if menuServerSettings then menuServerSettings() end
+    --if menuServerSettings then menuServerSettings() end
     debugEcho("yellow","[PROMPT ENGINE] Sent Layout: " .. promptstring)
 end
 </script>
@@ -18114,20 +18199,10 @@ function attemptHuntSettingsRestore()
   end
 end
 
-
-
-function handleTargetsAndAttacks()
-    updateWhoHere()
-
-    if not settings.systemLoaded or settings.systemPaused or inslowcuringmode() or balance_data.stunned.in_use then
-        return
-    end
-
-    -- 🎯 TARGET ACQUISITION
-    -- Added a clear check: If we have NO target, or our target isn't in the room anymore, 
-    -- bypass the cooldown entirely to snap onto a living target instantly!
+function acquireTarget()
     local targetPresent = findkey(roomstufflist, target)
     
+    -- If target is invalid or missing, try to find a new one
     if not huntTargetCooldown or target == "" or not targetPresent or target == "none" then
         local nextTarget = findNextHuntTarget()
         if nextTarget and nextTarget ~= "" and nextTarget ~= target then
@@ -18138,26 +18213,44 @@ function handleTargetsAndAttacks()
 
             huntTargetCooldown = true
             tempTimer(1.2, function() huntTargetCooldown = false end)
+            return true -- We successfully acquired/switched a target
         elseif nextTarget == "" then
-            -- Clear targets safely if the room is completely dead/empty
             target = "none"
             hunttarget = "none"
         end
     end
-  
-    if huntSettingsData == nil then
-        cecho("&lt;yellow&gt;[INFO] Hunt settings nil. Attempting to restore from backup.\n")
-        local success = attemptHuntSettingsRestore()
-        cecho((success and "&lt;green&gt;Hunt Restore Successful\n") or "&lt;red&gt;Hunt Restore Unsuccessful\n")
+    return target ~= "" and target ~= "none"
+end
+
+function executeCombat(tar)
+    if hasMoreHuntTargets(tar) then
+        handleRegularAttacks(tar)
+        if not table.contains(myaffs, "blackout") and not balance_data.stunned_in_use then
+            handleBattlerageAttacks(tar)
+        end
+    end
+end
+
+function handleTargetsAndAttacks()
+    updateWhoHere()
+
+    -- 1. Pre-flight checks
+    if not settings.systemLoaded or settings.systemPaused or inslowcuringmode() or balance_data.stunned.in_use then
+        return
     end
 
-    -- ⚔️ COMBAT EXECUTION
-    -- Ensure we aren't firing attacks into the ether if target is cleared to 'none'
-    if target ~= "" and target ~= "none" and hasMoreHuntTargets(target) then
-        handleRegularAttacks(target)
-        if not table.contains(myaffs, "blackout") and not balance_data.stunned_in_use then
-          handleBattlerageAttacks(target)
+    -- 2. Data Health Check
+    if huntSettingsData == nil then
+        if not attemptHuntSettingsRestore() then
+            cecho("&lt;red&gt;[ERROR] Hunt Restore Unsuccessful\n")
+            return
         end
+        cecho("&lt;green&gt;[INFO] Hunt Restore Successful\n")
+    end
+
+    -- 3. Target Management &amp; Combat
+    if acquireTarget() then
+        executeCombat(target)
     end
 end
 
@@ -18528,12 +18621,18 @@ end
 
 
 function huntNext()
+
   if not hunting then return end
+
       tempTimer(0.2, function()
         handleTargetsAndAttacks()
       end)
+
     debugEcho("white","Handling targets and attacks")
-end
+
+end 
+
+
 
 
 -- Function to print denizen priority list
@@ -24369,13 +24468,22 @@ function parse_plist()
     local herb = pipenames[matches[4]]
     local puffs = tonumber(matches[5])
     local status = matches[2] or "out"
+    local refill = 3
 
     if not pipes then
      pipes = {}
     end
 
+    if herb == "skullcap" or herb == "malachite" then
+       refill = settings.refill_skullcap_at
+    elseif herb == "valerian" or herb == "realgar" then
+       refill = settings.refill_valerian_at 
+    elseif herb == "elm" or herb == "cinnabar" then
+       refill = settings.refill_elm_at
+    end
+
     if herb and id and puffs and status then  
-     pipes[herb] = { id = id, puffs = puffs, status = status, name = herb, refill = 3 }
+     pipes[herb] = { id = id, puffs = puffs, status = status, name = herb, refill = refill }
 
      -- Initialize names array if it doesn't exist
      if not pipes.name then
@@ -25359,43 +25467,39 @@ end
 					<name>balances</name>
 					<packageName></packageName>
 					<script>function balanceGMCP()
+    if not (settings.systemLoaded) or settings.systemPaused then return end
 
-    if not (settings.systemLoaded) then
-      return
-    end
-    
-    if settings.systemPaused then
-      return
-    end
-  
-    --if inslowcuringmode() then 
-      --return 
-    --end
-  
-    --if balance_data.stunned.in_use then
-     -- return
-    --end
-
-    -- Handle balance
-    if gmcp.Char.Vitals.bal ~= "1" and not(balance_data.balance.in_use) then
-            
-        settings.meditating = false
-        balanceStart("balance",false)   
-    else
-        if hunting and autohunting then
-          if table.contains(myaffs, "blackout") then
-            huntNext()
-          end
+    -- Handle balance recovery and hunting
+    if gmcp.Char.Vitals.bal == "1" then
+        if balance_data.balance.in_use then
+            balanceRecover("balance", false)
+            -- Hunting logic: Trigger next step upon regaining balance
+            if hunting and autohunting then
+                huntNext()
+            end
         end
-         
+    else
+        if not balance_data.balance.in_use then
+            settings.meditating = false
+            balanceStart("balance", false)
+        end
     end
 
-    -- Handle equilibrium
-    if gmcp.Char.Vitals.eq ~= "1" and not(balance_data.equilibrium.in_use) then
-         balanceStart("equilibrium",false)
+    -- Handle equilibrium recovery
+    if gmcp.Char.Vitals.eq == "1" then
+        if balance_data.equilibrium.in_use then
+            balanceRecover("equilibrium", false)
+        end
+    else
+        if not balance_data.equilibrium.in_use then
+            balanceStart("equilibrium", false)
+        end
     end
-       
-    
+
+    -- Handle blackout affliction check (if needed during hunt)
+    if hunting and autohunting and table.contains(myaffs, "blackout") then
+        huntNext()
+    end
 end
 
 -- Function to start a balance update
@@ -26905,9 +27009,8 @@ end</script>
   
   if settings.defences then return end --- this means user opted to use serverside defences and we wont use clientside.
       
-      if defupmode and settings.meditating then
+      if settings.meditating then
         return
-        cecho("\n&lt;red&gt;Can't put up defenses while meditating.")
       end
   
   fortify:cleanPipeline()
