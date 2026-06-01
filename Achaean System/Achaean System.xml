@@ -3345,6 +3345,46 @@ end</script>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>rebounding</name>
+						<script>fortify:update("rebounding_survival",true)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You feel an aura of rebounding surround you.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>0</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>rebounding</name>
+						<script>fortify:update("rebounding_survival",false)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your aura of weapons rebounding disappears.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>vision</name>
@@ -3832,7 +3872,7 @@ fortify:update("thirdeye_vision",true)</script>
 					<regexCodePropertyList />
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>speed</name>
-						<script>fortify:update("speed_free",true)</script>
+						<script>fortify:update("speed_elixir",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3854,7 +3894,7 @@ fortify:update("thirdeye_vision",true)</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>levitation</name>
-						<script>fortify:update("levitating_free",true)</script>
+						<script>fortify:update("levitating_elixir",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3874,7 +3914,7 @@ fortify:update("thirdeye_vision",true)</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>frost (temperance)</name>
-						<script>fortify:update("temperance_free",true)</script>
+						<script>fortify:update("temperance_elixir",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3894,7 +3934,7 @@ fortify:update("thirdeye_vision",true)</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>venom (poison resist)</name>
-						<script>fortify:update("poisonresist_free",true)</script>
+						<script>fortify:update("poisonresist_elixir",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3912,25 +3952,9 @@ fortify:update("thirdeye_vision",true)</script>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
-				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>salves</name>
-					<script></script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList />
-					<regexCodePropertyList />
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>caloric (insulation)</name>
-						<script>fortify:update("insulation_free",true)</script>
+						<script>fortify:update("insulation_elixir",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -3950,7 +3974,7 @@ fortify:update("thirdeye_vision",true)</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>mass (density)</name>
-						<script>fortify:update("density_free",true)</script>
+						<script>fortify:update("density_elixir",true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -4858,7 +4882,7 @@ end</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList />
 					<regexCodePropertyList />
-					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>gripping</name>
 						<script>fortify:update("gripping_shikudo",true)
 fortify:update("gripping_twoarts",true)</script>
@@ -14613,118 +14637,118 @@ end</script>
     defenses = {
 
       -- APOSTATE
-      shroud_apostate = { type = "necromancy", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      shroud_apostate = { type = "necromancy", command = "shroud", relax = "unshroud", active = false, enabled = false, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
 
 
       --OCCULTIST
-      astralvision_occultism = { type = "occultism", command = "astralvision", relax = "", active = false, enabled = true, keepup = false, name = "astralvision", cooldown = {"equilibrium"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      distortaura_occultism = { type = "occultism", command = "distortaura", relax = "normalaura", active = false, enabled = true, keepup = false, name = "distortaura", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      astralform_occultism = { type = "occultism", command = "astralform", relax = "", active = false, enabled = true, keepup = false, name = "astralform", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      devilmark_occultism = { type = "occultism", command = "devilmark", relax = "", active = false, enabled = true, keepup = false, name = "devilmark", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      tentacles_occultism = { type = "occultism", command = "tentacles", relax = "", active = false, enabled = true, keepup = false, name = "tentacles", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      shroud_occultism = { type = "occultism", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      astralvision_occultism = { type = "occultism", command = "astralvision", relax = "", active = false, enabled = false, keepup = false, name = "astralvision", cooldown = {"equilibrium"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      distortaura_occultism = { type = "occultism", command = "distortaura", relax = "normalaura", active = false, enabled = false, keepup = false, name = "distortaura", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      astralform_occultism = { type = "occultism", command = "astralform", relax = "", active = false, enabled = false, keepup = false, name = "astralform", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      devilmark_occultism = { type = "occultism", command = "devilmark", relax = "", active = false, enabled = false, keepup = false, name = "devilmark", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      tentacles_occultism = { type = "occultism", command = "tentacles", relax = "", active = false, enabled = false, keepup = false, name = "tentacles", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      shroud_occultism = { type = "occultism", command = "shroud", relax = "unshroud", active = false, enabled = false, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
       
       --RUNEWARDEN
-      gripping_discipline = { type = "discipline", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      blademastery_discipline = { type = "discipline", command = "mastery on", relax = "relax mastery", active = false, enabled = true, keepup = false, name = "blademastery", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      resistance_discipline = { type = "discipline", command = "resistance", relax = "", active = false, enabled = true, keepup = false, name = "resistance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      weathering_discipline = { type = "discipline", command = "weathering", relax = "", active = false, enabled = true, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      gripping_discipline = { type = "discipline", command = "grip", relax = "relax grip", active = false, enabled = false, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      blademastery_discipline = { type = "discipline", command = "mastery on", relax = "relax mastery", active = false, enabled = false, keepup = false, name = "blademastery", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      resistance_discipline = { type = "discipline", command = "resistance", relax = "", active = false, enabled = false, keepup = false, name = "resistance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      weathering_discipline = { type = "discipline", command = "weathering", relax = "", active = false, enabled = false, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       --BLADEMASTER
-      gripping_twoarts = { type = "twoarts", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      shintrance_shindo = { type = "shindo", command = "shin trance", relax = "break trance", active = false, enabled = true, keepup = false, name = "shintrance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      weathering_shindo = { type = "shindo", command = "weathering", relax = "", active = false, enabled = true, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      toughness_shindo = { type = "shindo", command = "toughness", relax = "", active = false, enabled = true, keepup = false, name = "toughness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      projectiles_shindo = { type = "shindo", command = "projectiles on", relax = "relax projectiles", active = false, enabled = true, keepup = false, name = "projectiles", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      shinbinding_shindo = { type = "shindo", command = "binding on", relax = "binding off", active = false, enabled = true, keepup = false, name = "shinbinding", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      retaliation_shindo = { type = "shindo", command = "retaliation on", relax = "retaliation off", active = false, enabled = true, keepup = false, name = "retaliation", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      waterwalking_shindo = { type = "shindo", command = "waterwalk", relax = "relax waterwalk", active = false, enabled = true, keepup = false, name = "waterwalking", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
-      shinclarity_shindo = { type = "shindo", command = "clarity", relax = "", active = false, enabled = true, keepup = false, name = "shinclarity", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
-      mindnet_shindo = { type = "shindo", command = "mindnet on", relax = "relax mindnet", active = false, enabled = true, keepup = false, name = "mindnet", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      consciousness_shindo = { type = "shindo", command = "consciousness on", relax = "relax consciousness", active = false, enabled = true, keepup = false, name = "consciousness", cooldown = {"free"}, requires = {"free"}, drain = "", priority = 2, blockers = {"sleep","paralysis"} },
+      gripping_twoarts = { type = "twoarts", command = "grip", relax = "relax grip", active = false, enabled = false, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      shintrance_shindo = { type = "shindo", command = "shin trance", relax = "break trance", active = false, enabled = false, keepup = false, name = "shintrance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      weathering_shindo = { type = "shindo", command = "weathering", relax = "", active = false, enabled = false, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      toughness_shindo = { type = "shindo", command = "toughness", relax = "", active = false, enabled = false, keepup = false, name = "toughness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      projectiles_shindo = { type = "shindo", command = "projectiles on", relax = "relax projectiles", active = false, enabled = false, keepup = false, name = "projectiles", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      shinbinding_shindo = { type = "shindo", command = "binding on", relax = "binding off", active = false, enabled = false, keepup = false, name = "shinbinding", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      retaliation_shindo = { type = "shindo", command = "retaliation on", relax = "retaliation off", active = false, enabled = false, keepup = false, name = "retaliation", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      waterwalking_shindo = { type = "shindo", command = "waterwalk", relax = "relax waterwalk", active = false, enabled = false, keepup = false, name = "waterwalking", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
+      shinclarity_shindo = { type = "shindo", command = "clarity", relax = "", active = false, enabled = false, keepup = false, name = "shinclarity", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
+      mindnet_shindo = { type = "shindo", command = "mindnet on", relax = "relax mindnet", active = false, enabled = false, keepup = false, name = "mindnet", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      consciousness_shindo = { type = "shindo", command = "consciousness on", relax = "relax consciousness", active = false, enabled = false, keepup = false, name = "consciousness", cooldown = {"free"}, requires = {"free"}, drain = "", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- ALCHEMIST
-      astronomy = { type = "alchemy", command = "astronomy", relax = "", active = false, enabled = true, keepup = false, name = "astronomy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      extispicy = { type = "alchemy", command = "extispicy", relax = "", active = false, enabled = true, keepup = false, name = "extispicy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      mercury = { type = "alchemy", command = "mercury", relax = "", active = false, enabled = true, keepup = false, name = "mercury", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      sulphur = { type = "alchemy", command = "sulphur", relax = "", active = false, enabled = true, keepup = false, name = "sulphur", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      tin = { type = "alchemy", command = "tin", relax = "", active = false, enabled = true, keepup = false, name = "tin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      astronomy = { type = "alchemy", command = "astronomy", relax = "", active = false, enabled = false, keepup = false, name = "astronomy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      extispicy = { type = "alchemy", command = "extispicy", relax = "", active = false, enabled = false, keepup = false, name = "extispicy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      mercury = { type = "alchemy", command = "mercury", relax = "", active = false, enabled = false, keepup = false, name = "mercury", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      sulphur = { type = "alchemy", command = "sulphur", relax = "", active = false, enabled = false, keepup = false, name = "sulphur", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      tin = { type = "alchemy", command = "tin", relax = "", active = false, enabled = false, keepup = false, name = "tin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- BARD
-      acrobatics_performance = { type = "performance", command = "acrobatics", relax = "", active = false, enabled = true, keepup = false, name = "acrobatics", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      arrowcatching_performance = { type = "performance", command = "arrowcatching", relax = "", active = false, enabled = true, keepup = false, name = "arrowcatching", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      balancing_performance = { type = "performance", command = "balancing", relax = "", active = false, enabled = true, keepup = false, name = "balancing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      drunkensailor_performance = { type = "performance", command = "sing drunkensailor", relax = "", active = false, enabled = true, keepup = false, name = "drunkensailor", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      heartsfury_performance = { type = "performance", command = "heartsfury", relax = "", active = false, enabled = true, keepup = false, name = "heartsfury", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      aria_performance = { type = "performance", command = "sing aria", relax = "", active = false, enabled = true, keepup = false, name = "aria", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      lay_performance = { type = "performance", command = "sing lay", relax = "", active = false, enabled = true, keepup = false, name = "lay", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      songbird_performance = { type = "performance", command = "sing songbird", relax = "", active = false, enabled = true, keepup = false, name = "songbird", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      tune_performance = { type = "performance", command = "sing tune", relax = "", active = false, enabled = true, keepup = false, name = "tune", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      slippery_performance = { type = "performance", command = "slippery", relax = "", active = false, enabled = true, keepup = false, name = "slippery", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      acrobatics_performance = { type = "performance", command = "acrobatics", relax = "", active = false, enabled = false, keepup = false, name = "acrobatics", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      arrowcatching_performance = { type = "performance", command = "arrowcatching", relax = "", active = false, enabled = false, keepup = false, name = "arrowcatching", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      balancing_performance = { type = "performance", command = "balancing", relax = "", active = false, enabled = false, keepup = false, name = "balancing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      drunkensailor_performance = { type = "performance", command = "sing drunkensailor", relax = "", active = false, enabled = false, keepup = false, name = "drunkensailor", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      heartsfury_performance = { type = "performance", command = "heartsfury", relax = "", active = false, enabled = false, keepup = false, name = "heartsfury", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      aria_performance = { type = "performance", command = "sing aria", relax = "", active = false, enabled = false, keepup = false, name = "aria", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      lay_performance = { type = "performance", command = "sing lay", relax = "", active = false, enabled = false, keepup = false, name = "lay", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      songbird_performance = { type = "performance", command = "sing songbird", relax = "", active = false, enabled = false, keepup = false, name = "songbird", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      tune_performance = { type = "performance", command = "sing tune", relax = "", active = false, enabled = false, keepup = false, name = "tune", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      slippery_performance = { type = "performance", command = "slippery", relax = "", active = false, enabled = false, keepup = false, name = "slippery", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- DEPTHSWALKER
-      bodyaugment_shadowbinding = { type = "shadowbinding", command = "bodyaugment", relax = "", active = false, enabled = true, keepup = false, name = "bodyaugment", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      durability_shadowbinding = { type = "shadowbinding", command = "durability", relax = "", active = false, enabled = true, keepup = false, name = "durability", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      percision_shadowbinding = { type = "shadowbinding", command = "percision", relax = "", active = false, enabled = true, keepup = false, name = "percision", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      blur_shadowbinding = { type = "shadowbinding", command = "blur", relax = "", active = false, enabled = true, keepup = false, name = "blur", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      reflections_shadowbinding = { type = "shadowbinding", command = "reflections", relax = "", active = false, enabled = true, keepup = false, name = "reflections", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      disperse_shadowbinding = { type = "shadowbinding", command = "disperse", relax = "", active = false, enabled = true, keepup = false, name = "disperse", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      shadowveil_shadowbinding = { type = "shadowbinding", command = "shadowveil", relax = "", active = false, enabled = true, keepup = false, name = "shadowveil", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      bodyaugment_shadowbinding = { type = "shadowbinding", command = "bodyaugment", relax = "", active = false, enabled = false, keepup = false, name = "bodyaugment", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      durability_shadowbinding = { type = "shadowbinding", command = "durability", relax = "", active = false, enabled = false, keepup = false, name = "durability", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      percision_shadowbinding = { type = "shadowbinding", command = "percision", relax = "", active = false, enabled = false, keepup = false, name = "percision", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      blur_shadowbinding = { type = "shadowbinding", command = "blur", relax = "", active = false, enabled = false, keepup = false, name = "blur", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      reflections_shadowbinding = { type = "shadowbinding", command = "reflections", relax = "", active = false, enabled = false, keepup = false, name = "reflections", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      disperse_shadowbinding = { type = "shadowbinding", command = "disperse", relax = "", active = false, enabled = false, keepup = false, name = "disperse", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      shadowveil_shadowbinding = { type = "shadowbinding", command = "shadowveil", relax = "", active = false, enabled = false, keepup = false, name = "shadowveil", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- MAGI
-      chargeshield_crystalweaving = { type = "crystalweaving", command = "chargeshield", relax = "", active = false, enabled = true, keepup = false, name = "chargeshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      diamondskin_crystalweaving = { type = "crystalweaving", command = "diamondskin", relax = "", active = false, enabled = true, keepup = false, name = "diamondskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      stoneskin_crystalweaving = { type = "crystalweaving", command = "stoneskin", relax = "", active = false, enabled = true, keepup = false, name = "stoneskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      reflections_crystalweaving = { type = "crystalweaving", command = "reflections", relax = "", active = false, enabled = true, keepup = false, name = "reflections", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      stonefist_crystalweaving = { type = "crystalweaving", command = "stonefist", relax = "", active = false, enabled = true, keepup = false, name = "stonefist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      chargeshield_crystalweaving = { type = "crystalweaving", command = "chargeshield", relax = "", active = false, enabled = false, keepup = false, name = "chargeshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      diamondskin_crystalweaving = { type = "crystalweaving", command = "diamondskin", relax = "", active = false, enabled = false, keepup = false, name = "diamondskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      stoneskin_crystalweaving = { type = "crystalweaving", command = "stoneskin", relax = "", active = false, enabled = false, keepup = false, name = "stoneskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      reflections_crystalweaving = { type = "crystalweaving", command = "reflections", relax = "", active = false, enabled = false, keepup = false, name = "reflections", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      stonefist_crystalweaving = { type = "crystalweaving", command = "stonefist", relax = "", active = false, enabled = false, keepup = false, name = "stonefist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- MONK
-      standingfirm_kaido = { type = "kaido", command = "standingfirm", relax = "", active = false, enabled = true, keepup = false, name = "standingfirm", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      vitality_kaido = { type = "kaido", command = "vitality", relax = "", active = false, enabled = true, keepup = false, name = "vitality", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      weathering_kaido = { type = "kaido", command = "weathering", relax = "", active = false, enabled = true, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      toughness_kaido = { type = "kaido", command = "toughness", relax = "", active = false, enabled = true, keepup = false, name = "toughness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      resistance_kaido = { type = "kaido", command = "resistance", relax = "", active = false, enabled = true, keepup = false, name = "resistance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      nightsight_kaido = { type = "kaido", command = "nightsight on", relax = "relax nightsight", active = false, enabled = true, keepup = false, name = "nightsight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      projectiles_kaido = { type = "kaido", command = "projectiles on", relax = "relax projectiles", active = false, enabled = true, keepup = false, name = "projectiles", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
-      dodging_kaido = { type = "kaido", command = "dodging on", relax = "relax dodging", active = false, enabled = true, keepup = false, name = "dodging", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
-      constitution_kaido = { type = "kaido", command = "constitution", relax = "", active = false, enabled = true, keepup = false, name = "constitution", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      consciousness_kaido = { type = "kaido", command = "consciousness on", relax = "relax consciousness", active = false, enabled = true, keepup = false, name = "consciousness", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      boosting_kaido = { type = "kaido", command = "boost regeneration", relax = "", active = false, enabled = true, keepup = false, name = "boosting", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      regeneration_kaido = { type = "kaido", command = "regeneration", relax = "", active = false, enabled = true, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      splitmind_kaido = { type = "kaido", command = "split mind", relax = "join mind", active = false, enabled = true, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      kaitrance_kaido = { type = "kaido", command = "trance", relax = "", active = false, enabled = true, keepup = false, name = "kaitrance", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      mindcloak_telepathy = { type = "telepathy", command = "mindcloak on", relax = "mindcloak off", active = false, enabled = true, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      telesense_telepathy = { type = "telepathy", command = "mind telesense on", relax = "mind telesense off", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      hypersense_telepathy = { type = "telepathy", command = "mind hypersense on", relax = "mind hypersense off", active = false, enabled = true, keepup = false, name = "hypersense", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
-      gripping_shikudo = { type = "shikudo", command = "grip", relax = "relax grip", active = false, enabled = true, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      bodyblock_tekura = { type = "tekura", command = "bdb", relax = "unblock bdb", active = false, enabled = true, keepup = false, name = "bodyblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      evadeblock_tekura = { type = "tekura", command = "evb", relax = "unblock evb", active = false, enabled = true, keepup = false, name = "evadeblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      pinchblock_tekura = { type = "tekura", command = "pnb", relax = "unblock pnb", active = false, enabled = true, keepup = false, name = "pinchblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      standingfirm_kaido = { type = "kaido", command = "standingfirm", relax = "", active = false, enabled = false, keepup = false, name = "standingfirm", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      vitality_kaido = { type = "kaido", command = "vitality", relax = "", active = false, enabled = false, keepup = false, name = "vitality", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      weathering_kaido = { type = "kaido", command = "weathering", relax = "", active = false, enabled = false, keepup = false, name = "weathering", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      toughness_kaido = { type = "kaido", command = "toughness", relax = "", active = false, enabled = false, keepup = false, name = "toughness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      resistance_kaido = { type = "kaido", command = "resistance", relax = "", active = false, enabled = false, keepup = false, name = "resistance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      nightsight_kaido = { type = "kaido", command = "nightsight on", relax = "relax nightsight", active = false, enabled = false, keepup = false, name = "nightsight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
+      projectiles_kaido = { type = "kaido", command = "projectiles on", relax = "relax projectiles", active = false, enabled = false, keepup = false, name = "projectiles", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
+      dodging_kaido = { type = "kaido", command = "dodging on", relax = "relax dodging", active = false, enabled = false, keepup = false, name = "dodging", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
+      constitution_kaido = { type = "kaido", command = "constitution", relax = "", active = false, enabled = false, keepup = false, name = "constitution", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      consciousness_kaido = { type = "kaido", command = "consciousness on", relax = "relax consciousness", active = false, enabled = false, keepup = false, name = "consciousness", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      boosting_kaido = { type = "kaido", command = "boost regeneration", relax = "", active = false, enabled = false, keepup = false, name = "boosting", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      regeneration_kaido = { type = "kaido", command = "regeneration", relax = "", active = false, enabled = false, keepup = false, name = "regeneration", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      splitmind_kaido = { type = "kaido", command = "split mind", relax = "join mind", active = false, enabled = false, keepup = false, name = "splitmind", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      kaitrance_kaido = { type = "kaido", command = "trance", relax = "", active = false, enabled = false, keepup = false, name = "kaitrance", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      mindcloak_telepathy = { type = "telepathy", command = "mindcloak on", relax = "mindcloak off", active = false, enabled = false, keepup = false, name = "mindcloak", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      telesense_telepathy = { type = "telepathy", command = "mind telesense on", relax = "mind telesense off", active = false, enabled = false, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      hypersense_telepathy = { type = "telepathy", command = "mind hypersense on", relax = "mind hypersense off", active = false, enabled = false, keepup = false, name = "hypersense", cooldown = {"free"}, requires = {"free"}, drain = "willpower", priority = 2, blockers = {"sleep","paralysis"} },
+      gripping_shikudo = { type = "shikudo", command = "grip", relax = "relax grip", active = false, enabled = false, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      bodyblock_tekura = { type = "tekura", command = "bdb", relax = "unblock bdb", active = false, enabled = false, keepup = false, name = "bodyblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      evadeblock_tekura = { type = "tekura", command = "evb", relax = "unblock evb", active = false, enabled = false, keepup = false, name = "evadeblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      pinchblock_tekura = { type = "tekura", command = "pnb", relax = "unblock pnb", active = false, enabled = false, keepup = false, name = "pinchblock", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- NATURE CLASSES (DRUID/SENTINEL/SYLVAN)
-      evasion_naturalism = { type = "naturalism", command = "evasion", relax = "", active = false, enabled = true, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      evasion_tracking = { type = "tracking", command = "evasion", relax = "", active = false, enabled = true, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      barkskin_tracking = { type = "tracking", command = "barkskin", relax = "", active = false, enabled = true, keepup = false, name = "barkskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      barkskin_wilderness = { type = "wilderness", command = "barkskin", relax = "", active = false, enabled = true, keepup = false, name = "barkskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      flailingstaff_tracking = { type = "tracking", command = "flailingstaff", relax = "", active = false, enabled = true, keepup = false, name = "flailingstaff", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      affinity_naturalism = { type = "naturalism", command = "affinity", relax = "", active = false, enabled = true, keepup = false, name = "affinity", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      elusiveness_naturalism = { type = "naturalism", command = "elusiveness", relax = "", active = false, enabled = true, keepup = false, name = "elusiveness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      reflexes_naturalism = { type = "naturalism", command = "reflexes", relax = "", active = false, enabled = true, keepup = false, name = "reflexes", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      evasion_naturalism = { type = "naturalism", command = "evasion", relax = "", active = false, enabled = false, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      evasion_tracking = { type = "tracking", command = "evasion", relax = "", active = false, enabled = false, keepup = false, name = "evasion", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      barkskin_tracking = { type = "tracking", command = "barkskin", relax = "", active = false, enabled = false, keepup = false, name = "barkskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      barkskin_wilderness = { type = "wilderness", command = "barkskin", relax = "", active = false, enabled = false, keepup = false, name = "barkskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      flailingstaff_tracking = { type = "tracking", command = "flailingstaff", relax = "", active = false, enabled = false, keepup = false, name = "flailingstaff", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      affinity_naturalism = { type = "naturalism", command = "affinity", relax = "", active = false, enabled = false, keepup = false, name = "affinity", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      elusiveness_naturalism = { type = "naturalism", command = "elusiveness", relax = "", active = false, enabled = false, keepup = false, name = "elusiveness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      reflexes_naturalism = { type = "naturalism", command = "reflexes", relax = "", active = false, enabled = false, keepup = false, name = "reflexes", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       --PRIEST
-      faith_spirituality = { type = "spirituality", command = "faith", relax = "", active = false, enabled = true, keepup = false, name = "faith", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      fervour_spirituality = { type = "spirituality", command = "fervour", relax = "", active = false, enabled = true, keepup = false, name = "fervour", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      retribution_spirituality = { type = "spirituality", command = "retribution", relax = "", active = false, enabled = true, keepup = false, name = "retribution", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      dawnhand_spirituality = { type = "spirituality", command = "dawnhand", relax = "", active = false, enabled = true, keepup = false, name = "dawnhand", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      unbowed_spirituality = { type = "spirituality", command = "unbowed", relax = "", active = false, enabled = true, keepup = false, name = "unbowed", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      heresy_devotion = { type = "devotion", command = "heresy", relax = "", active = false, enabled = true, keepup = false, name = "heresy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      inspiration_devotion = { type = "devotion", command = "inspiration", relax = "", active = false, enabled = true, keepup = false, name = "inspiration", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      thermalshield_devotion = { type = "devotion", command = "thermalshield", relax = "", active = false, enabled = true, keepup = false, name = "thermalshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      earthshield_devotion = { type = "devotion", command = "earthshield", relax = "", active = false, enabled = true, keepup = false, name = "earthshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      enduranceblessing_devotion = { type = "devotion", command = "bless endurance", relax = "", active = false, enabled = true, keepup = false, name = "enduranceblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      frostshield_devotion = { type = "devotion", command = "frostshield", relax = "", active = false, enabled = true, keepup = false, name = "frostshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      willpowerblessing_devotion = { type = "devotion", command = "bless willpower", relax = "", active = false, enabled = true, keepup = false, name = "willpowerblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      benediction_zeal = { type = "zeal", command = "recite benediction on me", relax = "", active = false, enabled = true, keepup = false, name = "benediction", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },    
+      faith_spirituality = { type = "spirituality", command = "faith", relax = "", active = false, enabled = false, keepup = false, name = "faith", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      fervour_spirituality = { type = "spirituality", command = "fervour", relax = "", active = false, enabled = false, keepup = false, name = "fervour", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      retribution_spirituality = { type = "spirituality", command = "retribution", relax = "", active = false, enabled = false, keepup = false, name = "retribution", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      dawnhand_spirituality = { type = "spirituality", command = "dawnhand", relax = "", active = false, enabled = false, keepup = false, name = "dawnhand", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      unbowed_spirituality = { type = "spirituality", command = "unbowed", relax = "", active = false, enabled = false, keepup = false, name = "unbowed", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      heresy_devotion = { type = "devotion", command = "heresy", relax = "", active = false, enabled = false, keepup = false, name = "heresy", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      inspiration_devotion = { type = "devotion", command = "inspiration", relax = "", active = false, enabled = false, keepup = false, name = "inspiration", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      thermalshield_devotion = { type = "devotion", command = "thermalshield", relax = "", active = false, enabled = false, keepup = false, name = "thermalshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      earthshield_devotion = { type = "devotion", command = "earthshield", relax = "", active = false, enabled = false, keepup = false, name = "earthshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      enduranceblessing_devotion = { type = "devotion", command = "bless endurance", relax = "", active = false, enabled = false, keepup = false, name = "enduranceblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      frostshield_devotion = { type = "devotion", command = "frostshield", relax = "", active = false, enabled = false, keepup = false, name = "frostshield", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      willpowerblessing_devotion = { type = "devotion", command = "bless willpower", relax = "", active = false, enabled = false, keepup = false, name = "willpowerblessing", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      benediction_zeal = { type = "zeal", command = "recite benediction on me", relax = "", active = false, enabled = false, keepup = false, name = "benediction", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },    
 
 
 
@@ -14733,32 +14757,32 @@ end</script>
 
 
       -- PSION
-      secondskin_weaving = { type = "weaving", command = "secondskin", relax = "", active = false, enabled = true, keepup = false, name = "secondskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      rupturesight_weaving = { type = "weaving", command = "rupturesight", relax = "", active = false, enabled = true, keepup = false, name = "rupturesight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      guidedstrike_weaving = { type = "weaving", command = "guidedstrike", relax = "", active = false, enabled = true, keepup = false, name = "guidedstrike", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      psitranscend_weaving = { type = "weaving", command = "transcend", relax = "", active = false, enabled = true, keepup = false, name = "psitranscend", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      secondskin_weaving = { type = "weaving", command = "secondskin", relax = "", active = false, enabled = false, keepup = false, name = "secondskin", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      rupturesight_weaving = { type = "weaving", command = "rupturesight", relax = "", active = false, enabled = false, keepup = false, name = "rupturesight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      guidedstrike_weaving = { type = "weaving", command = "guidedstrike", relax = "", active = false, enabled = false, keepup = false, name = "guidedstrike", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      psitranscend_weaving = { type = "weaving", command = "transcend", relax = "", active = false, enabled = false, keepup = false, name = "psitranscend", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
 
       -- INFERNAL
-      deathaura_oppression = { type = "oppression", command = "deathaura", relax = "", active = false, enabled = true, keepup = false, name = "deathaura", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      shroud_necromancy = { type = "necromancy", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      deathaura_oppression = { type = "oppression", command = "deathaura", relax = "", active = false, enabled = false, keepup = false, name = "deathaura", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      shroud_necromancy = { type = "necromancy", command = "shroud", relax = "unshroud", active = false, enabled = false, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
 
 
       -- DRAGON 
-      dragonarmour_dragoncraft = { type = "dragoncraft", command = "dragonarmour on", relax = "relax dragonarmour", active = false, enabled = true, keepup = false, name = "dragonarmour", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
-      dragonbreath_dragoncraft = { type = "dragoncraft", command = dragon_breath(), relax = "", active = false, enabled = true, keepup = false, name = "dragonbreath", cooldown = {"free"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep","prone","paralysis"} },
+      dragonarmour_dragoncraft = { type = "dragoncraft", command = "dragonarmour on", relax = "relax dragonarmour", active = false, enabled = false, keepup = false, name = "dragonarmour", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 99, blockers = {"sleep","prone","paralysis"} },
+      dragonbreath_dragoncraft = { type = "dragoncraft", command = dragon_breath(), relax = "", active = false, enabled = false, keepup = false, name = "dragonbreath", cooldown = {"free"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep","prone","paralysis"} },
       
       -- SERPENT
-      hiding_subterfuge = { type = "subterfuge", command = "hide", relax = "emerge", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      pacing_subterfuge = { type = "subterfuge", command = "pacing on", relax = "relax pacing", active = false, enabled = true, keepup = false, name = "pacing", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      scales_subterfuge = { type = "subterfuge", command = "scales", relax = "scales shed", active = false, enabled = true, keepup = false, name = "scales", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep"} },
-      ghost_subterfuge = { type = "subterfuge", command = "conjure ghost", relax = "dispel me", active = false, enabled = true, keepup = false, name = "ghost", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
-      lipreading_subterfuge = { type = "subterfuge", command = "lipread", relax = "", active = false, enabled = true, keepup = false, name = "lipreading", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
-      weaving_subterfuge = { type = "subterfuge", command = "weaving on", relax = "relax weaving", active = false, enabled = true, keepup = false, name = "weaving", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "mana", priority = 3, blockers = {"sleep"} },
-      secondsight_subterfuge = { type = "subterfuge", command = "secondsight", relax = "", active = false, enabled = true, keepup = false, name = "secondsight", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
-      shroud_subterfuge = { type = "subterfuge", command = "shroud", relax = "unshroud", active = false, enabled = true, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      hiding_subterfuge = { type = "subterfuge", command = "hide", relax = "emerge", active = false, enabled = false, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
+      pacing_subterfuge = { type = "subterfuge", command = "pacing on", relax = "relax pacing", active = false, enabled = false, keepup = false, name = "pacing", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
+      scales_subterfuge = { type = "subterfuge", command = "scales", relax = "scales shed", active = false, enabled = false, keepup = false, name = "scales", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep"} },
+      ghost_subterfuge = { type = "subterfuge", command = "conjure ghost", relax = "dispel me", active = false, enabled = false, keepup = false, name = "ghost", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      lipreading_subterfuge = { type = "subterfuge", command = "lipread", relax = "", active = false, enabled = false, keepup = false, name = "lipreading", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      weaving_subterfuge = { type = "subterfuge", command = "weaving on", relax = "relax weaving", active = false, enabled = false, keepup = false, name = "weaving", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "mana", priority = 3, blockers = {"sleep"} },
+      secondsight_subterfuge = { type = "subterfuge", command = "secondsight", relax = "", active = false, enabled = false, keepup = false, name = "secondsight", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
+      shroud_subterfuge = { type = "subterfuge", command = "shroud", relax = "unshroud", active = false, enabled = false, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
 
       -- WATERLORD
-      cohesion_pervasion = { type = "pervasion", command = "manifest cohesion", relax = "", active = false, enabled = true, keepup = false, name = "pervasion", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
+      cohesion_pervasion = { type = "pervasion", command = "manifest cohesion", relax = "", active = false, enabled = false, keepup = false, name = "pervasion", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
       -- FIRELORD
       --template = { type = "ignition", command = "", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
       -- AIRLORD
@@ -14767,59 +14791,58 @@ end</script>
       --template = { type = "sculpting", command = "", relax = "", active = false, enabled = true, keepup = false, name = "hiding", cooldown = {"balance"}, requires = {"equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
       
       -- RESISTANCES
-      coldresist_resistance = { type = "resistance", command = "activate cold resistance", relax = "", active = false, enabled = true, keepup = false, name = "coldresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      fireresist_resistance = { type = "resistance", command = "activate fire resistance", relax = "", active = false, enabled = true, keepup = false, name = "fireresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      magicresist_resistance = { type = "resistance", command = "activate magic resistance", relax = "", active = false, enabled = true, keepup = false, name = "magicresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      electricresist_resistance = { type = "resistance", command = "activate electric resistance", relax = "", active = false, enabled = true, keepup = false, name = "electricresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      coldresist_resistance = { type = "resistance", command = "activate cold resistance", relax = "", active = false, enabled = false, keepup = false, name = "coldresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      fireresist_resistance = { type = "resistance", command = "activate fire resistance", relax = "", active = false, enabled = false, keepup = false, name = "fireresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      magicresist_resistance = { type = "resistance", command = "activate magic resistance", relax = "", active = false, enabled = false, keepup = false, name = "magicresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      electricresist_resistance = { type = "resistance", command = "activate electric resistance", relax = "", active = false, enabled = false, keepup = false, name = "electricresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
       
       -- VISION
-      lifevision_vision = { type = "vision", command = "lifevision", relax = "relax nightsight", active = false, enabled = true, keepup = false, name = "lifevision", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      nightsight_vision = { type = "vision", command = "nightsight on", relax = "relax nightsight", active = false, enabled = true, keepup = false, name = "nightsight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      vigilance_vision = { type = "vision", command = "vigilance on", relax = "relax vigilance", active = false, enabled = true, keepup = false, name = "vigilance", cooldown = {"free"}, requires = {"equilibrium"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      treewatch_vision = { type = "vision", command = "treewatch on", relax = "relax treewatch", active = false, enabled = true, keepup = false, name = "treewatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      deathsight_vision = { type = "vision", command = "deathsight", relax = "relax deathsight", active = false, enabled = true, keepup = false, name = "deathsight", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      skywatch_vision = { type = "vision", command = "skywatch on", relax = "relax skywatch", active = false, enabled = true, keepup = false, name = "skywatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      groundwatch_vision = { type = "vision", command = "groundwatch on", relax = "relax groundwatch", active = false, enabled = true, keepup = false, name = "groundwatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      alertness_vision = { type = "vision", command = "alertness on", relax = "relax alertness", active = false, enabled = true, keepup = false, name = "alertness", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "mana", priority = 2, blockers = {"sleep"} },
-      hypersight = { type = "vision", command = "hypersight on", relax = "relax hypersight", active = false, enabled = true, keepup = false, name = "hypersight", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "mana", priority = 2, blockers = {"sleep"} },
-      thirdeye_vision = { type = "vision", command = "thirdeye", relax = "", active = false, enabled = true, keepup = false, name = "thirdeye", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      telesense_vision = { type = "vision", command = "telesense on", relax = "relax telesense", active = false, enabled = true, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      softfocusing_vision = { type = "vision", command = "softfocus on", relax = "relax softfocus", active = false, enabled = true, keepup = false, name = "softfocusing", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
-      mindseye_vision = { type = "vision", command = "touch mindseye", relax = "", active = false, enabled = true, keepup = false, name = "mindseye", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 1, blockers = {"sleep","paralysis"} },
+      lifevision_vision = { type = "vision", command = "lifevision", relax = "relax nightsight", active = false, enabled = false, keepup = false, name = "lifevision", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
+      nightsight_vision = { type = "vision", command = "nightsight on", relax = "relax nightsight", active = false, enabled = false, keepup = false, name = "nightsight", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
+      vigilance_vision = { type = "vision", command = "vigilance on", relax = "relax vigilance", active = false, enabled = false, keepup = false, name = "vigilance", cooldown = {"free"}, requires = {"equilibrium"}, drain = "mana", priority = 1, blockers = {"sleep"} },
+      treewatch_vision = { type = "vision", command = "treewatch on", relax = "relax treewatch", active = false, enabled = false, keepup = false, name = "treewatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
+      deathsight_vision = { type = "vision", command = "deathsight", relax = "relax deathsight", active = false, enabled = false, keepup = false, name = "deathsight", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 1, blockers = {"sleep"} },
+      skywatch_vision = { type = "vision", command = "skywatch on", relax = "relax skywatch", active = false, enabled = false, keepup = false, name = "skywatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
+      groundwatch_vision = { type = "vision", command = "groundwatch on", relax = "relax groundwatch", active = false, enabled = false, keepup = false, name = "groundwatch", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
+      alertness_vision = { type = "vision", command = "alertness on", relax = "relax alertness", active = false, enabled = false, keepup = false, name = "alertness", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "mana", priority = 2, blockers = {"sleep"} },
+      hypersight = { type = "vision", command = "hypersight on", relax = "relax hypersight", active = false, enabled = false, keepup = false, name = "hypersight", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "mana", priority = 2, blockers = {"sleep"} },
+      thirdeye_vision = { type = "vision", command = "thirdeye", relax = "", active = false, enabled = false, keepup = false, name = "thirdeye", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
+      telesense_vision = { type = "vision", command = "telesense on", relax = "relax telesense", active = false, enabled = false, keepup = false, name = "telesense", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
+      softfocusing_vision = { type = "vision", command = "softfocus on", relax = "relax softfocus", active = false, enabled = false, keepup = false, name = "softfocusing", cooldown = {"free"}, requires = {"free"}, drain = "mana", priority = 1, blockers = {"sleep"} },
+      mindseye_vision = { type = "vision", command = "touch mindseye", relax = "", active = false, enabled = false, keepup = false, name = "mindseye", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 1, blockers = {"sleep","paralysis"} },
 
       -- SURIVIAL
-      selfishness_survival = { type = "survival", command = "selfishness", relax = "generosity", active = false, enabled = true, keepup = false, name = "selfishness", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
-      heldbreath_survival = { type = "survival", command = "hold breath", relax = "release", active = false, enabled = true, keepup = false, name = "heldbreath", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 4, blockers = {"sleep"} },
-      insomnia_survival = { type = "survival", command = "insomnia", relax = "relax insomnia", active = false, enabled = true, keepup = false, name = "insomnia", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
-      curseward_survival = { type = "survival", command = "curseward", relax = "", active = false, enabled = true, keepup = false, name = "curseward", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
-      metawake_survival = { type = "survival", command = "metawake on", relax = "relax metawake", active = false, enabled = true, keepup = false, name = "metawake", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "mana", priority = 3, blockers = {"sleep"} },
+      selfishness_survival = { type = "survival", command = "selfishness", relax = "generosity", active = false, enabled = false, keepup = false, name = "selfishness", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
+      heldbreath_survival = { type = "survival", command = "hold breath", relax = "release", active = false, enabled = false, keepup = false, name = "heldbreath", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 4, blockers = {"sleep"} },
+      insomnia_survival = { type = "survival", command = "insomnia", relax = "relax insomnia", active = false, enabled = false, keepup = false, name = "insomnia", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
+      curseward_survival = { type = "survival", command = "curseward", relax = "", active = false, enabled = false, keepup = false, name = "curseward", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
+      metawake_survival = { type = "survival", command = "metawake on", relax = "relax metawake", active = false, enabled = false, keepup = false, name = "metawake", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "mana", priority = 3, blockers = {"sleep"} },
+      rebounding_survival = { type = "survival", command = {herbal = "light skullcap"..cs.."smoke skullcap", alchemical = "light malachite"..cs.."smoke malachite"}, relax = "", active = false, enabled = false, keepup = false, name = "rebounding", cooldown = {"smoke"}, requires = {"smoke"}, drain = "none", priority = 3, blockers = {"sleep","asthma"} },
       
-      -- FREE
-      speed_free = { type = "free", command = "sip speed", relax = "", active = false, enabled = true, keepup = false, name = "speed", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      levitating_free = { type = "free", command = "sip levitation", relax = "", active = false, enabled = true, keepup = false, name = "levitating", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      poisonresist_free = { type = "free", command = "sip venom", relax = "", active = false, enabled = true, keepup = false, name = "poisonresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      temperance_free = { type = "free", command = "sip frost", relax = "", active = false, enabled = true, keepup = false, name = "temperance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      insulation_free = { type = "salve", command = "apply caloric", relax = "", active = false, enabled = true, keepup = false, name = "insulation", cooldown = {"salve"}, requires = {"salve"}, drain = "none", priority = 1, blockers = {"sleep","slickness"} },
-      density_free = { type = "salve", command = "apply mass", relax = "", active = false, enabled = true, keepup = false, name = "density", cooldown = {"salve"}, requires = {"salve"}, drain = "none", priority = 3, blockers = {"sleep","paralysis","slickness"} },
+      -- ELIXIR
+      speed_elixir = { type = "elixir", command = "sip speed", relax = "", active = false, enabled = false, keepup = false, name = "speed", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
+      levitating_elixir = { type = "elixir", command = "sip levitation", relax = "", active = false, enabled = false, keepup = false, name = "levitating", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
+      poisonresist_elixir = { type = "elixir", command = "sip venom", relax = "", active = false, enabled = false, keepup = false, name = "poisonresist", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
+      temperance_elixir = { type = "elixir", command = "sip frost", relax = "", active = false, enabled = false, keepup = false, name = "temperance", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
+      insulation_elixir = { type = "elixir", command = "apply caloric", relax = "", active = false, enabled = false, keepup = false, name = "insulation", cooldown = {"salve"}, requires = {"salve"}, drain = "none", priority = 1, blockers = {"sleep","slickness"} },
+      density_elixir = { type = "elixir", command = "apply mass", relax = "", active = false, enabled = false, keepup = false, name = "density", cooldown = {"salve"}, requires = {"salve"}, drain = "none", priority = 3, blockers = {"sleep","paralysis","slickness"} },
 
       -- HERBS
-      deathsight_herb = { type = "herb", command = {herbal = "outr skullcap"..cs.."eat skullcap", alchemical = "outr malachite"..cs.."eat malachite"}, relax = "relax deathsight", active = false, enabled = true, keepup = false, name = "deathsight", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      thirdeye_herb = { type = "herb", command = {herbal = "outr echinacea"..cs.."eat echinacea", alchemical = "outr dolomite"..cs.."eat dolomite"}, relax = "", active = false, enabled = true, keepup = false, name = "thirdeye", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
-      fangbarrier_herb = { type = "herb", command = {herbal = "outr sileris"..cs.."apply sileris", alchemical = "outr quicksilver"..cs.."apply quicksilver"}, relax = "", active = false, enabled = true, keepup = false, name = "fangbarrier", cooldown = {"free"}, requires = {"free"}, priority = 1, drain = "none", blockers = {"sleep","slickness"} },
-      deafness_herb = { type = "herb", command = {herbal = "outr hawthorn"..cs.."eat hawthorn", alchemical = "outr calamine"..cs.."eat calamine"}, relax = "apply epidermal", active = false, enabled = true, keepup = false, name = "deafness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 3, blockers = {"sleep","anorexia"} },
-      blindness_herb = { type = "herb", command = {herbal = "outr bayberry"..cs.."eat bayberry", alchemical = "outr arsenic"..cs.."eat arsenic"}, relax = "apply epidermal", active = false, enabled = true, keepup = false, name = "blindness", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 3, blockers = {"sleep","anorexia"} },
+      deathsight_herb = { type = "herb", command = {herbal = "outr skullcap"..cs.."eat skullcap", alchemical = "outr malachite"..cs.."eat malachite"}, relax = "relax deathsight", active = false, enabled = false, keepup = false, name = "deathsight", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
+      thirdeye_herb = { type = "herb", command = {herbal = "outr echinacea"..cs.."eat echinacea", alchemical = "outr dolomite"..cs.."eat dolomite"}, relax = "", active = false, enabled = false, keepup = false, name = "thirdeye", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 1, blockers = {"sleep","anorexia"} },
+      fangbarrier_herb = { type = "herb", command = {herbal = "outr sileris"..cs.."apply sileris", alchemical = "outr quicksilver"..cs.."apply quicksilver"}, relax = "", active = false, enabled = false, keepup = false, name = "fangbarrier", cooldown = {"free"}, requires = {"free"}, priority = 1, drain = "none", blockers = {"sleep","slickness"} },
+      deafness_herb = { type = "herb", command = {herbal = "outr hawthorn"..cs.."eat hawthorn", alchemical = "outr calamine"..cs.."eat calamine"}, relax = "apply epidermal", active = false, enabled = false, keepup = false, name = "deafness", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 3, blockers = {"sleep","anorexia"} },
+      blindness_herb = { type = "herb", command = {herbal = "outr bayberry"..cs.."eat bayberry", alchemical = "outr arsenic"..cs.."eat arsenic"}, relax = "apply epidermal", active = false, enabled = false, keepup = false, name = "blindness", cooldown = {"herb"}, requires = {"herb"}, drain = "none", priority = 3, blockers = {"sleep","anorexia"} },
       
-      -- SMOKE         
-      rebounding_smoke = { type = "smoke", command = {herbal = "light skullcap"..cs.."smoke skullcap", alchemical = "light malachite"..cs.."smoke malachite"}, relax = "", active = false, enabled = true, keepup = false, name = "rebounding", cooldown = {"smoke"}, requires = {"smoke"}, drain = "none", priority = 3, blockers = {"sleep","asthma"} },
-      
+    
       -- TATTOOS
-      mosstattoo_tattoos = { type = "tattoo", command = "touch moss", relax = "", active = false, enabled = true, keepup = false, name = "mosstattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      boartattoo_tattoos = { type = "tattoo", command = "touch boar", relax = "", active = false, enabled = true, keepup = false, name = "boartattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      moontattoo_tattoos = { type = "tattoo", command = "touch moon", relax = "", active = false, enabled = true, keepup = false, name = "moontattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      oxtattoo_tattoos = { type = "tattoo", command = "touch ox", relax = "", active = false, enabled = true, keepup = false, name = "oxtattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      megalithtattoo_tattoos = { type = "tattoo", command = "touch megalith", relax = "", active = false, enabled = true, keepup = false, name = "megalithtattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      belltattoo_tattoos = { type = "tattoo", command = "touch bell", relax = "", active = false, enabled = true, keepup = false, name = "belltattoo", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
-      cloak_tattoos = { type = "tattoo", command = "touch cloak", relax = "", active = false, enabled = true, keepup = false, name = "cloak", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      mosstattoo_tattoos = { type = "tattoo", command = "touch moss", relax = "", active = false, enabled = false, keepup = false, name = "mosstattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      boartattoo_tattoos = { type = "tattoo", command = "touch boar", relax = "", active = false, enabled = false, keepup = false, name = "boartattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      moontattoo_tattoos = { type = "tattoo", command = "touch moon", relax = "", active = false, enabled = false, keepup = false, name = "moontattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      oxtattoo_tattoos = { type = "tattoo", command = "touch ox", relax = "", active = false, enabled = false, keepup = false, name = "oxtattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      megalithtattoo_tattoos = { type = "tattoo", command = "touch megalith", relax = "", active = false, enabled = false, keepup = false, name = "megalithtattoo", cooldown = {"balance"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      belltattoo_tattoos = { type = "tattoo", command = "touch bell", relax = "", active = false, enabled = false, keepup = false, name = "belltattoo", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
+      cloak_tattoos = { type = "tattoo", command = "touch cloak", relax = "", active = false, enabled = false, keepup = false, name = "cloak", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep","paralysis"} },
 
     
     }
@@ -24375,7 +24398,7 @@ function refill_pipes()
             ))
         
         
-         local refill = data.refill or 3
+         local refill = tonumber(data.refill) or 3
          local should_refill = data.puffs &lt;= refill
          local can_act = not table.contains(mydefs, "selfishness")
                              and not table.contains(myaffs, "paralysis")
@@ -27048,7 +27071,8 @@ end</script>
 					<packageName></packageName>
 					<script>function displayDefenses(displayType)
     
-    
+      send("")
+      
     -- Defensive failsafe: Reinitialize if defenses table is empty or invalid
     if not defenses or next(defenses) == nil or (getmetatable(defenses) and getmetatable(defenses).__jsontype == "array") then
         cecho("\n&lt;red&gt;Your defenses table was empty or corrupted. Reinitializing with default settings...")
@@ -27108,7 +27132,7 @@ end</script>
     end
 
     -- Combine the filtered base class skills with generic defenses
-    local list = table.n_union(baseSkills, {"vision", "free", "survival", "herb", "salve", "smoke", "resistance"})
+    local list = table.n_union(baseSkills, {"vision", "elixir", "survival", "herb", "resistance"})
 
     -- Create tables to store defenses categorized by their types
     local categorizedDefenses = {}
@@ -27197,31 +27221,43 @@ end</script>
             -- Ensure proper spacing between sections
             if getCurrentLine ~= "" then
                 echo("\n") -- Add a new line at the end of a section
+                
             end
-        end
-          
+            
+        end         
     end
-    echo"\n"
 end
 
 
 function executeDefenseFunction(details, displayType)
     local data = details
     local logMsg = "" -- Temporary holder to prevent the UI from burying our text
+    local ignore = {"distortaura"}
     
     if displayType == "keepup" or displayType == "enabled" then
         if data[displayType] then
             data[displayType] = false
-            send("CURING PRIORITY DEFENCE " .. data.name .. " RESET")
-            logMsg = string.format("\n&lt;white&gt;%s removed for %s (Server-side Reset Sent)", displayType:title(), data.name)
-            send(data.relax) 
+            if not table.contains(ignore, data.name) then
+              send("CURING PRIORITY DEFENCE " .. data.name .. " RESET")
+              logMsg = string.format("\n&lt;white&gt;%s removed for %s (Server-side Reset Sent)", displayType:title(), data.name)
+            else 
+              send("")
+            end
+            if data.relax ~= "" then            
+              send(data.relax) 
+            end
         else
             data.keepup = true
             data.enabled = true
             
             local targetPri = setDefensePrios(data.name)
-            send("CURING PRIORITY DEFENCE " .. data.name .. " " .. targetPri)
-            logMsg = string.format("\n&lt;white&gt;%s added for %s (Server-side Priority: %s)", displayType:title(), data.name, targetPri)
+            if not table.contains(ignore, data.name) then
+              send("CURING PRIORITY DEFENCE " .. data.name .. " " .. targetPri)
+              logMsg = string.format("\n&lt;white&gt;%s added for %s (Server-side Priority: %s)", displayType:title(), data.name, targetPri)
+            else
+              send("")
+            end
+            
         end
     end
 
