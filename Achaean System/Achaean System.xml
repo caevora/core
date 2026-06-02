@@ -3470,8 +3470,10 @@ fortify:update("thirdeye_vision",true)</script>
 						<regexCodeList>
 							<string>You now possess the gift of the third eye.</string>
 							<string>You already possess the gift of the third eye.</string>
+							<string>You possess the sight of the third eye.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
@@ -5575,13 +5577,18 @@ refill_pipes()</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>empty pipes</name>
-						<script> emptied_pipes_count = emptied_pipes_count + 1
- 
- if emptied_pipes_count &gt;= count_pipes(pipes) then
-    emptypipes = false -- all pipes emptied, allow refill now
-    debugEcho("green","[REFILL] All pipes emptied, ready to refill.")
- end
- 
+						<script>-- Inside your "empty pipes" trigger
+emptied_pipes_count = emptied_pipes_count + 1
+
+-- Only allow the system to proceed if we have processed all pipes
+if emptied_pipes_count &gt;= count_pipes(pipes) then
+    emptypipes = false 
+    emptied_pipes_count = 0 -- Important: Reset this so it's ready for next time
+    debugEcho("green","[REFILL] All pipes emptied. System unlocked.")
+    
+    -- Force a check to refill now that we are unlocked
+    refill_pipes() 
+end
 </script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10557,12 +10564,12 @@ precacheCheck()</script>
   settings.meditating = true
   settings.meditatebreak = false
   settings.fullwillandmana = false
-  if not systemPaused then
+  if not settings.systemPaused then
     expandAlias("pp")
   end
   send("queue addclear eqbal sit"..settings.cmdsep.."meditate")
 else
-  if systemPaused then
+  if settings.systemPaused then
     expandAlias("pp")
   end
   settings.meditatebreak = true
@@ -12997,7 +13004,9 @@ skillTreeList = {
 GUI = GUI or {}
 inrift = inrift or {}
 pipes = pipes or {name = {}, refill = 3}
-
+emptypipes = emptypipes or false
+emptied_pipes_count = emptied_pipes_count or 0
+pipes_to_light = pipes_to_light or {}
 
 function initializeFileLoads()
     settings = settings or {}
@@ -24512,16 +24521,13 @@ function parse_plist()
      if not (pipes[herb].status == "artf") and (pipes[herb].status == "out") then
          local pipe_id = pipes[herb].id
          
-         -- NEW LOGIC: Check if pipe is already scheduled to be lit
-         if not is_scheduled_to_light(pipe_id) then
-             schedule_light(pipe_id) -- Schedule the command
-             send("light " .. pipe_id, false)
-             pipes[herb].status = "lit"
-         else
-             -- If already scheduled, trust the previous command will go through
-             pipes[herb].status = "lit"
-         end
-     end
+            -- NEW LOGIC: Check if pipe is already scheduled to be lit
+            if not emptypipes and not is_scheduled_to_light(pipe_id) then
+                schedule_light(pipe_id)
+                send("light " .. pipe_id, false)
+                pipes[herb].status = "pending" -- Use 'pending' instead of 'lit'
+            end
+       end
     end
 end
 
@@ -24591,6 +24597,9 @@ function empty_pipes()
     return
   end
 
+    emptypipes = true -- Lock the system
+    emptied_pipes_count = 0 -- Reset counter
+
   for herb, data in pairs(pipes) do
     if type(data) == "table" then
         if not (selfishness) and not (table.contains(myaffs, "paralysis")) then  
@@ -24652,7 +24661,7 @@ end</script>
   updateCharStats()
   updateGUIGauges()
 
-  if systemPaused or inslowcuringmode() or balance_data.stunned.in_use then
+  if settings.systemPaused or inslowcuringmode() or balance_data.stunned.in_use then
     return
   end
 
@@ -25633,7 +25642,7 @@ function balanceRecover(balanceType, highlight)
               
               -- Print balanceTime if no blackout affliction
               if not table.contains(myaffs, "blackout") then
-                  cecho("&lt;white&gt; :&lt;PowderBlue&gt;(&lt;DarkSlateGray&gt;" .. balanceTime .. "&lt;PowderBlue&gt;)")
+                  --cecho("&lt;white&gt; :&lt;PowderBlue&gt;(&lt;DarkSlateGray&gt;" .. balanceTime .. "&lt;PowderBlue&gt;)")
               end
           else
              debugEcho("red","Warning: stopStopWatch returned nil for stopwatch " .. tostring(stopwatch))
@@ -25793,7 +25802,7 @@ function balanceTracker()
       settings.mossbalance = false
        if mossStopwatch then
           local mossTime = trimDecimal(stopStopWatch(mossStopwatch) - getNetworkLatency()) 
-          cecho("&lt;white&gt; :&lt;PowderBlue&gt;(&lt;DarkSlateGray&gt;" .. mossTime .. "&lt;PowderBlue&gt;)")
+         -- cecho("&lt;white&gt; :&lt;PowderBlue&gt;(&lt;DarkSlateGray&gt;" .. mossTime .. "&lt;PowderBlue&gt;)")
           deleteStopWatch(mossStopwatch)
        end      
       highlightline(selectString(line, 1) &gt; -1, "black", "orange", false, true)
@@ -25979,7 +25988,7 @@ function calctrans()
     return
   end
   
-  if systemPaused then
+  if settings.systemPaused then
     return
   end
 
