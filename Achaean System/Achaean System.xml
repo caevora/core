@@ -6557,7 +6557,7 @@ end
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList />
 				<regexCodePropertyList />
-				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Vial count</name>
 					<script>settings.vialcounter = settings.vialcounter + 1
 if settings.vialcounter &gt;= 2 then
@@ -6594,7 +6594,7 @@ end
 						<integer>3</integer>
 					</regexCodePropertyList>
 				</Trigger>
-				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Refill vials</name>
 					<script>local vials = {"Diamond vial","Amethyst vial","A glass skull vial","Vial"}
 
@@ -12796,7 +12796,7 @@ for k, v in pairs(boot_balances) do
   if balance_data[k] == nil then balance_data[k] = v end
 end
 
-mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crackedribs = 0, wristfractures = 0, pressure = 0, burning = 0, temperedmodifying = 0, temperedmelancholic = 0, temperedphlegmatic = 0, temperedcholeric = 0, unweavingmind = 0, unweavingbody = 0, unweavingspirit = 0, horror = 0 }
+mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crackedribs = 0, wristfractures = 0, pressure = 0, burning = 0, temperedmodifying = 0, temperedsanguine = 0, temperedmelancholic = 0, temperedphlegmatic = 0, temperedcholeric = 0, unweavingmind = 0, unweavingbody = 0, unweavingspirit = 0, horror = 0 }
 
 bragelist = bragelist or {}
 
@@ -13325,7 +13325,7 @@ function systemLogin()
     slainPlayers = slainPlayers or {}
     personalBalanceStartTimes = personalBalanceStartTimes or {}
     enemyBalanceStartTimes = enemyBalanceStartTimes or {}
-    
+
     -- Preserve pipeline or reset to default structure if nil
     pipeline = pipeline or {defenses = {}, afflictions = {}, activeCommand = "", timestamps = {}}
     lastPipelineCleanup = lastPipelineCleanup or 0
@@ -13485,53 +13485,7 @@ function getLocalVersion()
   return version
 end
 
-function incrementLocalVersion()
-  local versionPath = getMudletHomeDir() .. "/Achaean System/config.lua"
-  local lines = {}
-  local found = false
 
-  if not lfs.attributes(versionPath) then 
-    cecho("&lt;red&gt;🚫 config.lua not found at " .. versionPath .. "\n")
-    return false 
-  end
-
-  for line in io.lines(versionPath) do
-    -- We look for three sets of digits separated by dots.
-    -- Example match: 2.0.120
-    local major, minor, patch = line:match("(%d+)%.(%d+)%.(%d+)")
-    
-    if major then
-      major, minor, patch = tonumber(major), tonumber(minor), tonumber(patch)
-      patch = patch + 1
-      
-      -- We rebuild the string without the "v_" and without padding zeros.
-      -- This format (X.X.X) is exactly what MPKG expects.
-      local newVString = string.format("%d.%d.%d", major, minor, patch)
-      
-      -- Replace the old version string in the line with the new one
-      local newLine = line:gsub("%d+%.%d+%.%d+", newVString)
-      
-      table.insert(lines, newLine)
-      found = true
-    else
-      table.insert(lines, line)
-    end
-  end
-
-  if not found then
-    cecho("&lt;red&gt;🚫 Version line (X.X.X) not found in config.lua\n")
-    return false
-  end
-
-  local f = io.open(versionPath, "w")
-  if f then
-    for _, l in ipairs(lines) do f:write(l .. "\n") end
-    f:close()
-    cecho("&lt;green&gt;🔄 Version incremented to standard format in config.lua.\n")
-    return true
-  end
-  return false
-end
 
 function isNewerVersion(remote, localVersion)
   local function parseVersion(v)
@@ -13554,32 +13508,26 @@ function isNewerVersion(remote, localVersion)
   return rPat &gt; lPat
 end
 
-function gitUpdateCheck()
-  local gitDir = [[C:\Users\JS\Documents\Mudlet-Git\Achaean System]]
-  cecho("------------------------------------------------------------------------------")
-  cecho("\n&lt;yellow&gt;🛡️  GIT EXPORT PRE-FLIGHT CHECK\n")
-  cecho("\n&lt;white&gt;1. Go to &lt;cyan&gt;Toolbox &gt; Package Exporter &lt;white&gt; in Mudlet.")
-  cecho("\n&lt;white&gt;2. &lt;cyan&gt;** &lt;white&gt;remember to increment version in exporter. &lt;cyan&gt;**")
-  cecho("\n&lt;white&gt;3. Unzip and copy &lt;green&gt;'Achaean System.xml'&lt;white&gt; to your Git directory.")
-  echo("\n\n")
-  
-  -- Option 1: Proceed if done
-  cechoLink("&lt;green&gt;[ YES: I have copied the XML ]", function() exportToGitAsync() end, "Run the full Git Push now", true)
-  
-  echo("   ") -- Spacing between links
-  
-  -- Option 2: Open folder if not done
-  cechoLink("&lt;red&gt;[ NO: Open Git Folder ]", function() openUrl("file:///" .. gitDir:gsub("\\", "/")) end, "Open folder to copy XML", true)
-  cecho("\n-----------------------------------------------------------------------------")
-  send("")
-end
+
 
 -- =============================================================================
 -- THE "MODERN" ASYNC UPDATE SYSTEM (IMPORT)
 -- =============================================================================
 
 function checkForAsyncUpdate()
-  cecho("&lt;yellow&gt;🔍 Checking remote version...\n")
+
+    if _pinged_this_session == nil then _pinged_this_session = false end
+
+    -- SILENT PING: Only ping if we haven't pinged in this session
+    if not _pinged_this_session then
+        -- This pings your counter URL silently in the background
+        -- Replace the URL below with your actual "Hit Counter" or "Google Form" URL
+        downloadFile(getMudletHomeDir() .. "/ping.txt", "https://your-hit-counter-url.com/ping")
+        _pinged_this_session = true
+    end
+    
+    
+  cecho("\n&lt;yellow&gt;🔍 Checking remote version...\n")
   -- The URL we send
   local url = "https://raw.githubusercontent.com/caevora/core/main/Achaean%20System/config.lua"
   -- The "Expected" URL with spaces for matching
@@ -13597,8 +13545,8 @@ function checkForAsyncUpdate()
     cecho(string.format("&lt;white&gt;  [Debug] Local: %s | Remote: %s\n", localVersion, remoteVersion))
 
     if remoteVersion and isNewerVersion(remoteVersion, localVersion) then
-      cecho(string.format("&lt;yellow&gt;🆕 Update Available: &lt;red&gt;%s&lt;reset&gt; -&gt; &lt;green&gt;%s&lt;reset&gt;\n", localVersion, remoteVersion))
-      cechoLink("&lt;cyan&gt;[ Click to Update Now ]\n", function() updateFromGitAsync(remoteVersion) end, "Install " .. remoteVersion, true)
+      cecho(string.format("\n&lt;yellow&gt;🆕 Update Available: &lt;red&gt;%s&lt;reset&gt; -&gt; &lt;green&gt;%s&lt;reset&gt;\n", localVersion, remoteVersion))
+      cechoLink("\n&lt;cyan&gt;[ Click to Update Now ]\n", function() updateFromGitAsync(remoteVersion) end, "Install " .. remoteVersion, true)
     else
       cecho("&lt;green&gt;✅ System is up to date.\n")
     end
@@ -13608,6 +13556,23 @@ function checkForAsyncUpdate()
 end
 
 function updateFromGitAsync(version)
+  
+  
+  -- Add this block:
+   if getOS() ~= "windows" then
+        cecho("\n&lt;red&gt;⚠️ [UPDATE] This automatic migration tool only supports Windows.")
+        cecho("\n&lt;white&gt;Please update manually via the Mudlet Package Manager.")
+        cecho("\n&lt;white&gt;Check our GitHub releases to ensure you have the latest version:\n")
+        
+        cechoLink("&lt;dodger_blue_underline&gt;[ Click here to view all releases ]", 
+            [[openWebPage("https://github.com/caevora/core/releases")]], 
+            "Open the release page in your browser", 
+            true)
+        echo("\n")
+        
+        return
+    end
+  
   local mudletDir = getMudletHomeDir()
   local targetDir = mudletDir .. "/Achaean System"
   
@@ -13658,6 +13623,11 @@ end
 
 -- This function must have these exact parameters to capture the data Mudlet sends it
 function handleDataMigration(event, packageInstalled)
+        
+    -- 1. SECURITY/PLATFORM GATE
+    if getOS() ~= "windows" then
+        return -- Do absolutely nothing on Mac/Linux
+    end
     
     ---------------------------------------------------------
     -- 🔒 SAFETY LOCK: Only run if it's YOUR package name
@@ -13723,54 +13693,26 @@ function handleDataMigration(event, packageInstalled)
     -- 📢 FINAL COMPLETION NOTICE
     ---------------------------------------------------------
     tempTimer(2.0, function()
-        cecho("\n&lt;SkyBlue&gt;=====================================================================")
+        cecho("\n&lt;SkyBlue&gt;=============================================================================")
         cecho("\n&lt;green&gt;🚀 SYSTEM IMPORT SUCCESSFUL!")
         cecho("\n&lt;white&gt;Your core files, tracking databases, and settings have been fully restored.")
         cecho("\n&lt;orange&gt;⚠️  Please restart Mudlet now to finalize the update sequence!")
-        cecho("\n&lt;SkyBlue&gt;=====================================================================\n")
+        cecho("\n&lt;SkyBlue&gt;=============================================================================")
+        cecho("\n&lt;SkyBlue&gt;-----------------------------------------------------------------------------")
+        cecho("\n&lt;white&gt;Love the system? Help keep the code alive: ")
+        cechoLink("&lt;dodger_blue&gt;[ Support Development via PayPal ]", 
+        [[openWebPage("https://paypal.me/shanesrasmussen?locale.x=en_US&amp;country.x=US")]], 
+        "Open PayPal donation page",true)
+        cecho("\n&lt;SkyBlue&gt;-----------------------------------------------------------------------------")
     end)    
-    
+        
     
 end
 
 registerAnonymousEventHandler("sysInstallPackage", handleDataMigration)
 
 
--- =============================================================================
--- THE "MODERN" ASYNC EXPORT SYSTEM (PUSH)
--- =============================================================================
---remember we have to manually add the .xml file 'Achaean System.xml' to the mudlet C:\Users\JS\Documents\Mudlet-Git\Achaean System directory
-function exportToGitAsync()
-  cecho("&lt;yellow&gt;📤 Initializing Git Export...\n")
-  if not incrementLocalVersion() then return end
-  saveProfile()
-
-  tempTimer(2.0, function()
-    local sourceDir = getMudletHomeDir()
-    local targetDir = [[C:\Users\JS\Documents\Mudlet-Git]]
-    local git       = [["C:\Program Files\Git\mingw64\bin\git.exe"]]
-    local log       = targetDir .. "\\gitlog.txt"
-
-    os.execute(string.format([[copy /Y "%s\\Achaean System\\config.lua" "%s\\Achaean System\\config.lua" &gt;&gt; "%s" 2&gt;&amp;1]], sourceDir, targetDir, log))
-
-    tempTimer(1.5, function()
-      local cmds = {
-        string.format([[cd /d "%s" &amp;&amp; %s add -A &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log),
-        string.format([[cd /d "%s" &amp;&amp; %s commit -m "🧩 Auto-backup: Profile snapshot" &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log),
-        string.format([[cd /d "%s" &amp;&amp; %s pull --rebase origin main &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log),
-        string.format([[cd /d "%s" &amp;&amp; %s push origin main &gt;&gt; "%s" 2&gt;&amp;1]], targetDir, git, log)
-      }
-      for _, cmd in ipairs(cmds) do os.execute(cmd) end
-      
-      -- The New Reminder Logic
-      local newV = getLocalVersion()
-      cecho("&lt;green&gt;✅ Git push complete.\n")
-      cecho("&lt;orange&gt;⚠️  REMINDER: &lt;white&gt;Create release &lt;cyan&gt;" .. newV .. "&lt;white&gt; at: ")
-      cechoLink("&lt;yellow&gt;GitHub Releases", function() openUrl("https://github.com/caevora/core/releases") end, "Go to GitHub", true)
-      echo("\n")
-    end)
-  end)
-end</script>
+</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
