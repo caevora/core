@@ -13516,17 +13516,6 @@ end
 
 function checkForAsyncUpdate()
 
-    if _pinged_this_session == nil then _pinged_this_session = false end
-
-    -- SILENT PING: Only ping if we haven't pinged in this session
-    if not _pinged_this_session then
-        -- This pings your counter URL silently in the background
-        -- Replace the URL below with your actual "Hit Counter" or "Google Form" URL
-        downloadFile(getMudletHomeDir() .. "/ping.txt", "https://your-hit-counter-url.com/ping")
-        _pinged_this_session = true
-    end
-    
-    
   cecho("\n&lt;yellow&gt;🔍 Checking remote version...\n")
   -- The URL we send
   local url = "https://raw.githubusercontent.com/caevora/core/main/Achaean%20System/config.lua"
