@@ -8225,7 +8225,7 @@ if class == "dragon" then
     class = string.match(race:lower(), "%a+") .. " dragon"
 end
 
-bragelist[class][matches[2]:lower()].enabled = true
+bragelist[class][matches[2]:lower()].onbalance = true
 
 if not(settings.debug) then 
     deleteLine()
@@ -8269,7 +8269,7 @@ end</script>
 						<regexCodePropertyList />
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>burrow</name>
-							<script>--table.remove(bragelist, table.index_of(bragelist, "Burrow"))
+							<script>
 bragelist.apostate.burrow.onbalance = false</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
@@ -8290,8 +8290,7 @@ bragelist.apostate.burrow.onbalance = false</script>
 						</Trigger>
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>convulsions</name>
-							<script>--table.remove(bragelist, table.index_of(bragelist, "Convulsions"))
-bragelist.apostate.convulsions.onbalance = false</script>
+							<script>bragelist.apostate.convulsions.onbalance = false</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8327,14 +8326,11 @@ bragelist.apostate.convulsions.onbalance = false</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>throatrip</name>
-							<script>--table.remove(bragelist, table.index_of(bragelist, "Throatrip"))
-bragelist.serpent.throatrip.onbalance = false
+							<script>bragelist.serpent.throatrip.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8346,7 +8342,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^(You leap upon .+ and sink your fangs into (\w+) throat before leaping away, blood gushing from the horrific wound.)$</string>
+								<string>^(You leap upon .+ and sink your fangs into \w+ throat before leaping away, blood gushing from the horrific wound.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8354,14 +8350,11 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>thrash</name>
-							<script>--table.remove(bragelist, table.index_of(bragelist, "Thrash"))
-bragelist.serpent.thrash.onbalance = false
+							<script>bragelist.serpent.thrash.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8381,13 +8374,12 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>excoriate</name>
-							<script>--table.remove(bragelist, table.index_of(bragelist, "Excoriate"))
-bragelist.serpent.excoriate.onbalance = false
+							<script>bragelist.serpent.excoriate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
-  shielded = false
+  commandSent = false
   huntNext()
 end</script>
 							<triggerType>0</triggerType>
@@ -8401,7 +8393,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^(You lash out at .+ with your whip, stripping (\w+).)$</string>
+								<string>^(You lash out at .+ with your whip, stripping \w+.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8409,8 +8401,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>flagellate</name>
-							<script>--table.remove(bragelist, table.index_of(bragelist, "Flagellate"))
-bragelist.serpent.flagellate.onbalance = false
+							<script>bragelist.serpent.flagellate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8455,11 +8446,7 @@ end</script>
 							<script>bragelist.runewarden.collide.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()
-if hunting and autohunting then
-  shielded = false
-  huntNext()
-end</script>
+resetFormat()</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8471,7 +8458,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^(You charge at (.+), slamming into \w+ and throwing \w+ back.)$</string>
+								<string>^(You charge at .+, slamming into \w+ and throwing \w+ back.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8484,7 +8471,7 @@ selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
-  shielded = false
+  commandSent = false
   huntNext()
 end</script>
 							<triggerType>0</triggerType>
@@ -8498,7 +8485,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^(You strike at (.+)'s translucent shield with .+, drawing the outline of a rough rune that detonates, consuming the shield.)$</string>
+								<string>^(You strike at .+'s translucent shield with .+, drawing the outline of a rough rune that detonates, consuming the shield.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8509,11 +8496,7 @@ end</script>
 							<script>bragelist.runewarden.onslaught.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()
-if hunting and autohunting then
-  shielded = false
-  huntNext()
-end</script>
+resetFormat()</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8525,7 +8508,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^(You unleash a ferocious onslaught on (.+), relentlessly pounding \w+ with .+.)$</string>
+								<string>^(You unleash a ferocious onslaught on .+, relentlessly pounding \w+ with .+.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8626,7 +8609,7 @@ resetFormat()</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^You point an imperious finger at (.*). (\w+) flesh blackens and sloughs off.$</string>
+								<string>^(You point an imperious finger at .*. \w+ flesh blackens and sloughs off.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8649,7 +8632,7 @@ resetFormat()</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^You point an imperious finger at (.*). Blood spurts out of (.*) eyes , ears, nose, and mouth.$</string>
+								<string>^(You point an imperious finger at .*. Blood spurts out of \w+ eyes , ears, nose, and mouth.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8677,9 +8660,7 @@ resetFormat()</script>
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8691,7 +8672,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^You twist in a tight circle, slashing .+ with each spin.$</string>
+								<string>^(You twist in a tight circle, slashing .+ with each spin.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8703,9 +8684,7 @@ end</script>
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8717,7 +8696,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^A Shin-enhanced leap flings you high into the air. You extend one knee downwards as you begin to fall, squarely striking .+ and driving .+ to the ground as you land.$</string>
+								<string>^(A Shin-enhanced leap flings you high into the air. You extend one knee downwards as you begin to fall, squarely striking .+ and driving .+ to the ground as you land.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8729,9 +8708,7 @@ end</script>
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8743,7 +8720,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^You lightly stab .+ in several key locations with your blade, causing .+ to slump weakly.$</string>
+								<string>^(You lightly stab .+ in several key locations with your blade, causing .+ to slump weakly.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8757,6 +8734,7 @@ setFgColor(170, 255, 0)
 resetFormat()
 shielded = false
 if hunting and autohunting then
+  commandSent = false
   huntNext()
 end</script>
 							<triggerType>0</triggerType>
@@ -8770,7 +8748,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>You unleash a burst of Shin energy at .+, tearing apart .+ translucent shield.$</string>
+								<string>^(You unleash a burst of Shin energy at .+, tearing apart .+ translucent shield.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8781,10 +8759,7 @@ end</script>
 							<script>bragelist.blademaster.daze.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+resetFormat()</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8796,7 +8771,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^You hurl a precise blast of Shin energy at (.+)'s eyes.$</string>
+								<string>^(You hurl a precise blast of Shin energy at .+'s eyes.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8807,10 +8782,7 @@ end</script>
 							<script>bragelist.blademaster.headstrike.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+resetFormat()</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8822,7 +8794,7 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^You deliver a glancing blow to (.+)'s head.$</string>
+								<string>^(You deliver a glancing blow to .+'s head.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8870,8 +8842,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>temperance</name>
-							<script>bragebalance = false
-bragelist.occultist.temperance.onbalance = false
+							<script>bragelist.occultist.temperance.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8895,8 +8866,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>chaosgate</name>
-							<script>bragebalance = false
-bragelist.occultist.chaosgate.onbalance = false
+							<script>bragelist.occultist.chaosgate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8920,8 +8890,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>fluctuate</name>
-							<script>bragebalance = false
-bragelist.occultist.fluctuate.onbalance = false
+							<script>bragelist.occultist.fluctuate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8945,7 +8914,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>stagnate</name>
-							<script>bragebalance = false
+							<script>
 bragelist.occultist.stagnate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
@@ -8975,6 +8944,7 @@ selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
+  commandSent = false
   huntNext()
 end</script>
 							<triggerType>0</triggerType>
@@ -9107,7 +9077,11 @@ resetFormat()</script>
 							<script>bragelist["water elemental"].needlerain.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+if hunting and autohunting then
+  commandSent = false
+  huntNext()
+end</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9170,9 +9144,7 @@ resetFormat()</script>
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9195,10 +9167,7 @@ end</script>
 							<script>bragelist.monk.spinningbackfist.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+resetFormat()</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9221,10 +9190,7 @@ end</script>
 							<script>bragelist.monk.scramble.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+resetFormat()</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9247,10 +9213,7 @@ end</script>
 							<script>bragelist.monk.ripplestrike.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()
-if hunting and autohunting then
-  huntNext()
-end</script>
+resetFormat()</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9275,6 +9238,7 @@ selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
+  commandSent = false
   huntNext()
 end</script>
 							<triggerType>0</triggerType>
