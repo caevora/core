@@ -8148,6 +8148,7 @@ end</script>
   huntTargetTimerHandle = nil
   huntTargetCooldown = false
 end
+lasthuntarget = hunttarget
 commandSent = false
 shieldCommandSent = false
 if hunting then
@@ -8216,8 +8217,7 @@ end</script>
 					<regexCodePropertyList />
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>ability regain</name>
-						<script>bragebalance = true
-local class = PLAYER:myclass()
+						<script>local class = PLAYER:myclass()
 
 -- If the core function tells us we are a dragon, expand it to match your bragelist keys
 if class == "dragon" then
@@ -8270,7 +8270,7 @@ end</script>
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>burrow</name>
 							<script>--table.remove(bragelist, table.index_of(bragelist, "Burrow"))
-bragelist.apostate.burrow.enabled = false</script>
+bragelist.apostate.burrow.onbalance = false</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8291,7 +8291,7 @@ bragelist.apostate.burrow.enabled = false</script>
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>convulsions</name>
 							<script>--table.remove(bragelist, table.index_of(bragelist, "Convulsions"))
-bragelist.apostate.convulsions.enabled = false</script>
+bragelist.apostate.convulsions.onbalance = false</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8328,7 +8328,7 @@ bragelist.apostate.convulsions.enabled = false</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>throatrip</name>
 							<script>--table.remove(bragelist, table.index_of(bragelist, "Throatrip"))
-bragelist.serpent.throatrip.enabled = false
+bragelist.serpent.throatrip.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8355,7 +8355,7 @@ end</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>thrash</name>
 							<script>--table.remove(bragelist, table.index_of(bragelist, "Thrash"))
-bragelist.serpent.thrash.enabled = false
+bragelist.serpent.thrash.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8382,13 +8382,12 @@ end</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>excoriate</name>
 							<script>--table.remove(bragelist, table.index_of(bragelist, "Excoriate"))
-bragelist.serpent.excoriate.enabled = false
+bragelist.serpent.excoriate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
   shielded = false
-  send("clearqueue eqbal")
   huntNext()
 end</script>
 							<triggerType>0</triggerType>
@@ -8411,7 +8410,7 @@ end</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>flagellate</name>
 							<script>--table.remove(bragelist, table.index_of(bragelist, "Flagellate"))
-bragelist.serpent.flagellate.enabled = false
+bragelist.serpent.flagellate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8453,7 +8452,7 @@ end</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>collide</name>
-							<script>bragelist.runewarden.collide.enabled = false
+							<script>bragelist.runewarden.collide.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8480,13 +8479,12 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>fragment</name>
-							<script>bragelist.runewarden.fragment.enabled = false
+							<script>bragelist.runewarden.fragment.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
   shielded = false
-  send("clearqueue eqbal")
   huntNext()
 end</script>
 							<triggerType>0</triggerType>
@@ -8508,7 +8506,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>onslaught</name>
-							<script>bragelist.runewarden.onslaught.enabled = false
+							<script>bragelist.runewarden.onslaught.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8551,7 +8549,7 @@ end</script>
 						<regexCodePropertyList />
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>dragonspark</name>
-							<script>bragelist["silver dragon"].dragonspark.enabled = false
+							<script>bragelist["silver dragon"].dragonspark.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8574,7 +8572,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>overwhelm</name>
-							<script>bragelist["silver dragon"].overwhelm.enabled = false
+							<script>bragelist["silver dragon"].overwhelm.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8613,7 +8611,7 @@ resetFormat()</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>corruption</name>
-							<script>bragelist.shaman.corruption.enabled = false
+							<script>bragelist.shaman.corruption.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8636,7 +8634,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>haemhorrage</name>
-							<script>bragelist.shaman.haemhorrage.enabled = false
+							<script>bragelist.shaman.haemhorrage.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -8675,7 +8673,7 @@ resetFormat()</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>spinslash</name>
-							<script>bragelist.blademaster.spinslash.enabled = false
+							<script>bragelist.blademaster.spinslash.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8701,7 +8699,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>leapstrike</name>
-							<script>bragelist.blademaster.leapstrike.enabled = false
+							<script>bragelist.blademaster.leapstrike.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8727,7 +8725,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>nerveslash</name>
-							<script>bragelist.blademaster.nerveslash.enabled = false
+							<script>bragelist.blademaster.nerveslash.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8753,7 +8751,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>shin shatter</name>
-							<script>bragelist.blademaster.shinshatter.enabled = false
+							<script>bragelist.blademaster.shinshatter.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8780,7 +8778,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>daze</name>
-							<script>bragelist.blademaster.daze.enabled = false
+							<script>bragelist.blademaster.daze.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8806,7 +8804,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>headstrike</name>
-							<script>bragelist.blademaster.headstrike.enabled = false
+							<script>bragelist.blademaster.headstrike.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8848,7 +8846,7 @@ end</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>harry</name>
-							<script>bragelist.occultist.harry.enabled = false
+							<script>bragelist.occultist.harry.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8873,7 +8871,7 @@ resetFormat()
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>temperance</name>
 							<script>bragebalance = false
-bragelist.occultist.temperance.enabled = false
+bragelist.occultist.temperance.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8898,7 +8896,7 @@ resetFormat()
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>chaosgate</name>
 							<script>bragebalance = false
-bragelist.occultist.chaosgate.enabled = false
+bragelist.occultist.chaosgate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8923,7 +8921,7 @@ resetFormat()
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>fluctuate</name>
 							<script>bragebalance = false
-bragelist.occultist.fluctuate.enabled = false
+bragelist.occultist.fluctuate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8948,7 +8946,7 @@ resetFormat()
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>stagnate</name>
 							<script>bragebalance = false
-bragelist.occultist.stagnate.enabled = false
+bragelist.occultist.stagnate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -8965,6 +8963,32 @@ resetFormat()
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
 								<string>^(You wave one arm at .+, causing a small time rift to form around \w+.)$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>ruin</name>
+							<script>bragelist.occultist.ruin.onbalance = false
+selectCaptureGroup(2)
+setFgColor(170, 255, 0)
+resetFormat()
+if hunting and autohunting then
+  huntNext()
+end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^(You gesture in a slashing motion at .+, and small tears form in \w+ translucent shield as chaos rips it apart.)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -8988,7 +9012,7 @@ resetFormat()
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>dehydrate</name>
-							<script>bragelist["water elemental"].dehydrate.enabled = false
+							<script>bragelist["water elemental"].dehydrate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9011,7 +9035,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>icicles</name>
-							<script>bragelist["water elemental"].icicles.enabled = false
+							<script>bragelist["water elemental"].icicles.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9034,7 +9058,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>waterfall</name>
-							<script>bragelist["water elemental"].waterfall.enabled = false
+							<script>bragelist["water elemental"].waterfall.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9057,7 +9081,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>needlerain</name>
-							<script>bragelist["water elemental"].needlerain.enabled = false
+							<script>bragelist["water elemental"].needlerain.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9080,7 +9104,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>aquahammer</name>
-							<script>bragelist["water elemental"].needlerain.enabled = false
+							<script>bragelist["water elemental"].needlerain.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9103,7 +9127,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>swell</name>
-							<script>bragelist["water elemental"].swell.enabled = false
+							<script>bragelist["water elemental"].swell.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9142,7 +9166,7 @@ resetFormat()</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>tornado kick</name>
-							<script>bragelist.monk.tornadokick.enabled = false
+							<script>bragelist.monk.tornadokick.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9168,7 +9192,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>spinning backfist</name>
-							<script>bragelist.monk.spinningbackfist.enabled = false
+							<script>bragelist.monk.spinningbackfist.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9194,7 +9218,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>mind scramble</name>
-							<script>bragelist.monk.scramble.enabled = false
+							<script>bragelist.monk.scramble.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9220,7 +9244,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>ripple strike</name>
-							<script>bragelist.monk.ripplestrike.enabled = false
+							<script>bragelist.monk.ripplestrike.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9246,7 +9270,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>splinterkick - shield break</name>
-							<script>bragelist.monk.splinterkick.enabled = false
+							<script>bragelist.monk.splinterkick.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -12802,112 +12826,112 @@ bragelist = bragelist or {}
 
 local boot_rage = {
   monk = {
-    spinningbackfist = {enabled = true, type = 1, rage = 14, command = "sbp @tar"},
-    scramble = {enabled = true, type = 4, rage = 22, command = "mind scramble @tar"},
-    splinterkick = {enabled = true, type = "shield break", rage = 17, command = "spk @tar"},
-    tornadokick = {enabled = true, type = 2, rage = 36, command = "tnk @tar"},
-    mindblast = {enabled = true, type = 3, rage = 25, command = "mind blast @tar"},
-    ripplestrike = {enabled = true, type = 5, rage = 25, command = "rpst @tar"},
+    spinningbackfist = {enabled = true, onbalance = true, type = 1, rage = 14, command = "sbp @tar"},
+    scramble = {enabled = true, type = 4, onbalance = true, rage = 22, command = "mind scramble @tar"},
+    splinterkick = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "spk @tar"},
+    tornadokick = {enabled = true, onbalance = true, type = 2, rage = 36, command = "tnk @tar"},
+    mindblast = {enabled = true, onbalance = true, type = 3, rage = 25, command = "mind blast @tar"},
+    ripplestrike = {enabled = true, onbalance = true, type = 5, rage = 25, command = "rpst @tar"},
   },     
   serpent = {
-    excoriate = {enabled = true, type = "shield break", rage = 16, command = "excoriate @tar"},
-    thrash = {enabled = true, type = 1, rage = 13, command = "thrash @tar"},
-    throatrip = {enabled = true, type = 3, rage = 35, command = "throatrip @tar"},
-    flagellate = {enabled = true, type = 2, rage = 24, command = "flagellate @tar"},
-    snare = {enabled = false, type = 4, rage = 25, command = "snare @tar"},
-    obliviate = {enabled = false, type = 5, rage = 41, command = "obliviate @tar"},
+    excoriate = {enabled = true, onbalance = true, type = "shield break", rage = 16, command = "excoriate @tar"},
+    thrash = {enabled = true, onbalance = true, type = 1, rage = 13, command = "thrash @tar"},
+    throatrip = {enabled = true,  onbalance = true, type = 3, rage = 35, command = "throatrip @tar"},
+    flagellate = {enabled = true, onbalance = true, type = 2, rage = 24, command = "flagellate @tar"},
+    snare = {enabled = false, onbalance = true, type = 4, rage = 25, command = "snare @tar"},
+    obliviate = {enabled = false, onbalance = true, type = 5, rage = 41, command = "obliviate @tar"},
   },
   apostate = {
-    burrow = {enabled = true, type = 1, rage = 35, command = "daegger burrow @tar"},
-    convulsions = {enabled = true, type = 2, rage = 6, command = "stare @tar convulsions"},
-    horrify = {enabled = false, type = 4, rage = 10, command = "stare @tar horrify"},
-    piece = {enabled = true, type = "shield break", rage = 20, command = "daegger pierce @tar"},
-    bloodlet = {enabled = false, type = 3, rage = 50, command = "bloodlet @tar"},
-    possess = {enabled = false, type = 5, rage = 65, command = "possess @tar"},
+    burrow = {enabled = true, onbalance = true, type = 1, rage = 35, command = "daegger burrow @tar"},
+    convulsions = {enabled = true, onbalance = true, type = 2, rage = 6, command = "stare @tar convulsions"},
+    horrify = {enabled = false, onbalance = true, type = 4, rage = 10, command = "stare @tar horrify"},
+    piece = {enabled = true, onbalance = true, type = "shield break", rage = 20, command = "daegger pierce @tar"},
+    bloodlet = {enabled = false, onbalance = true, type = 3, rage = 50, command = "bloodlet @tar"},
+    possess = {enabled = false, onbalance = true, type = 5, rage = 65, command = "possess @tar"},
   },
   blademaster = {
-    leapstrike = {enabled = true, type = 2, rage = 14, command = "leapstrike @tar"},
-    daze = {enabled = true, type = 1, rage = 26, command = "shin daze @tar"},
-    shatter = {enabled = false, type = "shield break", rage = 17, command = "shin shatter @tar"},
-    spinslash = {enabled = true, type = 3, rage = 36, command = "spinslash @tar"},
-    nerveslash = {enabled = false, type = 4, rage = 22, command = "nerveslash @tar"},
+    leapstrike = {enabled = true, onbalance = true, type = 2, rage = 14, command = "leapstrike @tar"},
+    daze = {enabled = true, onbalance = true, type = 1, rage = 26, command = "shin daze @tar"},
+    shatter = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "shin shatter @tar"},
+    spinslash = {enabled = true, onbalance = true, type = 3, rage = 36, command = "spinslash @tar"},
+    nerveslash = {enabled = false, onbalance = true, type = 4, rage = 22, command = "nerveslash @tar"},
   },
   occultist = {
-    harry = {enabled = true, type = 1, rage = 14, command = "harry @tar"},
-    temperance = {enabled = true, type = 4, rage = 32, command = "temper @tar"},
-    ruin = {enabled = false, type = "shield break", rage = 17, command = "ruin @tar"},
-    chaosgate = {enabled = true, type = 5, rage = 36, command = "chaosgate @tar"},
-    fluctuate = {enabled = false, type = 3, rage = 25, command = "fluctuate @tar"},
-    stagnate = {enabled = false, type = 2, rage = 24, command = "stagnate @tar"},
+    harry = {enabled = true, onbalance = true, type = 1, rage = 14, command = "harry @tar"},
+    temperance = {enabled = true, onbalance = true, type = 4, rage = 32, command = "temper @tar"},
+    ruin = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "ruin @tar"},
+    chaosgate = {enabled = true, onbalance = true, type = 5, rage = 36, command = "chaosgate @tar"},
+    fluctuate = {enabled = false, onbalance = true, type = 3, rage = 25, command = "fluctuate @tar"},
+    stagnate = {enabled = false, onbalance = true, type = 2, rage = 24, command = "stagnate @tar"},
   },
   runewarden = {
-    collide = {enabled = true, type = 1, rage = 14, command = "collide @tar"},
-    bulwark = {enabled = false, type = 3, rage = 28, command = "bulwark"},
-    fragment = {enabled = true, type = "shield break", rage = 17, command = "fragment @tar"},
-    onslaught = {enabled = true, type = 2, rage = 36, command = "onslaught @tar"},
-    etch = {enabled = false, type = 4, rage = 25, command = "etch rune at @tar"},
+    collide = {enabled = true, onbalance = true, type = 1, rage = 14, command = "collide @tar"},
+    bulwark = {enabled = false, onbalance = true, type = 3, rage = 28, command = "bulwark"},
+    fragment = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "fragment @tar"},
+    onslaught = {enabled = true, onbalance = true, type = 2, rage = 36, command = "onslaught @tar"},
+    etch = {enabled = false, onbalance = true, type = 4, rage = 25, command = "etch rune at @tar"},
   },
   ["black dragon"] = {
-    dragonspit = {enabled = false, type = 1, rage = 14, command = "dragonspit @tar"},
-    dragonsting = {enabled = false, type = "affliction", rage = 25, command = "dragonsting @tar"},
-    dissolve = {enabled = false, type = "shield break", rage = 17, command = "dissolve @tar"},
-    override = {enabled = false, type = 2, rage = 36, command = "override @tar"},
-    corrode = {enabled = false, type = 3, rage = 25, command = "corrode @tar"},
-    dragonfear = {enabled = false, type = 4, rage = 29, command = "dragonfear @tar"},
+    dragonspit = {enabled = false, onbalance = true, type = 1, rage = 14, command = "dragonspit @tar"},
+    dragonsting = {enabled = false, onbalance = true, type = "affliction", rage = 25, command = "dragonsting @tar"},
+    dissolve = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "dissolve @tar"},
+    override = {enabled = false, onbalance = true, type = 2, rage = 36, command = "override @tar"},
+    corrode = {enabled = false, onbalance = true, type = 3, rage = 25, command = "corrode @tar"},
+    dragonfear = {enabled = false, onbalance = true, type = 4, rage = 29, command = "dragonfear @tar"},
   },
   ["blue dragon"] = {
-    dragonchill = {enabled = false, type = 1, rage = 14, command = "dragonchill @tar"},
-    glaciate = {enabled = false, type = 3, rage = 26, command = "glaciate @tar"},
-    frostrive = {enabled = false, type = "shield break", rage = 17, command = "frostrive @tar"},
-    override = {enabled = false, type = 2, rage = 36, command = "override @tar"},
-    frostwave = {enabled = false, type = 4, rage = 25, command = "frostwave @tar"},
-    ague = {enabled = false, type = 5, rage = 14, command = "ague @tar"},
+    dragonchill = {enabled = false, onbalance = true, type = 1, rage = 14, command = "dragonchill @tar"},
+    glaciate = {enabled = false, onbalance = true, type = 3, rage = 26, command = "glaciate @tar"},
+    frostrive = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "frostrive @tar"},
+    override = {enabled = false, onbalance = true, type = 2, rage = 36, command = "override @tar"},
+    frostwave = {enabled = false, onbalance = true, type = 4, rage = 25, command = "frostwave @tar"},
+    ague = {enabled = false, onbalance = true, type = 5, rage = 14, command = "ague @tar"},
   },
   ["gold dragon"] = {
-    overwhelm = {enabled = false, type = 1, rage = 14, command = "overwhelm @tar"},
-    deaden = {enabled = false, type = 3, rage = 24, command = "deaden @tar"},
-    psishatter = {enabled = false, type = "shield break", rage = 17, command = "psishatter @tar"},
-    psiblast = {enabled = false, type = 2, rage = 36, command = "psiblast @tar"},
-    psistorm = {enabled = false, type = 4, rage = 25, command = "psistorm @tar"},
-    psidaze = {enabled = false, type = 5, rage = 31, command = "psidaze @tar"},
+    overwhelm = {enabled = false, onbalance = true, type = 1, rage = 14, command = "overwhelm @tar"},
+    deaden = {enabled = false, onbalance = true, type = 3, rage = 24, command = "deaden @tar"},
+    psishatter = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "psishatter @tar"},
+    psiblast = {enabled = false, onbalance = true, type = 2, rage = 36, command = "psiblast @tar"},
+    psistorm = {enabled = false, onbalance = true, type = 4, rage = 25, command = "psistorm @tar"},
+    psidaze = {enabled = false, onbalance = true, type = 5, rage = 31, command = "psidaze @tar"},
   },
   ["green dragon"] = {
-    dragonspit = {enabled = false, type = 1, rage = 14, command = "dragonspit @tar"},
-    scour = {enabled = false, type = 2, rage = 18, command = "scour @tar"},
-    deteriorate = {enabled = false, type = "shield break", rage = 17, command = "deteriorate @tar"},
-    override = {enabled = false, type = 1, rage = 36, command = "override @tar"},
-    slaver = {enabled = false, type = 3, rage = 25, command = "slaver on @tar"},
-    dragonsap = {enabled = false, type = 4, rage = 22, command = "dragonsap @tar"},
+    dragonspit = {enabled = false, onbalance = true, type = 1, rage = 14, command = "dragonspit @tar"},
+    scour = {enabled = false, onbalance = true, type = 2, rage = 18, command = "scour @tar"},
+    deteriorate = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "deteriorate @tar"},
+    override = {enabled = false, onbalance = true, type = 1, rage = 36, command = "override @tar"},
+    slaver = {enabled = false, onbalance = true, type = 3, rage = 25, command = "slaver on @tar"},
+    dragonsap = {enabled = false, onbalance = true, type = 4, rage = 22, command = "dragonsap @tar"},
   },
   ["red dragon"] = {
-    overwhelm = {enabled = false, type = 1, rage = 14, command = "overwhelm @tar"},
-    dragontaunt = {enabled = false, type = 2, rage = 18, command = "dragontaunt @tar"},
-    melt = {enabled = false, type = "shield break", rage = 17, command = "melt @tar"},
-    dragonblaze = {enabled = false, type = 1, rage = 36, command = "dragonblaze @tar"},
-    flamebath = {enabled = false, type = 3, rage = 25, command = "flamebath @tar"},
-    scorch = {enabled = false, type = 4, rage = 18, command = "scorch @tar"},
+    overwhelm = {enabled = false, onbalance = true, type = 1, rage = 14, command = "overwhelm @tar"},
+    dragontaunt = {enabled = false, onbalance = true, type = 2, rage = 18, command = "dragontaunt @tar"},
+    melt = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "melt @tar"},
+    dragonblaze = {enabled = false, onbalance = true, type = 1, rage = 36, command = "dragonblaze @tar"},
+    flamebath = {enabled = false, onbalance = true, type = 3, rage = 25, command = "flamebath @tar"},
+    scorch = {enabled = false, onbalance = true, type = 4, rage = 18, command = "scorch @tar"},
   },
   ["silver dragon"] = {
-    overwhelm = {enabled = true, type = 1, rage = 14, command = "overwhelm @tar"},
-    sizzle = {enabled = false, type = 2, rage = 25, command = "sizzle @tar"},
-    splinter = {enabled = true, type = "shield break", rage = 17, command = "splinter @tar"},
-    dragonspark = {enabled = true, type = 3, rage = 36, command = "dragonspark @tar"},
-    stormflare = {enabled = false, type = 4, rage = 25, command = "stormflare @tar"},
-    galvanize = {enabled = false, type = 5, rage = 18, command = "galvanize @tar"},
+    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, command = "overwhelm @tar"},
+    sizzle = {enabled = false, onbalance = true, type = 2, rage = 25, command = "sizzle @tar"},
+    splinter = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "splinter @tar"},
+    dragonspark = {enabled = true, onbalance = true, type = 3, rage = 36, command = "dragonspark @tar"},
+    stormflare = {enabled = false, onbalance = true, type = 4, rage = 25, command = "stormflare @tar"},
+    galvanize = {enabled = false, onbalance = true, type = 5, rage = 18, command = "galvanize @tar"},
   },
   shaman = {
-    corruption = {enabled = true, type = 1, rage = 14, command = "curse @tar corruption"},
-    korkma = {enabled = false, type = 2, rage = 29, command = "invoke korkma @tar"},
-    vulnerability = {enabled = true, type = "shield break", rage = 17, command = "curse @tar vulnerability"},
-    haemorrhage = {enabled = true, type = 1, rage = 36, command = "curse @tar haemorrhage"},
+    corruption = {enabled = true, onbalance = true, type = 1, rage = 14, command = "curse @tar corruption"},
+    korkma = {enabled = false, onbalance = true, type = 2, rage = 29, command = "invoke korkma @tar"},
+    vulnerability = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "curse @tar vulnerability"},
+    haemorrhage = {enabled = true, onbalance = true, type = 1, rage = 36, command = "curse @tar haemorrhage"},
   },
   ["water elemental"] = {
-    icicles = {enabled = true, type = 1, rage = 14, command = "manifest icicles @tar"},
-    dehydrate = {enabled = false, type = 2, rage = 14, command = "manifest dehydrate @tar"},
-    aquahammer = {enabled = true, type = "shield break", rage = 17, command = "manifest aquahammer @tar"},
-    needlerain = {enabled = true, type = 3, rage = 36, command = "manifest needlerain @tar"},
-    waterfall = {enabled = false, type = 4, rage = 25, command = "manifest waterfall @tar"},
-    swell = {enabled = false, type = 5, rage = 30, command = "manifest swell @tar"},
+    icicles = {enabled = true, onbalance = true, type = 1, rage = 14, command = "manifest icicles @tar"},
+    dehydrate = {enabled = false, onbalance = true, type = 2, rage = 14, command = "manifest dehydrate @tar"},
+    aquahammer = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "manifest aquahammer @tar"},
+    needlerain = {enabled = true, onbalance = true, type = 3, rage = 36, command = "manifest needlerain @tar"},
+    waterfall = {enabled = false, onbalance = true, type = 4, rage = 25, command = "manifest waterfall @tar"},
+    swell = {enabled = false, onbalance = true, type = 5, rage = 30, command = "manifest swell @tar"},
   },
   ["air elemental"]   = {},
   ["fire elemental"]  = {},
@@ -16972,16 +16996,17 @@ function updatePrompt()
     -- 🎯 TARGET SECTOR
     -- We check if we have a target using your client's existing 'target' variable.
     -- If 'target' is "none" or nil, we simply don't insert the target chunk at all.
-    if (settings.showEnemyName or settings.showEnemyHealth) and (target and target ~= "none") then
-        local targetContent = ""
-        if settings.showEnemyName then targetContent = targetContent .. "*t" end
-        if settings.showEnemyHealth then 
-            targetContent = targetContent .. (targetContent ~= "" and " " or "") .. "*T" 
+    -- We no longer check for the existence of a target
+    local targetContent = ""
+    
+    -- If we have a target, we can populate the content
+    if (target and target ~= "none") then
+        if settings.showEnemyName then 
+            targetContent = targetContent .. "*t" 
         end
         
-        -- Insert ONLY if we have a target AND targetContent is not empty
-        if targetContent ~= "" then
-            table.insert(chunks, " #W[" .. targetContent .. "]")
+        if settings.showEnemyHealth then 
+            targetContent = targetContent .. (targetContent ~= "" and " " or "") .. "*T" 
         end
     end
 
@@ -18064,12 +18089,12 @@ function isAloneInRoom()
 end
 
 
-function isTargetAlive(target)
-  return findkey(roomstufflist, target)
+function isTargetAlive(hunttarget)
+  return findkey(roomstufflist, hunttarget)
 end
 
 function findNextHuntTarget()
-  local target = lasthunttarget or ""
+  local hunttarget = lasthunttarget or ""
   local targetimportance = 99
   local targetPriorityList = updateDenizenPriorities()
   for k, v in pairs(extermlist) do
@@ -18080,23 +18105,23 @@ function findNextHuntTarget()
         (type(denizenPriority) == "string" and denizenPriority ~= "ignored")
       then
         if k == lasthunttarget then
-          target = lasthunttarget
+          hunttarget = lasthunttarget
           targetimportance = -1000
         end
         local numericPriority = tonumber(denizenPriority) or 99
         -- default to 99 if not a number
         if numericPriority &lt; targetimportance then
-          target = k
+          hunttarget = k
           targetimportance = numericPriority
         end
       end
     end
   end
-  return target
+  return hunttarget
 end
 
 
-function hasMoreHuntTargets(target)
+function hasMoreHuntTargets(hunttarget)
 
 local ignore = {
   ["a sharp-toothed gremlin"] = true,
@@ -18112,8 +18137,8 @@ local ignore = {
 	  return false
 	end	
 
-  --local hasMoreTargets = not (target == "") and not (table.is_empty(roomstufflist))
-  local hasMoreTargets = target ~= "" and not table.is_empty(roomstufflist) and roomHasNonIgnoredTargets()
+  --local hasMoreTargets = not (hunttarget == "") and not (table.is_empty(roomstufflist))
+  local hasMoreTargets = hunttarget ~= "" and not table.is_empty(roomstufflist) and roomHasNonIgnoredTargets()
   
   debugEcho("white", string.format("Has more hunt targets: %s", tostring(hasMoreTargets)))
   return hasMoreTargets
@@ -18155,26 +18180,24 @@ function attemptHuntSettingsRestore()
 end
 
 function acquireTarget()
-    local targetPresent = findkey(roomstufflist, target)
+    local targetPresent = findkey(roomstufflist, hunttarget)
     
     -- If target is invalid or missing, try to find a new one
-    if not huntTargetCooldown or target == "" or not targetPresent or target == "none" then
+    if not huntTargetCooldown or target == "" or not targetPresent or hunttarget == "none" then
         local nextTarget = findNextHuntTarget()
-        if nextTarget and nextTarget ~= "" and nextTarget ~= target then
-            target = nextTarget
-            lasthunttarget = nextTarget
-            send("settarget " .. target)
-            hunttarget = target
+        if nextTarget and nextTarget ~= "" and nextTarget ~= hunttarget then
+            hunttarget = nextTarget
+            --lasthunttarget = nextTarget
+            send("settarget " .. hunttarget)
 
             huntTargetCooldown = true
             tempTimer(1.2, function() huntTargetCooldown = false end)
             return true -- We successfully acquired/switched a target
         elseif nextTarget == "" then
-            target = "none"
             hunttarget = "none"
         end
     end
-    return target ~= "" and target ~= "none"
+    return hunttarget ~= "" and hunttarget ~= "none"
 end
 
 function executeCombat(tar)
@@ -18188,30 +18211,36 @@ end
 
 function handleTargetsAndAttacks()
     updateWhoHere()
+    debugEcho("blue","[DEBUG] handleTargetsAndAttacks called.")
 
     -- 1. Pre-flight checks
     if not settings.systemLoaded or settings.systemPaused or inslowcuringmode() or balance_data.stunned.in_use then
+        debugEcho("blue","handleTargetsAndAttacks: Pre-flight check failed.")
         return
     end
-
+    
     -- 2. Data Health Check
     if huntSettingsData == nil then
+        debugEcho("yellow","[DEBUG] huntSettingsData is nil, attempting restore.")
         if not attemptHuntSettingsRestore() then
             cecho("&lt;red&gt;[ERROR] Hunt Restore Unsuccessful\n")
             return
         end
-        cecho("&lt;green&gt;[INFO] Hunt Restore Successful\n")
+        debugEcho("green","[INFO] Hunt Restore Successful\n")
     end
 
-    -- 3. Target Management &amp; Combat
-    if acquireTarget() then
-        executeCombat(target)
+    -- 3. Target Management &amp; Combat (Consolidated)
+    local acquired = acquireTarget()
+    debugEcho("blue","[DEBUG] acquireTarget() returned: " .. tostring(acquired))
+
+    if acquired then
+        executeCombat(hunttarget)
     end
 end
 
 
 -- Main function to handle shield attacks.
-function handleShieldAttacks(target)
+function handleShieldAttacks(hunttarget)
   -- 🛡️ Safeguard Gate: Prevent duplicate execution spam
   if shieldCommandSent then return end
 
@@ -18242,10 +18271,10 @@ function handleShieldAttacks(target)
   ---------------------------------------------------------
   -- 🎯 TARGET FALLBACK SEQUENCE
   ---------------------------------------------------------
-  local activeTarget = target
+  local activeTarget = hunttarget
   
   if type(activeTarget) ~= "string" or activeTarget == "" then
-    activeTarget = (type(hunttarget) == "string" and hunttarget ~= "") and hunttarget or target
+    activeTarget = (type(hunttarget) == "string" and hunttarget ~= "") and hunttarget
   end
 
   -- Clean up wrapping types safely
@@ -18362,21 +18391,32 @@ function tryRegularShieldBreak(class, currentTarget)
   return true
 end
 
+function checkSkillTypeEnabled(skillTable, targetType)
+  for _, data in pairs(skillTable) do
+    if data.type == targetType and data.enabled == true then
+      return true
+    end
+  end
+  return false
+end
 
 function tryBattleRageShieldBreak(class, currentTarget)
-  if not bragelist or not bragelist[class] then
-    return false
-  end
+  -- 1. Fail early if data is missing
+  if not bragelist or not bragelist[class] then return false end
 
+  -- 2. Check capability first (the "Gatekeeper")
+  if not checkSkillTypeEnabled(bragelist[class], "shield break") then 
+    return false 
+  end
+  
+  -- 3. Iterate to execute
   for skill, data in pairs(bragelist[class]) do
     if data.enabled and data.type == "shield break" and battlerage() &gt;= data.rage then
+      
+      -- Ensure we have balance before proceeding
       if not balance_data.balance.in_use then
-        local attackString = data.command
+        local attackString = data.command:gsub("@tar", currentTarget or "")
         
-        if currentTarget ~= "" then
-          attackString = string.gsub(attackString, "@tar", currentTarget)
-        end                     
-
         send(attackString)
         shieldCommandSent = true 
         debugEcho("green", "[BRAGE] Sent pure shield break: " .. attackString)
@@ -18392,8 +18432,7 @@ end
 
 
 
-
-function handleBattlerageAttacks(target)
+function handleBattlerageAttacks(hunttarget)
     if shielded then
         debugEcho("yellow","[BRAGE] Target is shielded — not sending rage attack.")
         return
@@ -18409,7 +18448,7 @@ function handleBattlerageAttacks(target)
     local sortedSkills = {}
 
     for skill, data in pairs(bragelist[class]) do
-        if data.enabled and type(data.type) == "number" and battlerage() &gt;= data.rage then
+        if data.enabled and data.onbalance and type(data.type) == "number" and battlerage() &gt;= data.rage then
             table.insert(sortedSkills, {
                 priority = data.type,
                 skill = skill,
@@ -18426,7 +18465,7 @@ function handleBattlerageAttacks(target)
 
     for _, data in ipairs(sortedSkills) do
         if data.command and not balance_data.balance.in_use then
-            local targetCommand = data.command:gsub("@tar", target)
+            local targetCommand = data.command:gsub("@tar", hunttarget)
             send(targetCommand)
             debugEcho("green","[BRAGE] Sent rage skill: " .. targetCommand)
             return
@@ -18436,7 +18475,7 @@ end
 
 
 -- Main function to handle regular hunting attacks.
-function handleRegularAttacks(target)
+function handleRegularAttacks(hunttarget)
     debugEcho("white","Entering handleRegularAttacks()...")
     
     local class = PLAYER:myclass()
@@ -18456,8 +18495,8 @@ function handleRegularAttacks(target)
     end
 
     -- Ensure 'target' is a clean string. If it's nil, missing, or a boolean, make it a safe empty string.
-    local currentTarget = type(target) == "string" and target or ""
-    debugEcho("white","Raw target passed: &lt;cyan&gt;" .. tostring(target) .. "&lt;white&gt; -&gt; Processed currentTarget: &lt;cyan&gt;" .. tostring(currentTarget))
+    local currentTarget = type(hunttarget) == "string" and hunttarget or ""
+    debugEcho("white","Raw target passed: &lt;cyan&gt;" .. tostring(hunttarget) .. "&lt;white&gt; -&gt; Processed currentTarget: &lt;cyan&gt;" .. tostring(currentTarget))
 
     ---------------------------------------------------------
     -- 🥋 SHIKUDO MONK FORK
@@ -18976,10 +19015,9 @@ function setHuntSettings(type, cmd)
     printBattleragePriorityList()
     cecho("\n&lt;green&gt;You set your hunt rage shield command successfully for " .. class:title())
   end
-   
-  if type(saveHuntSettings) == "function" then
+
     saveHuntSettings()
-  end
+
 end
 
 
@@ -19025,11 +19063,6 @@ function huntStart()
   hunting = true
   autohunting = autohunting or false
   settings.systemPaused = false
-  send("put gold in pack")
-  if PLAYER:myclass() == "serpent" then
-    send("summon treesnake inventory")
-  end
-  expandAlias("inra")
   if autohunting then
     huntNext()
   end
@@ -19221,6 +19254,7 @@ targetMasterList =
         ["Hrorknar, the gnoll smith"] = 1,
         ["Iofio, a Mingruk cook"] = "2",
         ["Lirthak, Chief of the gnoll"] = 1,
+        ["Ilubeth, healer of Manara"] = 1,
         ["Mawezel, grandson of Ebra"] = 2,
         ["Ograk, a gnoll Sergeant"] = 1,
         ["Thriel, an angry Mingruk miner"] = 2,
@@ -19228,6 +19262,7 @@ targetMasterList =
         ["Uhtan, the head farmer"] = 2,
         ["Vorlatan, a Mingruk farmer"] = 2,
         ["Vorluck, Captain of the gnoll guard"] = 1,
+        ["a thin Mingruk woman"] = 2,
         ["a Mingruk caregiver"] = 2,
         ["a burly Mingruk slave"] = 2,
         ["a cowering Mingruk miner"] = 2,
@@ -24605,18 +24640,20 @@ end</script>
     settings.sipmana = (vitals.mana.current == vitals.mana.halflife) and vitals.mana.max or (vitals.mana.max * 0.73)
   end
 
-  -- Death/Respawn Logic
-  if vitals.health.current &gt; 0 then
-    if settings.dead then
-      settings.dead = false
-      raiseEvent("characterRespawn")
+    -- Death/Respawn Logic
+    if vitals and vitals.health and vitals.health.current and not table.contains(myaffs, "blackout") then
+        if vitals.health.current &gt; 0 then
+            if settings.dead then
+                settings.dead = false
+                raiseEvent("characterRespawn")
+            end
+        else
+            if not settings.dead then
+                settings.dead = true
+                raiseEvent("characterDeath")
+            end
+        end
     end
-  else
-    if not settings.dead then
-      settings.dead = true
-      raiseEvent("characterDeath")
-    end
-  end
       
   recklessCheck()
 end
