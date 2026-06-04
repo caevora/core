@@ -8801,7 +8801,6 @@ GUI.ocean:setFontSize(15)</script>
 					<script>shieldCommandSent = false
 if hunting then
   shielded = true
-  send("clearqueue all")
   if autohunting then
     handleShieldAttacks(hunttarget)
   end
@@ -8828,7 +8827,6 @@ end</script>
 					<script>shieldCommandSent = false
 if hunting then
   shielded = true
-  send("clearqueue all")
   if autohunting then
     handleShieldAttacks(hunttarget)
   end
@@ -8856,7 +8854,6 @@ end</script>
 commandSent = false
 if hunting then
   shielded = false
-  send("clearqueue all")
   if autohunting then
     huntNext()
   end
@@ -8907,7 +8904,6 @@ balanceStart("balance",false)</script>
 shieldCommandSent = false
 if hunting then
   shielded = false
-  send("clearqueue all")
   if autohunting then
     huntNext()
   end
@@ -9026,7 +9022,6 @@ lasthuntarget = hunttarget
 commandSent = false
 shieldCommandSent = false
 if hunting then
-  send("clearqueue all")
   lasthunttarget = ""
   updateObjectsWindow()
   if hunting and autohunting then
@@ -9089,43 +9084,6 @@ end</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList />
 					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>ability regain</name>
-						<script>local class = PLAYER:myclass()
-
--- If the core function tells us we are a dragon, expand it to match your bragelist keys
-if class == "dragon" then
-    local race = gmcp.Char.Status.race or ""
-    class = string.match(race:lower(), "%a+") .. " dragon"
-end
-
-bragelist[class][matches[2]:lower()].onbalance = true
-
-if not(settings.debug) then 
-    deleteLine()
-else
-    cecho("\n&lt;orange&gt;" .. class) 
-    cecho("\n&lt;orange&gt;" .. matches[2])
-end</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>^You can use (\w+) again.$</string>
-							<string>^Your (\w+) ability could be used again but you lack the necessary Rage.$</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>1</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
 					<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>apostate</name>
 						<script></script>
@@ -9692,11 +9650,26 @@ resetFormat()</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>harry</name>
-							<script>bragelist.occultist.harry.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist.occultist.harry
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-</script>
+
+-- Calculate duration, ensuring we account for latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if harrytimer then killTimer(harrytimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+harrytimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Harry is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9716,11 +9689,26 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>temperance</name>
-							<script>bragelist.occultist.temperance.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist.occultist.temperance
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-</script>
+
+-- Calculate duration, ensuring we account for latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if temperancetimer then killTimer(temperancetimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+temperancetimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Temperance is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9740,10 +9728,26 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>chaosgate</name>
-							<script>bragelist.occultist.chaosgate.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist.occultist.chaosgate
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if chaosgatetimer then killTimer(chaosgatetimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+chaosgatetimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Chaosgate is now ready.")
+end)
 </script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
@@ -9764,11 +9768,26 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>fluctuate</name>
-							<script>bragelist.occultist.fluctuate.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist.occultist.fluctuate
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-</script>
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if fluctuatetimer then killTimer(fluctuatetimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+fluctuatetimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Fluctuate is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9788,12 +9807,14 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>stagnate</name>
-							<script>
-bragelist.occultist.stagnate.onbalance = false
-selectCaptureGroup(2)
+							<script>selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
-</script>
+shielded = false
+if hunting and autohunting then
+  commandSent = false
+  huntNext()
+end</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9818,6 +9839,7 @@ selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
+  shielded = false
   commandSent = false
   huntNext()
 end</script>
@@ -9856,10 +9878,26 @@ end</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>dehydrate</name>
-							<script>bragelist["water elemental"].dehydrate.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist["water elemental"].dehydrate
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if dehydratetimer then killTimer(dehydratetimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+dehydratetimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Dehydrate is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9879,10 +9917,26 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>icicles</name>
-							<script>bragelist["water elemental"].icicles.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist["water elemental"].icicles
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if iciclestimer then killTimer(iciclestimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+iciclestimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Icicles is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9902,10 +9956,26 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>waterfall</name>
-							<script>bragelist["water elemental"].waterfall.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist["water elemental"].waterfall
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if waterfalltimer then killTimer(waterfalltimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+waterfalltimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Waterfall is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9925,10 +9995,26 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>needlerain</name>
-							<script>bragelist["water elemental"].needlerain.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist["water elemental"].needlerain
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if needleraintimer then killTimer(needleraintimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+needleraintimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Needle Rain is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9953,6 +10039,7 @@ selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
+  shielded = false
   commandSent = false
   huntNext()
 end</script>
@@ -9975,10 +10062,26 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>swell</name>
-							<script>bragelist["water elemental"].swell.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist["water elemental"].swell
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if swelltimer then killTimer(swelltimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+swelltimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Swell is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -10038,10 +10141,26 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>spinning backfist</name>
-							<script>bragelist.monk.spinningbackfist.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist.monk.spinningbackfist
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if spinningbackfisttimer then killTimer(spinningbackfisttimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+spinningbackfisttimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Spinning Backfist is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -10061,10 +10180,26 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>mind scramble</name>
-							<script>bragelist.monk.scramble.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist.monk.scramble
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if scrambletimer then killTimer(scrambletimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+scrambletimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Scramble is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -10084,10 +10219,26 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>ripple strike</name>
-							<script>bragelist.monk.ripplestrike.onbalance = false
+							<script>-- Access the specific skill table
+local skillData = bragelist.monk.ripplestrike
+
+-- Toggle state and update UI
+skillData.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
-resetFormat()</script>
+resetFormat()
+
+-- Calculate duration, including network latency
+local time = skillData.cooldown + getNetworkLatency()
+
+-- Stop any existing timer to prevent overlapping resets
+if ripplestriketimer then killTimer(ripplestriketimer) end
+
+-- Set the new timer using an anonymous function for scope safety
+ripplestriketimer = tempTimer(time, function()
+    skillData.onbalance = true
+    debugEcho("cyan", "[BRAGE] Ripple Strike is now ready.")
+end)</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -10112,6 +10263,7 @@ selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
 if hunting and autohunting then
+  shielded = false
   commandSent = false
   huntNext()
 end</script>
@@ -13629,13 +13781,13 @@ mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crac
 bragelist = bragelist or {}
 
 local boot_rage = {
-  monk = {
-    spinningbackfist = {enabled = true, onbalance = true, type = 1, rage = 14, command = "sbp @tar"},
-    scramble = {enabled = true, type = 4, onbalance = true, rage = 22, command = "mind scramble @tar"},
-    splinterkick = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "spk @tar"},
-    tornadokick = {enabled = true, onbalance = true, type = 2, rage = 36, command = "tnk @tar"},
-    mindblast = {enabled = true, onbalance = true, type = 3, rage = 25, command = "mind blast @tar"},
-    ripplestrike = {enabled = true, onbalance = true, type = 5, rage = 25, command = "rpst @tar"},
+   monk = {
+    spinningbackfist = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "sbp @tar"},
+    scramble = {enabled = true, type = 4, onbalance = true, rage = 22, cooldown=31, command = "mind scramble @tar"},
+    splinterkick = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown=0, command = "spk @tar"},
+    tornadokick = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown=23, command = "tnk @tar"},
+    mindblast = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown=23, command = "mind blast @tar"},
+    ripplestrike = {enabled = true, onbalance = true, type = 5, rage = 25, cooldown=27, command = "rpst @tar"},
   },     
   serpent = {
     excoriate = {enabled = true, onbalance = true, type = "shield break", rage = 16, command = "excoriate @tar"},
@@ -13661,12 +13813,12 @@ local boot_rage = {
     nerveslash = {enabled = false, onbalance = true, type = 4, rage = 22, command = "nerveslash @tar"},
   },
   occultist = {
-    harry = {enabled = true, onbalance = true, type = 1, rage = 14, command = "harry @tar"},
-    temperance = {enabled = true, onbalance = true, type = 4, rage = 32, command = "temper @tar"},
-    ruin = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "ruin @tar"},
-    chaosgate = {enabled = true, onbalance = true, type = 5, rage = 36, command = "chaosgate @tar"},
-    fluctuate = {enabled = false, onbalance = true, type = 3, rage = 25, command = "fluctuate @tar"},
-    stagnate = {enabled = false, onbalance = true, type = 2, rage = 24, command = "stagnate @tar"},
+    harry = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "harry @tar"},
+    temperance = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown=43, command = "temper @tar"},
+    ruin = {enabled = false, onbalance = true, type = "shield break", cooldown=0, rage = 17, command = "ruin @tar"},
+    chaosgate = {enabled = true, onbalance = true, type = 5, rage = 36, cooldown=23, command = "chaosgate @tar"},
+    fluctuate = {enabled = false, onbalance = true, type = 3, rage = 25, cooldown=23, command = "fluctuate @tar"},
+    stagnate = {enabled = false, onbalance = true, type = 2, rage = 24, cooldown=35, command = "stagnate @tar"},
   },
   runewarden = {
     collide = {enabled = true, onbalance = true, type = 1, rage = 14, command = "collide @tar"},
@@ -13730,12 +13882,12 @@ local boot_rage = {
     haemorrhage = {enabled = true, onbalance = true, type = 1, rage = 36, command = "curse @tar haemorrhage"},
   },
   ["water elemental"] = {
-    icicles = {enabled = true, onbalance = true, type = 1, rage = 14, command = "manifest icicles @tar"},
-    dehydrate = {enabled = false, onbalance = true, type = 2, rage = 14, command = "manifest dehydrate @tar"},
-    aquahammer = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "manifest aquahammer @tar"},
-    needlerain = {enabled = true, onbalance = true, type = 3, rage = 36, command = "manifest needlerain @tar"},
-    waterfall = {enabled = false, onbalance = true, type = 4, rage = 25, command = "manifest waterfall @tar"},
-    swell = {enabled = false, onbalance = true, type = 5, rage = 30, command = "manifest swell @tar"},
+    icicles = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown= 16, command = "manifest icicles @tar"},
+    dehydrate = {enabled = false, onbalance = true, type = 2, rage = 14, cooldown= 23, command = "manifest dehydrate @tar"},
+    aquahammer = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown= 0, command = "manifest aquahammer @tar"},
+    needlerain = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown= 23, command = "manifest needlerain @tar"},
+    waterfall = {enabled = false, onbalance = true, type = 4, rage = 25, cooldown= 23, command = "manifest waterfall @tar"},
+    swell = {enabled = false, onbalance = true, type = 5, rage = 30, cooldown= 42, command = "manifest swell @tar"},
   },
   ["air elemental"]   = {},
   ["fire elemental"]  = {},
@@ -19088,7 +19240,9 @@ end
 
 function executeCombat(tar)
     if hasMoreHuntTargets(tar) then
-        handleRegularAttacks(tar)
+        if not balance_data.balance_in_use and not balance_data.equilibrium_in_use then
+          handleRegularAttacks(tar)
+        end
         if not table.contains(myaffs, "blackout") and not balance_data.stunned_in_use then
             handleBattlerageAttacks(tar)
         end
@@ -19268,7 +19422,7 @@ function tryRegularShieldBreak(class, currentTarget)
     regularCmd = string.gsub(regularCmd, "@tar", cleanTarget)
   end
 
-  local targetCommand = "queue add eqbal " .. regularCmd
+  local targetCommand = "queue addclear eqbal " .. regularCmd
 
   -- Send the entire line down the network pipe at once
   shieldCommandSent = true 
@@ -19300,16 +19454,16 @@ function tryBattleRageShieldBreak(class, currentTarget)
     if data.enabled and data.type == "shield break" and battlerage() &gt;= data.rage then
       
       -- Ensure we have balance before proceeding
-      if not balance_data.balance.in_use then
+     -- if not balance_data.balance.in_use and not balance_data.equilibrium.in_use then
         local attackString = data.command:gsub("@tar", currentTarget or "")
         
         send(attackString)
         shieldCommandSent = true 
         debugEcho("green", "[BRAGE] Sent pure shield break: " .. attackString)
         return true
-      else
-        debugEcho("yellow", "[BRAGE] Balance not ready for rage shield break.")
-      end
+     -- else
+      --  debugEcho("yellow", "[BRAGE] Balance not ready for rage shield break.")
+     -- end
     end
   end
 
@@ -19319,43 +19473,65 @@ end
 
 
 function handleBattlerageAttacks(hunttarget)
-    if shielded then
-        debugEcho("yellow","[BRAGE] Target is shielded — not sending rage attack.")
-        return
+    -- DEBUG: Entry
+    debugEcho("white", "[BRAGE-DEBUG] Checking attacks for target: " .. tostring(hunttarget))
+
+    if shielded then 
+        debugEcho("red", "[BRAGE-DEBUG] Abort: Shielded.")
+        return 
     end
 
+    -- 1. Initialize
+    if not rage_stopwatch then 
+        debugEcho("yellow", "[BRAGE-DEBUG] Initializing stopwatch.")
+        rage_stopwatch = createStopWatch()
+        startStopWatch(rage_stopwatch) 
+    end
+    
+    -- 2. Gate
+    local time = getStopWatchTime(rage_stopwatch)
+    debugEcho("white", "[BRAGE-DEBUG] Stopwatch time: " .. time)
+    if time &lt; 1.2 and time ~= 0 then 
+        debugEcho("red", "[BRAGE-DEBUG] Abort: Gate not open (Time &lt; 1.2).")
+        return 
+    end
+
+    -- 3. Identify
     local class = PLAYER:myclass()
     if class == "dragon" and gmcp.Char.Status.race then
         class = string.match(gmcp.Char.Status.race, "%a+"):lower() .. " dragon"
     end
+    debugEcho("white", "[BRAGE-DEBUG] Class identified: " .. tostring(class))
 
-    if not bragelist[class] then return end
+    if not bragelist[class] then 
+        debugEcho("red", "[BRAGE-DEBUG] Abort: No list found for class.")
+        return 
+    end
 
-    local sortedSkills = {}
+    local bestSkill = nil
 
     for skill, data in pairs(bragelist[class]) do
-        if data.enabled and data.onbalance and type(data.type) == "number" and battlerage() &gt;= data.rage then
-            table.insert(sortedSkills, {
-                priority = data.type,
-                skill = skill,
-                rage = data.rage,
-                command = data.command,
-            })
+        local meetsCriteria = data.enabled and data.onbalance and type(data.type) == "number" and battlerage() &gt;= data.rage
+        if meetsCriteria then
+            if not bestSkill or data.type &lt; bestSkill.priority then
+                bestSkill = { priority = data.type, command = data.command:gsub("@tar", hunttarget) }
+                debugEcho("cyan", "[BRAGE-DEBUG] Found viable skill: " .. skill .. " (Priority: " .. data.type .. ")")
+            end
         end
     end
 
-    table.sort(sortedSkills, function(a, b)
-        if a.priority == b.priority then return a.rage &gt; b.rage end
-        return a.priority &lt; b.priority
-    end)
-
-    for _, data in ipairs(sortedSkills) do
-        if data.command and not balance_data.balance.in_use then
-            local targetCommand = data.command:gsub("@tar", hunttarget)
-            send(targetCommand)
-            debugEcho("green","[BRAGE] Sent rage skill: " .. targetCommand)
-            return
-        end
+    -- 4. Execute
+    if not bestSkill then
+        debugEcho("red", "[BRAGE-DEBUG] Abort: No skills met criteria.")
+    elseif balance_data.balance.in_use then
+        debugEcho("red", "[BRAGE-DEBUG] Abort: Balance in use.")
+    else
+        send(bestSkill.command)
+        debugEcho("green", "[BRAGE] Sent: " .. bestSkill.command)
+        
+        resetStopWatch(rage_stopwatch)
+        startStopWatch(rage_stopwatch)
+        debugEcho("yellow", "[BRAGE-DEBUG] Stopwatch reset.")
     end
 end
 
@@ -19465,7 +19641,7 @@ function handleRegularAttacks(hunttarget)
                 attackString = string.gsub(attackString, "@tar", currentTarget)
             end
             
-            targetCommand = "queue add eqbal " .. attackString
+            targetCommand = "queue addclear eqbal " .. attackString
             debugEcho("orange","Standard command successfully built from DB: " .. targetCommand)
         else
             debugEcho("cyan","Configure Regular Hunt Attack (hunt configure)")
@@ -26219,6 +26395,8 @@ end
 
     -- Handle blackout affliction check (if needed during hunt)
     if hunting and autohunting and table.contains(myaffs, "blackout") then
+        commandSent = false
+        shieldCommandSent = false
         huntNext()
     end
 end
@@ -26747,24 +26925,14 @@ function handleAfflictionRemove()
 
             table.remove(myaffs, i)  -- Remove from myaffs directly
 
-
-
-
-
              if removal == "blackout" and hunting and autohunting then
 
                 commandSent = false
-
                 shieldCommandSent = false
-
                 huntNext()
 
              end
-
-
-
-
-
+             
             -- Check and reset priority in curinglist
 
             if afflictions and afflictions[removal] then
