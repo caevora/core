@@ -8797,34 +8797,6 @@ GUI.ocean:setFontSize(15)</script>
 				<regexCodeList />
 				<regexCodePropertyList />
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>gag</name>
-					<script>if hunting then
-  if not settings.debug then deleteLine() end
-end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You must wait a short time before you can use a battlerage ability again.</string>
-						<string>There is no door</string>
-						<string>I see no "shield" to take.</string>
-						<string>You are already wielding that.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>3</integer>
-						<integer>2</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>shielded up</name>
 					<script>shieldCommandSent = false
 if hunting then
@@ -8958,31 +8930,6 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>hunt target</name>
-					<script>if partyhunting then
-  target = matches[3]
-  send("pt Target " .. target)
-end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^\(Party\)\: ([A-Z][a-z]+) says, "Hunt Target: (\d+) (.*)\."$</string>
-						<string>^\(Party\)\: ([A-Z][a-z]+) says, "Target: (.+)\."$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>attack actions</name>
 					<script>if not shieldCommandSent and hunting and autohunting then
   commandSent = false
@@ -9058,7 +9005,6 @@ end</script>
 						<string>The bones in your</string>
 						<string>Your nerves suddenly calm down.</string>
 						<string>^You have writhed free of your.+s.$</string>
-						<string>Cupping your hands before you,</string>
 						<string>You are no longer stunned.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -9066,55 +9012,7 @@ end</script>
 						<integer>2</integer>
 						<integer>3</integer>
 						<integer>1</integer>
-						<integer>2</integer>
 						<integer>3</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>crits</name>
-					<script>selectCaptureGroup(2)
-setFgColor(80, 80, 80)
-resetFormat()
-if matches[3] == "CRITICAL" then
-  selectCaptureGroup(3)
-  setFgColor(170, 255, 0)
-  resetFormat()
-elseif matches[3] == "CRUSHING CRITICAL" then
-  selectCaptureGroup(3)
-  setFgColor(130, 180, 0)
-  resetFormat()
-elseif matches[3] == "OBLITERATING CRITICAL" then
-  selectCaptureGroup(3)
-  setFgColor(234, 234, 0)
-  resetFormat()
-elseif matches[3] == "ANNIHILATINGLY POWERFUL CRITICAL" then
-  selectCaptureGroup(3)
-  setFgColor(235, 155, 0)
-  resetFormat()
-elseif matches[3] == "WORLD-SHATTERING CRITICAL" then
-  selectCaptureGroup(3)
-  setFgColor(200, 0, 0)
-  resetFormat()
-elseif matches[3] == "PLANE-RAZING CRITICAL" then
-  selectCaptureGroup(3)
-  setFgColor(220, 0, 220)
-  resetFormat()
-end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>transparent</mFgColor>
-					<mBgColor>#000000</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>(You have scored an? (.*) hit!)</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -9130,7 +9028,7 @@ shieldCommandSent = false
 if hunting then
   send("clearqueue all")
   lasthunttarget = ""
-  UIUpdateRoom() 
+  updateObjectsWindow()
   if hunting and autohunting then
     huntNext()
   end
@@ -11499,21 +11397,59 @@ end
 				<command></command>
 				<packageName></packageName>
 				<regex></regex>
-				<Alias isActive="yes" isFolder="no">
-					<name>hh</name>
-					<script>if priority == "health" then
-	priority = "mana"
-  send("curing priority mana")
-	cecho("\n&lt;cyan&gt;Swapped to mana priority.")
-else 
-	priority = "health"
-  send("curing priority health")
-	cecho("\n&lt;green&gt;Swapped to health priority.")
-end</script>
+				<AliasGroup isActive="yes" isFolder="yes">
+					<name>pipes</name>
+					<script></script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^hh$</regex>
-				</Alias>
+					<regex></regex>
+					<Alias isActive="yes" isFolder="no">
+						<name>refill skullcap at</name>
+						<script>local fill = matches[2]
+pipes.skullcap.refill=fill
+settings.refill_skullcap_at=fill
+saveTableToJSON(settings, "settings")
+menuClientSettings()</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^clientinput REFILL_SKULLCAP_AT (\d+)$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>refill valerian at</name>
+						<script>local fill = matches[2]
+pipes.valerian.refill=fill
+settings.refill_valerian_at=fill
+saveTableToJSON(settings, "settings")
+menuClientSettings()</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^clientinput REFILL_VALERIAN_AT (\d+)$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>refill elm  at</name>
+						<script>local fill = matches[2]
+pipes.elm.refill=fill
+settings.refill_elm_at=fill
+saveTableToJSON(settings, "settings")
+menuClientSettings()</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^clientinput REFILL_ELM_AT (\d+)$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>empty pipes (cmd)</name>
+						<script>pipes = {}
+emptypipes = true
+emptied_pipes_count = 0
+send("plist")
+tempTimer(.3, [[
+empty_pipes()
+]])</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^empty pipes$</regex>
+					</Alias>
+				</AliasGroup>
 				<Alias isActive="yes" isFolder="no">
 					<name>precache</name>
 					<script>resetSelfPrecache()
@@ -11549,7 +11485,7 @@ saveTableToJSON(settings, "settings")</script>
 					<regex>^(meditate|med)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>sleep</name>
+					<name>go to sleep</name>
 					<script>send("curing prio def insomnia reset"..settings.cmdsep.."relax insomnia")
 send("queue addclear eqbal sleep")
 
@@ -11560,11 +11496,26 @@ send("queue addclear eqbal sleep")
 					<regex>^sleep$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>set class</name>
+					<name>set enemy class</name>
 					<script>set_class(matches[2]:lower())</script>
 					<command></command>
 					<packageName></packageName>
 					<regex>^set class (.+)$</regex>
+				</Alias>
+				<Alias isActive="yes" isFolder="no">
+					<name>toggle sipping</name>
+					<script>if priority == "health" then
+	priority = "mana"
+  send("curing priority mana")
+	cecho("\n&lt;cyan&gt;Swapped to mana priority.")
+else 
+	priority = "health"
+  send("curing priority health")
+	cecho("\n&lt;green&gt;Swapped to health priority.")
+end</script>
+					<command></command>
+					<packageName></packageName>
+					<regex>^hh$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
 					<name>lust add whitelist</name>
@@ -11623,8 +11574,9 @@ send("") -- Keep the input line clean</script>
 					<regex>^lustremove\s+(\w+)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>reset aff prios</name>
+					<name>reset aff prios (hard reset)</name>
 					<script>-- Call the function with the command you provided
+-- BE CAREFUL!!!
 send("curing prio reset")
 remedy:setAfflictionPriorities()</script>
 					<command></command>
@@ -11640,75 +11592,29 @@ remedy:setAfflictionPriorities()</script>
 					<regex>^mss$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>reset limbs</name>
-					<script>LimbTrackerReset(matches[2])</script>
+					<name>reset limb</name>
+					<script>-- =============================================================================
+-- LIMB TRACKER KEY MAPPINGS
+-- Use these abbreviations for manual resets or function arguments.
+--
+-- ll: left leg   | rl: right leg
+-- la: left arm   | ra: right arm
+-- h : head       | t : torso
+-- =============================================================================
+LimbTrackerReset(matches[2])</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^rsl (?:\w+):$</regex>
+					<regex>^rsl (.+)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
 					<name>check limbs</name>
-					<script>-- Pattern: ^c$
-local d = LimbTracker.data
+					<script>local d = LimbTracker.data
 cecho(string.format("\n&lt;white&gt;|&lt;yellow&gt;H:&lt;white&gt;%d|&lt;yellow&gt;T:&lt;white&gt;%d|&lt;yellow&gt;LL:&lt;white&gt;%d|&lt;yellow&gt;RL:&lt;white&gt;%d|&lt;yellow&gt;LA:&lt;white&gt;%d|&lt;yellow&gt;RA:&lt;white&gt;%d|",
     d["head"], d["torso"], d["left leg"], d["right leg"], d["left arm"], d["right arm"]))</script>
 					<command></command>
 					<packageName></packageName>
 					<regex>^csl$</regex>
 				</Alias>
-				<AliasGroup isActive="yes" isFolder="yes">
-					<name>pipes</name>
-					<script></script>
-					<command></command>
-					<packageName></packageName>
-					<regex></regex>
-					<Alias isActive="yes" isFolder="no">
-						<name>refill skullcap at</name>
-						<script>local fill = matches[2]
-pipes.skullcap.refill=fill
-settings.refill_skullcap_at=fill
-saveTableToJSON(settings, "settings")
-menuClientSettings()</script>
-						<command></command>
-						<packageName></packageName>
-						<regex>^clientinput REFILL_SKULLCAP_AT (\d+)$</regex>
-					</Alias>
-					<Alias isActive="yes" isFolder="no">
-						<name>refill valerian at</name>
-						<script>local fill = matches[2]
-pipes.valerian.refill=fill
-settings.refill_valerian_at=fill
-saveTableToJSON(settings, "settings")
-menuClientSettings()</script>
-						<command></command>
-						<packageName></packageName>
-						<regex>^clientinput REFILL_VALERIAN_AT (\d+)$</regex>
-					</Alias>
-					<Alias isActive="yes" isFolder="no">
-						<name>refill elm  at</name>
-						<script>local fill = matches[2]
-pipes.elm.refill=fill
-settings.refill_elm_at=fill
-saveTableToJSON(settings, "settings")
-menuClientSettings()</script>
-						<command></command>
-						<packageName></packageName>
-						<regex>^clientinput REFILL_ELM_AT (\d+)$</regex>
-					</Alias>
-					<Alias isActive="yes" isFolder="no">
-						<name>empty pipes (cmd)</name>
-						<script>pipes = {}
-emptypipes = true
-emptied_pipes_count = 0
-send("plist")
-tempTimer(.3, [[
-empty_pipes()
-]])</script>
-						<command></command>
-						<packageName></packageName>
-						<regex>^empty pipes$</regex>
-					</Alias>
-				</AliasGroup>
 				<Alias isActive="yes" isFolder="no">
 					<name>kaido Transmute Below Health</name>
 					<script>settings.kaidoTransmuteBelowHealth = matches[2]
@@ -11846,120 +11752,78 @@ send("queue add free def brief")</script>
 				<command></command>
 				<packageName></packageName>
 				<regex></regex>
+				<AliasGroup isActive="yes" isFolder="yes">
+					<name>(menu) options</name>
+					<script></script>
+					<command></command>
+					<packageName></packageName>
+					<regex></regex>
+					<Alias isActive="yes" isFolder="no">
+						<name>hunt help</name>
+						<script>handleHuntCommand("help")</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^hunt help$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>hunt configuration</name>
+						<script>handleHuntCommand("configure")</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^hunt (config|configure)$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>hunt attack</name>
+						<script>--example: hunt regular attack wield lash shield"..settings.cmdsep.."garrote @tar
+setHuntSettings("regular attack", matches[2])</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^hunt attack (.+)$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>hunt shield break</name>
+						<script>--example: hunt regular shield break wield lash shield"..settings.cmdsep.."garrote @tar
+setHuntSettings("regular shield break", matches[2])</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^hunt shield break (.+)$</regex>
+					</Alias>
+				</AliasGroup>
 				<Alias isActive="yes" isFolder="no">
-					<name>hunt priorities</name>
-					<script>--print denizen list prios, while in the area.
-printDenizenPriorityList()</script>
+					<name>hunt prios</name>
+					<script>handleHuntCommand("prios")</script>
 					<command></command>
 					<packageName></packageName>
 					<regex>^hunt prios$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>hunt configuration</name>
-					<script>--[[commands]]
-
-arguments = string.split(matches[2], " ")
-if matches[2] == "configure" then
-  --if not targetMasterList then
-  setTargetMasterList()
-  --end
-  setHuntSettingsData()
-end
-if arguments[1] == "ignore" and arguments[2] then
-  -- toggle area ignore
-  toggleIgnoreArea(arguments[2]:title())
-end
-if matches[2] == "start" or matches[2] == "go" then
-  hunting = true
-end
-if matches[2] == "stop" then
-  if requestmoss == 0 then
-    moss_toggle()
-  end
-  hunting = false
-end
-
-if matches[2] == "flee" then
-  fleemode = true
-  fleetable =
-    {
-      n = "s",
-      ne = "sw",
-      e = "w",
-      se = "nw",
-      s = "n",
-      sw = "ne",
-      w = "e",
-      nw = "se",
-      u = "d",
-      d = "u",
-      out = "in",
-    }
-
-end</script>
+					<name>hunt area list</name>
+					<script>handleHuntCommand("area")</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^hunt (.*)$</regex>
+					<regex>^hunt area$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>area known list</name>
-					<script>--print currently known areas
-printAreaHuntList()</script>
+					<name>hunt ignore area</name>
+					<script>--DO [hunt area] to see list
+toggleIgnoreArea(area)</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^area hunt list$</regex>
-				</Alias>
-				<Alias isActive="yes" isFolder="no">
-					<name>hunt attack</name>
-					<script>--example: hunt regular attack wield lash shield"..settings.cmdsep.."garrote @tar
-setHuntSettings("regular attack", matches[2])</script>
-					<command></command>
-					<packageName></packageName>
-					<regex>^hunt attack (.+)$</regex>
-				</Alias>
-				<Alias isActive="yes" isFolder="no">
-					<name>hunt shield break</name>
-					<script>--example: hunt regular shield break wield lash shield"..settings.cmdsep.."garrote @tar
-setHuntSettings("regular shield break", matches[2])</script>
-					<command></command>
-					<packageName></packageName>
-					<regex>^hunt shield break (.+)$</regex>
+					<regex>^hunt ignore (\w+)$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
 					<name>hunt toggle</name>
-					<script>huntToggle()</script>
+					<script>handleHuntCommand(matches[2])</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^ht$</regex>
+					<regex>^hunt toggle$</regex>
 				</Alias>
 				<Alias isActive="yes" isFolder="no">
-					<name>auto hunt toggle</name>
-					<script>autoHuntToggle()</script>
+					<name>hunt auto toggle</name>
+					<script>handleHuntCommand("auto")</script>
 					<command></command>
 					<packageName></packageName>
-					<regex>^aht$</regex>
-				</Alias>
-				<Alias isActive="yes" isFolder="no">
-					<name>MEROPIS</name>
-					<script>send("clearqueue all"..settings.cmdsep.."legenddeck draw agith'maal")</script>
-					<command></command>
-					<packageName></packageName>
-					<regex>^mer$</regex>
-				</Alias>
-				<Alias isActive="yes" isFolder="no">
-					<name>arankesh handle</name>
-					<script>send("pull harpoon;push harpoon;twist harpoon;turn harpoon")</script>
-					<command></command>
-					<packageName></packageName>
-					<regex>^aran$</regex>
-				</Alias>
-				<Alias isActive="yes" isFolder="no">
-					<name>assist</name>
-					<script>assisting = true
-send("assist "..matches[2])</script>
-					<command></command>
-					<packageName></packageName>
-					<regex>^assist (\w+)$</regex>
+					<regex>^hunt auto$</regex>
 				</Alias>
 			</AliasGroup>
 			<AliasGroup isActive="yes" isFolder="yes">
@@ -13309,7 +13173,7 @@ function jsonBackup()
     {name = "cityallylist", table = NDB and NDB.cityList or {}},
     {name = "cityenemylist", table = NDB and NDB.cityEnemies or {}},
     {name = "huntmasterlist", table = targetMasterList},
-    {name = "areaignorelist", table = areaIgnoreList},
+    {name = "areaIgnoreList", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
     {name = "battlerage", table = bragelist},
     {name = "balance_data", table = balance_data},
@@ -13518,7 +13382,7 @@ function jsonManager(opts)
     {name = "cityallylist", ref = NDB and NDB.cityList or {}},
     {name = "cityenemylist", ref = NDB and NDB.cityEnemies or {}},
     {name = "huntmasterlist", ref = targetMasterList},
-    {name = "areaignorelist", ref = areaIgnoreList},
+    {name = "areaIgnoreList", ref = areaIgnoreList},
     {name = "huntsettings", ref = huntSettingsData},
     {name = "battlerage", ref = bragelist},
     {name = "balance_data", ref = balance_data},
@@ -13572,7 +13436,7 @@ function loadAllTablesFromJSON()
         enemylist = enemylist,
         allylist = allylist,
         huntmasterlist = targetMasterList,
-        areaignorelist = areaIgnoreList,
+        areaIgnoreList = areaIgnoreList,
         huntsettings = huntSettingsData,
         battlerage = bragelist,
         balance_data = balance_data,
@@ -13630,7 +13494,7 @@ function saveAllTablesAsJSON()
     {name = "cityallylist", table = NDB and NDB.cityList or {}},
     {name = "cityenemylist", table = NDB and NDB.cityEnemies or {}},
     {name = "huntmasterlist", table = targetMasterList},
-    {name = "areaignorelist", table = areaIgnoreList},
+    {name = "areaIgnoreList", table = areaIgnoreList},
     {name = "huntsettings", table = huntSettingsData},
     {name = "battlerage", table = bragelist},
     {name = "balance_data", table = balance_data},
@@ -14502,6 +14366,10 @@ function checkForAsyncUpdate()
       cechoLink("\n&lt;cyan&gt;[ Click to Update Now ]\n", function() updateFromGitAsync(remoteVersion) end, "Install " .. remoteVersion, true)
     else
       cecho("&lt;green&gt;✅ System is up to date.\n")
+      cechoLink("&lt;dodger_blue&gt;[ How to Install System ]", [[openWebPage("https://youtu.be/q1Nu-1KixiY")]], "Watch installation guide", true)
+      cecho("  ")
+      cechoLink("&lt;dodger_blue&gt;[ Hunting System Tutorial ]", [[openWebPage("https://youtu.be/gk2ALKs71xg")]], "Watch hunting system guide", true)
+      cecho("\n")      
     end
   end, true) 
   
@@ -14678,6 +14546,8 @@ registerAnonymousEventHandler("sysInstallPackage", handleDataMigration)
     -- Handle Line-Start Status Overlays
     if settings.systemPaused then cinsertText("&lt;red&gt;[P] "); moveCursorEnd() end
     if settings.defupmode then cinsertText("&lt;red&gt;[DEFMODE] "); moveCursorEnd() end
+    
+    if table.contains(myaffs, "retardation") then cinsertText("&lt;blue&gt;[RETARD]"); moveCursorEnd() end
 
     local items = {}
 
@@ -18955,7 +18825,7 @@ end</script>
             if PLAYER:myclass() == "serpent" then send("emerge") end
             GUI.datawindow:activateTab("Room")
             huntTargetCooldown = false
-            huntStart()
+            --huntStart()
             cecho("\n&lt;white&gt;(&lt;gold&gt;Hunt&lt;white&gt;): &lt;green&gt;Hunting Enabled")
         else
             cecho("\n&lt;white&gt;(&lt;gold&gt;Hunt&lt;white&gt;): &lt;red&gt;Hunting Disabled")
@@ -18977,7 +18847,83 @@ end</script>
 end
 
 
+function handleHuntCommand(argString)
+    local args = string.split(argString, " ")
+    local cmd = args[1]:lower()
 
+    if cmd == "config" or cmd == "configure" then
+        setTargetMasterList()
+        setHuntSettingsData()        
+        
+    elseif cmd == "area" then
+        printAreaHuntList()
+        
+    elseif cmd == "toggle" then
+        toggleHunting()
+        
+    elseif cmd == "auto" then
+        toggleAutoHunting()
+    
+    elseif cmd == "prios" then
+        printDenizenPriorityList()
+        
+    elseif cmd == "flee" then
+        fleemode = true
+        fleetable = { n="s", ne="sw", e="w", se="nw", s="n", sw="ne", w="e", nw="se", u="d", d="u", out="in" }
+        cecho("\n&lt;dim_grey&gt;[ &lt;orange_red&gt;ALERT &lt;dim_grey&gt;] &lt;white&gt;Flee mode &lt;bold&gt;ACTIVE&lt;white&gt;.\n")
+        
+    elseif cmd == "help" then
+        showHuntHelp()
+        
+    else
+        cecho(string.format("\n&lt;dim_grey&gt;[ &lt;red&gt;ERROR &lt;dim_grey&gt;] &lt;white&gt;Unknown command: &lt;yellow&gt;%s&lt;white&gt;. Try &lt;gold&gt;hunt help&lt;white&gt;.\n", cmd))
+    end
+end
+
+function toggleHunting()
+    -- Toggle the boolean state
+    hunting = not hunting
+
+    local status = hunting and "&lt;green&gt;ENABLED" or "&lt;red&gt;DISABLED"
+    cecho(string.format("\n&lt;dim_grey&gt;[ &lt;yellow&gt;HUNT &lt;dim_grey&gt;] Hunting is now %s&lt;white&gt;.\n", status))
+    cecho("\n&lt;white&gt; DO &lt;dim_grey&gt;[ &lt;green&gt;mss &lt;dim_grey&gt;] &lt;white&gt;to toggle moss usage.")
+    
+    if hunting and not settings.mossenabled then
+       useMossToggle()
+    end
+    
+    if not hunting and settings.mossenabled then
+        useMossToggle()
+    end
+
+end
+
+function toggleAutoHunting()
+    -- Toggle the boolean state
+    autohunting = not autohunting
+    
+    -- Visual feedback for the user
+    local status = autohunting and "&lt;green&gt;ENABLED" or "&lt;red&gt;DISABLED"
+    cecho(string.format("\n&lt;dim_grey&gt;[ &lt;yellow&gt;HUNT &lt;dim_grey&gt;] Auto-hunting is now %s&lt;white&gt;.\n", status))
+    
+    -- Optional: If you have a specific system-wide flag to save settings, call it here
+    -- saveSettings() 
+end
+
+function showHuntHelp()
+    cecho("\n&lt;SkyBlue&gt;=============================================================")
+    cecho("\n&lt;white&gt;                   HUNTING SYSTEM COMMANDS")
+    cecho("\n&lt;SkyBlue&gt;=============================================================")
+    cecho("\n &lt;yellow&gt;hunt configure &lt;white&gt;: Opens configuration settings.")
+    cecho("\n &lt;yellow&gt;hunt area &lt;white&gt;: Shows known hunt areas.")
+    cecho("\n &lt;yellow&gt;hunt prios &lt;white&gt;: Shows Priority List for the current area.")
+    cecho("\n &lt;yellow&gt;hunt ignore &lt;area&gt; &lt;white&gt;: Toggles ignore status for an area.")
+    cecho("\n &lt;yellow&gt;hunt toggle &lt;white&gt;| &lt;yellow&gt;go &lt;white&gt;: Toggles hunting (on|off).")
+    cecho("\n &lt;yellow&gt;hunt auto (on|off) &lt;white&gt;| &lt;yellow&gt;go &lt;white&gt;: Toggles auto hunting (of|off).")
+     --cecho("\n &lt;yellow&gt;hunt flee &lt;white&gt;: Enables emergency flee mode.")
+    cecho("\n &lt;yellow&gt;hunt help &lt;white&gt;: Displays this menu.")
+    cecho("\n&lt;SkyBlue&gt;=============================================================\n")
+end
 
 
 function loadHuntMasterList()
@@ -19724,34 +19670,41 @@ end
 
 function toggleIgnoreArea(area)
   if table.contains(areaIgnoreList, area) then
-    -- Remove from ignore list
-    --table.remove(areaIgnoreList, table.index_of(areaIgnoreList, area))
-    removeElement(areaIgnoreList, area)
-    myEcho("red","Removed from Hunt Ignore list: "..area)
+    removeIgnoreArea(area)
   else
-    -- Add to ignore list
-    --table.insert(areaIgnoreList, area)
-    setIgnoreArea(area)
+    addIgnoreArea(area)
     myEcho("green","Added to Hunt Ignore list: "..area)
   end
-  -- Save areaIgnoreList
-  saveAreaIgnoreList()
-  -- Refresh the area list
-  -- printAreaHuntList()
-  -- Print denizen priority list
-  -- printDenizenPriorityList()
+
 end
 
 -- Function to set area to ignore
 
-function setIgnoreArea(area)
+function removeIgnoreArea(area)
+  -- If area not already in the list
+  if table.contains(areaIgnoreList, area) then
+    -- Add area to ignore list
+    removeElement(areaIgnoreList, area)
+    myEcho("red","Removed from Hunt Ignore list: "..area)
+  end
+  
+    saveTableToJSON(areaIgnoreList, "areaIgnoreList")
+  
+end
+
+
+function addIgnoreArea(area)
   -- If area not already in the list
   if not table.contains(areaIgnoreList, area) then
     -- Add area to ignore list
     table.insert(areaIgnoreList, area)
+    myEcho("green","Added to Hunt Ignore list: "..area)
   end
   
+    saveTableToJSON(areaIgnoreList, "areaIgnoreList")
+  
 end
+
 
 function setDenizenPriority(denizen, action)
   local area = gmcp.Room.Info.area
@@ -19980,7 +19933,7 @@ function saveHuntSettings()
   -- Optional: backup old version
   if fileExists(savePath) then
     os.rename(savePath, backPath .. ".bak")
-    cecho("&lt;gray&gt;Created backup: huntsettings.json.bak\n")
+    cecho("\n&lt;green&gt;✅ Created backup: huntsettings.json.bak\n")
   end
 
   local json = dkjson.encode(huntSettingsData, { indent = true })
@@ -19999,14 +19952,14 @@ function battlerage()
   return tonumber(string.match(gmcp.Char.Vitals.charstats[2], "%d+"))
 end
 
-function huntStart()
-  hunting = true
-  autohunting = autohunting or false
-  settings.systemPaused = false
-  if autohunting then
-    huntNext()
-  end
-end
+--function huntStart()
+ -- hunting = true
+  --autohunting = autohunting or false
+  --settings.systemPaused = false
+  --if autohunting then
+  --  huntNext()
+ -- end
+--end
 
 
 
@@ -21379,6 +21332,7 @@ function removestuff()
       local removedItemName = roomstufflist[removedItemId]
       roomstufflist[removedItemId] = nil
       if hunting and autohunting then
+        commandSent = false
         huntNext()
       end
     end
@@ -21396,6 +21350,10 @@ function addstuff()
       extermlist[itemId] = {itemName}
     end
   end
+      if hunting and autohunting then
+        commandSent = false
+        huntNext()
+      end
 end
 
 
@@ -21551,6 +21509,22 @@ function printBattleragePriorityList()
   cecho("&lt;green&gt;==================================================\n")
 end
 
+function HuntRoom()
+    if settings.systemLoaded and gmcp and gmcp.Room.Info and gmcp.Room.Info.name then
+    
+        if hunting and autohunting then
+          commandSent = false
+          huntNext()
+        end
+        
+    end
+    
+end
+
+
+-- function
+registerAnonymousEventHandler("gmcp.Room.Info", HuntRoom)
+
 
 -- Register the event handler
 registerAnonymousEventHandler("gmcp.Room.Info", updateAreaInfo)
@@ -21639,15 +21613,10 @@ setCmdLineStyleSheet("main", [[
   -- ===========================================================================
   GUI.roomwindow = GUI.roomwindow or Adjustable.TabWindow:new({
     name = "roomwindow",
-    x = 0,
-    y = "50%",
-    width = "100%",
-    height = "50%",
-    color1 = "black", 
-    color2 = "black", 
+    x = 0, y = "50%", width = "100%", height = "50%",
     tabBarHeight = "10%",
-    lockStyle = "full", -- Inner layout tracking frame
-    tabs = {"Room Window","Day Box"},
+    lockStyle = "full",
+    tabs = {"People", "Day Box", "Room Objects"}, -- Added 3rd tab
   }, GUI.left)
 
   GUI.roomwindow:setTabBarColor("black")
@@ -21658,32 +21627,31 @@ setCmdLineStyleSheet("main", [[
   GUI.roomwindow:adjustTabStyle()
   GUI.roomwindow:setActiveTab("Room Window")
 
-  -- Configure the mini consoles (Full flat)
-  GUI.roomwindow.miniconsole = Geyser.MiniConsole:new({
-    name = "roomwindow.miniconsole", 
-    x = 12, 
-    y = 12, 
-    width = "95.85%", 
-    height = "93%",
-    lockStyle = "full"
-  }, GUI.roomwindow["Room Windowcenter"])
-  
-  setWindowWrap("roomwindow.miniconsole", 60)
-  setBackgroundColor("roomwindow.miniconsole", 0, 0, 0, 200) 
-  GUI.roomwindow.miniconsole:setFontSize(10)
+GUI.roomwindow.people = Geyser.MiniConsole:new({
+    name = "roomwindow.people", x = 12, y = 12, width = "95.85%", height = "93%", lockStyle = "full"
+  }, GUI.roomwindow["Peoplecenter"])
+  setWindowWrap("roomwindow.people", 60)
+  setBackgroundColor("roomwindow.people", 0, 0, 0, 200)
+  GUI.roomwindow.people:setFontSize(10) -- Fixed: correctly referenced
 
+  -- DAY BOX CONSOLE
   GUI.daybox = GUI.daybox or Geyser.MiniConsole:new({
-    x = 12, 
-    y = 12, 
-    width = "94%", 
-    height = "95%", 
-    name = "daybox",
-    lockStyle = "full"
+    name = "daybox", x = 12, y = 12, width = "94%", height = "95%", lockStyle = "full"
   }, GUI.roomwindow["Day Boxcenter"])
-  
   setWindowWrap("daybox", 82)
-  setBackgroundColor("daybox", 0, 0, 0, 200) 
+  setBackgroundColor("daybox", 0, 0, 0, 200)
   GUI.daybox:setFontSize(10)
+  
+  -- ROOM OBJECTS CONSOLE
+  GUI.roomwindow.objects = Geyser.MiniConsole:new({
+    name = "roomwindow.objects", x = 12, y = 12, width = "95.85%", height = "93%", lockStyle = "full"
+  }, GUI.roomwindow["Room Objectscenter"])
+  setWindowWrap("roomwindow.objects", 60)
+  setBackgroundColor("roomwindow.objects", 0, 0, 0, 200)
+  GUI.roomwindow.objects:setFontSize(10) -- FIXED: Changed GUI.objects to GUI.roomwindow.objects
+
+  -- Set active tab to match the name in your tabs list
+  GUI.roomwindow:setActiveTab("People")
     
   -- ===========================================================================
   -- 2. RIGHT HAND SIDE PANE (OUTER BORDER SET TO BORDER)
@@ -22193,11 +22161,10 @@ GetItemsList =
       end
       -- if
     end
-    -- for
-    --if settings.systemLoaded and mindseye and gmcp.Room ~= nil then
-    --UIUpdateRoom ()
-    --end
+
   end
+
+
 -- func
 GetItemsAdd =
   function()
@@ -22216,10 +22183,8 @@ GetItemsAdd =
       -- if
     end
     -- if
-    --if settings.systemLoaded and mindseye then
-    --UIUpdateRoom ()
-    --end
   end
+  
 -- func
 GetItemsRemove =
   function()
@@ -22231,66 +22196,13 @@ GetItemsRemove =
     if items["rep" .. x.item.id] then
       items["rep" .. x.item.id] = nil
     end
-    --if settings.systemLoaded and mindseye then
-    -- UIUpdateRoom ()
-    --end
+
   end
+  
 -- func
 registerAnonymousEventHandler("gmcp.Char.Items.Add", GetItemsAdd)
 registerAnonymousEventHandler("gmcp.Char.Items.List", GetItemsList)
 registerAnonymousEventHandler("gmcp.Char.Items.Remove", GetItemsRemove)</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>UIUpdateRoom</name>
-						<packageName></packageName>
-						<script>function UIUpdateRoom()
-    if settings.systemLoaded and gmcp and gmcp.Room.Info and gmcp.Room.Info.name then
-        clearWindow("datawindow.middle")
-
-
-        local function truncateString(str, maxLength)
-            if not str then return "" end -- Handle nil values
-           -- print("Original String: " .. str .. " (Length: " .. #str .. ")") -- Debug
-            if #str &gt; maxLength then
-              --  print("Truncating: " .. str .. " (length: " .. #str .. ")")
-                return str:sub(1, maxLength) .. "..."
-            end
-            return str
-        end
-        
-        local stringcut = 38
-
-
-        local todisplay = {denizens = {}, objects = {}}
-        for k, v in pairs(items.room) do
-            local excluded = false
-            for _, x in pairs(roomexclude) do
-                if v.name == x then
-                    excluded = true
-                end
-            end
-            if not excluded then
-                if v.properties and v.properties.denizen then
-                    todisplay.denizens[k] = truncateString(v.name, stringcut)
-                else
-                    todisplay.objects[k] = truncateString(v.name, stringcut)
-                end
-            end
-        end
-
-    end
-    
-    if hunting and autohunting then
-      commandSent = false
-      huntNext()
-    end
-    
-end
-
-
--- function
-registerAnonymousEventHandler("gmcp.Room.Info", UIUpdateRoom)</script>
 						<eventHandlerList />
 					</Script>
 					<Script isActive="yes" isFolder="no">
@@ -22435,304 +22347,180 @@ end
 					<Script isActive="yes" isFolder="no">
 						<name>whoHere</name>
 						<packageName></packageName>
-						<script>--update GUI
---v1
--- Function to check if a value exists in a table
---function updateWhoHere()
-  -- GUI.roomwindow.miniconsole:clear()
-  -- GUI.roomwindow.miniconsole:cecho("\n  People Here:\n")
-      --for key, value in pairs(WhoHereTable) do
-          --if value == target then
-          --  GUI.roomwindow.miniconsole:cecho("    &lt;dim_grey&gt;"..key.." &lt;red&gt;"..value .. "\n")
-          --else
-          --  GUI.roomwindow.miniconsole:cecho("    &lt;dim_grey&gt;"..key.." &lt;MediumSpringGreen&gt;"..value .. "\n")
-          --end
-      --end
---end
-
-roomexclude =
-  {
-    --"a green slime",
-    --"a pathfinder",
-   -- "a soulmaster",
-    --"a chimera",
-   -- "a humbug",
-    --"a bubonis",
-   -- "a chaos hound",
-    --"a dervish",
-   -- "a worm",
-   -- "a chaos orb",
-   -- "a chaos storm",
-    --"a simpering sycophant",
-   -- "a minion of chaos",
-   -- "a bloodleech",
-   -- "a withered crone",
-   -- "a sharp-toothed gremlin",
-   -- "a sewer grate",
-   -- "a runic totem",
-   -- "a monolith sigil",
-   -- "a cube sigil",
-   -- "an eye sigil",
-    --"a key-shaped sigil",
-    --"a mounted tsalmaveth",
-    --"a hooded nocturni",
-   -- "a knight of the Atrament",
-   -- "a runic totem",
-   -- "a winged serpent",
-   -- "a court constable",
-   -- "a swami of the Cactus Clans",
-   -- "a mangy old dog",
-   -- "a bedraggled, bone-thin puppy dog",
-   -- "a mighty earth golem",
-    --"a beehive",
-  }
-
---v2
+						<script>--v3
 -- Function to check if a value exists in a table
 function updateWhoHere()
-if settings.systemLoaded then
-  GUI.roomwindow.miniconsole:clear()
-  --remove names from table
-  for _, v in pairs(enemylist) do
-    if not table.contains(WhoHereTable, v) and settings.autoEnemyManagement then
-      removeElement(enemylist, v)
-      send("unenemy " .. v)
-    end
-  end
-  for _, v in pairs(allylist) do
-    if not table.contains(WhoHereTable, v) and settings.autoAllyManagement then
-      removeElement(allylist, v)
-      send("unally " .. v)
-    end
-  end
-  --add names to tables
-  for _, value in pairs(WhoHereTable) do
-    if not table.contains(NDB.cityList, value) and table.contains(NDB.cityEnemies, value) --[[and gmcp.Room.Info.area == city_capture()]] then
-      if not table.contains(enemylist, value) and settings.autoEnemyManagement then
-        table.insert(enemylist, value)
-        send("enemy " .. value)
-      end
-    end
-    if table.contains(NDB.cityList, value) and not (target == value) then
-      if not (value == gmcp.Char.Status.name) then
-        if not (table.contains(allylist, value)) and settings.autoAllyManagement then
-          table.insert(allylist, value)
-          send("ally " .. value)
-        end
-      end
-    end
-  end
-  
-        local function truncateString(str, maxLength)
-            if not str then return "" end -- Handle nil values
-           -- print("Original String: " .. str .. " (Length: " .. #str .. ")") -- Debug
-            if #str &gt; maxLength then
-              --  print("Truncating: " .. str .. " (length: " .. #str .. ")")
-                return str:sub(1, maxLength) .. "..."
-            end
-            return str
-        end
-        
-        local stringcut = 35
- 
-        local todisplay = {denizens = {}, objects = {}}
-            for k, v in pairs(items.room) do
-                local excluded = false
-                for _, x in pairs(roomexclude) do
-                    if v.name == x then
-                        excluded = true
-                        break  -- Break out of the loop once a match is found
-                    end
-                end
-                if not excluded then
-                    if v.properties and v.properties.denizen then
-                        -- Ensure both k and hunttarget are treated as strings for comparison
-                       -- display(k)
-                       -- display(hunttarget)
-                        if k == hunttarget then
-                            todisplay.denizens[k] = "&lt;ansi_red&gt;" .. truncateString(v.name, stringcut) .. ""
-                        else
-                            todisplay.denizens[k] = truncateString(v.name, stringcut)
-                        end
-                    else
-                        todisplay.objects[k] = truncateString(v.name, stringcut)
-                    end
-                end
-            end
+    if not settings.systemLoaded then return end
 
-    
-  
+    -- CRITICAL: Clear the window first so we don't stack old data
+    GUI.roomwindow.people:clear()
+
+    -- 1. Helper Function
+    local function truncateString(str, maxLength)
+        if not str then return "" end
+        if #str &gt; maxLength then return str:sub(1, maxLength) .. "..." end
+        return str
+    end
+
+    local stringcut = 35
+    local buffer = ""
+
+    -- 2. Enemy/Ally Management (Your original logic)
+    for _, v in pairs(enemylist) do
+        if not table.contains(WhoHereTable, v) and settings.autoEnemyManagement then
+            removeElement(enemylist, v)
+            send("unenemy " .. v)
+        end
+    end
+    for _, v in pairs(allylist) do
+        if not table.contains(WhoHereTable, v) and settings.autoAllyManagement then
+            removeElement(allylist, v)
+            send("unally " .. v)
+        end
+    end
+    for _, value in pairs(WhoHereTable) do
+        if not table.contains(NDB.cityList, value) and table.contains(NDB.cityEnemies, value) then
+            if not table.contains(enemylist, value) and settings.autoEnemyManagement then
+                table.insert(enemylist, value)
+                send("enemy " .. value)
+            end
+        end
+        if table.contains(NDB.cityList, value) and not (target == value) then
+            if not (value == gmcp.Char.Status.name) then
+                if not (table.contains(allylist, value)) and settings.autoAllyManagement then
+                    table.insert(allylist, value)
+                    send("ally " .. value)
+                end
+            end
+        end
+    end
+
+    -- 3. Room Info
     if gmcp.Room.Info.area == "" and gmcp.Room.Info.num == -2 and gmcp.Room.Info.environment == "Vessel" then
-      GUI.roomwindow.miniconsole:cecho("&lt;gold&gt;Area&lt;white&gt;: &lt;ansi_white&gt;A Ship!\n")
-      GUI.roomwindow.miniconsole:cecho("&lt;gold&gt;Room&lt;white&gt;: &lt;ansi_white&gt;"..gmcp.Room.Info.name.."\n") 
+        buffer = buffer .. "&lt;gold&gt;Area&lt;white&gt;: &lt;ansi_white&gt;A Ship!\n&lt;gold&gt;Room&lt;white&gt;: &lt;ansi_white&gt;"..gmcp.Room.Info.name.."\n"
     else
-      GUI.roomwindow.miniconsole:cecho("&lt;gold&gt;Area&lt;white&gt;: &lt;ansi_white&gt;"..gmcp.Room.Info.area.."\n")
-      GUI.roomwindow.miniconsole:cecho("&lt;gold&gt;Room&lt;white&gt;: &lt;ansi_white&gt;"..truncateString(gmcp.Room.Info.name, stringcut).." &lt;DimGrey&gt;(&lt;gold&gt;"..gmcp.Room.Info.num.."&lt;DimGrey&gt;)"..
-                                                             "\n &lt;dim_grey&gt;(" .. truncateString(gmcp.Room.Info.environment, stringcut) ..
-                                                              ")\n")
+        buffer = buffer .. "&lt;gold&gt;Area&lt;white&gt;: &lt;ansi_white&gt;"..gmcp.Room.Info.area.."\n"
+        buffer = buffer .. "&lt;gold&gt;Room&lt;white&gt;: &lt;ansi_white&gt;"..truncateString(gmcp.Room.Info.name, stringcut).." &lt;DimGrey&gt;(&lt;gold&gt;"..gmcp.Room.Info.num.."&lt;DimGrey&gt;)\n &lt;dim_grey&gt;(" .. truncateString(gmcp.Room.Info.environment, stringcut) .. ")\n"
     end
-      
-  
-  -- Print target, if available
-  if GUI and GUI.roomwindow then
-    GUI.roomwindow.miniconsole:cecho("\n  Target:\n")
-    local targetPrinted = false
-    for key, value in pairs(WhoHereTable) do
-      if target then
-        if value == target:title() then
-          if not trueNamePrinted then
-            GUI.roomwindow.miniconsole:cecho("   &lt;red&gt;" .. target:title() .. "\n")
-            targetPrinted = true
-          end
+
+    -- 4. Target
+    if target then
+        buffer = buffer .. "\n  &lt;gold&gt;Target:\n    &lt;red&gt;" .. target:title() .. "\n"
+    end
+
+    -- 5. People
+    buffer = buffer .. "\n  &lt;gold&gt;People: &lt;OrangeRed&gt;(&lt;white&gt;"..math.floor(table.size(WhoHereTable)).."&lt;OrangeRed&gt;)\n"
+    for _, player in pairs(WhoHereTable) do
+        local city = NDB_getColour(player) or "white"
+        local class = (NDB.players[player] and NDB.players[player].class) or "Unknown Class"
+        local level = (NDB.players[player] and NDB.players[player].level) or "Unknown Level"
+        buffer = buffer .. string.format("    &lt;%s&gt;%s&lt;DimGrey&gt; (&lt;dark_goldenrod&gt;%s&lt;DimGrey&gt;) &lt;DimGrey&gt;(&lt;grey&gt;%s&lt;DimGrey&gt;)\n", city, player, class, level)
+    end
+
+    -- 6. Allies
+    local allies = ""
+    local allcnt = 0
+    for _, value in pairs(NDB.cityList) do
+        if table.contains(WhoHereTable, value) then
+            allies = allies .. "&lt;yellow&gt;" .. value .. "&lt;white&gt;, "
+            allcnt = allcnt + 1
         end
-      end
     end
-  end
+    buffer = buffer .. "\n  &lt;gold&gt;Allies: &lt;OrangeRed&gt;(&lt;white&gt;" .. allcnt .. "&lt;OrangeRed&gt;)\n"
+    buffer = buffer .. (allcnt &gt; 0 and "    " .. allies:sub(1, -3) .. "\n" or "    &lt;white&gt;- &lt;DimGrey&gt;No allies in the room.\n")
 
-
--- Initialize peopleList to an empty string at the start
-local peopleList = ""
-
--- Print People in room
-GUI.roomwindow.miniconsole:cecho("\n  People: &lt;OrangeRed&gt;(&lt;white&gt;"..math.floor(table.size(WhoHereTable)).."&lt;OrangeRed&gt;)\n")
-
-for _, value in pairs(WhoHereTable) do
-    -- Check if the player exists in NDB.players before accessing their info
-    local player = value
-    local city = ""
-    local class = ""
-    local level = ""
-    
-    if NDB.players[player] then
-        -- Debugging output: Check the cityColor and level value
-        city = NDB_getColour(player) or "white"
-        
-        class = tostring(NDB.players[player].class) or "Unknown Class"
-        level = tostring(NDB.players[player].level) or "Unknown Level"
-    end
-
-    -- Now try to safely format the output
-    local formattedString = string.format(
-        "   &lt;%s&gt;%s&lt;DimGrey&gt; (&lt;dark_goldenrod&gt;%s&lt;DimGrey&gt;) &lt;DimGrey&gt;(&lt;grey&gt;%s&lt;DimGrey&gt;)\n",  -- Format: City Color -&gt; Name -&gt; Class -&gt; Level
-        city, player, class, level  -- Use level here
-    )
-
-    -- Append the formatted string to the people list
-    peopleList = peopleList .. formattedString
-end
-
--- Check if we have people to display and print them
-if peopleList ~= "" then
-    GUI.roomwindow.miniconsole:cecho(peopleList)
-else
-    -- If no players, optionally show a message indicating no people in the room
-    GUI.roomwindow.miniconsole:cecho("   &lt;white&gt;- &lt;DimGrey&gt;No people in the room.\n")
-end
-
-
--- Initialize the allies string and counter
-local allies = ""
-local allcnt = 0  -- Initialize counter to zero
-
--- Loop through the city list and check if the ally is in WhoHereTable
-for key, value in pairs(NDB.cityList) do
-    if table.contains(WhoHereTable, value) then
-        allies = allies .. "&lt;yellow&gt;" .. value .. "&lt;white&gt;, "
-        allcnt = allcnt + 1  -- Increment the counter for each ally found
-    end
-end
-
--- Print the count of allies and the list
-if allcnt &gt; 0 then
-    -- Remove the last comma and space from the allies list string
-    allies = allies:sub(1, -3)
-    
-    -- Print the count of allies
-    GUI.roomwindow.miniconsole:cecho("\n  Allies: &lt;OrangeRed&gt;(&lt;white&gt;" .. allcnt .. "&lt;OrangeRed&gt;)\n")
-    
-    -- Print the list of allies
-    GUI.roomwindow.miniconsole:cecho("\n   " .. allies .. "\n")
-else
-    -- Optional: Show a message if there are no allies
-    GUI.roomwindow.miniconsole:cecho("\n  Allies: &lt;OrangeRed&gt;(&lt;white&gt;0&lt;OrangeRed&gt;)\n")
-    GUI.roomwindow.miniconsole:cecho("   &lt;white&gt;- &lt;DimGrey&gt;No allies in the room.\n")
-end
-  
-  
--- Initialize the enemies string and counter
-local enemies = ""
-local enemiesCount = 0  -- Initialize counter to zero
-
--- Loop through the enemy list and check if the enemy is in WhoHereTable
-for key, value in pairs(enemylist) do
-    if table.contains(WhoHereTable, value) then
-        enemies = enemies .. "&lt;red&gt;" .. value .. "&lt;white&gt;, "
-        enemiesCount = enemiesCount + 1  -- Increment the counter for each enemy found
-    end
-end
-
--- Print the count of enemies and the list
-if enemiesCount &gt; 0 then
-    -- Remove the last comma and space from the enemies list string
-    enemies = enemies:sub(1, -3)
-    
-    -- Print the count of enemies
-    GUI.roomwindow.miniconsole:cecho("\n  Enemies: &lt;OrangeRed&gt;(&lt;white&gt;" .. enemiesCount .. "&lt;OrangeRed&gt;)\n")
-    
-    -- Print the list of enemies
-    GUI.roomwindow.miniconsole:cecho("\n   " .. enemies .. "\n")
-else
-    -- Optional: Show a message if there are no enemies
-    GUI.roomwindow.miniconsole:cecho("\n  Enemies: &lt;OrangeRed&gt;(&lt;white&gt;0&lt;OrangeRed&gt;)\n")
-    GUI.roomwindow.miniconsole:cecho("   &lt;white&gt;- &lt;DimGrey&gt;No enemies in the room.\n")
-end
-
-
-
-        GUI.roomwindow.miniconsole:cecho("\n  &lt;ansi_white&gt;Denizens:\n")
-        
-        -- Make sure we're printing the updated todisplay.denizens table after the loop
-        for k, v in pairs(todisplay.denizens) do
-            GUI.roomwindow.miniconsole:cecho(
-                " &lt;white&gt;" .. string.format("%7s", k) .. "&lt;dim_grey&gt; - " .. v .. "\n"
-            )
+    -- 7. Enemies
+    local enemies = ""
+    local enemiesCount = 0
+    for _, value in pairs(enemylist) do
+        if table.contains(WhoHereTable, value) then
+            enemies = enemies .. "&lt;red&gt;" .. value .. "&lt;white&gt;, "
+            enemiesCount = enemiesCount + 1
         end
+    end
+    buffer = buffer .. "\n  &lt;gold&gt;Enemies: &lt;OrangeRed&gt;(&lt;white&gt;" .. enemiesCount .. "&lt;OrangeRed&gt;)\n"
+    buffer = buffer .. (enemiesCount &gt; 0 and "    " .. enemies:sub(1, -3) .. "\n" or "    &lt;white&gt;- &lt;DimGrey&gt;No enemies in the room.\n")
 
+    -- 8. Final Render
+    GUI.roomwindow.people:cecho(buffer)
 
-        GUI.roomwindow.miniconsole:cecho("\n  &lt;ansi_white&gt;Objects:\n")
-        for k, v in pairs(todisplay.objects) do
-            GUI.roomwindow.miniconsole:cecho(
-                " &lt;white&gt;" .. string.format("%7s", k) .. "&lt;dim_grey&gt; - " .. v .. "\n"
-            )
-        end   
-     
-    
-    -- Save city ally list
-    --if NDB and NDB.cityList then
-     -- saveTableToJSON(NDB.cityList, "cityallylist")
-   -- end
-    
-    -- Save city enemy list
-    --if NDB and NDB.cityList then
-     -- saveTableToJSON(NDB.cityList, "cityenemylist")
-    --end
- 
- 
- end 
 end
 
+function updateObjectsWindow()
+    if not (GUI and GUI.roomwindow and GUI.roomwindow.objects) then return end
+
+    GUI.roomwindow.objects:clear()
+    
+    local function truncateString(str, maxLength)
+        if not str then return "" end
+        if #str &gt; maxLength then return str:sub(1, maxLength) .. "..." end
+        return str
+    end
+
+    local stringcut = 35
+    local todisplay = {denizens = {}, entities = {}, items = {}, objects = {}}
+    
+    for k, v in pairs(items.room) do
+        local roomexclude = {} -- add items to exclude here.
+        local excluded = false
+        local tar = hunttarget or ""
+        for _, x in pairs(roomexclude) do
+            if v.name == x then excluded = true; break end
+        end
+        --local e = excluded and "yes" or "no"
+        --echo("\n EXCLUDE:"..e)
+        if not excluded then
+            -- Categorization Logic
+            if v.attrib == "mx" then
+                if k == tar then
+                    todisplay.denizens[k] = "&lt;ansi_red&gt;" .. truncateString(v.name, stringcut)
+                else
+                    todisplay.denizens[k] = truncateString(v.name, stringcut)
+                end
+            elseif v.attrib == "m" then
+                todisplay.entities[k] = truncateString(v.name, stringcut)
+            elseif v.attrib == "t" then
+                todisplay.items[k] = truncateString(v.name, stringcut)
+            else
+                todisplay.objects[k] = truncateString(v.name, stringcut)
+            end
+        end
+    end
+
+    -- Build the buffer
+    local buffer = ""
+    local function addSection(title, data)
+        if table.size(data) &gt; 0 then
+            buffer = buffer .. "\n &lt;ansi_white&gt;" .. title .. ":\n"
+            for k, v in pairs(data) do
+                buffer = buffer .. " &lt;white&gt;" .. string.format("%7s", k) .. "&lt;dim_grey&gt; - " .. v .. "\n"
+            end
+        end
+    end
+
+    addSection("Entities", todisplay.entities)
+    addSection("Denizens", todisplay.denizens)
+    addSection("Items", todisplay.items)
+    addSection("Objects", todisplay.objects)
+
+    GUI.roomwindow.objects:cecho(buffer)
+
+end
 -- list all people in room
 
 function updatePeople()
   WhoHereTable = {}
   for k, v in pairs(gmcp.Room.Players) do
     if gmcp.Room.Players[k].name ~= gmcp.Char.Status.name then
-      table.insert(WhoHereTable, gmcp.Room.Players[k].name)
+      if not table.contains(WhoHereTable, gmcp.Room.Players[k].name) then
+          table.insert(WhoHereTable, gmcp.Room.Players[k].name)
+      end
     end
     --if
   end
   --for
   updateWhoHere()
+  updateObjectsWindow()
 end
 
 --function
@@ -22757,7 +22545,7 @@ function addPerson()
   end
   table.insert(WhoHereTable, gmcp.Room.AddPlayer.name)
   updateWhoHere()
-
+  updateObjectsWindow()
 end
 
 -- person leaves room
@@ -22779,10 +22567,11 @@ function removePerson()
   end
   listRemove(WhoHereTable, gmcp.Room.RemovePlayer)
   updateWhoHere()
-
+  updateObjectsWindow()
 end
 
 -- event handlers
+registerAnonymousEventHandler("gmcp.Room.Info", updateObjectsWindow)
 registerAnonymousEventHandler("gmcp.Room.AddPlayer", addPerson)
 registerAnonymousEventHandler("gmcp.Room.RemovePlayer", removePerson)
 registerAnonymousEventHandler("gmcp.Room.Players", updatePeople)</script>
@@ -26652,9 +26441,11 @@ registerAnonymousEventHandler("gmcp.Char.Vitals", balanceGMCP)</script>
 					<script>function useMossToggle()
   if settings.mossenabled then
   	cecho("\n&lt;DarkSlateGrey&gt;(&lt;red&gt;-&lt;DarkSlateGrey&gt;) &lt;red&gt;Moss ") 
+    send("")
   	settings.mossenabled = false
   else
-  	cecho("\n&lt;DarkSlateGrey&gt;(&lt;green&gt;+&lt;DarkSlateGrey&gt;) &lt;green&gt;Moss") 
+  	cecho("\n&lt;DarkSlateGrey&gt;(&lt;green&gt;+&lt;DarkSlateGrey&gt;) &lt;green&gt;Moss")
+    send("") 
   	settings.mossenabled = true
   end
 end</script>
@@ -26690,30 +26481,42 @@ end
 					<script>--This function resets the hit count for each limb, sets the player's history for the set, and defines tables for prepped upper and lower limbs.
 -- 1. Reset Logic (Handles single limb or total reset)
 function LimbTrackerReset(limb)
+    local key = {
+        ["ll"] = "left leg",
+        ["rl"] = "right leg",
+        ["la"] = "left arm",
+        ["ra"] = "right arm",
+        ["h"]  = "head",
+        ["t"]  = "torso" -- Fixed typo
+    }
+    
     if not settings.systemLoaded then return end
-    if limb ~= nil then
-        -- Reset specific limb
-        local l = limb:lower()
-        if LimbTracker.data[l] then
-            LimbTracker.data[l] = 0
-            LimbTracker.percentages[l] = 0
-            debugEcho("red","[LimbTracker]: &lt;white&gt;Reset " .. l .."")
-        end
+
+    if limb and key[limb] then
+        -- Reset specific limb using the mapped full name
+        local fullName = key[limb]
+        
+        -- If you store data by full name, use fullName. 
+        -- If you store data by short code (ll, rl), use limb.
+        -- Assuming you store by full name:
+        LimbTracker.data[fullName] = 0
+        LimbTracker.percentages[fullName] = 0
+        
+        myEcho("green", "[LimbTracker]: &lt;white&gt;Reset " .. fullName)
+        
     else
-        -- Total Reset (limb is nil)
+        -- Total Reset
         for k in pairs(LimbTracker.data) do 
             LimbTracker.data[k] = 0 
             LimbTracker.percentages[k] = 0
         end
-        
 
-        
         -- Wipe parry history and prepped states to stay in sync
         player2History = {} 
         preppedUpperLimbs = {["left arm"] = false, ["right arm"] = false}
         preppedLowerLimbs = {["left leg"] = false, ["right leg"] = false}
         
-        debugEcho("red","[LimbTracker]: &lt;white&gt;Total System Reset.")
+        debugEcho("red", "[LimbTracker]: &lt;white&gt;Total System Reset.")
     end
 end
 
@@ -26956,8 +26759,6 @@ function handleAfflictionRemove()
 
                 huntNext()
 
-                huntNextRoom()
-
              end
 
 
@@ -27173,54 +26974,39 @@ registerAnonymousEventHandler("gmcp.Char.Afflictions.Remove", handleAfflictionRe
 					<name>diagnose</name>
 					<packageName></packageName>
 					<script>function diagnose()
-  if settings.systemLoaded then
-    myaffs = {}
-    pipeline.afflictions = {}
-    settings.hiddenaff = 0
-    mystackableaffs =
-      {
-        torntendons = 0,
-        skullfractures = 0,
-        crackedribs = 0,
-        wristfractures = 0,
-        pressure = 0,
-        burning = 0,
-        temperedsanguine = 0,
-        temperedmelancholic = 0,
-        temperedphlegmatic = 0,
-        temperedcholeric = 0,
-      }      
-    local templist = {"insomnia", "blindness", "deafness"}
-    for i = 1, #gmcp.Char.Afflictions.List, 1 do
-      if not table.contains(templist, gmcp.Char.Afflictions.List[i].name) then
-        --and not table.contains(stackables, gmcp.Char.Afflictions.List[i].name) then
-        if not table.contains(myaffs, gmcp.Char.Afflictions.List[i].name) then
-          if string.find(gmcp.Char.Afflictions.List[i].name, "%(") then
-            mystackableaffs[
-              string.sub(
-                gmcp.Char.Afflictions.List[i].name,
-                1,
-                string.find(gmcp.Char.Afflictions.List[i].name, " ") - 1
-              )
-            ] =
-              tonumber(
-                string.sub(
-                  gmcp.Char.Afflictions.List[i].name,
-                  string.find(gmcp.Char.Afflictions.List[i].name, "%(") + 1,
-                  string.find(gmcp.Char.Afflictions.List[i].name, "%(") + 1
-                )
-              )
-          else
-            table.insert(myaffs, gmcp.Char.Afflictions.List[i].name)           
-          end
-        end
-      end
-    end
-  end 
- 
+  if not settings.systemLoaded then return end
+  
+  myaffs = {}
+  pipeline.afflictions = {}
+  settings.hiddenaff = 0
+  
+  mystackableaffs = {
+    torntendons = 0, skullfractures = 0, crackedribs = 0,
+    wristfractures = 0, pressure = 0, burning = 0,
+    temperedsanguine = 0, temperedmelancholic = 0,
+    temperedphlegmatic = 0, temperedcholeric = 0,
+  }      
 
- 
- 
+  -- Use a lookup table (dictionary) for instant checks
+  local templist = {["insomnia"] = true, ["blindness"] = true, ["deafness"] = true}
+  
+  for _, affData in ipairs(gmcp.Char.Afflictions.List) do
+    local affName = affData.name
+    
+    -- Check for stackable afflictions (those containing '(')
+    if string.find(affName, "%(") then
+      local baseName = affName:match("^(.-) %(")
+      local count = affName:match("%((%d)%)")
+      if baseName and count then
+        mystackableaffs[baseName] = tonumber(count)
+      end
+    else
+      -- Check if it's a "normal" affliction and NOT in the blacklist (templist)
+      if not templist[affName] and not table.contains(myaffs, affName) then
+        table.insert(myaffs, affName)  
+      end         
+    end
+  end
 end</script>
 					<eventHandlerList />
 				</Script>
@@ -27695,7 +27481,7 @@ registerAnonymousEventHandler("gmcp.Char.Defences.Remove", handleDefenseRemove)
 					<packageName></packageName>
 					<script>function handleDefenseList()
     if settings.systemLoaded and gmcp.Char.Defences.List and type(gmcp.Char.Defences.List) == "table" then
-      
+      mydefs={}
       for k, v in pairs(defenses) do 
            v.active = false 
       end
@@ -27721,9 +27507,9 @@ registerAnonymousEventHandler("gmcp.Char.Defences.Remove", handleDefenseRemove)
             end
         end
 
-         -- if table.is_empty(pipeline.defenses) then
-           -- defupmode = false
-         -- end
+          if table.is_empty(pipeline.defenses) then
+            defupmode = false
+          end
                   
     else
     end
