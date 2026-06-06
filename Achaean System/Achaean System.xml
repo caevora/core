@@ -17,6 +17,31 @@
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList />
 			<regexCodePropertyList />
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>login</name>
+				<script>tempTimer(2,[[
+    send("inv reset")
+    send("plist")
+    send("date")
+  ]])
+tempTimer(5,[[ checkForUpdate() ]])</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^Password correct\. Welcome to Achaea\.$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
 			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>gags</name>
 				<script></script>
@@ -473,8 +498,6 @@ updateDefensiveTable()</script>
 -- To load or create the file:
 settings.myclass = PLAYER:myclass()
 
---loadTableFromJSON(afflictions, PLAYER:myclass() .. "prios")
-
 resetVitals()
 resetCureBalance()
 resetMyStackableAffs()
@@ -523,8 +546,7 @@ settings.myclass = PLAYER:myclass()
 updateCurativeTable() 
 updateDefensiveTable()
 
--- To load or create the file:
---loadTableFromJSON(afflictions, PLAYER:myclass() .. "prios")</script>
+</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -581,9 +603,6 @@ end
 					<name>dragonform - complete</name>
 					<script>settings.classchange = false
 settings.myclass = PLAYER:myclass()
-
--- To load or create the file:
---loadTableFromJSON(afflictions, PLAYER:myclass() .. "prios")
 
 resetVitals()
 resetCureBalance()
@@ -1872,27 +1891,6 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>check for system updates</name>
-					<script>checkForAsyncUpdate()
-</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>Password correct. Welcome to Achaea.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>3</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>daybox update</name>
 					<script>dayboxUpdate()</script>
 					<triggerType>0</triggerType>
@@ -1931,6 +1929,26 @@ cecho("\nSystem has been "..(settings.systemPaused and "&lt;red&gt;paused." or "
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>update who here</name>
+					<script>removePerson()</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^(\w+) enters .+.$</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -4969,8 +4987,7 @@ send("curing predict impatience")</script>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>meditate</name>
 						<script>if settings.systemPaused then
-  settings.systemPaused=false
-  cecho("\n&lt;green&gt;System Unpaused")
+    expandAlias("pp")
 end
 settings.meditating = false
 settings.meditatebreak = false
@@ -8972,8 +8989,7 @@ end</script>
 						<regexCodePropertyList />
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>burrow</name>
-							<script>
-bragelist.apostate.burrow.onbalance = false</script>
+							<script>battlerage.apostate.burrow.onbalance = false</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -8993,7 +9009,7 @@ bragelist.apostate.burrow.onbalance = false</script>
 						</Trigger>
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>convulsions</name>
-							<script>bragelist.apostate.convulsions.onbalance = false</script>
+							<script>battlerage.apostate.convulsions.onbalance = false</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>0</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -9029,7 +9045,7 @@ bragelist.apostate.burrow.onbalance = false</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>throatrip</name>
-							<script>bragelist.serpent.throatrip.onbalance = false
+							<script>battlerage.serpent.throatrip.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9053,7 +9069,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>thrash</name>
-							<script>bragelist.serpent.thrash.onbalance = false
+							<script>battlerage.serpent.thrash.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9077,7 +9093,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>excoriate</name>
-							<script>bragelist.serpent.excoriate.onbalance = false
+							<script>battlerage.serpent.excoriate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9104,7 +9120,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>flagellate</name>
-							<script>bragelist.serpent.flagellate.onbalance = false
+							<script>battlerage.serpent.flagellate.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9146,7 +9162,7 @@ end</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>collide</name>
-							<script>bragelist.runewarden.collide.onbalance = false
+							<script>battlerage.runewarden.collide.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9169,7 +9185,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>fragment</name>
-							<script>bragelist.runewarden.fragment.onbalance = false
+							<script>battlerage.runewarden.fragment.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9196,7 +9212,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>onslaught</name>
-							<script>bragelist.runewarden.onslaught.onbalance = false
+							<script>battlerage.runewarden.onslaught.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9235,7 +9251,7 @@ resetFormat()</script>
 						<regexCodePropertyList />
 						<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>dragonspark</name>
-							<script>bragelist["silver dragon"].dragonspark.onbalance = false
+							<script>battlerage["silver dragon"].dragonspark.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9258,7 +9274,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>overwhelm</name>
-							<script>bragelist["silver dragon"].overwhelm.onbalance = false
+							<script>battlerage["silver dragon"].overwhelm.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9297,7 +9313,7 @@ resetFormat()</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>corruption</name>
-							<script>bragelist.shaman.corruption.onbalance = false
+							<script>battlerage.shaman.corruption.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9320,7 +9336,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>haemhorrage</name>
-							<script>bragelist.shaman.haemhorrage.onbalance = false
+							<script>battlerage.shaman.haemhorrage.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9359,7 +9375,7 @@ resetFormat()</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>spinslash</name>
-							<script>bragelist.blademaster.spinslash.onbalance = false
+							<script>battlerage.blademaster.spinslash.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9383,7 +9399,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>leapstrike</name>
-							<script>bragelist.blademaster.leapstrike.onbalance = false
+							<script>battlerage.blademaster.leapstrike.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9407,7 +9423,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>nerveslash</name>
-							<script>bragelist.blademaster.nerveslash.onbalance = false
+							<script>battlerage.blademaster.nerveslash.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9431,7 +9447,7 @@ resetFormat()
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>shin shatter</name>
-							<script>bragelist.blademaster.shinshatter.onbalance = false
+							<script>battlerage.blademaster.shinshatter.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9459,7 +9475,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>daze</name>
-							<script>bragelist.blademaster.daze.onbalance = false
+							<script>battlerage.blademaster.daze.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9482,7 +9498,7 @@ resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>headstrike</name>
-							<script>bragelist.blademaster.headstrike.onbalance = false
+							<script>battlerage.blademaster.headstrike.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()</script>
@@ -9522,7 +9538,7 @@ resetFormat()</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>harry</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist.occultist.harry
+local skillData = battlerage.occultist.harry
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9561,7 +9577,7 @@ end)</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>temperance</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist.occultist.temperance
+local skillData = battlerage.occultist.temperance
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9600,7 +9616,7 @@ end)</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>chaosgate</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist.occultist.chaosgate
+local skillData = battlerage.occultist.chaosgate
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9640,7 +9656,7 @@ end)
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>fluctuate</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist.occultist.fluctuate
+local skillData = battlerage.occultist.fluctuate
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9705,7 +9721,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>ruin</name>
-							<script>bragelist.occultist.ruin.onbalance = false
+							<script>battlerage.occultist.ruin.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9750,7 +9766,7 @@ end</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>dehydrate</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist["water elemental"].dehydrate
+local skillData = battlerage["water elemental"].dehydrate
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9789,7 +9805,7 @@ end)</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>icicles</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist["water elemental"].icicles
+local skillData = battlerage["water elemental"].icicles
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9828,7 +9844,7 @@ end)</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>waterfall</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist["water elemental"].waterfall
+local skillData = battlerage["water elemental"].waterfall
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9867,7 +9883,7 @@ end)</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>needlerain</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist["water elemental"].needlerain
+local skillData = battlerage["water elemental"].needlerain
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9905,7 +9921,7 @@ end)</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>aquahammer</name>
-							<script>bragelist["water elemental"].needlerain.onbalance = false
+							<script>battlerage["water elemental"].needlerain.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -9934,7 +9950,7 @@ end</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>swell</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist["water elemental"].swell
+local skillData = battlerage["water elemental"].swell
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -9988,7 +10004,7 @@ end)</script>
 						<regexCodePropertyList />
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>tornado kick</name>
-							<script>bragelist.monk.tornadokick.onbalance = false
+							<script>battlerage.monk.tornadokick.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -10013,7 +10029,7 @@ resetFormat()
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>spinning backfist</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist.monk.spinningbackfist
+local skillData = battlerage.monk.spinningbackfist
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -10052,7 +10068,7 @@ end)</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>mind scramble</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist.monk.scramble
+local skillData = battlerage.monk.scramble
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -10091,7 +10107,7 @@ end)</script>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>ripple strike</name>
 							<script>-- Access the specific skill table
-local skillData = bragelist.monk.ripplestrike
+local skillData = battlerage.monk.ripplestrike
 
 -- Toggle state and update UI
 skillData.onbalance = false
@@ -10129,7 +10145,7 @@ end)</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>splinterkick - shield break</name>
-							<script>bragelist.monk.splinterkick.onbalance = false
+							<script>battlerage.monk.splinterkick.onbalance = false
 selectCaptureGroup(2)
 setFgColor(170, 255, 0)
 resetFormat()
@@ -10496,14 +10512,14 @@ saveTableToJSON(settings, "settings")</script>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>version</name>
-				<script>checkForAsyncUpdate()</script>
+				<script>checkForUpdate()</script>
 				<command></command>
 				<packageName></packageName>
 				<regex>^version$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>system install</name>
-				<script>installSystem()</script>
+				<name>install</name>
+				<script>installSystem() -- only for emergencies.. (oh shit my system broke!) -- then restart mudlet.</script>
 				<command></command>
 				<packageName></packageName>
 				<regex>^sysInstall$</regex>
@@ -12029,6 +12045,12 @@ function clearTable(t)
     end
 end
 
+function ensureDir(path)
+    if not io.exists(path) then
+        lfs.mkdir(path)
+    end
+end
+
 -- Utility function to check if a file exists
 function fileExists(name)
   local f = io.open(name, "r")
@@ -13009,615 +13031,6 @@ registerAnonymousEventHandler("gmcp.IRE.Time.Update", function() PLAYER:parseTim
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
-					<name>json</name>
-					<packageName></packageName>
-					<script>--[[
-Fully recoverable, auto-backup-capable JSON persistence system
-with Deep Key Union Engine for update safe delivery.
-]]
-
-function fetchDKJSON()
-  local libsDir = getMudletHomeDir() .. "/Achaean System/system/libs/"
-  
-  ---------------------------------------------------------
-  -- 📦 DKJSON LIBRARY LOADER
-  ---------------------------------------------------------
-  if not dkjson then
-    local dkjsonPath = libsDir .. "dkjson.lua"
-    
-    if fileExists(dkjsonPath) then
-      return dofile(dkjsonPath)
-    else
-      debugEcho("red","CRITICAL: dkjson.lua missing from " .. libsDir)
-      return {}
-    end
-  end
-end
-
-dkjson = dkjson or fetchDKJSON()
-
--- Helper function to deeply copy a table (decouples from global memory tracking)
-local function deepCopyTable(orig)
-  local orig_type = type(orig)
-  local copy
-  if orig_type == 'table' then
-    copy = {}
-    for orig_key, orig_value in pairs(orig) do
-      if type(orig_value) == 'table' then
-        copy[orig_key] = deepCopyTable(orig_value)
-      else
-        copy[orig_key] = orig_value
-      end
-    end
-  else
-    copy = orig
-  end
-  return copy
-end
-
--- Helper function to deeply union missing system keys into saved user data structures
-local function deepKeyUnion(userData, systemDefaults)
-  if type(systemDefaults) ~= "table" then return userData end
-  if type(userData) ~= "table" then userData = {} end
-
-  for key, value in pairs(systemDefaults) do
-    if userData[key] == nil then
-      -- The user completely lacks this new feature or structure from the update. Graft it in!
-      if type(value) == "table" then
-        userData[key] = deepCopyTable(value)
-      else
-        userData[key] = value
-      end
-    elseif type(value) == "table" and type(userData[key]) == "table" then
-      -- If both contain a sub-table, recursively union their keys down the tree
-      deepKeyUnion(userData[key], value)
-    end
-  end
-  return userData
-end
-
--- Helper function to safely resolve nested global variables from string keys
-local function getGlobalValue(targetStr)
-  local parts = string.split(targetStr, ".")
-  local current = _G
-  for _, part in ipairs(parts) do
-    if type(current) ~= "table" then return nil end
-    current = current[part]
-  end
-  return current
-end
-
--- Helper function to safely write nested global variables from string keys
-local function setGlobalValue(targetStr, val)
-  local parts = string.split(targetStr, ".")
-  local current = _G
-  for i = 1, #parts - 1 do
-    local part = parts[i]
-    if current[part] == nil or type(current[part]) ~= "table" then
-      current[part] = {}
-    end
-    current = current[part]
-  end
-  current[parts[#parts]] = val
-end
-
--- Load data from JSON
-function loadTableFromJSON(tblRef, filename)
-  if not dkjson then
-    debugEcho("red","Cannot load: dkjson not loaded.")
-    return
-  end
-
-  local path = getMudletHomeDir() .. "/Achaean System/system/libs/json/" .. filename .. ".json"
-
-  if not fileExists(path) then
-    debugEcho("red","No file found for '" .. filename .. "' to load.")
-    return
-  end
-
-  local file = io.open(path, "r")
-  if not file then
-    debugEcho("red","Failed to open file for '" .. filename .. "'.")
-    return
-  end
-
-  local contents = file:read("*a")
-  file:close()
-
-  local decoded, _, err = dkjson.decode(contents, 1, nil)
-  if err or type(decoded) ~= "table" then
-    debugEcho("red","Error decoding " .. filename .. ": " .. (err or "invalid format"))
-    return
-  end
-
-  -- Clear existing table and update it in place
-  for k in pairs(tblRef) do tblRef[k] = nil end
-  for k, v in pairs(decoded) do tblRef[k] = v end
-
-  debugEcho("green",string.format("Loaded data from '%s.json'.", filename))
-end
-
--- Save data to JSON with directory verification
-function saveTableToJSON(tbl, filename, directory)
-  if not dkjson then
-    debugEcho("red","Cannot save: dkjson not loaded.")
-    return
-  end
-
-  if not tbl or type(tbl) ~= "table" then
-    debugEcho("red","Invalid table passed to save.")
-    return
-  end
-
-  local baseDir = getMudletHomeDir() .. "/Achaean System"
-  local subDirs = {"/system", "/system/libs", "/system/libs/json"}
-  
-  local currentPath = baseDir
-  for _, sub in ipairs(subDirs) do
-    if not lfs.attributes(currentPath, "mode") then
-      lfs.mkdir(currentPath)
-    end
-    currentPath = getMudletHomeDir() .. sub
-  end
-
-  directory = directory or (getMudletHomeDir() .. "/Achaean System/system/libs/json/")
-  local path = string.format("%s/%s.json", directory, filename)
-
-  local file, err = io.open(path, "w")
-  if not file then
-    debugEcho("red","Error saving " .. filename .. ": " .. (err or "unknown error"))
-    return
-  end
-
-  local ok, jsonString = pcall(dkjson.encode, tbl, { indent = true })
-  if not ok then
-    debugEcho("red","Error encoding JSON for " .. filename)
-    file:close()
-    return
-  end
-
-  file:write(jsonString)
-  file:close()
-
-  debugEcho("green",string.format("&lt;green&gt;Saved '%s' to %s", filename, path))
-end
-
-function jsonBackup()
-  if not dkjson then
-    debugEcho("red","Cannot create backups: dkjson not loaded.")
-    return
-  end
-
-  local cutoffSeconds = BACKUP_RETENTION_DAYS * 24 * 60 * 60
-  local now = os.time()
-
-  local backupDir = getMudletHomeDir() .. "/Achaean System/system/libs/backup"
-  local timestamp = os.date("%Y-%m-%d_%H-%M-%S")
-
-  if not lfs.attributes(backupDir, "mode") then lfs.mkdir(backupDir) end
-
-  local filesToBackup = {
-    {name = "settings", table = settings},
-    {name = "lustlist", table = lustlist},
-    {name = "enemylist", table = enemylist},
-    {name = "allylist", table = allylist},
-    {name = "cityallylist", table = NDB and NDB.cityList or {}},
-    {name = "cityenemylist", table = NDB and NDB.cityEnemies or {}},
-    {name = "huntmasterlist", table = targetMasterList},
-    {name = "areaIgnoreList", table = areaIgnoreList},
-    {name = "huntsettings", table = huntSettingsData},
-    {name = "battlerage", table = bragelist},
-    {name = "balance_data", table = balance_data},
-    {name = "curinglist", table = curinglist},
-    {name = "defenses", table = defenses},
-    {name = "afflictions", table = afflictions},
-  }
-
-  for _, file in ipairs(filesToBackup) do
-    local path = string.format("%s/%s_backup_%s.json", backupDir, file.name, timestamp)
-    local success, result = pcall(dkjson.encode, file.table, { indent = true })
-
-    if success then
-      local f = io.open(path, "w")
-      if f then f:write(result) f:close() end
-      debugEcho("green",string.format("🔁 Backup created: %s\n", path))
-    else
-      debugEcho("red",string.format("&lt;red&gt;⚠️ Error encoding %s: %s\n", file.name, result))
-    end
-  end
-
-  for file in lfs.dir(backupDir) do
-    if file:match("_backup_.*%.json$") then
-      local fullPath = backupDir .. "/" .. file
-      local attr = lfs.attributes(fullPath)
-      if attr and (now - attr.modification &gt; cutoffSeconds) then
-        os.remove(fullPath)
-        cecho(string.format("&lt;yellow&gt;🗑️ Deleted old backup: %s\n", file))
-      end
-    end
-  end
-end
-
-function loadJsonWithBackup(primaryPath, label)
-  local function decodeJsonFile(path)
-    local f = io.open(path, "r")
-    if not f then return nil, "File not found" end
-    local contents = f:read("*a")
-    f:close()
-    return dkjson.decode(contents, 1, nil)
-  end
-
-  local decoded, _, err = decodeJsonFile(primaryPath)
-  if not err and type(decoded) == "table" then
-    debugEcho("green",string.format("&lt;green&gt;Loaded %s from JSON.", label))
-    return decoded
-  end
-
-  debugEcho("yellow","[WARN] Failed to load %s. Trying backup...", label)
-
-  local bakPath = primaryPath .. ".bak"
-  local bakDecoded, _, bakErr = decodeJsonFile(bakPath)
-  if not bakErr and type(bakDecoded) == "table" then
-    local jsonString = dkjson.encode(bakDecoded, { indent = true })
-    local out = io.open(primaryPath, "w")
-    if out then
-      out:write(jsonString)
-      out:close()
-      cecho(string.format("&lt;green&gt;[RECOVERY] Restored %s from backup.\n", label))
-    end
-    return bakDecoded
-  else
-    cecho(string.format("&lt;red&gt;[FAILURE] Could not load %s or its backup.\n", label))
-    local crossPlatformBackupDir = getMudletHomeDir() .. "/Achaean System/system/libs/backup"
-    cecho(string.format("&lt;yellow&gt;Try restoring %s manually from:\n&lt;white&gt;%s\n", label, crossPlatformBackupDir))
-  end
-
-  return nil
-end
-
--- MAIN JSON FUNCTION (Supports Safe Read, Deep Reports, and Secure Pointer Writes)
-function jsonManager(opts)
-  opts = opts or {}
-  local safe = opts.safe
-  local diff = opts.diff
-  local path = opts.path
-  local fallback = opts.fallback
-  
-  local writeMode = opts.write
-  local writeData = opts.data
-
-  local libsDir = getMudletHomeDir() .. "/Achaean System/system/libs/"
-  local jsonDir = libsDir .. "json/"
-
-  ---------------------------------------------------------
-  -- ACTION BLOCK: SECURE WRITE MODE
-  ---------------------------------------------------------
-  if writeMode and path and writeData then
-    local f = io.open(path, "w")
-    if f then
-      f:write(dkjson.encode(writeData, { indent = true }))
-      f:close()
-      
-      local bakPath = path .. ".bak"
-      local bFile = io.open(bakPath, "w")
-      if bFile then
-        bFile:write(dkjson.encode(writeData, { indent = true }))
-        bFile:close()
-      end
-      return true
-    else
-      debugEcho("red", "JSON Save Failure: Direct file pointer access denied for path: " .. path)
-      return false
-    end
-  end
-
-  ---------------------------------------------------------
-  -- ACTION BLOCK: SAFE READ MODE
-  ---------------------------------------------------------
-  if safe and path and fallback then
-    if not fileExists(path) then
-      debugEcho("yellow","JSON not found, creating empty: " .. path)
-      local f = io.open(path, "w")
-      if f then
-        f:write(dkjson.encode(fallback or {}, { indent = true }))
-        f:close()
-      end
-      return fallback or {}
-    end
-
-    local file = io.open(path, "r")
-    local contents = file and file:read("*a")
-    if file then file:close() end
-
-    local decoded, _, err = dkjson.decode(contents or "", 1, nil)
-    if decoded and type(decoded) == "table" then return decoded end
-
-    debugEcho("red",string.format("Corrupted JSON: %s → %s\n", path, err or "unknown"))
-
-    local bakPath = path .. ".bak"
-    if fileExists(bakPath) then
-      local bFile = io.open(bakPath, "r")
-      local bContents = bFile and bFile:read("*a")
-      if bFile then bFile:close() end
-      local bDecoded = dkjson.decode(bContents or "", 1, nil)
-      if bDecoded and type(bDecoded) == "table" then
-        debugEcho("green","✔ Loaded backup from .bak file\n")
-        return bDecoded
-      end
-    end
-
-    local name = path:match("([^/\\]+)%.json$")
-    local backupDirs = { libsDir .. "backup" }
-    local latestBackup, latestTime = nil, 0
-    for _, dir in ipairs(backupDirs) do
-      if lfs.attributes(dir, "mode") == "directory" then
-        for file in lfs.dir(dir) do
-          if file:match("^" .. name .. "_backup_.*%.json$") then
-            local fullPath = dir .. "/" .. file
-            local attr = lfs.attributes(fullPath)
-            if attr and attr.modification &gt; latestTime then
-              latestTime = attr.modification
-              latestBackup = fullPath
-            end
-          end
-        end
-      end
-    end
-    
-    if latestBackup then
-      local f = io.open(latestBackup, "r")
-      local contents = f and f:read("*a")
-      if f then f:close() end
-      local decoded = dkjson.decode(contents or "", 1, nil)
-      if decoded and type(decoded) == "table" then
-        debugEcho("green","✔ Loaded latest backup: " .. latestBackup)
-        return decoded
-      end
-    end
-
-    local archivedDir = libsDir .. "archived"
-    local suggestedZip = nil
-    if lfs.attributes(archivedDir, "mode") == "directory" then
-      for file in lfs.dir(archivedDir) do
-        if file:match("%.zip$") and file:find(name) then
-          suggestedZip = file
-        end
-      end
-    end
-    
-    if suggestedZip then
-      debugEcho("green",string.format("&lt;magenta&gt;📦 Suggest restoring from archive:\n&lt;white&gt;  archived/%s\n", suggestedZip))
-    else
-      debugEcho("red",string.format("🚫 No restorable data or archive found for '%s'.\n", name))
-    end
-
-    os.rename(path, path .. ".corrupt")
-    cecho("&lt;yellow&gt;🚨 JSON corrupted. Renamed and replaced with empty.\n")
-    local f = io.open(path, "w")
-    if f then
-      f:write(dkjson.encode(fallback or {}, { indent = true }))
-      f:close()
-    end
-    return fallback or {}
-  end
-
-  ---------------------------------------------------------
-  -- ACTION BLOCK: STANDARD REPORT MODE
-  ---------------------------------------------------------
-  local LAST_LOADED = {}
-  local files = {
-    {name = "settings", ref = settings},
-    {name = "lustlist", ref = lustlist},
-    {name = "enemylist", ref = enemylist},
-    {name = "allylist", ref = allylist},
-    {name = "cityallylist", ref = NDB and NDB.cityList or {}},
-    {name = "cityenemylist", ref = NDB and NDB.cityEnemies or {}},
-    {name = "huntmasterlist", ref = targetMasterList},
-    {name = "areaIgnoreList", ref = areaIgnoreList},
-    {name = "huntsettings", ref = huntSettingsData},
-    {name = "battlerage", ref = bragelist},
-    {name = "balance_data", ref = balance_data},
-    {name = "curinglist", ref = curinglist},
-    {name = "defenses", ref = defenses},              
-    {name = "afflictions", ref = afflictions}, 
-  }
-
-  cecho("\n&lt;white&gt;" .. (diff and "📦 JSON Table Report + Diff" or "🔍 JSON Table Report") .. ":\n")
-
-  for _, file in ipairs(files) do
-    local name, ref = file.name, file.ref
-    local path = string.format("%s/%s.json", jsonDir, name)
-    local liveSize = (type(ref) == "table") and table.size(ref) or 0
-    local exists, jsonSize = fileExists(path), "N/A"
-
-    if exists then
-      local f = io.open(path, "r")
-      local contents = f and f:read("*a")
-      if f then f:close() end
-      local decoded = dkjson.decode(contents or "", 1, nil)
-      jsonSize = (type(decoded) == "table") and table.size(decoded) or 0
-    end
-
-    local match = (tonumber(jsonSize) == liveSize)
-    local color = exists and (match and "&lt;green&gt;" or "&lt;yellow&gt;") or "&lt;red&gt;"
-    local label = exists and (match and "✔ Match" or "✘ Diff") or "❌ Missing"
-
-    if diff then
-      LAST_LOADED[name] = os.date("%Y-%m-%d %H:%M:%S")
-      cecho(string.format("  - %-20s &lt;white&gt;[json: %4s] %s%s\n", name .. ".json", jsonSize, color, label))
-    else
-      cecho(string.format("  - %-20s &lt;white&gt;Live: %-4s JSON: %-4s %s%s\n", name, liveSize, jsonSize, color, label))
-    end
-  end
-end
-
--- Main load function (Updated with Deep Key Union Data Protection)
-function loadAllTablesFromJSON()
-    if not dkjson then
-        debugEcho("red", "Cannot load JSON: dkjson not loaded.")
-        return
-    end
-
-    local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-
-    -- Mapping names to actual table references
-    local fileMap = {
-        settings = settings,
-        lustlist = lustlist,
-        enemylist = enemylist,
-        allylist = allylist,
-        huntmasterlist = targetMasterList,
-        areaIgnoreList = areaIgnoreList,
-        huntsettings = huntSettingsData,
-        battlerage = bragelist,
-        balance_data = balance_data,
-        curinglist = curinglist,
-        defenses = defenses,        
-        afflictions = afflictions,
-    }
-
-    -- 1. Load standard tables
-    for filename, tableRef in pairs(fileMap) do
-        local path = string.format("%s/%s.json", jsonDir, filename)
-        
-        -- 1. Ensure the table exists even if empty, so the union has something to work with
-        if tableRef == nil then 
-            _G[filename] = {} 
-            tableRef = _G[filename]
-        end
-        
-      -- DEBUG ECHO: Verify file existence before trying to load
-        if not fileExists(path) then
-            myEcho("yellow", "⚠️ Skipping load: " .. filename .. ".json not found on disk.")
-        else
-            local savedData = jsonManager({ safe = true, path = path, fallback = {} })
-            if type(savedData) == "table" and next(savedData) then
-                local unionedData = deepKeyUnion(savedData, tableRef)
-                -- Clear and re-fill the table safely
-                for k in pairs(tableRef) do tableRef[k] = nil end
-                for k, v in pairs(unionedData) do tableRef[k] = v end
-                --debugEcho("green", "&lt;green&gt;✔ Loaded &amp; Unioned " .. filename)
-                -- ADD THIS ECHO:
-                myEcho("green", string.format("✔ Successfully synced '%s' (Table size: %d)", filename, table.size(tableRef)))
-            end
-        end
-    end
-
-    -- 2. Handle NDB specifically (since they are nested)
-    local ndbFiles = {
-        {name = "cityallylist", target = "cityList"},
-        {name = "cityenemylist", target = "cityEnemies"}
-    }
-
-    for _, file in ipairs(ndbFiles) do
-        local path = string.format("%s/%s.json", jsonDir, file.name)
-        local savedData = jsonManager({ safe = true, path = path, fallback = {} })
-
-        if type(savedData) == "table" and next(savedData) then
-            NDB[file.target] = savedData
-            for _, name in ipairs(savedData) do NDB_Acquire(name) end
-            debugEcho("green", "&lt;green&gt;✔ Loaded NDB: " .. file.name)
-        end
-    end
-end
-
--- Main save function
-function saveAllTablesAsJSON()
-  if not dkjson then
-    cecho("&lt;red&gt;Cannot save JSON: dkjson not loaded.\n")
-    return
-  end
-
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-
-  local filesToConvert = {
-    {name = "settings", table = settings},
-    {name = "lustlist", table = lustlist},
-    {name = "enemylist", table = enemylist},
-    {name = "allylist", table = allylist},
-    {name = "cityallylist", table = NDB and NDB.cityList or {}},
-    {name = "cityenemylist", table = NDB and NDB.cityEnemies or {}},
-    {name = "huntmasterlist", table = targetMasterList},
-    {name = "areaIgnoreList", table = areaIgnoreList},
-    {name = "huntsettings", table = huntSettingsData},
-    {name = "battlerage", table = bragelist},
-    {name = "balance_data", table = balance_data},
-    {name = "curinglist", table = curinglist},
-    {name = "defenses", table = defenses},             
-    {name = "afflictions", table = afflictions},
-  }
-
-  for _, file in ipairs(filesToConvert) do
-    local jsonPath = string.format("%s/%s.json", jsonDir, file.name)
-    local success, result = pcall(dkjson.encode, file.table, { indent = true })
-
-    if not success then
-      cecho(string.format("&lt;red&gt;Error encoding %s to JSON: %s\n", file.name, result))
-    else
-      if fileExists(jsonPath) then
-        local bakPath = jsonPath .. ".bak"
-        local oldFile = io.open(jsonPath, "r")
-        if oldFile then
-          local oldContents = oldFile:read("*a")
-          oldFile:close()
-          local bakFile = io.open(bakPath, "w")
-          if bakFile then
-            bakFile:write(oldContents)
-            bakFile:close()
-            debugEcho("yellow","↩ Created .bak: " .. bakPath)
-          end
-        end
-      end
-
-      local f, err = io.open(jsonPath, "w")
-      if f then
-        f:write(result)
-        f:close()
-        debugEcho("green","Saved JSON: " .. jsonPath)
-      else
-        debugEcho("green",string.format("&lt;red&gt;Failed to write %s.json: %s", file.name, err or "unknown error"))
-      end
-    end
-  end
-
-  if not SAVE_ALREADY_BACKED_UP then
-    jsonBackup()
-    SAVE_ALREADY_BACKED_UP = true
-  end
-end
-
-function simulateArchiveOldBackups()
-  local backupDir = getMudletHomeDir() .. "/Achaean System/system/libs/backup"
-  local archiveDir = getMudletHomeDir() .. "/Achaean System/system/libs/archived"
-  local now = os.time()
-  local cutoffSeconds = 30 * 24 * 60 * 60  -- 30 days
-
-  cecho("&lt;cyan&gt;🔍 Simulating archive of backups older than 30 days...\n")
-
-  for file in lfs.dir(backupDir) do
-    if file:match("_backup_.*%.json$") then
-      local fullPath = backupDir .. "/" .. file
-      local attr = lfs.attributes(fullPath)
-      if attr then
-        local age = now - attr.modification
-        if age &gt; cutoffSeconds then
-          local daysOld = math.floor(age / (24 * 60 * 60))
-          local datePart = file:match("_(%d%d%d%d%-%d%d%-%d%d)_")
-          local archiveName = datePart and (archiveDir .. "/" .. datePart .. ".zip") or "unknown"
-
-          cecho(string.format("  &lt;yellow&gt;Would archive: &lt;white&gt;%s\n", file))
-          cecho(string.format("    Age: %d days\n", daysOld))
-          cecho(string.format("    Target ZIP: %s\n", archiveName))
-        end
-      end
-    end
-  end
-
-  cecho("&lt;cyan&gt;✅ Simulation complete.\n")
-end</script>
-					<eventHandlerList />
-				</Script>
-				<Script isActive="yes" isFolder="no">
 					<name>login</name>
 					<packageName></packageName>
 					<script>-------------------------------------------------------------------------------
@@ -13626,7 +13039,6 @@ end</script>
 -- 📦 MANDATORY GLOBAL DEFINITIONS
 settings = settings or {}
 balance_data = balance_data or {}
-bragelist = bragelist or {}
 lustlist = lustlist or {}
 enemylist = enemylist or {}
 allylist = allylist or {}
@@ -13636,258 +13048,10 @@ huntSettingsData = huntSettingsData or {}
 curinglist = curinglist or {}
 defenses = defenses or {}
 afflictions = afflictions or {}
-
-local boot_balances = {
-  free = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "free" },
-  time = { in_use = true, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "time" },
-  wake = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "wake" },
-  writhe = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "writhe" },
-  balance = { in_use = false, avg_time = 1.65, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "balance" },
-  equilibrium = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "equilibrium"},
-  antidote = {in_use = false, avg_time = 8.0, aff_modifiers = {}, echo_title = "antidote"},
-  tree = {in_use = false, avg_time = 16.0, aff_modifiers = {}, echo_title = "tree"},
-  herb = { in_use = false, avg_time = 2.3, aff_modifiers = { homunculusmercury = {multiplier = 1.0, offset = 0.5}, earthdisrupt = {multiplier = 1.0, offset = 0.5} }, echo_title = "herb" },
-  salve = {in_use = false, avg_time = 5.0, aff_modifiers = {}, echo_title = "salve"},
-  smoke = {in_use = false, avg_time = 1.55, aff_modifiers = {}, echo_title = "smoke"},
-  focus = {in_use = false, avg_time = 2.6, aff_modifiers = {}, echo_title = "focus"},
-  health = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "health"},
-  mana = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "mana"},
-  stunned = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "stunned"},
-  fitness = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fitness"},
-  shrugging = {in_use = false, avg_time = 13.0, aff_modifiers = {}, echo_title = "shrugging"},
-  fool = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fool"},
-  dragonheal = {in_use = false, avg_time = 23.0, aff_modifiers = {}, echo_title = "dragonheal"},
-  salt = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "salt"},
-  bloodboil = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "bloodboil"},
-  panacea = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "panacea"},
-  accelerate = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "accelerate"},
-}
-
--- Populate missing balance templates right on boot without overwriting custom numbers
-for k, v in pairs(boot_balances) do
-  if balance_data[k] == nil then balance_data[k] = v end
-end
-
+tattooSettings = tattooSettings or {}
+NDB = NDB or {}
 mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crackedribs = 0, wristfractures = 0, pressure = 0, burning = 0, temperedmodifying = 0, temperedsanguine = 0, temperedmelancholic = 0, temperedphlegmatic = 0, temperedcholeric = 0, unweavingmind = 0, unweavingbody = 0, unweavingspirit = 0, horror = 0 }
-
-bragelist = bragelist or {}
-
-local boot_rage = {
-   alchemist = {
-    miasma = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "throw miasma at @tar"},
-    cadmium = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "educe cadmium @tar"},
-    caustic = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "throw caustic at @tar"},
-    magnesium = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "educe magnesium @tar"},
-    pathogen = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "throw pathogen at @tar"},
-    hypnotic = {enabled = true, onbalance = true, type = 5, rage = 28, cooldown = 41, command = "throw hypnotic at @tar"},
-  },
-  apostate = {
-      convulsions = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "stare @tar convulsions"},
-      horrify = {enabled = true, onbalance = true, type = 2, rage = 29, cooldown = 34, command = "stare @tar horrify"},
-      pierce = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "daegger pierce @tar"},
-      burrow = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown = 23, command = "daegger burrow @tar"},
-      bloodlet = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 23, command = "bloodlet @tar"},
-      possess = {enabled = true, onbalance = true, type = 5, rage = 32, cooldown = 43, command = "possess @tar"},
-    },  
-  bard = {
-      moulinet = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "moulinet @tar"},
-      trill = {enabled = true, onbalance = true, type = 5, rage = 28, cooldown = 41, command = "play trill at @tar"},
-      resonance = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "play resonance at @tar"},
-      howlslash = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "howlslash @tar"},
-      cyclone = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "cyclone @tar"},
-      charm = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown = 43, command = "charm @tar"},
-    },
-  blademaster = {
-      leapstrike = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "leapstrike @tar"},
-      daze = {enabled = true, onbalance = true, type = 5, rage = 22, cooldown = 33, command = "shin daze @tar"},
-      shatter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "shin shatter @tar"},
-      spinslash = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "spinslash @tar"},
-      headstrike = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "strike @tar head"},
-      nerveslash = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "nerveslash @tar"},
-    },
-  depthswalker = {
-      drain = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "shadow drain @tar"},
-      lash = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "shadow lash @tar"},
-      curse = {enabled = true, onbalance = true, type = 5, rage = 24, cooldown = 35, command = "chrono curse @tar"},
-      nakail = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "intone nakail @tar"},
-      erasure = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "chrono erasure @tar"},
-      boinad = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown = 38, command = "intone boinad @tar"},
-    },
-  druid = {
-      strangle = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "strangle @tar"},
-      redeem = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "reclamation redeem @tar"},
-      vinecrack = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "vinecrack @tar"},
-      ravage = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "ravage @tar"},
-      sear = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "sear @tar"},
-      glare = {enabled = true, onbalance = true, type = 5, rage = 14, cooldown = 23, command = "quarterstaff @tar"},
-    },
-  infernal = {
-      ravage = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "ravage @tar"},
-      soulshield = {enabled = true, onbalance = true, type = 5, rage = 20, cooldown = 37, command = "soulshield"},
-      shiver = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "shiver @tar"},
-      spike = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "spike @tar"},
-      hellstrike = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "hellstrike @tar"},
-      deathlink = {enabled = true, onbalance = true, type = 6, rage = 30, cooldown = 43, command = "deathlink @tar"},
-    },
-  jester = {
-      noogie = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "noogie @tar"},
-      dustthrow = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "dustthrow @tar"},
-      jacks = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "throw jacks at @tar"},
-      ensconce = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "ensconce firecracker on @tar"},
-      befuddle = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "befuddle @tar"},
-      rap = {enabled = true, onbalance = true, type = 5, rage = 26, cooldown = 33, command = "rap @tar"},
-    },
-  magi = {
-      windlash = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "cast windlash at @tar"},
-      dilation = {enabled = true, onbalance = true, type = 5, rage = 35, cooldown = 35, command = "cast dilation at @tar"},
-      disintegrate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "cast disintegrate at @tar"},
-      squeeze = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "cast squeeze @tar"},
-      firefall = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "cast firefall at @tar"},
-      stormbolt = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "cast stormbolt at @tar"},
-    },
-   monk = {
-    spinningbackfist = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "sbp @tar"},
-    scramble = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown=31, command = "mind scramble @tar"},
-    splinterkick = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown=0, command = "spk @tar"},
-    tornadokick = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown=23, command = "tnk @tar"},
-    mindblast = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown=23, command = "mind blast @tar"},
-    ripplestrike = {enabled = true, onbalance = true, type = 5, rage = 25, cooldown=27, command = "rpst @tar"},
-  }, 
-  occultist = {
-    harry = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "harry @tar"},
-    temperance = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown=43, command = "temper @tar"},
-    ruin = {enabled = false, onbalance = true, type = "shield break", cooldown=0, rage = 17, command = "ruin @tar"},
-    chaosgate = {enabled = true, onbalance = true, type = 5, rage = 36, cooldown=23, command = "chaosgate @tar"},
-    fluctuate = {enabled = false, onbalance = true, type = 3, rage = 25, cooldown=23, command = "fluctuate @tar"},
-    stagnate = {enabled = false, onbalance = true, type = 2, rage = 24, cooldown=35, command = "stagnate @tar"},
-  },  
-  paladin = {
-      harrow = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "harrow @tar"},
-      regeneration = {enabled = true, onbalance = true, type = 4, rage = 33, cooldown = 53, command = "perform rite of regeneration"},
-      shock = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "perform rite of shock at @tar"},
-      punishment = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "perform rite of punishment at @tar"},
-      recovery = {enabled = true, onbalance = true, type = 5, rage = 31, cooldown = 44, command = "perform recovery @tar"},
-    },  
-  priest = {
-      torment = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "angel torment @tar"},
-      incense = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "angel incense @tar"},
-      crack = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "crack @tar"},
-      harrow = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "perform rite of harrow on @tar"},
-      hammer = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "hammer @tar"},
-      horrify = {enabled = true, onbalance = true, type = 5, rage = 29, cooldown = 34, command = "perform rite of horrify on @tar"},
-    },
-  runewarden = {
-      collide = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "collide @tar"},
-      bulwark = {enabled = true, onbalance = true, type = 2, rage = 28, cooldown = 45, command = "bulwark"},
-      fragment = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "fragment @tar"},
-      onslaught = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown = 23, command = "onslaught @tar"},
-      etch = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 23, command = "etch rune at @tar"},
-      safeguard = {enabled = true, onbalance = true, type = 5, rage = 35, cooldown = 57, command = "safeguard @tar"},
-    },
-  sentinel = {
-      pester = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "pester @tar"},
-      tame = {enabled = true, onbalance = true, type = 6, rage = 32, cooldown = 43, command = "tame @tar"},
-      skewer = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "skewer @tar"},
-      swarm = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "swarm @tar"},
-      goad = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "goad @tar"},
-    },  
-  serpent = {
-      thrash = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "thrash @tar"},
-      flagellate = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "flagellate @tar"},
-      excoriate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "excoriate @tar"},
-      throatrip = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "throatrip @tar"},
-      snare = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "snare @tar"},
-      obliviate = {enabled = true, onbalance = true, type = 6, rage = 28, cooldown = 41, command = "obliviate @tar"},
-    },
-  shaman = {
-      corruption = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "curse @tar corruption"},
-      korkma = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "invoke korkma @tar"},
-      haemorrhage = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "curse @tar hemorrhage"},
-      vurus = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "invoke vurus @tar"},
-      cesaret = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "invoke cesaret @tar"},
-    },  
-  sylvan = {
-      torrent = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "cast torrent at @tar"},
-      sandstorm = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "cast sandstorm at @tar"},
-      stonevine = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "stonevine @tar"},
-      leechroot = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "leechroot @tar"},
-      rockshot = {enabled = true, onbalance = true, type = 6, rage = 28, cooldown = 41, command = "cast rockshot at @tar"},
-    },  
-
-  ["black dragon"] = {
-    dragonspit = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "dragonspit @tar"},
-    dragonsting = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "dragonsting @tar"},
-    dissolve = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
-    override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
-    corrode = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "corrode @tar"},
-    dragonfear = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "dragonfear @tar"},
-  },
-  ["blue dragon"] = {
-    dragonchill = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "dragonchill @tar"},
-    glaciate = {enabled = true, onbalance = true, type = 6, rage = 26, cooldown = 33, command = "glaciate @tar"},
-    frostrive = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "frostrive @tar"},
-    override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
-    frostwave = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "frostwave @tar"},
-    ague = {enabled = true, onbalance = true, type = 4, rage = 14, cooldown = 23, command = "ague @tar"},
-  },
-  ["gold dragon"] = {
-    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
-    deaden = {enabled = true, onbalance = true, type = 6, rage = 24, cooldown = 35, command = "deaden @tar"},
-    psishatter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "psishatter @tar"},
-    psiblast = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "psiblast @tar"},
-    psistorm = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "psistorm @tar"},
-    psidaze = {enabled = true, onbalance = true, type = 6, rage = 31, cooldown = 44, command = "psidaze @tar"},
-  },
-  ["green dragon"] = {
-    dragonspit = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "dragonspit @tar"},
-    scour = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "scour @tar"},
-    deteriorate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
-    override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
-    slaver = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "slaver on @tar"},
-    dragonsap = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "dragonsap @tar"},
-  },
-  ["red dragon"] = {
-    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
-    dragontaunt = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "dragontaunt @tar"},
-    melt = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
-    dragonblaze = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "dragonblaze @tar"},
-    flamebath = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "flamebath @tar"},
-    scorch = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "scorch @tar"},
-  },
-  ["silver dragon"] = {
-    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
-    sizzle = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "sizzle @tar"},
-    splinter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "splinter @tar"},
-    dragonspark = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "dragonspark @tar"},
-    stormflare = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "stormflare @tar"},
-    galvanize = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "galvanize @tar"},
-  },
-
-  ["water elemental"] = {
-    icicles = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown= 16, command = "manifest icicles @tar"},
-    dehydrate = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown= 23, command = "manifest dehydrate @tar"},
-    aquahammer = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown= 0, command = "manifest aquahammer @tar"},
-    needlerain = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown= 23, command = "manifest needlerain @tar"},
-    waterfall = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown= 23, command = "manifest waterfall @tar"},
-    swell = {enabled = true, onbalance = true, type = 5, rage = 30, cooldown= 42, command = "manifest swell @tar"},
-  },
-  ["air elemental"]   = {},
-  ["fire elemental"]  = {},
-  ["earth elemental"] = {},
-}
-
--- Populate missing classes safely right on boot
-for cls, skills in pairs(boot_rage) do
-  if bragelist[cls] == nil then
-    bragelist[cls] = skills
-  else
-    for sk, data in pairs(skills) do
-      if bragelist[cls][sk] == nil then bragelist[cls][sk] = data end
-    end
-  end
-end
-
-
+battlerage = battlerage or {}
 -- Lookups (Global constants)
 minables = {
   -- MINERALS
@@ -13971,6 +13135,320 @@ emptied_pipes_count = emptied_pipes_count or 0
 pipes_to_light = pipes_to_light or {}
 defensesByName = {}
 
+function initCuringList()
+    -- 1. Ensure the global table exists
+    curinglist = curinglist or {}
+
+    -- 2. Define the list of all keys
+    local afflictionList = {
+        "addiction", "aeon", "agoraphobia", "airfisted", "anorexia", "asphyxiating", 
+        "asthma", "blackout", "blistered", "bound", "brokenleftarm", "brokenleftleg", 
+        "brokenrightarm", "brokenrightleg", "bruisedribs", "burning", "calcifiedskull", 
+        "calcifiedtorso", "claustrophobia", "clumsiness", "coldfate", "concussion", 
+        "condemned", "confusion", "crackedribs", "cremated", "crushedthroat", 
+        "daeggerimpale", "damagedhead", "damagedleftarm", "damagedleftleg", 
+        "damagedrightarm", "damagedrightleg", "darkshade", "dazed", "dazzled", 
+        "deadening", "deathsickness", "degenerate", "dehydrated", "dementia", 
+        "demonstain", "depression", "deteriorate", "disloyalty", "disrupted", 
+        "dissonance", "dizziness", "enmesh", "ensorcelled", "entangled", 
+        "epilepsy", "fear", "flamefisted", "flushings", "frostbite", "frozen", 
+        "fulminated", "generosity", "grievouswounds", "guilt", "haemophilia", 
+        "hallucinations", "hamstrung", "hatred", "healthleech", "heartseed", 
+        "hecatecurse", "hellsight", "horror", "hypersomnia", "hypochondria", 
+        "hypothermia", "icefisted", "impaled", "impatience", "indifference", 
+        "internalbleeding", "itching", "justice", "kaisurge", "kkractlebrand", 
+        "laceratedthroat", "lapsingconsciousness", "latched", "lethargy", 
+        "lightbind", "loneliness", "lovers", "manaleech", "mangledhead", 
+        "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", 
+        "masochism", "mildtrauma", "mindravaged", "muddled", "mycalium", "nausea", 
+        "numbedleftarm", "numbedrightarm", "pacified", "palpatarfeed", "paralysis", 
+        "paranoia", "parasite", "peace", "petrified", "phlogisticated", "pinshot", 
+        "pressure", "prone", "pyramides", "pyre", "rebbies", "recklessness", 
+        "retribution", "revealed", "sandfever", "scalded", "scrambledbrains", 
+        "scytherus", "selarnia", "sensitivity", "serioustrauma", "shadowmadness", 
+        "shivering", "shyness", "silenced", "silver", "skullfractures", 
+        "slashedthroat", "sleeping", "slickness", "slimeobscure", "solarburn", 
+        "spiritburn", "stupidity", "stuttering", "temperedcholeric", 
+        "temperedmelancholic", "temperedphlegmatic", "temperedsanguine", 
+        "tenderskin", "timeflux", "timeloop", "tonguetied", "torntendons", 
+        "transfixation", "trueblind", "unweavingbody", "unweavingmind", 
+        "unweavingspirit", "vertigo", "vinewreathed", "vitiated", "vitrified", 
+        "voidfisted", "voyria", "waterbonds", "weariness", "webbed", 
+        "whisperingmadness", "wristfractures"
+    }
+
+    -- 3. Build the table using a loop
+    for _, name in ipairs(afflictionList) do
+        -- Only set to 0 if the key doesn't exist yet (prevents overwriting saved progress)
+        if curinglist[name] == nil then
+            curinglist[name] = 0
+        end
+    end
+
+    -- 4. Persist the results
+    saveTableToJSON(curinglist, "curinglist")
+    debugEcho("green", "✔ Curing list initialized with " .. #afflictionList .. " entries.")
+end
+
+function initBattleRage()
+
+    local boot_rage = {
+       alchemist = {
+        miasma = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "throw miasma at @tar"},
+        cadmium = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "educe cadmium @tar"},
+        caustic = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "throw caustic at @tar"},
+        magnesium = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "educe magnesium @tar"},
+        pathogen = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "throw pathogen at @tar"},
+        hypnotic = {enabled = true, onbalance = true, type = 5, rage = 28, cooldown = 41, command = "throw hypnotic at @tar"},
+      },
+      apostate = {
+          convulsions = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "stare @tar convulsions"},
+          horrify = {enabled = true, onbalance = true, type = 2, rage = 29, cooldown = 34, command = "stare @tar horrify"},
+          pierce = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "daegger pierce @tar"},
+          burrow = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown = 23, command = "daegger burrow @tar"},
+          bloodlet = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 23, command = "bloodlet @tar"},
+          possess = {enabled = true, onbalance = true, type = 5, rage = 32, cooldown = 43, command = "possess @tar"},
+        },  
+      bard = {
+          moulinet = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "moulinet @tar"},
+          trill = {enabled = true, onbalance = true, type = 5, rage = 28, cooldown = 41, command = "play trill at @tar"},
+          resonance = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "play resonance at @tar"},
+          howlslash = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "howlslash @tar"},
+          cyclone = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "cyclone @tar"},
+          charm = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown = 43, command = "charm @tar"},
+        },
+      blademaster = {
+          leapstrike = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "leapstrike @tar"},
+          daze = {enabled = true, onbalance = true, type = 5, rage = 22, cooldown = 33, command = "shin daze @tar"},
+          shatter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "shin shatter @tar"},
+          spinslash = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "spinslash @tar"},
+          headstrike = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "strike @tar head"},
+          nerveslash = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "nerveslash @tar"},
+        },
+      depthswalker = {
+          drain = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "shadow drain @tar"},
+          lash = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "shadow lash @tar"},
+          curse = {enabled = true, onbalance = true, type = 5, rage = 24, cooldown = 35, command = "chrono curse @tar"},
+          nakail = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "intone nakail @tar"},
+          erasure = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "chrono erasure @tar"},
+          boinad = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown = 38, command = "intone boinad @tar"},
+        },
+      druid = {
+          strangle = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "strangle @tar"},
+          redeem = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "reclamation redeem @tar"},
+          vinecrack = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "vinecrack @tar"},
+          ravage = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "ravage @tar"},
+          sear = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "sear @tar"},
+          glare = {enabled = true, onbalance = true, type = 5, rage = 14, cooldown = 23, command = "quarterstaff @tar"},
+        },
+      infernal = {
+          ravage = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "ravage @tar"},
+          soulshield = {enabled = true, onbalance = true, type = 5, rage = 20, cooldown = 37, command = "soulshield"},
+          shiver = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "shiver @tar"},
+          spike = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "spike @tar"},
+          hellstrike = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "hellstrike @tar"},
+          deathlink = {enabled = true, onbalance = true, type = 6, rage = 30, cooldown = 43, command = "deathlink @tar"},
+        },
+      jester = {
+          noogie = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "noogie @tar"},
+          dustthrow = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "dustthrow @tar"},
+          jacks = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "throw jacks at @tar"},
+          ensconce = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "ensconce firecracker on @tar"},
+          befuddle = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "befuddle @tar"},
+          rap = {enabled = true, onbalance = true, type = 5, rage = 26, cooldown = 33, command = "rap @tar"},
+        },
+      magi = {
+          windlash = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "cast windlash at @tar"},
+          dilation = {enabled = true, onbalance = true, type = 5, rage = 35, cooldown = 35, command = "cast dilation at @tar"},
+          disintegrate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "cast disintegrate at @tar"},
+          squeeze = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "cast squeeze @tar"},
+          firefall = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "cast firefall at @tar"},
+          stormbolt = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "cast stormbolt at @tar"},
+        },
+       monk = {
+        spinningbackfist = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "sbp @tar"},
+        scramble = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown=31, command = "mind scramble @tar"},
+        splinterkick = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown=0, command = "spk @tar"},
+        tornadokick = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown=23, command = "tnk @tar"},
+        mindblast = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown=23, command = "mind blast @tar"},
+        ripplestrike = {enabled = true, onbalance = true, type = 5, rage = 25, cooldown=27, command = "rpst @tar"},
+      }, 
+      occultist = {
+        harry = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "harry @tar"},
+        temperance = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown=43, command = "temper @tar"},
+        ruin = {enabled = false, onbalance = true, type = "shield break", cooldown=0, rage = 17, command = "ruin @tar"},
+        chaosgate = {enabled = true, onbalance = true, type = 5, rage = 36, cooldown=23, command = "chaosgate @tar"},
+        fluctuate = {enabled = false, onbalance = true, type = 3, rage = 25, cooldown=23, command = "fluctuate @tar"},
+        stagnate = {enabled = false, onbalance = true, type = 2, rage = 24, cooldown=35, command = "stagnate @tar"},
+      },  
+      paladin = {
+          harrow = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "harrow @tar"},
+          regeneration = {enabled = true, onbalance = true, type = 4, rage = 33, cooldown = 53, command = "perform rite of regeneration"},
+          shock = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "perform rite of shock at @tar"},
+          punishment = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "perform rite of punishment at @tar"},
+          recovery = {enabled = true, onbalance = true, type = 5, rage = 31, cooldown = 44, command = "perform recovery @tar"},
+        },  
+      priest = {
+          torment = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "angel torment @tar"},
+          incense = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "angel incense @tar"},
+          crack = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "crack @tar"},
+          harrow = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "perform rite of harrow on @tar"},
+          hammer = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "hammer @tar"},
+          horrify = {enabled = true, onbalance = true, type = 5, rage = 29, cooldown = 34, command = "perform rite of horrify on @tar"},
+        },
+      runewarden = {
+          collide = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "collide @tar"},
+          bulwark = {enabled = true, onbalance = true, type = 2, rage = 28, cooldown = 45, command = "bulwark"},
+          fragment = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "fragment @tar"},
+          onslaught = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown = 23, command = "onslaught @tar"},
+          etch = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 23, command = "etch rune at @tar"},
+          safeguard = {enabled = true, onbalance = true, type = 5, rage = 35, cooldown = 57, command = "safeguard @tar"},
+        },
+      sentinel = {
+          pester = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "pester @tar"},
+          tame = {enabled = true, onbalance = true, type = 6, rage = 32, cooldown = 43, command = "tame @tar"},
+          skewer = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "skewer @tar"},
+          swarm = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "swarm @tar"},
+          goad = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "goad @tar"},
+        },  
+      serpent = {
+          thrash = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "thrash @tar"},
+          flagellate = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "flagellate @tar"},
+          excoriate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "excoriate @tar"},
+          throatrip = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "throatrip @tar"},
+          snare = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "snare @tar"},
+          obliviate = {enabled = true, onbalance = true, type = 6, rage = 28, cooldown = 41, command = "obliviate @tar"},
+        },
+      shaman = {
+          corruption = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "curse @tar corruption"},
+          korkma = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "invoke korkma @tar"},
+          haemorrhage = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "curse @tar hemorrhage"},
+          vurus = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "invoke vurus @tar"},
+          cesaret = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "invoke cesaret @tar"},
+        },  
+      sylvan = {
+          torrent = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "cast torrent at @tar"},
+          sandstorm = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "cast sandstorm at @tar"},
+          stonevine = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "stonevine @tar"},
+          leechroot = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "leechroot @tar"},
+          rockshot = {enabled = true, onbalance = true, type = 6, rage = 28, cooldown = 41, command = "cast rockshot at @tar"},
+        },  
+    
+      ["black dragon"] = {
+        dragonspit = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "dragonspit @tar"},
+        dragonsting = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "dragonsting @tar"},
+        dissolve = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
+        override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
+        corrode = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "corrode @tar"},
+        dragonfear = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "dragonfear @tar"},
+      },
+      ["blue dragon"] = {
+        dragonchill = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "dragonchill @tar"},
+        glaciate = {enabled = true, onbalance = true, type = 6, rage = 26, cooldown = 33, command = "glaciate @tar"},
+        frostrive = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "frostrive @tar"},
+        override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
+        frostwave = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "frostwave @tar"},
+        ague = {enabled = true, onbalance = true, type = 4, rage = 14, cooldown = 23, command = "ague @tar"},
+      },
+      ["gold dragon"] = {
+        overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
+        deaden = {enabled = true, onbalance = true, type = 6, rage = 24, cooldown = 35, command = "deaden @tar"},
+        psishatter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "psishatter @tar"},
+        psiblast = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "psiblast @tar"},
+        psistorm = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "psistorm @tar"},
+        psidaze = {enabled = true, onbalance = true, type = 6, rage = 31, cooldown = 44, command = "psidaze @tar"},
+      },
+      ["green dragon"] = {
+        dragonspit = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "dragonspit @tar"},
+        scour = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "scour @tar"},
+        deteriorate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
+        override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
+        slaver = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "slaver on @tar"},
+        dragonsap = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "dragonsap @tar"},
+      },
+      ["red dragon"] = {
+        overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
+        dragontaunt = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "dragontaunt @tar"},
+        melt = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
+        dragonblaze = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "dragonblaze @tar"},
+        flamebath = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "flamebath @tar"},
+        scorch = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "scorch @tar"},
+      },
+      ["silver dragon"] = {
+        overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
+        sizzle = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "sizzle @tar"},
+        splinter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "splinter @tar"},
+        dragonspark = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "dragonspark @tar"},
+        stormflare = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "stormflare @tar"},
+        galvanize = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "galvanize @tar"},
+      },
+    
+      ["water elemental"] = {
+        icicles = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown= 16, command = "manifest icicles @tar"},
+        dehydrate = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown= 23, command = "manifest dehydrate @tar"},
+        aquahammer = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown= 0, command = "manifest aquahammer @tar"},
+        needlerain = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown= 23, command = "manifest needlerain @tar"},
+        waterfall = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown= 23, command = "manifest waterfall @tar"},
+        swell = {enabled = true, onbalance = true, type = 5, rage = 30, cooldown= 42, command = "manifest swell @tar"},
+      },
+      ["air elemental"]   = {},
+      ["fire elemental"]  = {},
+      ["earth elemental"] = {},
+    }
+    
+    -- Populate missing classes safely right on boot
+    for cls, skills in pairs(boot_rage) do
+      if battlerage[cls] == nil then
+        battlerage[cls] = skills
+      else
+        for sk, data in pairs(skills) do
+          if battlerage[cls][sk] == nil then battlerage[cls][sk] = data end
+        end
+      end
+    end
+
+    saveTableToJSON(battlerage, "battlerage")
+
+end
+
+
+function initBalanceData()
+
+local boot_balances = {
+  free = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "free" },
+  time = { in_use = true, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "time" },
+  wake = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "wake" },
+  writhe = { in_use = false, avg_time = 99, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "writhe" },
+  balance = { in_use = false, avg_time = 1.65, aff_modifiers = {lethargy = {multiplier = 1.0, offset = 0.5}}, echo_title = "balance" },
+  equilibrium = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "equilibrium"},
+  antidote = {in_use = false, avg_time = 8.0, aff_modifiers = {}, echo_title = "antidote"},
+  tree = {in_use = false, avg_time = 16.0, aff_modifiers = {}, echo_title = "tree"},
+  herb = { in_use = false, avg_time = 2.3, aff_modifiers = { homunculusmercury = {multiplier = 1.0, offset = 0.5}, earthdisrupt = {multiplier = 1.0, offset = 0.5} }, echo_title = "herb" },
+  salve = {in_use = false, avg_time = 5.0, aff_modifiers = {}, echo_title = "salve"},
+  smoke = {in_use = false, avg_time = 1.55, aff_modifiers = {}, echo_title = "smoke"},
+  focus = {in_use = false, avg_time = 2.6, aff_modifiers = {}, echo_title = "focus"},
+  health = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "health"},
+  mana = {in_use = false, avg_time = 3.3, aff_modifiers = {}, echo_title = "mana"},
+  stunned = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "stunned"},
+  fitness = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fitness"},
+  shrugging = {in_use = false, avg_time = 13.0, aff_modifiers = {}, echo_title = "shrugging"},
+  fool = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "fool"},
+  dragonheal = {in_use = false, avg_time = 23.0, aff_modifiers = {}, echo_title = "dragonheal"},
+  salt = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "salt"},
+  bloodboil = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "bloodboil"},
+  panacea = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "panacea"},
+  accelerate = {in_use = false, avg_time = 3.0, aff_modifiers = {}, echo_title = "accelerate"},
+}
+
+-- Populate missing balance templates right on boot without overwriting custom numbers
+for k, v in pairs(boot_balances) do
+  if balance_data[k] == nil then balance_data[k] = v end
+end
+
+     saveTableToJSON(balance_data, "balance_data")
+
+end
+
 function initializeFileLoads()
     -- Add a global flag to track if we've already initialized
     INITIALIZED_SYSTEM = INITIALIZED_SYSTEM or false
@@ -13987,7 +13465,7 @@ function initializeFileLoads()
     
    -- 1. Updated Reset Block with Confirmation
     local tablesToReset = {
-        {"Settings", settings}, {"Balances", balance_data}, {"Bragelist", bragelist}, 
+        {"Settings", settings}, {"Balances", balance_data}, {"Battlerage", battlerage}, 
         {"Lustlist", lustlist}, {"Enemylist", enemylist}, {"Allylist", allylist}, 
         {"TargetMaster", targetMasterList}, {"AreaIgnore", areaIgnoreList}, 
         {"HuntSettings", huntSettingsData}, {"CuringList", curinglist}, 
@@ -13998,8 +13476,6 @@ function initializeFileLoads()
         local name, tbl = entry[1], entry[2]
         if tbl and type(tbl) == "table" then
             clearTable(tbl)
-            -- Optional: uncomment the line below if you want to see the wipe in your console
-            -- debugEcho("yellow", "✔ Purged stale data: " .. name)
         end
     end
     
@@ -14009,27 +13485,35 @@ function initializeFileLoads()
         settings.debug = false
     end
 
-    local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-    local ndbPath = getNDBPath()
+  local saveDir = ACHAEAN_DATA_DIR
+  local ndbDir = ACHAEAN_DATA_DIR .. "/ndb/"
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+  local backupDir = ACHAEAN_DATA_DIR .. "/backup/"
+
+  ensureDir(saveDir)
+  ensureDir(ndbDir)
+  ensureDir(jsonDir)
+  ensureDir(backupDir)
 
     -- 1. Ensure dkjson library is loaded
     if not dkjson then
-        local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
+        -- It is now in the root of your package folder
+        local dkjsonPath = getMudletHomeDir() .. "/Achaean System/dkjson.lua"
         if fileExists(dkjsonPath) then
             dkjson = dofile(dkjsonPath)
-            debugEcho("green","Loaded dkjson library.")
+            debugEcho("green","Loaded dkjson library from root.")
         else
-            debugEcho("red","dkjson.lua not found at: " .. dkjsonPath)
+            debugEcho("red","CRITICAL: dkjson.lua not found at: " .. dkjsonPath)
             return
         end
     end
-
-    -- 2. Ensure NDB directory and doesnotexist.json exist
-    if not lfs.attributes(ndbPath, "mode") then
-        lfs.mkdir(ndbPath)
-    end
+       
     
-    local doesNotExistFile = ndbPath .. "/doesnotexist.json"
+        loadAllTablesFromJSON()   
+       
+       
+    local doesNotExistFile = ndbDir .. "/doesnotexist.json"
+    
     if not fileExists(doesNotExistFile) then
         jsonManager({
             write = true,
@@ -14074,9 +13558,9 @@ function initializeFileLoads()
     if type(loadAllNDBPlayers) == "function" then
         loadAllNDBPlayers()
     else
-        for file in lfs.dir(ndbPath) do
+        for file in lfs.dir(ndbDir) do
             if file:match("%.json$") and file ~= "doesnotexist.json" and file ~= "Online.json" then
-                local fullPath = ndbPath .. "/" .. file
+                local fullPath = ndbDir .. "/" .. file
                 local data = jsonManager({safe = true, path = fullPath, fallback = {}})
                 if data and data.name then
                     NDB.players[data.name:title()] = data
@@ -14110,27 +13594,6 @@ function initializeFileLoads()
         end
     end
 
-    loadAllTablesFromJSON()
-
-    -- 9. Load Core System Dependencies
-    local depsDir = getMudletHomeDir() .. "/Achaean System/system/libs/deps"
-    if lfs.attributes(depsDir, "mode") == "directory" then
-        local filesToLoad = {}
-        for file in lfs.dir(depsDir) do
-            if file:match("%.lua$") and file ~= "dkjson.lua" then
-                table.insert(filesToLoad, file)
-            end
-        end
-        table.sort(filesToLoad)
-        
-        for _, file in ipairs(filesToLoad) do
-            local success, err = pcall(dofile, depsDir .. "/" .. file)
-            if not success then
-                cecho("&lt;red&gt;Error loading dependency file (" .. file .. "): " .. err .. "\n")
-            end
-        end
-    end
-
     -- 10. ENGAGE HIGHLIGHT ENGINE
     if type(NDB_loadHighlights) == "function" then
         NDB_loadHighlights()
@@ -14140,23 +13603,24 @@ end
 
 function initializeFileSaves()
 
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-  local ndbPath = getNDBPath()
+    local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+    local ndbDir = ACHAEAN_DATA_DIR .. "/ndb/"
+    
+      ensureDir(ndbDir)
+      ensureDir(jsonDir)
 
-  -- 1. Essential Library Check
+  -- 1. Ensure dkjson library is loaded
   if not dkjson then
-    local dkjsonPath = getMudletHomeDir() .. "/Achaean System/system/libs/deps/dkjson.lua"
-    if fileExists(dkjsonPath) then
-      dkjson = dofile(dkjsonPath)
-    else
-      cecho("&lt;red&gt;Cannot save files: dkjson library file not found at dependency path.\n")
-      return
-    end
+      -- It is now in the root of your package folder
+      local dkjsonPath = getMudletHomeDir() .. "/Achaean System/dkjson.lua"
+      if fileExists(dkjsonPath) then
+          dkjson = dofile(dkjsonPath)
+          debugEcho("green","Loaded dkjson library from root.")
+      else
+          debugEcho("red","CRITICAL: dkjson.lua not found at: " .. dkjsonPath)
+          return
+      end
   end
-
-  -- 2. Directory Safety
-  if not lfs.attributes(jsonDir, "mode") then lfs.mkdir(jsonDir) end
-  if not lfs.attributes(ndbPath, "mode") then lfs.mkdir(ndbPath) end
 
   -- 3. Save Per-Player NDB Data
   local savedCount = 0
@@ -14164,7 +13628,7 @@ function initializeFileSaves()
     for name, data in pairs(NDB.players) do
       if type(data) == "table" and name and name ~= "" then
         local safeName = name:title()
-        local fullPath = ndbPath .. "/" .. safeName .. ".json"
+        local fullPath = ndbDir .. "/" .. safeName .. ".json"
         
         jsonManager({
           write = true,
@@ -14181,7 +13645,7 @@ function initializeFileSaves()
   if NDB and NDB.doesNotExist then
     jsonManager({
       write = true,
-      path = ndbPath .. "/doesnotexist.json",
+      path = ndbDir .. "/doesnotexist.json",
       data = NDB.doesNotExist
     })
   end
@@ -14374,10 +13838,14 @@ guiInitHandlerID = registerAnonymousEventHandler("sysLoadEvent", function()
     else
         -- Initialize the UI and local Data immediately (No GMCP needed yet)
         systemLogin()
+        initBalanceData()
+        initBattleRage()
+        initCuringList()
         initializeSettings()
         initializeGUIContainers()
         initializeGUIWindows()
         initializeGUIGauges()
+        setTargetMasterList()
         
         -- Start the "GMCP Watcher" to wait for the game to be ready
         enableGmcpWatcher()
@@ -14388,27 +13856,18 @@ end)
 function enableGmcpWatcher()
     -- We register a one-time event that waits for the game to send vitals
     registerAnonymousEventHandler("gmcp.Char.Vitals", function()
-        if settings.systemLoaded then return end -- Don't run twice
-
-        cecho("\n&lt;green&gt;[SYSTEM] GMCP active. Finalizing game-specific data...")
-        
+        if settings.systemLoaded then return end -- Don't run twice        
         loadGMCPIRE()
         updateCharStats()
         updateActiveCureData()
         updateCurativeTable()
-        updateDefensiveTable()
-        
-        startGameFeedPolling()
-        
-        send("inv reset")
-        send("plist")
-        send("date")
-        
+        updateDefensiveTable()        
+        startGameFeedPolling()        
         settings.systemLoaded = true
         cecho("\n&lt;green&gt;[SYSTEM] All systems ready.")
+        send("")
     end)
 end
-
 
 function arenaEvent()
   systemOnRespawn()
@@ -14418,8 +13877,7 @@ end
 
 function systemConnected()
   settings = settings or {}
-  settings.systemLoaded = false
-  
+  settings.systemLoaded = false  
   initializeFileLoads()
   systemLogin()
 end
@@ -14432,247 +13890,632 @@ registerAnonymousEventHandler("sysConnectionEvent", systemConnected)</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
-					<name>async</name>
+					<name>update</name>
 					<packageName></packageName>
-					<script>-- =============================================================================
--- VERSION CONTROL &amp; UTILITY FUNCTIONS
--- =============================================================================
+					<script>ACHAEAN_DATA_DIR = getMudletHomeDir() .. "/Achaean_System_Data"
 
-function getLocalVersion()
-  local versionPath = getMudletHomeDir() .. "/Achaean System/config.lua"
-  local version = "unknown"
-  if not lfs.attributes(versionPath) then return version end
+-- 1. Check for update
+function checkForUpdate()
+    local installed = mpkg.getInstalledVersion("Achaean System")
+    local remote = mpkg.getRepositoryVersion("Achaean System")
 
-  for line in io.lines(versionPath) do
-    local v = line:match('version%s*=%s*%[%[(.-)%]%]')
-    if v then
-      version = v
-      break
-    end
-  end
-  return version
-end
-
-
-
-function isNewerVersion(remote, localVersion)
-  local function parseVersion(v)
-    -- If v is nil or not a string, match will error. We add a check.
-    if not v or type(v) ~= "string" then return 0, 0, 0 end
-    
-    -- Clean numeric match: 1.2.3
-    local major, minor, patch = v:match("(%d+)%.(%d+)%.(%d+)")
-    
-    -- Return numbers if found, otherwise return 0s so the comparison doesn't break
-    return tonumber(major) or 0, tonumber(minor) or 0, tonumber(patch) or 0
-  end
-
-  local rMaj, rMin, rPat = parseVersion(remote)
-  local lMaj, lMin, lPat = parseVersion(localVersion)
-
-  -- Comparison logic (this part is perfect as you had it)
-  if rMaj ~= lMaj then return rMaj &gt; lMaj end
-  if rMin ~= lMin then return rMin &gt; lMin end
-  return rPat &gt; lPat
-end
-
-
-
--- =============================================================================
--- THE "MODERN" ASYNC UPDATE SYSTEM (IMPORT)
--- =============================================================================
-
-function checkForAsyncUpdate()
-
-  cecho("\n&lt;yellow&gt;🔍 Checking remote version...\n")
-  -- The URL we send
-  local url = "https://raw.githubusercontent.com/caevora/core/main/Achaean%20System/config.lua"
-  -- The "Expected" URL with spaces for matching
-  local expectedUrl = "https://raw.githubusercontent.com/caevora/core/main/Achaean System/config.lua"
-  
-  registerAnonymousEventHandler("sysGetHttpDone", function(_, rurl, body)
-    -- Normalize the returning URL by converting %20 back to spaces for comparison
-    local normalizedUrl = rurl:gsub("%%20", " ")
-    
-    if normalizedUrl ~= expectedUrl then return end
-    
-    local remoteVersion = body:match('version%s*=%s*%[%[(.-)%]%]')
-    local localVersion = getLocalVersion()
-
-    cecho(string.format("&lt;white&gt;  [Debug] Local: %s | Remote: %s\n", localVersion, remoteVersion))
-
-    if remoteVersion and isNewerVersion(remoteVersion, localVersion) then
-      cecho(string.format("\n&lt;yellow&gt;🆕 Update Available: &lt;red&gt;%s&lt;reset&gt; -&gt; &lt;green&gt;%s&lt;reset&gt;\n", localVersion, remoteVersion))
-      cechoLink("\n&lt;cyan&gt;[ Click to Update Now ]\n", function() updateFromGitAsync(remoteVersion) end, "Install " .. remoteVersion, true)
+    if installed and remote and semver(remote) &gt; semver(installed) then
+        cecho("\n&lt;yellow&gt;🆕 Update available: " .. remote)
+        cechoLink("\n&lt;cyan&gt;[ Click to Update Now ]", function() 
+            mpkg.upgrade("Achaean System") 
+        end, "Update to " .. remote, true)
     else
-      cecho("&lt;green&gt;✅ System is up to date.\n")
-      cechoLink("&lt;dodger_blue&gt;[ How to Install System ]", [[openWebPage("https://youtu.be/q1Nu-1KixiY")]], "Watch installation guide", true)
-      cecho("  ")
-      cechoLink("&lt;dodger_blue&gt;[ Hunting System Tutorial ]", [[openWebPage("https://youtu.be/gk2ALKs71xg")]], "Watch hunting system guide", true)
-      cecho("\n")      
+        cecho("\n&lt;green&gt;✅ System is up to date.")
+        supportDev()
     end
-  end, true) 
-  
-  getHTTP(url)
 end
 
-function updateFromGitAsync(version)
-  
-  
-  -- Add this block:
-   if getOS() ~= "windows" then
-        cecho("\n&lt;red&gt;⚠️ [UPDATE] This automatic migration tool only supports Windows.")
-        cecho("\n&lt;white&gt;Please update manually via the Mudlet Package Manager.")
-        cecho("\n&lt;white&gt;Check our GitHub releases to ensure you have the latest version:\n")
-        
-        cechoLink("&lt;dodger_blue_underline&gt;[ Click here to view all releases ]", 
-            [[openWebPage("https://github.com/caevora/core/releases")]], 
-            "Open the release page in your browser", 
-            true)
-        echo("\n")
-        
-        return
-    end
-  
-  local mudletDir = getMudletHomeDir()
-  local targetDir = mudletDir .. "/Achaean System"
-  
-  -- Create the unique backup path string
-  local backupFolderName = "Backup Achaean System " .. os.date("%Y-%m-%d %H-%M-%S")
-  local backupDir = mudletDir .. "/" .. backupFolderName
-  local packageUrl = "https://github.com/caevora/core/releases/download/" .. version .. "/Achaean.System.mpackage"
-
-  ---------------------------------------------------------
-  -- 💾 STEP 0: WRITE THE TRACKING FILE FIRST (Maximum Stability)
-  ---------------------------------------------------------
-  local trackFile = mudletDir .. "/update_migration_path.txt"
-  local f = io.open(trackFile, "w")
-  if f then
-      f:write(backupDir)
-      f:close()
-      cecho("&lt;yellow&gt;💾 Migration path locked to disk...\n")
-  else
-      cecho("&lt;red&gt;🚫 CRITICAL ERROR: Could not write tracking file!\n")
-  end
-
-  ---------------------------------------------------------
-  -- 1. PHYSICAL RENAME (Step 1)
-  ---------------------------------------------------------
-  cecho("&lt;yellow&gt;📂 Renaming local folder to backup...\n")
-  collectgarbage()
-  local winTarget = targetDir:gsub("/", "\\")
-  local winBackup = backupDir:gsub("/", "\\")
-  local cmd = string.format([[powershell -Command "Rename-Item -Path '%s' -NewName '%s' -Force"]], winTarget, winBackup)
-  os.execute(cmd)
-
-  ---------------------------------------------------------
-  -- 2. CLEAR MEMORY CACHE (Step 2)
-  ---------------------------------------------------------
-  tempTimer(1.0, function()
-    cecho("&lt;yellow&gt;🗑️ Clearing Mudlet's internal registry...\n")
-    uninstallPackage("Achaean System")
-
-    -- 3. FRESH INSTALL
-    tempTimer(1.5, function()
-      cecho("&lt;yellow&gt;🔽 Downloading fresh package: &lt;white&gt;" .. packageUrl .. "\n")
-      installPackage(packageUrl)
-      cecho("&lt;green&gt;✅ Update initiated. Migration sequence armed.\n")
-    end)
-  end)
+-- 2. Perform Update (Simplified: No file moving required!)
+function performUpdate(newVersion)
+    cecho("\n&lt;yellow&gt;🔽 Installing update via MPKG...")
+    mpkg.upgrade("Achaean System")
 end
 
+-- 3. On Update Success
+function onSystemUpdated(event, packageInstalled)
+    if packageInstalled ~= "Achaean System" then return end
 
--- This function must have these exact parameters to capture the data Mudlet sends it
-function handleDataMigration(event, packageInstalled)
-        
-    -- 1. SECURITY/PLATFORM GATE
-    if getOS() ~= "windows" then
-        return -- Do absolutely nothing on Mac/Linux
-    end
+    -- Load the data from the external folder
+    loadAllTablesFromJSON()
     
-    ---------------------------------------------------------
-    -- 🔒 SAFETY LOCK: Only run if it's YOUR package name
-    ---------------------------------------------------------
-    if packageInstalled ~= "Achaean System" then 
-        return 
-    end
-
-    local mudletDir = getMudletHomeDir()
-    local trackFile = mudletDir .. "/update_migration_path.txt"
-    
-    -- Check if the track file exists using a raw io.open file check
-    local tfCheck = io.open(trackFile, "r")
-    if not tfCheck then
-        return
-    end
-    tfCheck:close()
-
-    -- Read the backup folder path back from disk
-    local f = io.open(trackFile, "r")
-    local sourceBackupPath = f and f:read("*l")
-    if f then f:close() end
-
-    if not sourceBackupPath or sourceBackupPath == "" then
-        return
-    end
-
-    local sourceLibsDir = sourceBackupPath .. "/system/libs"
-    local targetLibsDir = mudletDir .. "/Achaean System/system/libs"
-
-    ---------------------------------------------------------
-    -- 📂 Check if the DIRECTORY exists using LFS
-    ---------------------------------------------------------
-    if lfs.attributes(sourceLibsDir, "mode") ~= "directory" then
-        cecho("&lt;red&gt;⚠️ [MIGRATOR] Directory check failed! Folder not found at: " .. sourceLibsDir .. "\n")
-        -- Left os.remove(trackFile) commented out so the file stays put for you to see!
-        return
-    end
-
-    cecho("\n&lt;SkyBlue&gt;📦 [MIGRATOR]: &lt;white&gt;Fresh package detected. Synchronizing complete /libs tree...\n")
-
-    -- Format paths safely for Windows PowerShell execution
-    local winSource = sourceLibsDir:gsub("/", "\\")
-    local winTarget = targetLibsDir:gsub("/", "\\")
-
-    -- ✨ FORCE OVERWRITE INTERNALS
-    local cmd = string.format([[powershell -Command "Copy-Item -Path '%s\*' -Destination '%s' -Force -Recurse"]], 
-        winSource, winTarget)
-    
-    os.execute(cmd)
-
-    cecho("&lt;green&gt;✅ [MIGRATOR]: Complete /libs directory (including json, ndb, and backups) successfully restored!\n")
-    
-    -- Clean up the tracking text file ONLY after a successful copy operation
-    os.remove(trackFile)
-
-    -- Force reload your system report framework manager to pull values back into game memory instantly
     if jsonManager then
         tempTimer(1.0, function() jsonManager({diff = true}) end)
     end
     
-    ---------------------------------------------------------
-    -- 📢 FINAL COMPLETION NOTICE
-    ---------------------------------------------------------
-    tempTimer(2.0, function()
-        cecho("\n&lt;SkyBlue&gt;=============================================================================")
-        cecho("\n&lt;green&gt;🚀 SYSTEM IMPORT SUCCESSFUL!")
-        cecho("\n&lt;white&gt;Your core files, tracking databases, and settings have been fully restored.")
-        cecho("\n&lt;orange&gt;⚠️  Please restart Mudlet now to finalize the update sequence!")
-        cecho("\n&lt;SkyBlue&gt;=============================================================================")
-        cecho("\n&lt;SkyBlue&gt;-----------------------------------------------------------------------------")
-        cecho("\n&lt;white&gt;Love the system? Help keep the code alive: ")
-        cechoLink("&lt;dodger_blue&gt;[ Support Development via PayPal ]", 
-        [[openWebPage("https://paypal.me/shanesrasmussen?locale.x=en_US&amp;country.x=US")]], 
-        "Open PayPal donation page",true)
-        cecho("\n&lt;SkyBlue&gt;-----------------------------------------------------------------------------")
-    end)    
-        
+    tempTimer(2.0, [[updateSuccess() supportDev() ]])
     
 end
 
-registerAnonymousEventHandler("sysInstallPackage", handleDataMigration)
+function updateSuccess()
+    cecho("\n&lt;SkyBlue&gt;=============================================================================")
+    cecho("\n&lt;green&gt;🚀 SYSTEM UPDATE SUCCESSFUL!")
+    cecho("\n&lt;white&gt;Your system code has been updated.")
+    cecho("\n&lt;white&gt;Your data remains safe in Achaean_System_Data.")
+    cecho("\n&lt;SkyBlue&gt;=============================================================================")
+end
+
+function supportDev()
+    cecho("\n&lt;SkyBlue&gt;-----------------------------------------------------------------------------")
+    cecho("\n&lt;white&gt;Love the system? Help keep the code alive: ")
+    cechoLink("&lt;dodger_blue&gt;[ Support Development via PayPal ]", 
+        [[openWebPage("https://paypal.me/shanesrasmussen?locale.x=en_US&amp;country.x=US")]], 
+        "Open PayPal donation page", true)
+    cecho("\n&lt;SkyBlue&gt;-----------------------------------------------------------------------------")
+    send("")
+end
+
+registerAnonymousEventHandler("sysInstallPackage", "onSystemUpdated")</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>json</name>
+					<packageName></packageName>
+					<script>--[[
+Fully recoverable, auto-backup-capable JSON persistence system
+with Deep Key Union Engine for update safe delivery.
+]]
+
+-- Updated to point to root of package
+function fetchDKJSON()
+  local dkjsonPath = getMudletHomeDir() .. "/Achaean System/dkjson.lua"
+  if fileExists(dkjsonPath) then
+    return dofile(dkjsonPath)
+  else
+    debugEcho("red", "CRITICAL: dkjson.lua missing from " .. dkjsonPath)
+    return {}
+  end
+end
+
+dkjson = dkjson or fetchDKJSON()
+
+-- Helper function to deeply copy a table (decouples from global memory tracking)
+local function deepCopyTable(orig)
+  local orig_type = type(orig)
+  local copy
+  if orig_type == 'table' then
+    copy = {}
+    for orig_key, orig_value in pairs(orig) do
+      if type(orig_value) == 'table' then
+        copy[orig_key] = deepCopyTable(orig_value)
+      else
+        copy[orig_key] = orig_value
+      end
+    end
+  else
+    copy = orig
+  end
+  return copy
+end
+
+-- Helper function to deeply union missing system keys into saved user data structures
+local function deepKeyUnion(userData, systemDefaults)
+  if type(systemDefaults) ~= "table" then return userData end
+  if type(userData) ~= "table" then userData = {} end
+
+  for key, value in pairs(systemDefaults) do
+    if userData[key] == nil then
+      -- The user completely lacks this new feature or structure from the update. Graft it in!
+      if type(value) == "table" then
+        userData[key] = deepCopyTable(value)
+      else
+        userData[key] = value
+      end
+    elseif type(value) == "table" and type(userData[key]) == "table" then
+      -- If both contain a sub-table, recursively union their keys down the tree
+      deepKeyUnion(userData[key], value)
+    end
+  end
+  return userData
+end
 
 
+-- Load data from JSON
+function loadTableFromJSON(tblRef, filename)
+  if not dkjson then
+    debugEcho("red","Cannot load: dkjson not loaded.")
+    return
+  end
+
+  local saveDir = ACHAEAN_DATA_DIR
+  local ndbDir = ACHAEAN_DATA_DIR .. "/ndb/"
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+  local backupDir = ACHAEAN_DATA_DIR .. "/backup/"
+
+  ensureDir(saveDir)
+  ensureDir(ndbDir)
+  ensureDir(jsonDir)
+  ensureDir(backupDir)
+
+  local path = jsonDir .. filename .. ".json"
+
+  if not fileExists(path) then
+    debugEcho("red","No file found for '" .. filename .. "' to load.")
+    return
+  end
+
+  local file = io.open(path, "r")
+  if not file then
+    debugEcho("red","Failed to open file for '" .. filename .. "'.")
+    return
+  end
+
+  local contents = file:read("*a")
+  file:close()
+
+  local decoded, _, err = dkjson.decode(contents, 1, nil)
+  if err or type(decoded) ~= "table" then
+    debugEcho("red","Error decoding " .. filename .. ": " .. (err or "invalid format"))
+    return
+  end
+
+  -- Clear existing table and update it in place
+  for k in pairs(tblRef) do tblRef[k] = nil end
+  for k, v in pairs(decoded) do tblRef[k] = v end
+
+  debugEcho("green",string.format("Loaded data from '%s.json'.", filename))
+
+end
+
+-- Save data to JSON with directory verification
+function saveTableToJSON(tbl, filename, directory)
+
+  if not dkjson then
+    debugEcho("red","Cannot save: dkjson not loaded.")
+    return
+  end
+
+  if not tbl or type(tbl) ~= "table" then
+    debugEcho("red","Invalid table passed to save.")
+    return
+  end
+  
+  local saveDir = ACHAEAN_DATA_DIR
+  local ndbDir = ACHAEAN_DATA_DIR .. "/ndb/"
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+  local backupDir = ACHAEAN_DATA_DIR .. "/backup/"
+
+  ensureDir(saveDir)
+  ensureDir(ndbDir)
+  ensureDir(jsonDir)
+  ensureDir(backupDir)
+  
+  local path = string.format("%s/%s.json", jsonDir, filename)
+
+  local file, err = io.open(path, "w")
+  if not file then
+    debugEcho("red","Error saving " .. filename .. ": " .. (err or "unknown error"))
+    return
+  end
+
+  local ok, jsonString = pcall(dkjson.encode, tbl, { indent = true })
+  if not ok then
+    debugEcho("red","Error encoding JSON for " .. filename)
+    file:close()
+    return
+  end
+
+  file:write(jsonString)
+  file:close()
+
+  debugEcho("green",string.format("&lt;green&gt;Saved '%s' to %s", filename, path))
+end
+
+function jsonBackup()
+  if not dkjson then
+    debugEcho("red","Cannot create backups: dkjson not loaded.")
+    return
+  end
+
+  local backupDir = ACHAEAN_DATA_DIR .. "/backup/"
+  local cutoffSeconds = BACKUP_RETENTION_DAYS * 24 * 60 * 60
+  local now = os.time()
+
+  local timestamp = os.date("%Y-%m-%d_%H-%M-%S")
+
+  if not lfs.attributes(backupDir, "mode") then lfs.mkdir(backupDir) end
+
+  local filesToBackup = {
+    {name = "settings", table = settings},
+    {name = "lustlist", table = lustlist},
+    {name = "enemylist", table = enemylist},
+    {name = "allylist", table = allylist},
+    {name = "cityallylist", table = NDB and NDB.cityList or {}},
+    {name = "cityenemylist", table = NDB and NDB.cityEnemies or {}},
+    {name = "targetMasterList", table = targetMasterList},
+    {name = "areaIgnoreList", table = areaIgnoreList},
+    {name = "huntsettings", table = huntSettingsData},
+    {name = "battlerage", table = battlerage},
+    {name = "balance_data", table = balance_data},
+    {name = "curinglist", table = curinglist},
+    {name = "defenses", table = defenses},
+    {name = "afflictions", table = afflictions},
+  }
+
+  for _, file in ipairs(filesToBackup) do
+    local path = string.format("%s/%s_backup_%s.json", backupDir, file.name, timestamp)
+    local success, result = pcall(dkjson.encode, file.table, { indent = true })
+
+    if success then
+      local f = io.open(path, "w")
+      if f then f:write(result) f:close() end
+      debugEcho("green",string.format("🔁 Backup created: %s\n", path))
+    else
+      debugEcho("red",string.format("&lt;red&gt;⚠️ Error encoding %s: %s\n", file.name, result))
+    end
+  end
+
+  for file in lfs.dir(backupDir) do
+    if file:match("_backup_.*%.json$") then
+      local fullPath = backupDir .. "/" .. file
+      local attr = lfs.attributes(fullPath)
+      if attr and (now - attr.modification &gt; cutoffSeconds) then
+        os.remove(fullPath)
+        cecho(string.format("&lt;yellow&gt;🗑️ Deleted old backup: %s\n", file))
+      end
+    end
+  end
+end
+
+function loadJsonWithBackup(primaryPath, label)
+  local function decodeJsonFile(path)
+    local f = io.open(path, "r")
+    if not f then return nil, "File not found" end
+    local contents = f:read("*a")
+    f:close()
+    return dkjson.decode(contents, 1, nil)
+  end
+
+  local decoded, _, err = decodeJsonFile(primaryPath)
+  if not err and type(decoded) == "table" then
+    debugEcho("green",string.format("&lt;green&gt;Loaded %s from JSON.", label))
+    return decoded
+  end
+
+  debugEcho("yellow","[WARN] Failed to load %s. Trying backup...", label)
+
+  local bakPath = primaryPath .. ".bak"
+  local bakDecoded, _, bakErr = decodeJsonFile(bakPath)
+  local backupDir = ACHAEAN_DATA_DIR .. "/backup/"
+  if not bakErr and type(bakDecoded) == "table" then
+    local jsonString = dkjson.encode(bakDecoded, { indent = true })
+    local out = io.open(primaryPath, "w")
+    if out then
+      out:write(jsonString)
+      out:close()
+      cecho(string.format("&lt;green&gt;[RECOVERY] Restored %s from backup.\n", label))
+    end
+    return bakDecoded
+  else
+    cecho(string.format("&lt;red&gt;[FAILURE] Could not load %s or its backup.\n", label))
+    local crossPlatformBackupDir = backupDir
+    cecho(string.format("&lt;yellow&gt;Try restoring %s manually from:\n&lt;white&gt;%s\n", label, crossPlatformBackupDir))
+  end
+
+  return nil
+end
+
+-- Main load function (Updated with Deep Key Union Data Protection)
+function loadAllTablesFromJSON()
+    if not dkjson then
+        debugEcho("red", "Cannot load JSON: dkjson not loaded.")
+        return
+    end
+
+    local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+    ensureDir(jsonDir)
+
+    local fileMap = {
+        settings = settings,
+        lustlist = lustlist,
+        enemylist = enemylist,
+        allylist = allylist,
+        targetMasterList = targetMasterList,
+        areaIgnoreList = areaIgnoreList,
+        huntsettings = huntSettingsData,
+        battlerage = battlerage,
+        balance_data = balance_data,
+        curinglist = curinglist,
+        defenses = defenses,        
+        afflictions = afflictions,
+    }
+
+    -- 1. Load/Create standard tables
+    for filename, tableRef in pairs(fileMap) do
+        local path = string.format("%s/%s.json", jsonDir, filename)
+        
+        -- Ensure the table reference exists in memory
+        if tableRef == nil then 
+            _G[filename] = {} 
+            tableRef = _G[filename]
+        end
+        
+        if not fileExists(path) then
+            -- CREATE FILE IF MISSING
+            jsonManager({ write = true, path = path, data = tableRef })
+            myEcho("green", "✔ Created default file: " .. filename .. ".json")
+        else
+            -- LOAD AND UNION
+            local savedData = jsonManager({ safe = true, path = path, fallback = {} })
+            if type(savedData) == "table" then
+                local unionedData = deepKeyUnion(savedData, tableRef)
+                
+                -- Sync back to global/original table reference
+                for k in pairs(tableRef) do tableRef[k] = nil end
+                for k, v in pairs(unionedData) do tableRef[k] = v end
+                
+                myEcho("green", string.format("✔ Successfully synced '%s' (Table size: %d)", filename, table.size(tableRef)))
+            end
+        end
+    end
+
+    -- 2. Handle NDB specifically
+    local ndbFiles = {
+        {name = "cityallylist", target = "cityList"},
+        {name = "cityenemylist", target = "cityEnemies"}
+     }
+
+    for _, file in ipairs(ndbFiles) do
+        local path = string.format("%s/%s.json", jsonDir, file.name)
+        if not fileExists(path) then
+            jsonManager({ write = true, path = path, data = {} })
+            debugEcho("green", "✔ Created missing NDB file: " .. file.name)
+        else
+            local savedData = jsonManager({ safe = true, path = path, fallback = {} })
+            if type(savedData) == "table" then
+                NDB[file.target] = savedData
+                for _, name in ipairs(savedData) do NDB_Acquire(name) end
+                debugEcho("green", "✔ Loaded NDB: " .. file.name)
+            end
+        end
+    end
+end
+
+-- Main save function
+function saveAllTablesAsJSON()
+  if not dkjson then
+    cecho("&lt;red&gt;Cannot save JSON: dkjson not loaded.\n")
+    return
+  end
+
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+  ensureDir(jsonDir)
+
+  local filesToConvert = {
+    {name = "settings", table = settings},
+    {name = "lustlist", table = lustlist},
+    {name = "enemylist", table = enemylist},
+    {name = "allylist", table = allylist},
+    {name = "cityallylist", table = NDB and NDB.cityList or {}},
+    {name = "cityenemylist", table = NDB and NDB.cityEnemies or {}},
+    {name = "targetMasterList", table = targetMasterList},
+    {name = "areaIgnoreList", table = areaIgnoreList},
+    {name = "huntsettings", table = huntSettingsData},
+    {name = "battlerage", table = battlerage},
+    {name = "balance_data", table = balance_data},
+    {name = "curinglist", table = curinglist},
+    {name = "defenses", table = defenses},             
+    {name = "afflictions", table = afflictions},
+  }
+
+  for _, file in ipairs(filesToConvert) do
+    local jsonPath = string.format("%s/%s.json", jsonDir, file.name)
+    local success, result = pcall(dkjson.encode, file.table, { indent = true })
+
+    if not success then
+      cecho(string.format("&lt;red&gt;Error encoding %s to JSON: %s\n", file.name, result))
+    else
+      if fileExists(jsonPath) then
+        local bakPath = jsonPath .. ".bak"
+        local oldFile = io.open(jsonPath, "r")
+        if oldFile then
+          local oldContents = oldFile:read("*a")
+          oldFile:close()
+          local bakFile = io.open(bakPath, "w")
+          if bakFile then
+            bakFile:write(oldContents)
+            bakFile:close()
+            debugEcho("yellow","↩ Created .bak: " .. bakPath)
+          end
+        end
+      end
+
+      local f, err = io.open(jsonPath, "w")
+      if f then
+        f:write(result)
+        f:close()
+        debugEcho("green","Saved JSON: " .. jsonPath)
+      else
+        debugEcho("green",string.format("&lt;red&gt;Failed to write %s.json: %s", file.name, err or "unknown error"))
+      end
+    end
+  end
+
+  if not SAVE_ALREADY_BACKED_UP then
+    jsonBackup()
+    SAVE_ALREADY_BACKED_UP = true
+  end
+end
+
+-- MAIN JSON FUNCTION (Supports Safe Read, Deep Reports, and Secure Pointer Writes)
+function jsonManager(opts)
+  opts = opts or {}
+  local safe = opts.safe
+  local diff = opts.diff
+  local path = opts.path
+  local fallback = opts.fallback
+  
+  local writeMode = opts.write
+  local writeData = opts.data
+
+  local libsDir = ACHAEAN_DATA_DIR .. "/"
+  local jsonDir = libsDir .. "json/"
+
+  ---------------------------------------------------------
+  -- ACTION BLOCK: SECURE WRITE MODE
+  ---------------------------------------------------------
+  if writeMode and path and writeData then
+    local f = io.open(path, "w")
+    if f then
+      f:write(dkjson.encode(writeData, { indent = true }))
+      f:close()
+      
+      local bakPath = path .. ".bak"
+      local bFile = io.open(bakPath, "w")
+      if bFile then
+        bFile:write(dkjson.encode(writeData, { indent = true }))
+        bFile:close()
+      end
+      return true
+    else
+      debugEcho("red", "JSON Save Failure: Direct file pointer access denied for path: " .. path)
+      return false
+    end
+  end
+
+  ---------------------------------------------------------
+  -- ACTION BLOCK: SAFE READ MODE
+  ---------------------------------------------------------
+  if safe and path and fallback then
+    if not fileExists(path) then
+      debugEcho("yellow","JSON not found, creating empty: " .. path)
+      local f = io.open(path, "w")
+      if f then
+        f:write(dkjson.encode(fallback or {}, { indent = true }))
+        f:close()
+      end
+      return fallback or {}
+    end
+
+    local file = io.open(path, "r")
+    local contents = file and file:read("*a")
+    if file then file:close() end
+
+    local decoded, _, err = dkjson.decode(contents or "", 1, nil)
+    if decoded and type(decoded) == "table" then return decoded end
+
+    debugEcho("red",string.format("Corrupted JSON: %s → %s\n", path, err or "unknown"))
+
+    local bakPath = path .. ".bak"
+    if fileExists(bakPath) then
+      local bFile = io.open(bakPath, "r")
+      local bContents = bFile and bFile:read("*a")
+      if bFile then bFile:close() end
+      local bDecoded = dkjson.decode(bContents or "", 1, nil)
+      if bDecoded and type(bDecoded) == "table" then
+        debugEcho("green","✔ Loaded backup from .bak file\n")
+        return bDecoded
+      end
+    end
+
+    local name = path:match("([^/\\]+)%.json$")
+    local backupDirs = { libsDir .. "backup" }
+    local latestBackup, latestTime = nil, 0
+    for _, dir in ipairs(backupDirs) do
+      if lfs.attributes(dir, "mode") == "directory" then
+        for file in lfs.dir(dir) do
+          if file:match("^" .. name .. "_backup_.*%.json$") then
+            local fullPath = dir .. "/" .. file
+            local attr = lfs.attributes(fullPath)
+            if attr and attr.modification &gt; latestTime then
+              latestTime = attr.modification
+              latestBackup = fullPath
+            end
+          end
+        end
+      end
+    end
+    
+    if latestBackup then
+      local f = io.open(latestBackup, "r")
+      local contents = f and f:read("*a")
+      if f then f:close() end
+      local decoded = dkjson.decode(contents or "", 1, nil)
+      if decoded and type(decoded) == "table" then
+        debugEcho("green","✔ Loaded latest backup: " .. latestBackup)
+        return decoded
+      end
+    end
+
+    local archivedDir = libsDir .. "archived"
+    local suggestedZip = nil
+    if lfs.attributes(archivedDir, "mode") == "directory" then
+      for file in lfs.dir(archivedDir) do
+        if file:match("%.zip$") and file:find(name) then
+          suggestedZip = file
+        end
+      end
+    end
+    
+    if suggestedZip then
+      debugEcho("green",string.format("&lt;magenta&gt;📦 Suggest restoring from archive:\n&lt;white&gt;  archived/%s\n", suggestedZip))
+    else
+      debugEcho("red",string.format("🚫 No restorable data or archive found for '%s'.\n", name))
+    end
+
+    os.rename(path, path .. ".corrupt")
+    debugEcho("&lt;yellow&gt;","🚨 JSON corrupted or not found. Renamed or replaced with empty.\n")
+    local f = io.open(path, "w")
+    if f then
+      f:write(dkjson.encode(fallback or {}, { indent = true }))
+      f:close()
+    end
+    return fallback or {}
+  end
+
+  ---------------------------------------------------------
+  -- ACTION BLOCK: STANDARD REPORT MODE
+  ---------------------------------------------------------
+  local LAST_LOADED = {}
+  local files = {
+    {name = "settings", ref = settings},
+    {name = "lustlist", ref = lustlist},
+    {name = "enemylist", ref = enemylist},
+    {name = "allylist", ref = allylist},
+    {name = "cityallylist", ref = NDB and NDB.cityList or {}},
+    {name = "cityenemylist", ref = NDB and NDB.cityEnemies or {}},
+    {name = "targetMasterList", ref = targetMasterList},
+    {name = "areaIgnoreList", ref = areaIgnoreList},
+    {name = "huntsettings", ref = huntSettingsData},
+    {name = "battlerage", ref = battlerage},
+    {name = "balance_data", ref = balance_data},
+    {name = "curinglist", ref = curinglist},
+    {name = "defenses", ref = defenses},              
+    {name = "afflictions", ref = afflictions}, 
+  }
+
+  cecho("\n&lt;white&gt;" .. (diff and "📦 JSON Table Report + Diff" or "🔍 JSON Table Report") .. ":\n")
+
+  for _, file in ipairs(files) do
+    local name, ref = file.name, file.ref
+    local path = string.format("%s/%s.json", jsonDir, name)
+    local liveSize = (type(ref) == "table") and table.size(ref) or 0
+    local exists, jsonSize = fileExists(path), "N/A"
+
+    if exists then
+      local f = io.open(path, "r")
+      local contents = f and f:read("*a")
+      if f then f:close() end
+      local decoded = dkjson.decode(contents or "", 1, nil)
+      jsonSize = (type(decoded) == "table") and table.size(decoded) or 0
+    end
+
+    local match = (tonumber(jsonSize) == liveSize)
+    local color = exists and (match and "&lt;green&gt;" or "&lt;yellow&gt;") or "&lt;red&gt;"
+    local label = exists and (match and "✔ Match" or "✘ Diff") or "❌ Missing"
+
+    if diff then
+      LAST_LOADED[name] = os.date("%Y-%m-%d %H:%M:%S")
+      cecho(string.format("  - %-20s &lt;white&gt;[json: %4s] %s%s\n", name .. ".json", jsonSize, color, label))
+    else
+      cecho(string.format("  - %-20s &lt;white&gt;Live: %-4s JSON: %-4s %s%s\n", name, liveSize, jsonSize, color, label))
+    end
+  end
+end
 </script>
 					<eventHandlerList />
 				</Script>
@@ -14853,24 +14696,34 @@ registerAnonymousEventHandler("gmcp.Char.Status", riftcheck)</script>
 				<Script isActive="yes" isFolder="no">
 					<name>ping &amp; latency</name>
 					<packageName></packageName>
-					<script>--Calculate average ping.
-function getPing()
-  local x, y = #pingCalculation, 0
-  for i, p in pairs(pingCalculation) do
-    y = y + p
-  end
-  return y/x
-end
-
+					<script>-- 2. Create the function to update ping
 function pingCheck()
-  pingCalculation = pingCalculation or {}
-  table.insert(pingCalculation, 1, getNetworkLatency())
-  if #pingCalculation &gt; 15 then
-    table.remove(pingCalculation, 16)
-  end
+    -- Get current latency (in seconds) and convert to milliseconds
+    local latency = getNetworkLatency() * 1000
+    
+    table.insert(pingCalculation, 1, latency)
+    
+    -- Keep only the last 15 readings
+    if #pingCalculation &gt; 15 then
+        table.remove(pingCalculation, 16)
+    end
 end
 
-registerAnonymousEventHandler("sysDataSendRequest", pingCheck)</script>
+-- 3. Run it on a timer instead of a sensitive event
+-- This timer runs every 5 seconds (5000ms)
+if pingTimer then killTimer(pingTimer) end
+pingTimer = tempTimer(5, pingCheck, true)
+
+-- Calculate average
+function getPing()
+    local x = #pingCalculation
+    if x == 0 then return 0 end
+    local y = 0
+    for i, p in pairs(pingCalculation) do
+        y = y + p
+    end
+    return y / x
+end</script>
 					<eventHandlerList />
 				</Script>
 				<Script isActive="yes" isFolder="no">
@@ -15094,6 +14947,10 @@ end</script>
 						<script>function installSystem()
     -- 1. Get the foundation ready
     systemLogin()
+    initBalanceData()
+    initBattleRage()
+    initCuringList()
+    setTargetMasterList()
     
     -- 2. CRITICAL: Load files BEFORE initializing logic
     initializeFileLoads() 
@@ -16731,7 +16588,7 @@ end</script>
 						<name>NDB API</name>
 						<packageName></packageName>
 						<script>function getNDBPath()
-  local base = getMudletHomeDir() .. "/Achaean System/system/libs/ndb"
+  local base = ACHAEAN_DATA_DIR .. "/ndb/"
   if not lfs.attributes(base, "mode") then
     lfs.mkdir(base)
     debugEcho("green","Created NDB data folder: " .. base .. "\n")
@@ -19073,8 +18930,8 @@ end
 
 function loadHuntMasterList()
 
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-  local savePath = jsonDir .. "/huntmasterlist.json"
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+  local savePath = jsonDir .. "/targetMasterList.json"
   
   if io.exists(savePath) then
     local f = io.open(savePath, "r")
@@ -19094,8 +18951,8 @@ end
 function saveTargetMasterList()
 
   if not dkjson or not targetMasterList or table.is_empty(targetMasterList) then return end
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-  local savePath = jsonDir .. "/huntmasterlist.json"
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+  local savePath = jsonDir .. "/targetMasterList.json"
   
   local json = dkjson.encode(targetMasterList, { indent = true })
   local f = io.open(savePath, "w")
@@ -19179,8 +19036,8 @@ end
 
 function attemptHuntSettingsRestore()
 
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
-  local backupPath = getMudletHomeDir() .. "/Achaean System/system/libs/backup/huntsettings.json.bak"
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
+  local backupPath = ACHAEAN_DATA_DIR .. "/backup/huntsettings.json.bak"
 
   if not fileExists(backupPath) then
     cecho("&lt;red&gt;[ERROR] Backup file not found: " .. backupPath .. "\n")
@@ -19435,16 +19292,16 @@ end
 
 function tryBattleRageShieldBreak(class, currentTarget)
   -- 1. Fail early if data is missing
-  if not bragelist or not bragelist[class] then return false end
+  if not battlerage or not battlerage[class] then return false end
 
   -- 2. Check capability first (the "Gatekeeper")
-  if not checkSkillTypeEnabled(bragelist[class], "shield break") then 
+  if not checkSkillTypeEnabled(battlerage[class], "shield break") then 
     return false 
   end
   
   -- 3. Iterate to execute
-  for skill, data in pairs(bragelist[class]) do
-    if data.enabled and data.type == "shield break" and battlerage() &gt;= data.rage then
+  for skill, data in pairs(battlerage[class]) do
+    if data.enabled and data.type == "shield break" and checkBattlerage() &gt;= data.rage then
       
       -- Ensure we have balance before proceeding
      -- if not balance_data.balance.in_use and not balance_data.equilibrium.in_use then
@@ -19496,15 +19353,15 @@ function handleBattlerageAttacks(hunttarget)
     end
     debugEcho("white", "[BRAGE-DEBUG] Class identified: " .. tostring(class))
 
-    if not bragelist[class] then 
+    if not battlerage[class] then 
         debugEcho("red", "[BRAGE-DEBUG] Abort: No list found for class.")
         return 
     end
 
     local bestSkill = nil
 
-    for skill, data in pairs(bragelist[class]) do
-        local meetsCriteria = data.enabled and data.onbalance and type(data.type) == "number" and battlerage() &gt;= data.rage
+    for skill, data in pairs(battlerage[class]) do
+        local meetsCriteria = data.enabled and data.onbalance and type(data.type) == "number" and checkBattlerage() &gt;= data.rage
         if meetsCriteria then
             if not bestSkill or data.type &lt; bestSkill.priority then
                 bestSkill = { priority = data.type, command = data.command:gsub("@tar", hunttarget) }
@@ -20095,9 +19952,9 @@ function saveHuntSettings()
     return
   end
 
-  local jsonDir = getMudletHomeDir() .. "/Achaean System/system/libs/json/"
+  local jsonDir = ACHAEAN_DATA_DIR .. "/json/"
   local savePath = jsonDir .. "/huntsettings.json"
-  local backPath = getMudletHomeDir() .. "/Achaean System/system/libs/backup/"
+  local backPath = ACHAEAN_DATA_DIR .. "/backup/"
 
   -- Optional: backup old version
   if fileExists(savePath) then
@@ -20117,7 +19974,7 @@ function saveHuntSettings()
   cecho("&lt;green&gt;✅ Hunting settings saved to: " .. savePath .. "\n")
 end
 
-function battlerage()
+function checkBattlerage()
   return tonumber(string.match(gmcp.Char.Vitals.charstats[2], "%d+"))
 end
 
@@ -21541,7 +21398,7 @@ function printBattleragePriorityList()
   end
 
   -- Validate the profile state has configured rage data
-  if not bragelist or not bragelist[class] then
+  if not battlerage or not battlerage[class] then
     cecho("\n&lt;red&gt;[BRAGE] No battlerage profile found for active class: " .. tostring(class))
     return
   end
@@ -21555,7 +21412,7 @@ function printBattleragePriorityList()
   local sortedSkills = {}
   local staticSkills = {}
 
-  for skillName, data in pairs(bragelist[class]) do
+  for skillName, data in pairs(battlerage[class]) do
     if type(data.type) == "number" then
       table.insert(sortedSkills, {
         name = skillName,
@@ -21592,8 +21449,8 @@ function printBattleragePriorityList()
     cechoLink(
       " " .. toggleText .. " ",
       function()
-        bragelist[class][skill.name].enabled = not bragelist[class][skill.name].enabled
-        saveTableToJSON(bragelist, "battlerage") 
+        battlerage[class][skill.name].enabled = not battlerage[class][skill.name].enabled
+        saveTableToJSON(battlerage, "battlerage") 
         printBattleragePriorityList() -- Auto-refresh UI layout *after* disk write
       end,
       "Toggle " .. skill.name:upper() .. " State",
@@ -21604,9 +21461,9 @@ function printBattleragePriorityList()
     cechoLink(
       "&lt;cyan&gt;(▲) ",
       function()
-        local currentPri = bragelist[class][skill.name].type
-        bragelist[class][skill.name].type = math.max(currentPri - 1, 1)
-        saveTableToJSON(bragelist, "battlerage")
+        local currentPri = battlerage[class][skill.name].type
+        battlerage[class][skill.name].type = math.max(currentPri - 1, 1)
+        saveTableToJSON(battlerage, "battlerage")
         printBattleragePriorityList()
       end,
       "Raise Priority (Move Up List)",
@@ -21617,9 +21474,9 @@ function printBattleragePriorityList()
     cechoLink(
       "&lt;cyan&gt;(▼) ",
       function()
-        local currentPri = bragelist[class][skill.name].type
-        bragelist[class][skill.name].type = currentPri + 1
-        saveTableToJSON(bragelist, "battlerage")
+        local currentPri = battlerage[class][skill.name].type
+        battlerage[class][skill.name].type = currentPri + 1
+        saveTableToJSON(battlerage, "battlerage")
         printBattleragePriorityList()
       end,
       "Lower Priority (Move Down List)",
@@ -21649,16 +21506,16 @@ function printBattleragePriorityList()
       cechoLink(
         " " .. toggleText .. " ",
         function()
-          -- 1. Flip the status inside your bragelist table
-          bragelist[class][skill.name].enabled = not bragelist[class][skill.name].enabled
+          -- 1. Flip the status inside your battlerage table
+          battlerage[class][skill.name].enabled = not battlerage[class][skill.name].enabled
           
           -- 2. Map the state directly to your hunting gateway table
           huntSettingsData[class] = huntSettingsData[class] or {}
-          huntSettingsData[class]["rage shield break"] = bragelist[class][skill.name].enabled
+          huntSettingsData[class]["rage shield break"] = battlerage[class][skill.name].enabled
           setHuntSettings("rage shield break", huntSettingsData[class]["rage shield break"])
           
           -- 3. Save BOTH data files immediately so they stay synced
-          saveTableToJSON(bragelist, "battlerage")
+          saveTableToJSON(battlerage, "battlerage")
           
           -- 4. Cleanly redraw the interface
           printBattleragePriorityList()
