@@ -18,6 +18,419 @@
 			<regexCodeList />
 			<regexCodePropertyList />
 			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>gags</name>
+				<script></script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList />
+				<regexCodePropertyList />
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>arena</name>
+					<script>if not settings.debug then deleteFull() end</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>[You]:</string>
+						<string>[gmcp.Char.Status.name]:</string>
+						<string>[target]:</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>2</integer>
+						<integer>2</integer>
+						<integer>2</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>3p Trades</name>
+					<script>if not settings.debug then deleteFull() end</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^Carefully closing the lid on .+, \w+ begins to slowly turn the handle on top, grinding and combining the contents\.$</string>
+						<string>^Gaining momentum, \w+ turns the handle on .+, the contents providing less resistance to \w+ efforts\.$</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>queueing</name>
+					<script>if not settings.debug then deleteLine() end
+</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>\[Curing\]\:</string>
+						<string>\[System\]\:</string>
+						<string>Alias \"(\w+)\" will now execute\: \".*\"</string>
+						<string>^(.+) was added to your (balance|equilibrium|class) queue\.$</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>my breathing</name>
+					<script>if not settings.debug then deleteFull() end</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>You inhale deeply and begin holding your breath.</string>
+						<string>You cease holding your breath and exhale loudly.</string>
+						<string>Inhaling underwater? Are you mad?</string>
+						<string>You are breathing lightly.</string>
+						<string>You have recovered your wind and are breathing normally on</string>
+						<string>You are panting softly.</string>
+						<string>You are panting heavily.</string>
+						<string>You are breathing heavily.</string>
+						<string>You have recovered your wind and are breathing normally once again.</string>
+						<string>Inhaling underwater? Are you mad?</string>
+						<string>You are gasping for breath.</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+						<integer>3</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>their breathing</name>
+					<script>if not settings.debug then deleteFull() end</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^\w+ exhales loudly\.$</string>
+						<string>^\w+ inhales and begins holding \w+ breath\.$</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>stupidity gag</name>
+					<script>cecho("\n&lt;red&gt; + Stupidity ")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>1</conditonLineDelta>
+					<mStayOpen>99</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>Hmmmm. Why must everything be so difficult to figure out?</string>
+						<string></string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>3</integer>
+						<integer>7</integer>
+					</regexCodePropertyList>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>lines</name>
+						<script>if table.contains(myaffs, "stupidity") then
+  if not settings.debug then deleteLine() end
+end</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Tears fill your eyes and begin to slowly run down your face.</string>
+							<string>You sweep across the floor, leaping and twirling like a true master.</string>
+							<string>As horrible thoughts fill your mind, you begin to sob uncontrollably.</string>
+							<string>You attempt to do a standing backflip, but merely stumble over your own feet.</string>
+							<string>You get down on one knee and serenade the world.</string>
+							<string>You hug yourself compassionately.</string>
+							<string>You flap your arms madly.</string>
+							<string>You give up a round of applause.</string>
+							<string>You burp obscenely.</string>
+							<string>You make a strangled meowing noise and quickly shut up in embarrassment.</string>
+							<string>Tears fill your eyes and begin to slowly run down your face.</string>
+							<string>You fall to your knees in worship.</string>
+							<string>You waggle your eyebrows comically.</string>
+							<string>You let out a loud, long "MOOOOOOOOOOO!"</string>
+							<string>You pull down your pants and moon the world.</string>
+							<string>My friend, clearly you know little of the sultry tango, if you think that you can perform it without a partner.</string>
+							<string>You blink.</string>
+							<string>You sweep across the floor, leaping and twirling like a true master.</string>
+							<string>You wail like an old woman.</string>
+							<string>You twitch spasmodically.</string>
+							<string>You giggle happily.</string>
+							<string>You pick your nose absently.</string>
+							<string>You drop to one knee.</string>
+							<string>You grunt a bit and then let out a loud "OINK!"</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+				</Trigger>
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>weed gag</name>
+					<script></script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList />
+					<regexCodePropertyList />
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>weed_smilie</name>
+						<script>selectString(line, 1)
+if not settings.debug then deleteLine() end
+if not warnedsmileys then
+  warnedsmileys = true
+  tempTimer(
+    0.5,
+    function()
+      if not settings.debug then cecho(" Saved you from seeing a giant-ass smiley.") end;
+      warnedsmileys = nil
+    end
+  )
+end</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>99</conditonLineDelta>
+						<mStayOpen>20</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^\s*\.\.o@@@@@@@@@@@@@o\.\.\s*$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+						</regexCodePropertyList>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>temp</name>
+							<script>selectString(line, 1)
+if not settings.debug then deleteLine() end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>69</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^\s*.+\s*$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>gag end</name>
+							<script>setTriggerStayOpen("weed_smilie", 0)
+selectString(line, 1)
+if not settings.debug then deleteLine() end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string></string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>7</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>weed blackout</name>
+						<script>if not settings.debug then deleteLine() end</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Your senses go numb as the cactus weed overwhelms your mind.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>blank gag</name>
+							<script>if not settings.debug then deleteLine() end</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>gag end</name>
+							<script>if not settings.debug then deleteLine() end
+setTriggerStayOpen("weed_blackout", 0)</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string></string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>7</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>No more smiles</name>
+						<script>if not settings.debug then deleteFull() end
+</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>17</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string> ..o@@@@@@@@@@@@@o..</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+				</TriggerGroup>
+			</TriggerGroup>
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>class</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1650,548 +2063,6 @@ settings.focusfulminated = true</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
-			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-				<name>gagging</name>
-				<script></script>
-				<triggerType>0</triggerType>
-				<conditonLineDelta>0</conditonLineDelta>
-				<mStayOpen>0</mStayOpen>
-				<mCommand></mCommand>
-				<packageName></packageName>
-				<mFgColor>#ff0000</mFgColor>
-				<mBgColor>#ffff00</mBgColor>
-				<mSoundFile></mSoundFile>
-				<colorTriggerFgColor>#000000</colorTriggerFgColor>
-				<colorTriggerBgColor>#000000</colorTriggerBgColor>
-				<regexCodeList />
-				<regexCodePropertyList />
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>alias</name>
-					<script>if not settings.debug then deleteFull() end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>[System]:</string>
-						<string>Alias \"(\w+)\" will now execute\: \".*\"</string>
-						<string>You have cleared alias</string>
-						<string>You have exceeded the spam threshold for curing priority.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>2</integer>
-						<integer>2</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>system</name>
-					<script>if not settings.debug then deleteFull() end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>[Curing]:</string>
-						<string>I see no "body" to take.</string>
-						<string>I see no "gold" to take.</string>
-						<string>You hold no "gold".</string>
-						<string>You must regain balance first.</string>
-						<string>You already possess equilibrium.</string>
-						<string>You must regain equilibrium first.</string>
-						<string>You are not fallen or kneeling.</string>
-						<string>You are already concentrating on regaining equilibrium.</string>
-						<string>Your queues are already empty.</string>
-						<string>You already have the KILL warning deactivated.</string>
-						<string>Now now, don't be so hasty!</string>
-						<string>Server-side queueing is already enabled.</string>
-						<string>You are already viewing advanced curing options.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>breathing</name>
-					<script>if not settings.debug then deleteFull() end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^\w+ exhales loudly\.$</string>
-						<string>^\w+ inhales and begins holding \w+ breath\.$</string>
-						<string>You inhale deeply and begin holding your breath.</string>
-						<string>You cease holding your breath and exhale loudly.</string>
-						<string>[Curing]: HOLD BREATH</string>
-						<string>Inhaling underwater? Are you mad?</string>
-						<string>You are breathing lightly.</string>
-						<string>You have recovered your wind and are breathing normally on</string>
-						<string>You are panting softly.</string>
-						<string>You are panting heavily.</string>
-						<string>You are breathing heavily.</string>
-						<string>You have recovered your wind and are breathing normally once again.</string>
-						<string>Inhaling underwater? Are you mad?</string>
-						<string>You are gasping for breath.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>queue gagging</name>
-					<script>if not settings.debug then deleteFull() end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>[System]: Added </string>
-						<string>[System]: Running queued</string>
-						<string>Your queues are already empty.</string>
-						<string>Your eqbal queue is full.</string>
-						<string>Your eqbal queue is already empty.</string>
-						<string>[System]: Queued eb commands cleared.</string>
-						<string>Cleared your queues.</string>
-						<string>[System]: Queued eb!t commands cleared.</string>
-						<string>[System]: All queued commands cleared.</string>
-						<string>[System]: Queued free commands cleared.</string>
-						<string>[System]: Queued full commands cleared.</string>
-						<string>[System]: Queued freestand commands cleared.</string>
-						<string>^(.+) was added to your (balance|equilibrium|class) queue\.$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>2</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>3p Trades</name>
-					<script>if not settings.debug then deleteFull() end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^Carefully closing the lid on .+, \w+ begins to slowly turn the handle on top, grinding and combining the contents\.$</string>
-						<string>^Gaining momentum, \w+ turns the handle on .+, the contents providing less resistance to \w+ efforts\.$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>arena</name>
-					<script>if not settings.debug then deleteFull() end</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>[You]:</string>
-						<string>[gmcp.Char.Status.name]:</string>
-						<string>[target]:</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>2</integer>
-						<integer>0</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Add Clear Prompt Killer</name>
-					<script></script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>1</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>[System]: Queued eb commands cleared.</string>
-						<string>[System]: Queued eb!t commands cleared.</string>
-						<string>[System]: All queued commands cleared.</string>
-						<string>[System]: Queued free commands cleared.</string>
-						<string>[System]: Queued full commands cleared.</string>
-						<string>[System]: Queued freestand commands cleared.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-					</regexCodePropertyList>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Secondary</name>
-						<script>tempLineTrigger(1,1,[[
-   if isPrompt() then
-      if not settings.debug then deleteLine() end
-   end
-]])
-
-</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>[System]: Added</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-						</regexCodePropertyList>
-					</Trigger>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>stupidity gag</name>
-					<script>cecho("\n&lt;red&gt; + Stupidity ")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>99</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>Hmmmm. Why must everything be so difficult to figure out?</string>
-						<string></string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>3</integer>
-						<integer>7</integer>
-					</regexCodePropertyList>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>lines</name>
-						<script>if table.contains(myaffs, "stupidity") then
-  if not settings.debug then deleteLine() end
-end</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>Tears fill your eyes and begin to slowly run down your face.</string>
-							<string>You sweep across the floor, leaping and twirling like a true master.</string>
-							<string>As horrible thoughts fill your mind, you begin to sob uncontrollably.</string>
-							<string>You attempt to do a standing backflip, but merely stumble over your own feet.</string>
-							<string>You get down on one knee and serenade the world.</string>
-							<string>You hug yourself compassionately.</string>
-							<string>You flap your arms madly.</string>
-							<string>You give up a round of applause.</string>
-							<string>You burp obscenely.</string>
-							<string>You make a strangled meowing noise and quickly shut up in embarrassment.</string>
-							<string>Tears fill your eyes and begin to slowly run down your face.</string>
-							<string>You fall to your knees in worship.</string>
-							<string>You waggle your eyebrows comically.</string>
-							<string>You let out a loud, long "MOOOOOOOOOOO!"</string>
-							<string>You pull down your pants and moon the world.</string>
-							<string>My friend, clearly you know little of the sultry tango, if you think that you can perform it without a partner.</string>
-							<string>You blink.</string>
-							<string>You sweep across the floor, leaping and twirling like a true master.</string>
-							<string>You wail like an old woman.</string>
-							<string>You twitch spasmodically.</string>
-							<string>You giggle happily.</string>
-							<string>You pick your nose absently.</string>
-							<string>You drop to one knee.</string>
-							<string>You grunt a bit and then let out a loud "OINK!"</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-				</Trigger>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>weed gag</name>
-					<script></script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList />
-					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>weed_smilie</name>
-						<script>selectString(line, 1)
-if not settings.debug then deleteLine() end
-if not warnedsmileys then
-  warnedsmileys = true
-  tempTimer(
-    0.5,
-    function()
-      if not settings.debug then cecho(" Saved you from seeing a giant-ass smiley.") end;
-      warnedsmileys = nil
-    end
-  )
-end</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>99</conditonLineDelta>
-						<mStayOpen>20</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>^\s*\.\.o@@@@@@@@@@@@@o\.\.\s*$</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>1</integer>
-						</regexCodePropertyList>
-						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>temp</name>
-							<script>selectString(line, 1)
-if not settings.debug then deleteLine() end</script>
-							<triggerType>0</triggerType>
-							<conditonLineDelta>69</conditonLineDelta>
-							<mStayOpen>0</mStayOpen>
-							<mCommand></mCommand>
-							<packageName></packageName>
-							<mFgColor>#ff0000</mFgColor>
-							<mBgColor>#ffff00</mBgColor>
-							<mSoundFile></mSoundFile>
-							<colorTriggerFgColor>#000000</colorTriggerFgColor>
-							<colorTriggerBgColor>#000000</colorTriggerBgColor>
-							<regexCodeList>
-								<string>^\s*.+\s*$</string>
-							</regexCodeList>
-							<regexCodePropertyList>
-								<integer>1</integer>
-							</regexCodePropertyList>
-						</Trigger>
-						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>gag end</name>
-							<script>setTriggerStayOpen("weed_smilie", 0)
-selectString(line, 1)
-if not settings.debug then deleteLine() end</script>
-							<triggerType>0</triggerType>
-							<conditonLineDelta>0</conditonLineDelta>
-							<mStayOpen>0</mStayOpen>
-							<mCommand></mCommand>
-							<packageName></packageName>
-							<mFgColor>#ff0000</mFgColor>
-							<mBgColor>#ffff00</mBgColor>
-							<mSoundFile></mSoundFile>
-							<colorTriggerFgColor>#000000</colorTriggerFgColor>
-							<colorTriggerBgColor>#000000</colorTriggerBgColor>
-							<regexCodeList>
-								<string></string>
-							</regexCodeList>
-							<regexCodePropertyList>
-								<integer>7</integer>
-							</regexCodePropertyList>
-						</Trigger>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>weed blackout</name>
-						<script>if not settings.debug then deleteLine() end</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>Your senses go numb as the cactus weed overwhelms your mind.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-						</regexCodePropertyList>
-						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>blank gag</name>
-							<script>if not settings.debug then deleteLine() end</script>
-							<triggerType>0</triggerType>
-							<conditonLineDelta>0</conditonLineDelta>
-							<mStayOpen>0</mStayOpen>
-							<mCommand></mCommand>
-							<packageName></packageName>
-							<mFgColor>#ff0000</mFgColor>
-							<mBgColor>#ffff00</mBgColor>
-							<mSoundFile></mSoundFile>
-							<colorTriggerFgColor>#000000</colorTriggerFgColor>
-							<colorTriggerBgColor>#000000</colorTriggerBgColor>
-							<regexCodeList>
-								<string>^$</string>
-							</regexCodeList>
-							<regexCodePropertyList>
-								<integer>1</integer>
-							</regexCodePropertyList>
-						</Trigger>
-						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>gag end</name>
-							<script>if not settings.debug then deleteLine() end
-setTriggerStayOpen("weed_blackout", 0)</script>
-							<triggerType>0</triggerType>
-							<conditonLineDelta>0</conditonLineDelta>
-							<mStayOpen>0</mStayOpen>
-							<mCommand></mCommand>
-							<packageName></packageName>
-							<mFgColor>#ff0000</mFgColor>
-							<mBgColor>#ffff00</mBgColor>
-							<mSoundFile></mSoundFile>
-							<colorTriggerFgColor>#000000</colorTriggerFgColor>
-							<colorTriggerBgColor>#000000</colorTriggerBgColor>
-							<regexCodeList>
-								<string></string>
-							</regexCodeList>
-							<regexCodePropertyList>
-								<integer>7</integer>
-							</regexCodePropertyList>
-						</Trigger>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>No more smiles</name>
-						<script>if not settings.debug then deleteFull() end
-</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>17</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string> ..o@@@@@@@@@@@@@o..</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-				</TriggerGroup>
 			</TriggerGroup>
 			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>defenses</name>
@@ -6134,7 +6005,7 @@ end</script>
 							<string>^You must regain balance first.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>0</integer>
+							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -12150,7 +12021,15 @@ tempTimer(.2, [[expandAlias('dtats')]])
 				<Script isActive="yes" isFolder="no">
 					<name>methods</name>
 					<packageName></packageName>
-					<script>-- Utility function to check if a file exists
+					<script>-- Utility to clear tables in-place while keeping reference integrity
+function clearTable(t)
+    if type(t) ~= "table" then return end
+    for k in pairs(t) do
+        t[k] = nil
+    end
+end
+
+-- Utility function to check if a file exists
 function fileExists(name)
   local f = io.open(name, "r")
   if f then
@@ -13600,14 +13479,27 @@ function loadAllTablesFromJSON()
     -- 1. Load standard tables
     for filename, tableRef in pairs(fileMap) do
         local path = string.format("%s/%s.json", jsonDir, filename)
-        local savedData = jsonManager({ safe = true, path = path, fallback = {} })
-
-        if type(savedData) == "table" and next(savedData) then
-            local unionedData = deepKeyUnion(savedData, tableRef)
-            -- Clear and re-fill the table safely
-            for k in pairs(tableRef) do tableRef[k] = nil end
-            for k, v in pairs(unionedData) do tableRef[k] = v end
-            debugEcho("green", "&lt;green&gt;✔ Loaded &amp; Unioned " .. filename)
+        
+        -- 1. Ensure the table exists even if empty, so the union has something to work with
+        if tableRef == nil then 
+            _G[filename] = {} 
+            tableRef = _G[filename]
+        end
+        
+      -- DEBUG ECHO: Verify file existence before trying to load
+        if not fileExists(path) then
+            myEcho("yellow", "⚠️ Skipping load: " .. filename .. ".json not found on disk.")
+        else
+            local savedData = jsonManager({ safe = true, path = path, fallback = {} })
+            if type(savedData) == "table" and next(savedData) then
+                local unionedData = deepKeyUnion(savedData, tableRef)
+                -- Clear and re-fill the table safely
+                for k in pairs(tableRef) do tableRef[k] = nil end
+                for k, v in pairs(unionedData) do tableRef[k] = v end
+                --debugEcho("green", "&lt;green&gt;✔ Loaded &amp; Unioned " .. filename)
+                -- ADD THIS ECHO:
+                myEcho("green", string.format("✔ Successfully synced '%s' (Table size: %d)", filename, table.size(tableRef)))
+            end
         end
     end
 
@@ -13781,37 +13673,86 @@ mystackableaffs = mystackableaffs or { torntendons = 0, skullfractures = 0, crac
 bragelist = bragelist or {}
 
 local boot_rage = {
+   alchemist = {
+    miasma = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "throw miasma at @tar"},
+    cadmium = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "educe cadmium @tar"},
+    caustic = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "throw caustic at @tar"},
+    magnesium = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "educe magnesium @tar"},
+    pathogen = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "throw pathogen at @tar"},
+    hypnotic = {enabled = true, onbalance = true, type = 5, rage = 28, cooldown = 41, command = "throw hypnotic at @tar"},
+  },
+  apostate = {
+      convulsions = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "stare @tar convulsions"},
+      horrify = {enabled = true, onbalance = true, type = 2, rage = 29, cooldown = 34, command = "stare @tar horrify"},
+      pierce = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "daegger pierce @tar"},
+      burrow = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown = 23, command = "daegger burrow @tar"},
+      bloodlet = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 23, command = "bloodlet @tar"},
+      possess = {enabled = true, onbalance = true, type = 5, rage = 32, cooldown = 43, command = "possess @tar"},
+    },  
+  bard = {
+      moulinet = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "moulinet @tar"},
+      trill = {enabled = true, onbalance = true, type = 5, rage = 28, cooldown = 41, command = "play trill at @tar"},
+      resonance = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "play resonance at @tar"},
+      howlslash = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "howlslash @tar"},
+      cyclone = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "cyclone @tar"},
+      charm = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown = 43, command = "charm @tar"},
+    },
+  blademaster = {
+      leapstrike = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "leapstrike @tar"},
+      daze = {enabled = true, onbalance = true, type = 5, rage = 22, cooldown = 33, command = "shin daze @tar"},
+      shatter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "shin shatter @tar"},
+      spinslash = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "spinslash @tar"},
+      headstrike = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "strike @tar head"},
+      nerveslash = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "nerveslash @tar"},
+    },
+  depthswalker = {
+      drain = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "shadow drain @tar"},
+      lash = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "shadow lash @tar"},
+      curse = {enabled = true, onbalance = true, type = 5, rage = 24, cooldown = 35, command = "chrono curse @tar"},
+      nakail = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "intone nakail @tar"},
+      erasure = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "chrono erasure @tar"},
+      boinad = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown = 38, command = "intone boinad @tar"},
+    },
+  druid = {
+      strangle = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "strangle @tar"},
+      redeem = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "reclamation redeem @tar"},
+      vinecrack = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "vinecrack @tar"},
+      ravage = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "ravage @tar"},
+      sear = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "sear @tar"},
+      glare = {enabled = true, onbalance = true, type = 5, rage = 14, cooldown = 23, command = "quarterstaff @tar"},
+    },
+  infernal = {
+      ravage = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "ravage @tar"},
+      soulshield = {enabled = true, onbalance = true, type = 5, rage = 20, cooldown = 37, command = "soulshield"},
+      shiver = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "shiver @tar"},
+      spike = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "spike @tar"},
+      hellstrike = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "hellstrike @tar"},
+      deathlink = {enabled = true, onbalance = true, type = 6, rage = 30, cooldown = 43, command = "deathlink @tar"},
+    },
+  jester = {
+      noogie = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "noogie @tar"},
+      dustthrow = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "dustthrow @tar"},
+      jacks = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "throw jacks at @tar"},
+      ensconce = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "ensconce firecracker on @tar"},
+      befuddle = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "befuddle @tar"},
+      rap = {enabled = true, onbalance = true, type = 5, rage = 26, cooldown = 33, command = "rap @tar"},
+    },
+  magi = {
+      windlash = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "cast windlash at @tar"},
+      dilation = {enabled = true, onbalance = true, type = 5, rage = 35, cooldown = 35, command = "cast dilation at @tar"},
+      disintegrate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "cast disintegrate at @tar"},
+      squeeze = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "cast squeeze @tar"},
+      firefall = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "cast firefall at @tar"},
+      stormbolt = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "cast stormbolt at @tar"},
+    },
    monk = {
     spinningbackfist = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "sbp @tar"},
-    scramble = {enabled = true, type = 4, onbalance = true, rage = 22, cooldown=31, command = "mind scramble @tar"},
+    scramble = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown=31, command = "mind scramble @tar"},
     splinterkick = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown=0, command = "spk @tar"},
     tornadokick = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown=23, command = "tnk @tar"},
     mindblast = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown=23, command = "mind blast @tar"},
     ripplestrike = {enabled = true, onbalance = true, type = 5, rage = 25, cooldown=27, command = "rpst @tar"},
-  },     
-  serpent = {
-    excoriate = {enabled = true, onbalance = true, type = "shield break", rage = 16, command = "excoriate @tar"},
-    thrash = {enabled = true, onbalance = true, type = 1, rage = 13, command = "thrash @tar"},
-    throatrip = {enabled = true,  onbalance = true, type = 3, rage = 35, command = "throatrip @tar"},
-    flagellate = {enabled = true, onbalance = true, type = 2, rage = 24, command = "flagellate @tar"},
-    snare = {enabled = false, onbalance = true, type = 4, rage = 25, command = "snare @tar"},
-    obliviate = {enabled = false, onbalance = true, type = 5, rage = 41, command = "obliviate @tar"},
-  },
-  apostate = {
-    burrow = {enabled = true, onbalance = true, type = 1, rage = 35, command = "daegger burrow @tar"},
-    convulsions = {enabled = true, onbalance = true, type = 2, rage = 6, command = "stare @tar convulsions"},
-    horrify = {enabled = false, onbalance = true, type = 4, rage = 10, command = "stare @tar horrify"},
-    piece = {enabled = true, onbalance = true, type = "shield break", rage = 20, command = "daegger pierce @tar"},
-    bloodlet = {enabled = false, onbalance = true, type = 3, rage = 50, command = "bloodlet @tar"},
-    possess = {enabled = false, onbalance = true, type = 5, rage = 65, command = "possess @tar"},
-  },
-  blademaster = {
-    leapstrike = {enabled = true, onbalance = true, type = 2, rage = 14, command = "leapstrike @tar"},
-    daze = {enabled = true, onbalance = true, type = 1, rage = 26, command = "shin daze @tar"},
-    shatter = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "shin shatter @tar"},
-    spinslash = {enabled = true, onbalance = true, type = 3, rage = 36, command = "spinslash @tar"},
-    nerveslash = {enabled = false, onbalance = true, type = 4, rage = 22, command = "nerveslash @tar"},
-  },
+  }, 
   occultist = {
     harry = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown=16, command = "harry @tar"},
     temperance = {enabled = true, onbalance = true, type = 4, rage = 32, cooldown=43, command = "temper @tar"},
@@ -13819,75 +13760,116 @@ local boot_rage = {
     chaosgate = {enabled = true, onbalance = true, type = 5, rage = 36, cooldown=23, command = "chaosgate @tar"},
     fluctuate = {enabled = false, onbalance = true, type = 3, rage = 25, cooldown=23, command = "fluctuate @tar"},
     stagnate = {enabled = false, onbalance = true, type = 2, rage = 24, cooldown=35, command = "stagnate @tar"},
-  },
+  },  
+  paladin = {
+      harrow = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "harrow @tar"},
+      regeneration = {enabled = true, onbalance = true, type = 4, rage = 33, cooldown = 53, command = "perform rite of regeneration"},
+      shock = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "perform rite of shock at @tar"},
+      punishment = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "perform rite of punishment at @tar"},
+      recovery = {enabled = true, onbalance = true, type = 5, rage = 31, cooldown = 44, command = "perform recovery @tar"},
+    },  
+  priest = {
+      torment = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "angel torment @tar"},
+      incense = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "angel incense @tar"},
+      crack = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "crack @tar"},
+      harrow = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "perform rite of harrow on @tar"},
+      hammer = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "hammer @tar"},
+      horrify = {enabled = true, onbalance = true, type = 5, rage = 29, cooldown = 34, command = "perform rite of horrify on @tar"},
+    },
   runewarden = {
-    collide = {enabled = true, onbalance = true, type = 1, rage = 14, command = "collide @tar"},
-    bulwark = {enabled = false, onbalance = true, type = 3, rage = 28, command = "bulwark"},
-    fragment = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "fragment @tar"},
-    onslaught = {enabled = true, onbalance = true, type = 2, rage = 36, command = "onslaught @tar"},
-    etch = {enabled = false, onbalance = true, type = 4, rage = 25, command = "etch rune at @tar"},
-  },
+      collide = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "collide @tar"},
+      bulwark = {enabled = true, onbalance = true, type = 2, rage = 28, cooldown = 45, command = "bulwark"},
+      fragment = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "fragment @tar"},
+      onslaught = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown = 23, command = "onslaught @tar"},
+      etch = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 23, command = "etch rune at @tar"},
+      safeguard = {enabled = true, onbalance = true, type = 5, rage = 35, cooldown = 57, command = "safeguard @tar"},
+    },
+  sentinel = {
+      pester = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "pester @tar"},
+      tame = {enabled = true, onbalance = true, type = 6, rage = 32, cooldown = 43, command = "tame @tar"},
+      skewer = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "skewer @tar"},
+      swarm = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "swarm @tar"},
+      goad = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "goad @tar"},
+    },  
+  serpent = {
+      thrash = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "thrash @tar"},
+      flagellate = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "flagellate @tar"},
+      excoriate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "excoriate @tar"},
+      throatrip = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "throatrip @tar"},
+      snare = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "snare @tar"},
+      obliviate = {enabled = true, onbalance = true, type = 6, rage = 28, cooldown = 41, command = "obliviate @tar"},
+    },
+  shaman = {
+      corruption = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "curse @tar corruption"},
+      korkma = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "invoke korkma @tar"},
+      haemorrhage = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "curse @tar hemorrhage"},
+      vurus = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "invoke vurus @tar"},
+      cesaret = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "invoke cesaret @tar"},
+    },  
+  sylvan = {
+      torrent = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "cast torrent at @tar"},
+      sandstorm = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "cast sandstorm at @tar"},
+      stonevine = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "stonevine @tar"},
+      leechroot = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "leechroot @tar"},
+      rockshot = {enabled = true, onbalance = true, type = 6, rage = 28, cooldown = 41, command = "cast rockshot at @tar"},
+    },  
+
   ["black dragon"] = {
-    dragonspit = {enabled = false, onbalance = true, type = 1, rage = 14, command = "dragonspit @tar"},
-    dragonsting = {enabled = false, onbalance = true, type = "affliction", rage = 25, command = "dragonsting @tar"},
-    dissolve = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "dissolve @tar"},
-    override = {enabled = false, onbalance = true, type = 2, rage = 36, command = "override @tar"},
-    corrode = {enabled = false, onbalance = true, type = 3, rage = 25, command = "corrode @tar"},
-    dragonfear = {enabled = false, onbalance = true, type = 4, rage = 29, command = "dragonfear @tar"},
+    dragonspit = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "dragonspit @tar"},
+    dragonsting = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "dragonsting @tar"},
+    dissolve = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
+    override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
+    corrode = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "corrode @tar"},
+    dragonfear = {enabled = true, onbalance = true, type = 6, rage = 29, cooldown = 34, command = "dragonfear @tar"},
   },
   ["blue dragon"] = {
-    dragonchill = {enabled = false, onbalance = true, type = 1, rage = 14, command = "dragonchill @tar"},
-    glaciate = {enabled = false, onbalance = true, type = 3, rage = 26, command = "glaciate @tar"},
-    frostrive = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "frostrive @tar"},
-    override = {enabled = false, onbalance = true, type = 2, rage = 36, command = "override @tar"},
-    frostwave = {enabled = false, onbalance = true, type = 4, rage = 25, command = "frostwave @tar"},
-    ague = {enabled = false, onbalance = true, type = 5, rage = 14, command = "ague @tar"},
+    dragonchill = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "dragonchill @tar"},
+    glaciate = {enabled = true, onbalance = true, type = 6, rage = 26, cooldown = 33, command = "glaciate @tar"},
+    frostrive = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "frostrive @tar"},
+    override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
+    frostwave = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "frostwave @tar"},
+    ague = {enabled = true, onbalance = true, type = 4, rage = 14, cooldown = 23, command = "ague @tar"},
   },
   ["gold dragon"] = {
-    overwhelm = {enabled = false, onbalance = true, type = 1, rage = 14, command = "overwhelm @tar"},
-    deaden = {enabled = false, onbalance = true, type = 3, rage = 24, command = "deaden @tar"},
-    psishatter = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "psishatter @tar"},
-    psiblast = {enabled = false, onbalance = true, type = 2, rage = 36, command = "psiblast @tar"},
-    psistorm = {enabled = false, onbalance = true, type = 4, rage = 25, command = "psistorm @tar"},
-    psidaze = {enabled = false, onbalance = true, type = 5, rage = 31, command = "psidaze @tar"},
+    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
+    deaden = {enabled = true, onbalance = true, type = 6, rage = 24, cooldown = 35, command = "deaden @tar"},
+    psishatter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "psishatter @tar"},
+    psiblast = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "psiblast @tar"},
+    psistorm = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "psistorm @tar"},
+    psidaze = {enabled = true, onbalance = true, type = 6, rage = 31, cooldown = 44, command = "psidaze @tar"},
   },
   ["green dragon"] = {
-    dragonspit = {enabled = false, onbalance = true, type = 1, rage = 14, command = "dragonspit @tar"},
-    scour = {enabled = false, onbalance = true, type = 2, rage = 18, command = "scour @tar"},
-    deteriorate = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "deteriorate @tar"},
-    override = {enabled = false, onbalance = true, type = 1, rage = 36, command = "override @tar"},
-    slaver = {enabled = false, onbalance = true, type = 3, rage = 25, command = "slaver on @tar"},
-    dragonsap = {enabled = false, onbalance = true, type = 4, rage = 22, command = "dragonsap @tar"},
+    dragonspit = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown = 16, command = "dragonspit @tar"},
+    scour = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "scour @tar"},
+    deteriorate = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
+    override = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "override @tar"},
+    slaver = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "slaver on @tar"},
+    dragonsap = {enabled = true, onbalance = true, type = 4, rage = 22, cooldown = 31, command = "dragonsap @tar"},
   },
   ["red dragon"] = {
-    overwhelm = {enabled = false, onbalance = true, type = 1, rage = 14, command = "overwhelm @tar"},
-    dragontaunt = {enabled = false, onbalance = true, type = 2, rage = 18, command = "dragontaunt @tar"},
-    melt = {enabled = false, onbalance = true, type = "shield break", rage = 17, command = "melt @tar"},
-    dragonblaze = {enabled = false, onbalance = true, type = 1, rage = 36, command = "dragonblaze @tar"},
-    flamebath = {enabled = false, onbalance = true, type = 3, rage = 25, command = "flamebath @tar"},
-    scorch = {enabled = false, onbalance = true, type = 4, rage = 18, command = "scorch @tar"},
+    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
+    dragontaunt = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "dragontaunt @tar"},
+    melt = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "dissolve @tar"},
+    dragonblaze = {enabled = true, onbalance = true, type = 2, rage = 36, cooldown = 23, command = "dragonblaze @tar"},
+    flamebath = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "flamebath @tar"},
+    scorch = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 25, command = "scorch @tar"},
   },
   ["silver dragon"] = {
-    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, command = "overwhelm @tar"},
-    sizzle = {enabled = false, onbalance = true, type = 2, rage = 25, command = "sizzle @tar"},
-    splinter = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "splinter @tar"},
-    dragonspark = {enabled = true, onbalance = true, type = 3, rage = 36, command = "dragonspark @tar"},
-    stormflare = {enabled = false, onbalance = true, type = 4, rage = 25, command = "stormflare @tar"},
-    galvanize = {enabled = false, onbalance = true, type = 5, rage = 18, command = "galvanize @tar"},
+    overwhelm = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown = 16, command = "overwhelm @tar"},
+    sizzle = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown = 27, command = "sizzle @tar"},
+    splinter = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown = 0, command = "splinter @tar"},
+    dragonspark = {enabled = true, onbalance = true, type = 1, rage = 36, cooldown = 23, command = "dragonspark @tar"},
+    stormflare = {enabled = true, onbalance = true, type = 3, rage = 25, cooldown = 23, command = "stormflare @tar"},
+    galvanize = {enabled = true, onbalance = true, type = 4, rage = 18, cooldown = 19, command = "galvanize @tar"},
   },
-  shaman = {
-    corruption = {enabled = true, onbalance = true, type = 1, rage = 14, command = "curse @tar corruption"},
-    korkma = {enabled = false, onbalance = true, type = 2, rage = 29, command = "invoke korkma @tar"},
-    vulnerability = {enabled = true, onbalance = true, type = "shield break", rage = 17, command = "curse @tar vulnerability"},
-    haemorrhage = {enabled = true, onbalance = true, type = 1, rage = 36, command = "curse @tar haemorrhage"},
-  },
+
   ["water elemental"] = {
     icicles = {enabled = true, onbalance = true, type = 1, rage = 14, cooldown= 16, command = "manifest icicles @tar"},
-    dehydrate = {enabled = false, onbalance = true, type = 2, rage = 14, cooldown= 23, command = "manifest dehydrate @tar"},
+    dehydrate = {enabled = true, onbalance = true, type = 2, rage = 14, cooldown= 23, command = "manifest dehydrate @tar"},
     aquahammer = {enabled = true, onbalance = true, type = "shield break", rage = 17, cooldown= 0, command = "manifest aquahammer @tar"},
     needlerain = {enabled = true, onbalance = true, type = 3, rage = 36, cooldown= 23, command = "manifest needlerain @tar"},
-    waterfall = {enabled = false, onbalance = true, type = 4, rage = 25, cooldown= 23, command = "manifest waterfall @tar"},
-    swell = {enabled = false, onbalance = true, type = 5, rage = 30, cooldown= 42, command = "manifest swell @tar"},
+    waterfall = {enabled = true, onbalance = true, type = 4, rage = 25, cooldown= 23, command = "manifest waterfall @tar"},
+    swell = {enabled = true, onbalance = true, type = 5, rage = 30, cooldown= 42, command = "manifest swell @tar"},
   },
   ["air elemental"]   = {},
   ["fire elemental"]  = {},
@@ -13987,9 +13969,42 @@ pipes = pipes or {name = {}, refill = 3}
 emptypipes = emptypipes or false
 emptied_pipes_count = emptied_pipes_count or 0
 pipes_to_light = pipes_to_light or {}
+defensesByName = {}
 
 function initializeFileLoads()
+    -- Add a global flag to track if we've already initialized
+    INITIALIZED_SYSTEM = INITIALIZED_SYSTEM or false
+    
+    -- THE GATEKEEPER: If we already ran this, stop immediately.
+    if INITIALIZED_SYSTEM then 
+        return 
+    end
+
+    -- Mark as initialized so the second trigger won't run
+    INITIALIZED_SYSTEM = true
+    
     settings = settings or {}
+    
+   -- 1. Updated Reset Block with Confirmation
+    local tablesToReset = {
+        {"Settings", settings}, {"Balances", balance_data}, {"Bragelist", bragelist}, 
+        {"Lustlist", lustlist}, {"Enemylist", enemylist}, {"Allylist", allylist}, 
+        {"TargetMaster", targetMasterList}, {"AreaIgnore", areaIgnoreList}, 
+        {"HuntSettings", huntSettingsData}, {"CuringList", curinglist}, 
+        {"Defenses", defenses}, {"Afflictions", afflictions}
+    }
+    
+    for _, entry in ipairs(tablesToReset) do
+        local name, tbl = entry[1], entry[2]
+        if tbl and type(tbl) == "table" then
+            clearTable(tbl)
+            -- Optional: uncomment the line below if you want to see the wipe in your console
+            -- debugEcho("yellow", "✔ Purged stale data: " .. name)
+        end
+    end
+    
+    myEcho("green", "✔ System memory cleared and ready for fresh JSON sync.")
+    
     if settings.debug == nil then
         settings.debug = false
     end
@@ -14095,10 +14110,7 @@ function initializeFileLoads()
         end
     end
 
-    -- 8. Load additional system data tables
-    --if type(loadAllTablesFromJSON) == "function" then
-        loadAllTablesFromJSON()
-    --end
+    loadAllTablesFromJSON()
 
     -- 9. Load Core System Dependencies
     local depsDir = getMudletHomeDir() .. "/Achaean System/system/libs/deps"
@@ -14185,30 +14197,6 @@ function initializeFileSaves()
 end
 
 
-
-function systemOnDeath()
-  if not settings.systemPaused then
-    myaffs = {}
-    send("stop")
-    expandAlias("mstop")
-    settings.systemPaused = true
-    settings.meditating = false
-    resetCuringList()
-    LimbTrackerReset()
-    cecho("\n&lt;red&gt;[BRAIN] We died. Disengaging.\n")
-    if hunting then
-      tempAreaList = {}
-      huntloop = false
-      hunting = false
-      autohunting = false
-      toggleHuntingMode("manual")
-    end
-    cecho("System has been &lt;red&gt;paused.\n")
-    if settings.autoEmbrace then
-      send("embrace death")
-    end
-  end
-end
 
 function systemOnDeath()
   if not settings.systemPaused then
@@ -14791,45 +14779,38 @@ end</script>
 					<name>affliction list</name>
 					<packageName></packageName>
 					<script>function afflictionlist()
-    
-    -- 🛡️ Guard: Exit if the affliction window isn't initialized
     if not GUI or not GUI.affwindow or not GUI.affwindow.middle then return end
     
     local affstring = ""
-    local totalAffs = #myaffs
+    local count = 0
     
-    -- 1. Prepend the total count if we have afflictions
-    if totalAffs &gt; 0 then
-        affstring = "&lt;white&gt;[&lt;red&gt;" .. totalAffs .. "&lt;white&gt;] "
-    end
-
-    -- 2. Build the string from your master database
-    -- We use your new table structure: data.prompt
+    -- 1. Calculate count and build string in one pass
+    -- This is O(N) where N is the number of database entries, but much faster
     for aff_key, data in pairs(afflictions) do
-        if table.contains(myaffs, aff_key) then
+        if myaffs[aff_key] then 
             affstring = affstring .. (data.prompt or aff_key) .. " "
+            count = count + 1
         end
     end
 
-    -- 3. Add special checks (Bleeding, etc.)
-    -- Append the live bleeding counter string prefix
-      local bleed = bleedcheckprompt()
-      if bleed ~= "" then
-        affstring = bleed .. " " .. affstring
-      end
+    -- 2. Add the count prefix
+    if count &gt; 0 then
+        affstring = "&lt;white&gt;[&lt;red&gt;" .. count .. "&lt;white&gt;] " .. affstring
+    end
 
-    -- 4. Handle the "Clean" state
-    if totalAffs == 0 and bleed == "" then
+    -- 3. Special checks
+    local bleed = bleedcheckprompt()
+    if bleed ~= "" then
+        affstring = bleed .. " " .. affstring
+    end
+
+    -- 4. Empty state
+    if count == 0 and bleed == "" then
         affstring = "&lt;white&gt; - "
     end
 
-    -- 5. GUI Update
-    clearWindow("affwindow.middle")
+    GUI.affwindow.middle:clear()
     GUI.affwindow.middle:cecho(affstring)
-
-    -- Debugging
-    debugEcho("yellow","[DEBUG] Total Affs: " .. totalAffs)
- 
 end
 
 -- Fixed bridge execution logic to update GUI safely without recursion crashes
@@ -15573,12 +15554,12 @@ end</script>
 
 
       --OCCULTIST
-      astralvision_occultism = { type = "occultism", command = "astralvision", relax = "", active = false, enabled = false, keepup = false, name = "astralvision", cooldown = {"equilibrium"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      distortaura_occultism = { type = "occultism", command = "distortaura", relax = "normalaura", active = false, enabled = false, keepup = false, name = "distortaura", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
-      astralform_occultism = { type = "occultism", command = "astralform", relax = "", active = false, enabled = false, keepup = false, name = "astralform", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      devilmark_occultism = { type = "occultism", command = "devilmark", relax = "", active = false, enabled = false, keepup = false, name = "devilmark", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      tentacles_occultism = { type = "occultism", command = "tentacles", relax = "", active = false, enabled = false, keepup = false, name = "tentacles", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
-      shroud_occultism = { type = "occultism", command = "shroud", relax = "unshroud", active = false, enabled = false, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
+      astralvision_occultism = { type = "occultism", command = "astralvision", relax = "", active = false, enabled = false, keepup = false, name = "astralvision", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      distortaura_occultism = { type = "occultism", command = "distortaura", relax = "normalaura", active = false, enabled = false, keepup = false, name = "distortaura", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "mana", priority = 2, blockers = {"sleep","paralysis"} },
+      astralform_occultism = { type = "occultism", command = "astralform", relax = "", active = false, enabled = false, keepup = false, name = "astralform", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      devilmark_occultism = { type = "occultism", command = "devilmark", relax = "", active = false, enabled = false, keepup = false, name = "devilmark", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      tentacles_occultism = { type = "occultism", command = "tentacles", relax = "", active = false, enabled = false, keepup = false, name = "tentacles", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
+      shroud_occultism = { type = "occultism", command = "shroud", relax = "unshroud", active = false, enabled = false, keepup = false, name = "shroud", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 2, blockers = {"sleep"} },
       
       --RUNEWARDEN
       gripping_discipline = { type = "discipline", command = "grip", relax = "relax grip", active = false, enabled = false, keepup = false, name = "gripping", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 2, blockers = {"sleep","paralysis"} },
@@ -15744,7 +15725,7 @@ end</script>
       mindseye_vision = { type = "vision", command = "touch mindseye", relax = "", active = false, enabled = false, keepup = false, name = "mindseye", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 1, blockers = {"sleep","paralysis"} },
 
       -- SURIVIAL
-      selfishness_survival = { type = "survival", command = "selfishness", relax = "generosity", active = false, enabled = false, keepup = false, name = "selfishness", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep"} },
+      selfishness_survival = { type = "survival", command = "selfishness", relax = "generosity", active = false, enabled = false, keepup = false, name = "selfishness", cooldown = {"equilibrium"}, requires = {"balance","equilibrium"}, drain = "none", priority = 3, blockers = {"sleep"} },
       heldbreath_survival = { type = "survival", command = "hold breath", relax = "release", active = false, enabled = false, keepup = false, name = "heldbreath", cooldown = {"free"}, requires = {"balance","equilibrium"}, drain = "none", priority = 4, blockers = {"sleep"} },
       insomnia_survival = { type = "survival", command = "insomnia", relax = "relax insomnia", active = false, enabled = false, keepup = false, name = "insomnia", cooldown = {"free"}, requires = {"free"}, drain = "none", priority = 1, blockers = {"sleep"} },
       curseward_survival = { type = "survival", command = "curseward", relax = "", active = false, enabled = false, keepup = false, name = "curseward", cooldown = {"equilibrium"}, requires = {"balance"}, drain = "none", priority = 3, blockers = {"sleep","prone"} },
@@ -18069,13 +18050,9 @@ function queue:blockers(cure)
         return false
     end
 
-    local blockersSet = {}
+    -- Direct dictionary check
     for _, blocker in ipairs(cure.blockers) do
-        blockersSet[blocker] = true
-    end
-
-    for _, aff in ipairs(myaffs) do
-        if blockersSet[aff] then
+        if myaffs[blocker] then
             return true
         end
     end
@@ -18116,7 +18093,8 @@ end
 function queue:createLocalAffs()
     local localAffs = {}
 
-    for _, affliction in ipairs(myaffs) do
+    -- Changed ipairs to pairs for dictionary iteration
+    for affliction, _ in pairs(myaffs) do
         local affDetails = afflictions[affliction]
         if affDetails then
             local p = tonumber(affDetails.priority) or 25
@@ -18269,7 +18247,10 @@ function queue:sendSingleCure(cure)
     local afflictionData = afflictions
     local currentTime = os.time()
     local networkLatency = getNetworkLatency()
-    local nonPrioritizedCures = { "herb", "salve", "smoke", "writhe", "wake", "balance" }
+    local nonPrioritizedCures = { 
+        ["herb"] = true, ["salve"] = true, ["smoke"] = true, 
+        ["writhe"] = true, ["wake"] = true, ["balance"] = true 
+    }
     local affliction = cure.name
     local cureType = cure.type
     local command = cure.command
@@ -18284,7 +18265,7 @@ function queue:sendSingleCure(cure)
     end
 
     -- Server-side automated system priorities mapping
-    if table.contains(nonPrioritizedCures, cureType) then
+    if nonPrioritizedCures[cureType] then
         local currentSlot1Aff = nil
 
         for aff, prio in pairs(curingList) do
@@ -18348,7 +18329,10 @@ function queue:sendBatchCures(validCures)
     local afflictionData = afflictions 
     local currentTime = os.time() 
     local networkLatency = getNetworkLatency() 
-    local nonPrioritizedCures = { "herb", "salve", "smoke", "writhe", "wake", "balance" }
+    local nonPrioritizedCures = { 
+        ["herb"] = true, ["salve"] = true, ["smoke"] = true, 
+        ["writhe"] = true, ["wake"] = true, ["balance"] = true 
+    }
     local highestPrioAff = nil 
     local highestPriority = 25 
 
@@ -18357,7 +18341,7 @@ function queue:sendBatchCures(validCures)
         local cureType = cure.type
         local affPriority = afflictionData[affliction] and tonumber(afflictionData[affliction].priority) or 25
         
-        if not pipelineAfflictions[affliction] and not usedCureTypes[cureType] and table.contains(nonPrioritizedCures, cureType) then            
+        if not pipelineAfflictions[affliction] and not usedCureTypes[cureType] and nonPrioritizedCures[cureType] then            
             if affPriority &lt; highestPriority then
                 highestPrioAff = affliction
                 highestPriority = affPriority
@@ -18430,19 +18414,26 @@ end
 function queue:setAfflictionPriorities()
     local afflictionCommands = {}  
     local priority = 0
-
+    local highPrioAffs = {
+        ["fear"] = true, ["aeon"] = true, ["entangled"] = true, ["blackout"] = true, 
+        ["bound"] = true, ["daeggerimpale"] = true, ["impaled"] = true, ["sleeping"] = true, 
+        ["transfixation"] = true, ["voyria"] = true, ["webbed"] = true, ["prone"] = true, 
+        ["disrupted"] = true
+    }
     cecho("&lt;yellow&gt;\nStarting affliction iteration...&lt;reset&gt;")
     for affliction, data in pairs(afflictions) do
         priority = 0
 
-        if table.contains({"fear", "aeon", "entangled", "blackout", "bound", "daeggerimpale", "impaled", "sleeping", "transfixation", "voyria", "webbed", "prone", "disrupted"}, affliction) then
+        -- Now an O(1) lookup
+        if highPrioAffs[affliction] then
             priority = 2
         elseif data and data.priority then
             priority = tonumber(data.priority) or 25
         else
-            cecho("&lt;red&gt;Warning: No priority set for affliction '" .. affliction .. "'. Defaulting to 0.&lt;reset&gt;\n")
+            cecho("&lt;red&gt;Warning: No priority set for '" .. affliction .. "'. Defaulting to 0.&lt;reset&gt;\n")
         end
 
+        -- Logic remains the same...
         if data.cures and data.cures[1] and data.cures[1].type == "time" then
             table.insert(afflictionCommands, "curing prio " .. affliction .. " 26")
             afflictions[affliction].priority = 26
@@ -18548,7 +18539,9 @@ end
 function resetCuringProcess()
     pipeline.afflictions = {}
 
-    for _, affliction in pairs(myaffs) do
+    -- Iterate using pairs() for dictionary keys
+    for affliction, _ in pairs(myaffs) do
+        -- If you want to flag them as inactive instead of just clearing the pipeline
         if pipeline.afflictions[affliction] then
             pipeline.afflictions[affliction].in_progress = false
             pipeline.afflictions[affliction].attempts = 0
@@ -22654,7 +22647,11 @@ function updateObjectsWindow()
                     todisplay.denizens[k] = truncateString(v.name, stringcut)
                 end
             elseif v.attrib == "m" then
-                todisplay.entities[k] = truncateString(v.name, stringcut)
+                if k == tar then
+                    todisplay.entities[k] = "&lt;ansi_red&gt;" .. truncateString(v.name, stringcut)
+                else
+                  todisplay.entities[k] = truncateString(v.name, stringcut)
+                end
             elseif v.attrib == "t" then
                 todisplay.items[k] = truncateString(v.name, stringcut)
             else
@@ -26089,19 +26086,15 @@ function retard_mode(mode)
   if mode then
     cansend = true
     retard_check_count = 0
-    if not table.contains(myaffs, "retardation") then
-      table.insert(myaffs, "retardation")
-      if not (clotat) == 5000 then
+    myaffs["retardation"] = true    
+    if clotat ~= 5000 then
         clotat = 5000
-      end
     end
   else
     retard_check_count = 0
-    if table.contains(myaffs, "retardation") then
-      removeElement(myaffs, "retardation")
-      if not (clotat) == 70 then
+    myaffs["retardation"] = nil    
+    if clotat ~= 70 then
         clotat = 70
-      end
     end
   end
 end
@@ -26861,7 +26854,7 @@ end
             end
         else
             -- Handle Standard Afflictions
-            table.insert(myaffs, affName)
+            myaffs[affName]=true
             remedy:process()
             
             -- Special case for blackout/disrupted
@@ -26888,247 +26881,91 @@ registerAnonymousEventHandler("gmcp.Char.Afflictions.Add", handleAfflictionAdd)
 					<name>remove</name>
 					<packageName></packageName>
 					<script>-- Function to handle the removal of afflictions
-
 function handleAfflictionRemove()
-
-    local cs = settings.cmdsep
-
     local affInfo = gmcp.Char.Afflictions.Remove
 
-    local affInfoTable = {}  -- Create lookup table for affInfo
-
-
-
-    -- Populate affInfoTable for O(1) lookups
-
-    for _, aff in ipairs(affInfo) do
-
-        affInfoTable[aff] = true
-
-    end
-
-
-
-    -- Iterate backwards through myaffs to safely remove items while looping
-
-    for i = #myaffs, 1, -1 do
-
-        local removal = myaffs[i]
-
-
-
-        -- Check if the affliction exists in affInfoTable
-
-        if affInfoTable[removal] then
-
-            onCureSuccess(removal)  -- Handle curing success
-
-            table.remove(myaffs, i)  -- Remove from myaffs directly
-
-             if removal == "blackout" and hunting and autohunting then
-
+    for _, removal in ipairs(affInfo) do
+        if myaffs[removal] then
+            onCureSuccess(removal)
+            myaffs[removal] = nil -- Correct O(1) removal
+            
+            -- Reset logic
+            if removal == "blackout" and hunting and autohunting then
                 commandSent = false
                 shieldCommandSent = false
                 huntNext()
-
-             end
-             
-            -- Check and reset priority in curinglist
-
-            if afflictions and afflictions[removal] then
-
-                local defaultPriority = afflictions[removal].priority
-
-
-
-                -- Check if curinglist[removal] is set correctly before resetting
-
-                if curinglist[removal] then
-
-                    -- Only reset if the current priority is not the same as the default
-
-                    if curinglist[removal] ~= defaultPriority then
-
-                        -- Generate priority command
-
-                        local command = "curing prio " .. removal .. " " .. defaultPriority
-
-
-
-                        -- Add to sentPriorityCommands if not already sent
-
-                        if not sentPriorityCommands[removal] then
-
-                            sentPriorityCommands[removal] = defaultPriority  -- Store the priority value
-
-                            if tumbling then 
-
-                                -- do nothing
-
-                            else
-
-                              send(command)
-
-                            end
-
-                        end
-
-                    end
-
-                end
-
             end
-
+            
+            -- Priority Reset
+            if afflictions and afflictions[removal] and curinglist[removal] then
+                local defaultPriority = afflictions[removal].priority
+                if curinglist[removal] ~= defaultPriority then
+                    local command = "curing prio " .. removal .. " " .. defaultPriority
+                    if not sentPriorityCommands[removal] then
+                        sentPriorityCommands[removal] = defaultPriority
+                        if not tumbling then send(command) end
+                    end
+                end
+            end
         end
-
     end
-
-
-
-    -- **Failsafe check**: Ensure all afflictions in curinglist match their default priorities
 
     onCureFailsafe()
 
-
-
-    -- Reset mystackableaffs if myaffs is empty
-
-    if #myaffs == 0 then
-
+    -- CORRECT WAY to check if a dictionary is empty:
+    if next(myaffs) == nil then
         mystackableaffs = {
-
-            torntendons = 0,
-
-            skullfractures = 0,
-
-            crackedribs = 0,
-
-            wristfractures = 0,
-
-            pressure = 0,
-
-            burning = 0,
-
-            temperedsanguine = 0,
-
-            temperedmelancholic = 0,
-
-            temperedphlegmatic = 0,
-
-            temperedcholeric = 0,
-
-            unweavingmind = 0,
-
-            unweavingbody = 0,
-
-            unweavingspirit = 0,
-
+            torntendons = 0, skullfractures = 0, crackedribs = 0,
+            wristfractures = 0, pressure = 0, burning = 0,
+            temperedsanguine = 0, temperedmelancholic = 0,
+            temperedphlegmatic = 0, temperedcholeric = 0,
+            unweavingmind = 0, unweavingbody = 0, unweavingspirit = 0,
             horror = 0,
-
         }
-
     end
-
 end
-
-
-
-
-
-
-
 
 
 -- Function to handle failsafe check and ensure curinglist matches default priorities
 
 function onCureFailsafe()
-
     local cs = settings.cmdsep
-
-    local priorityCommandList = {}  -- List to accumulate commands
-
-
-
-    -- **Failsafe check**: Ensure all afflictions in curinglist match their default priorities
+    local priorityCommandList = {}
 
     for affliction, currentPriority in pairs(curinglist) do
-
-        -- Make sure the affliction is not in the `myaffs` table (not already cured)
-
-        if afflictions[affliction] and not table.contains(myaffs, affliction) then
-
+        -- Check dictionary existence instead of table.contains
+        if afflictions[affliction] and not myaffs[affliction] then
             local defaultPriority = afflictions[affliction].priority
-
-            -- If curinglist priority is not the same as the default, queue the reset command
-
             if currentPriority ~= defaultPriority then
 
                 local command = "curing prio " .. affliction .. " " .. defaultPriority
 
-
-
                 -- Only add the command if it hasn't been sent already
-
                 if not sentPriorityCommands[affliction] or sentPriorityCommands[affliction] ~= defaultPriority then
-
                     sentPriorityCommands[affliction] = defaultPriority  -- Mark as sent globally
-
                     table.insert(priorityCommandList, command)
-
                 end
-
-
-
             end
-
         end
-
     end
-
-
 
     -- Ensure we send all necessary commands
-
     if #priorityCommandList &gt; 0 then
-
         send(table.concat(priorityCommandList, cs))
-
     end
-
 end
-
-
-
-
-
-
 
 
 
 function onPriorityResetSent(affliction, priority)
-
     -- This function will be triggered once we receive confirmation that the priority has been set
-
     -- Example: "You have set the 'brokenrightarm' affliction to the 19 priority."
-
-
-
     -- Clear the affliction from the sentPriorityCommands table after confirmation
-
     if sentPriorityCommands[affliction] then
-
         --cecho("&lt;green&gt;Confirmed: " .. affliction .. " priority set to " .. priority .. "\n")
-
         sentPriorityCommands[affliction] = nil  -- Remove the affliction from the table after confirmation
-
     end
-
 end
-
-
-
-
-
 
 
 -- Register the GMCP event for removing afflictions
@@ -27170,8 +27007,10 @@ registerAnonymousEventHandler("gmcp.Char.Afflictions.Remove", handleAfflictionRe
       end
     else
       -- Check if it's a "normal" affliction and NOT in the blacklist (templist)
-      if not templist[affName] and not table.contains(myaffs, affName) then
-        table.insert(myaffs, affName)  
+      --if not templist[affName] and not table.contains(myaffs, affName) then
+      if not templist[affName] then  
+        myaffs[affName] = true
+        --table.insert(myaffs, affName)  
       end         
     end
   end
@@ -27588,28 +27427,34 @@ end
 					<name>add</name>
 					<packageName></packageName>
 					<script>function handleDefenseAdd()
-    if settings.systemLoaded and gmcp.Char.Defences.Add and type(gmcp.Char.Defences.Add) == "table" then
-        local defenseName = gmcp.Char.Defences.Add.name
-        if defenseName then
-            if defenseName ~= "morph" and defenseName ~= "harmony" and not string.match(defenseName, "parrying") then
-                if not table.contains(mydefs, defenseName) then
-                    table.insert(mydefs, defenseName)
-                     debugEcho("DarkSlateGrey","You have &lt;white&gt;"..#mydefs.." active defenses.")
-                end
-                if defenses[defenseName] then
-                    defenses[defenseName].active = true
-                else
-                    debugEcho("DarkSlateGrey","Warning: &lt;PowderBlue&gt;" .. tostring(defenseName) .. " &lt;DarkSlateGray&gt;is not found in defenses.\n")
-                end
-                if pipeline.defenses[defenseName] then
-                  pipeline.defenses[defenseName] = nil
-                end                              
+    local defs = gmcp.Char.Defences.Add
+    if not settings.systemLoaded or not defs then return end
+    
+    local dName = defs.name
+    if not dName then return end
 
-                --if table.is_empty(pipeline.defenses) then
-                  --defupmode = false
-                --end
-               
-            end
+    -- Filter logic: O(1) checks
+    if dName ~= "morph" and dName ~= "harmony" and not string.find(dName, "parrying") then
+        
+        -- 1. Sync state to Registry
+        mydefs[dName] = true
+        
+        -- 2. Sync state to Object
+        local defObj = defensesByName[dName] or defenses[dName]
+        if defObj then
+            defObj.active = true
+            defObj.enabled = true
+        else
+            debugEcho("DarkSlateGrey", "Warning: " .. dName .. " not found in defenses.")
+        end
+
+        -- 3. Clear Pipeline using both name formats for maximum safety
+        pipeline.defenses[dName] = nil
+        
+        -- 4. Check status update
+        if next(pipeline.defenses) == nil and defupmode then
+            defupmode = false
+            updatePrompt()
         end
     end
 end
@@ -27624,17 +27469,25 @@ registerAnonymousEventHandler("gmcp.Char.Defences.Add", handleDefenseAdd)
 					<name>remove</name>
 					<packageName></packageName>
 					<script>function handleDefenseRemove()
-    if settings.systemLoaded and gmcp.Char.Defences.Remove and type(gmcp.Char.Defences.Remove) == "table" then
-        local defenseName = gmcp.Char.Defences.Remove[1]
-        if defenseName then
-            if table.contains(mydefs, defenseName) then
-                table.remove(mydefs, table.index_of(mydefs, defenseName))
-                if defenses[defenseName] then
-                    defenses[defenseName].active = false
-                else
-                    debugEcho("DarkSlateGrey","Warning: Defense &lt;white&gt;" .. defenseName .. " &lt;DarkSlateGray&gt;not found in defenses table.\n")
-                end
-            end
+    -- Guard: Early exit if system isn't ready or GMCP data is missing
+    local removedDef = gmcp.Char.Defences.Remove
+    if not settings.systemLoaded or not removedDef then return end
+
+    -- GMCP usually sends a table; if it's just a string, handle both
+    local defenseName = (type(removedDef) == "table") and removedDef[1] or removedDef
+    
+    if defenseName then
+        -- 1. Sync Registry: O(1)
+        mydefs[defenseName] = nil
+        
+        -- 2. Sync Object: Use the index for O(1) speed
+        local defObj = defensesByName[defenseName] or defenses[defenseName]
+        
+        if defObj then
+            defObj.active = false
+            defObj.enabled = false
+        else
+            debugEcho("DarkSlateGrey", "Warning: Defense &lt;white&gt;" .. defenseName .. " &lt;DarkSlateGray&gt;not found in defenses table.\n")
         end
     end
 end
@@ -27648,38 +27501,45 @@ registerAnonymousEventHandler("gmcp.Char.Defences.Remove", handleDefenseRemove)
 					<name>list</name>
 					<packageName></packageName>
 					<script>function handleDefenseList()
-    if settings.systemLoaded and gmcp.Char.Defences.List and type(gmcp.Char.Defences.List) == "table" then
-      mydefs={}
-      for k, v in pairs(defenses) do 
-           v.active = false 
-      end
-   
-   
-        for _, v in pairs(gmcp.Char.Defences.List) do
-            local defenseName = v.name
+    local defList = gmcp.Char.Defences.List
+    if not settings.systemLoaded or not defList then return end
 
-            if defenseName ~= "morph" and defenseName ~= "harmony" and not string.match(defenseName, "parrying") then
-                if not table.contains(mydefs, defenseName) then                   
-                    table.insert(mydefs, defenseName)                    
-                end
-                if defenses[defenseName] then
-                    defenses[defenseName].active = true  -- Set active to true in defenses table
-                else
-                    debugEcho("DarkSlateGrey","Warning: &lt;white&gt;" .. tostring(defenseName) .. " &lt;DarkSlateGray&gt;is not found in defenses.\n")
-                end
-                if pipeline.defenses[defenseName] then
-                  pipeline.defenses[defenseName] = nil
-                end
-                
-           
+    -- 1. Reset state efficiently
+    -- Instead of looping through all 'defenses', we just clear 'mydefs'
+    -- and update only the entries we care about.
+    mydefs = {}
+    
+    -- We only reset the '.active' status for items we know are in our system
+    for _, defObj in pairs(defenses) do
+        defObj.active = false
+    end
+
+    -- 2. Process current list
+    for _, v in ipairs(defList) do
+        local dName = v.name
+        
+        -- Use the faster string.find with plain text flag
+        if dName ~= "morph" and dName ~= "harmony" and not string.find(dName, "parrying", 1, true) then
+            
+            mydefs[dName] = true
+            
+            -- Use our index for O(1) lookup
+            local defObj = defensesByName[dName] or defenses[dName]
+            if defObj then
+                defObj.active = true
+            else
+                debugEcho("DarkSlateGrey", "Warning: " .. tostring(dName) .. " not in defenses.\n")
             end
+            
+            -- Clear pipeline entry
+            pipeline.defenses[dName] = nil
         end
+    end
 
-          if table.is_empty(pipeline.defenses) then
-            defupmode = false
-          end
-                  
-    else
+    -- 3. Pipeline housekeeping
+    if not next(pipeline.defenses) and defupmode then
+        defupmode = false
+        updatePrompt()
     end
 end
 
@@ -27691,10 +27551,13 @@ registerAnonymousEventHandler("gmcp.Char.Defences.List", handleDefenseList)
 					<name>defup</name>
 					<packageName></packageName>
 					<script>function checkDefUpStatus()
-    if table.is_empty(pipeline.defenses) then
-        if defupmode ~= false then
+    -- 1. Check if the pipeline is empty using next() - O(1)
+    -- next() returns nil if the table is empty, which is the fastest way to check
+    if next(pipeline.defenses) == nil then
+        
+        -- 2. Only update if the mode actually needs changing
+        if defupmode then
             defupmode = false
-            -- This ensures the prompt removes the [DEFUP] tag right away
             updatePrompt() 
         end
     end
@@ -27944,12 +27807,13 @@ end
 function executeDefenseFunction(details, displayType)
     local data = details
     local logMsg = "" -- Temporary holder to prevent the UI from burying our text
-    local ignore = {"distortaura"}
+    local ignore = {["distortaura"] = true, ["astralvision"] = true}
     
     if displayType == "keepup" or displayType == "enabled" then
         if data[displayType] then
             data[displayType] = false
-            if not table.contains(ignore, data.name) then
+            --if not table.contains(ignore, data.name) then
+            if not ignore[data.name] then
               send("CURING PRIORITY DEFENCE " .. data.name .. " RESET")
               logMsg = string.format("\n&lt;white&gt;%s removed for %s (Server-side Reset Sent)", displayType:title(), data.name)
             else 
@@ -27963,7 +27827,8 @@ function executeDefenseFunction(details, displayType)
             data.enabled = true
             
             local targetPri = setDefensePrios(data.name)
-            if not table.contains(ignore, data.name) then
+            --if not table.contains(ignore, data.name) then
+            if not ignore[data.name] then
               send("CURING PRIORITY DEFENCE " .. data.name .. " " .. targetPri)
               logMsg = string.format("\n&lt;white&gt;%s added for %s (Server-side Priority: %s)", displayType:title(), data.name, targetPri)
             else
